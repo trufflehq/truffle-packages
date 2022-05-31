@@ -1,0 +1,31 @@
+{
+  "name": "truffle-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trufflehq/truffle-api.git"
+  },
+  "author": "Truffle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trufflehq/truffle-api/issues"
+  },
+  "homepage": "https://github.com/trufflehq/truffle-api#readme",
+  "dependencies": {
+    "prop-types": "^15.8.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.16.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "eslint-plugin-react": "^7.28.0"
+  }
+}
