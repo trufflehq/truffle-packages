@@ -4,7 +4,7 @@ import { op, Obs } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 import { getCookie, setCookie } from 'https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js'
 import { getHost } from 'https://tfl.dev/@truffle/utils@0.0.1/request/request-info.js'
 
-import graphqlClient from '../../../graphql-client.js'
+import graphqlClient from '../../graphql-client.js/index.js'
 import { AUTH_COOKIE } from '../../constants.js'
 
 // graphqlClient

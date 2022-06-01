@@ -27,15 +27,14 @@ const nextConfig = {
     if (!isServer) {
       config.plugins.push(
         new webpack.IgnorePlugin({
-          resourceRegExp: /^ws$/
+          resourceRegExp: /^(ws|async_hooks)$/
         })
       )
     }
 
     // attempt at getting react pulled in from cdn url, so modules can share react instance
-    // if (config.externals?.[0] === 'next') {
-    //   config.externals = ['next', { ...(config.externals || {}), react: 'react' }]
-    // }
+    // config.externals = [...config.externals, 'react']
+
     // Important: return the modified config
     return config
   }

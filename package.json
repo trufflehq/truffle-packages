@@ -1,5 +1,5 @@
 {
-  "name": "truffle-utils",
+  "name": "truffle-packages",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/trufflehq/truffle-util.git"
+    "url": "git+https://github.com/trufflehq/truffle-packages.git"
   },
   "author": "Truffle",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/trufflehq/truffle-util/issues"
+    "url": "https://github.com/trufflehq/truffle-packages/issues"
   },
-  "homepage": "https://github.com/trufflehq/truffle-util#readme",
+  "homepage": "https://github.com/trufflehq/truffle-packages#readme",
   "dependencies": {
     "prop-types": "^15.8.1"
   },

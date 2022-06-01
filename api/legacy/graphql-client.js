@@ -8,8 +8,8 @@ import { createSubject, op, Obs } from 'https://tfl.dev/@truffle/utils@0.0.1/obs
 import request from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/request.js'
 import { getCookie } from 'https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js'
 
-import io from './io.js'
-import { AUTH_COOKIE } from './legacy/constants.js'
+import io from '../io.js'
+import { AUTH_COOKIE } from './constants.js'
 
 class GraphqlClient {
   constructor () {
