@@ -57,10 +57,9 @@ export default class Model {
       const orgId = this.auth?.orgId
       const orgSlug = getCookie('orgSlug')
       const sporeAdminSecret = getCookie('sporeAdmin')
-      console.log('emit', accessToken, orgId, orgSlug, sporeAdminSecret, event, opts)
       return io.emit(
         event,
-        _.defaults({ accessToken, orgSlug, userAgent: getUserAgent(), sporeAdminSecret, ip: this.ip }, opts)
+        _.defaults({ accessToken, orgId, orgSlug, userAgent: getUserAgent(), sporeAdminSecret, ip: this.ip }, opts)
       )
     }
 
@@ -95,8 +94,6 @@ export default class Model {
     this.initialCache = _.defaults(offlineCache, cache.graphqlClient)
     this.initialCacheTime = cache.now
     // console.log('init', this.initialCache)
-
-    console.log('setup gql')
 
     graphqlClient.setup({
       ioEmit,

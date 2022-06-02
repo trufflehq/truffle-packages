@@ -1,15 +1,33 @@
-class Ssr {
-  setReq = (req) => { this.req = req }
-  getReq = () => this.req
+import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.js'
 
-  setRes = (res) => { this.res = res }
-  getRes = () => this.res
+export function getSsrReq () {
+  const context = globalContext.getStore()
+  if (context) return context.ssr?.req
 }
 
-const ssr = new Ssr()
+export function setSsrReq (req) {
+  const context = globalContext.getStore()
+  if (context) {
+    context.count = context.count || 0
+    context.count += 1
+    console.log('count', context.count)
+    context.ssr = context.ssr || {}
+    context.ssr.req = req
+  }
+}
 
-// TODO: use asyncLocalStorage to get correct class instance for ssr
-export const getSsrReq = ssr.getReq
-export const setSsrReq = ssr.setReq
-export const getSsrRes = ssr.getRes
-export const setSsrRes = ssr.setRes
+export function getSsrRes () {
+  const context = globalContext.getStore()
+  if (context) return context.ssr?.res
+}
+
+export function setSsrRes (res) {
+  const context = globalContext.getStore()
+  if (context) {
+    context.count = context.count || 0
+    context.count += 1
+    console.log('count', context.count)
+    context.ssr = context.ssr || {}
+    context.ssr.res = res
+  }
+}

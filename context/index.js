@@ -13,6 +13,16 @@
 // will need to use importmaps or compiler for this to not be bothersome in browser
 import { AsyncLocalStorage } from 'async_hooks'
 
+console.log('Server AsyncLocalStorage', AsyncLocalStorage)
+
+// FIXME: browser version isn't true to spec. it doesn't create a new context per run
+// https://github.com/legendecas/proposal-async-context
+// options:
+// 1) add a setGlobalValue() method (or something other than run) that client runs
+//    throw error if client tries calling .run()
+//    throw error if server tries calling .setGlobalValue
+// 2) implement zone.js
+
 const IsomorphicAsyncLocalStorage = AsyncLocalStorage || class BrowserAsyncLocalStorage {
   constructor () {
     this.store = undefined
