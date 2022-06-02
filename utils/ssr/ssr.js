@@ -10,7 +10,7 @@ export function setSsrReq (req) {
   if (context) {
     context.count = context.count || 0
     context.count += 1
-    console.log('count', context.count)
+    console.log('count...', context.count)
     context.ssr = context.ssr || {}
     context.ssr.req = req
   }
