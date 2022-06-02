@@ -11,28 +11,20 @@ import { getCookie } from 'https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js
 import io from '../io.js'
 import { AUTH_COOKIE } from './constants.js'
 
-class GraphqlClient {
-  constructor () {
+export default class GraphqlClient {
+  constructor ({ ioEmit, cache }) {
     this.isSsr = typeof window !== 'undefined'
     this._cache = {}
     this._batchQueue = []
     this._listeners = {}
     this._consumeTimeout = null
-    // used to prevent duplicated client-side increments
-    this.connectionId = uuid.v4()
-    this.dataCacheReplaySubject = new Obs.ReplaySubject(1)
-    this.dataCacheObs = this.dataCacheReplaySubject.pipe(op.switchAll())
-    // simulataneous invalidateAlls seem to break streams
-    this.invalidateAll = _.debounce(this._invalidateAll, 0, { trailing: true })
-    !this.isSsr && io.onReconnect(() => {
-      this.invalidateAll({ shouldOnlyInvalidateStream: true })
-    })
-  }
 
-  setup ({ cache = {}, ioEmit }) {
     this.ioEmit = ioEmit
     this.allowInvalidation = true
     this.synchronousCache = cache
+    // used to prevent duplicated client-side increments
+    this.connectionId = uuid.v4()
+    this.dataCacheReplaySubject = new Obs.ReplaySubject(1)
     this.dataCacheReplaySubject.next(Obs.of(cache))
 
     _.forEach(cache, (result, key) => {
@@ -41,6 +33,13 @@ class GraphqlClient {
       } else {
         this._cacheSet(key, { dataObs: Obs.of(result.value) })
       }
+    })
+
+    this.dataCacheObs = this.dataCacheReplaySubject.pipe(op.switchAll())
+    // simulataneous invalidateAlls seem to break streams
+    this.invalidateAll = _.debounce(this._invalidateAll, 0, { trailing: true })
+    !this.isSsr && io.onReconnect(() => {
+      this.invalidateAll({ shouldOnlyInvalidateStream: true })
     })
   }
 
@@ -619,5 +618,3 @@ class GraphqlClient {
     return null
   }
 }
-
-export default new GraphqlClient()

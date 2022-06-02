@@ -26,9 +26,9 @@ import StatusBar from './models/shared/status_bar.js'
 import Time from './models/shared/time.js'
 import User from './models/shared/user.js'
 
-import graphqlClient from '../../graphql-client.js'
 import { API_URL, CDN_URLS } from './constants.js'
 import io from '../../io.js'
+import GraphqlClient from './graphql-client.js'
 
 const SERIALIZATION_KEY = 'MODEL'
 const MAX_ACCEPTABLE_GRAPHQL_CLIENT_TIME_DIFF_MS = 1000 * 30 // 30 seconds
@@ -42,6 +42,7 @@ const MAX_ACCEPTABLE_GRAPHQL_CLIENT_TIME_DIFF_MS = 1000 * 30 // 30 seconds
 
 export default class Model {
   constructor () {
+    console.log('new model')
     const cache = globalThis?.window?.[SERIALIZATION_KEY] || {}
     if (typeof window !== 'undefined') {
       window[SERIALIZATION_KEY] = null
@@ -54,24 +55,31 @@ export default class Model {
 
     const ioEmit = (event, opts) => {
       const accessToken = getCookie('accessToken')
-      const orgId = this.auth?.orgId
-      const orgSlug = getCookie('orgSlug')
+      let siteInfo
+      try {
+        siteInfo = JSON.parse(getCookie('siteInfo') || '{}')
+      } catch (err) {
+        console.log('error parsing cookie', err)
+      }
       const sporeAdminSecret = getCookie('sporeAdmin')
       return io.emit(
         event,
-        _.defaults({ accessToken, orgId, orgSlug, userAgent: getUserAgent(), sporeAdminSecret, ip: this.ip }, opts)
+        _.defaults({ accessToken, orgId: siteInfo?.orgId, userAgent: getUserAgent(), sporeAdminSecret, ip: this.ip }, opts)
       )
     }
 
     this.proxy = async (url, { method, body, beforeSend, query = {} }) => {
       const accessToken = getCookie('accessToken')
-      const orgSlug = getCookie('orgSlug')
+      let siteInfo
+      try {
+        siteInfo = JSON.parse(getCookie('siteInfo') || '{}')
+      } catch {}
 
       if (accessToken) {
         query.accessToken = accessToken
-        if (orgSlug) {
-          query.orgSlug = orgSlug
-        }
+      }
+      if (siteInfo?.orgId) {
+        query.orgId = siteInfo?.orgId
       }
 
       return request(url, { method, query, body, beforeSend })
@@ -95,7 +103,8 @@ export default class Model {
     this.initialCacheTime = cache.now
     // console.log('init', this.initialCache)
 
-    graphqlClient.setup({
+    console.log('set graphql client')
+    this.graphqlClient = new GraphqlClient({
       ioEmit,
       cache: this.initialCache
     })
@@ -119,7 +128,6 @@ export default class Model {
     this.auth = new Auth({
       graphqlClient: this.graphqlClient,
       tokenStream,
-      model: this,
       onQuery
     })
 

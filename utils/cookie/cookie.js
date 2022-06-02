@@ -81,8 +81,8 @@ const cookie = new Cookie()
 
 // TODO: use asyncLocalStorage to get cookie instance for ssr
 export const setCookie = (key, value, options) => {
-  cookie.set(key, value, options)
+  return cookie.set(key, value, options)
 }
 export const getCookie = (key) => {
-  cookie.get(key)
+  return cookie.get(key)
 }

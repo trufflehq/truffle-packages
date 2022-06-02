@@ -1,3 +1,5 @@
+import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.js'
+
 import SharedModel from './shared.js'
 
 import ActivePowerup from './models/active_powerup.js'
@@ -131,4 +133,17 @@ class Model extends SharedModel {
   }
 }
 
-export default new Model()
+export function getModel () {
+  const context = globalContext.getStore()
+  if (!context) {
+    // TODO: look into why this happens and fix
+    return console.warn('Context not set yet')
+  }
+
+  if (!context.model) {
+    console.log('Instantiating model')
+    context.model = new Model()
+  }
+
+  return context.model
+}

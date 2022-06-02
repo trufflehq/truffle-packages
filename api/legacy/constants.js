@@ -1,6 +1,7 @@
 export const AUTH_COOKIE = 'accessToken'
-// export const API_URL = 'https://zygote.spore.build'
-export const API_URL = 'http://localhost:50420'
+// export const API_URL = 'https://mycelium.truffle.vip'
+export const API_URL = 'https://mycelium.staging.bio'
+// export const API_URL = 'http://localhost:50420'
 export const CDN_URLS = {
   legacy: 'https://fdn.uno/images',
   default: 'https://cdn.bio/ugc',
