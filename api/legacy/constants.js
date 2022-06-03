@@ -144,7 +144,7 @@ export const FRAGMENT_CHART_WITH_DATAPOINTS = `fragment chartWithDatapoints on C
   }
 }`
 
-export default {
+export const defaultEconomyTriggerIds = {
   XP: {
     TIER_UNLOCK: '85e9ed40-d73d-11ec-97bc-651463e09eec', // tier-unlock
     TWITTER: {
@@ -199,4 +199,19 @@ export const AlertActionTypes = {
 export const AlertStatus = {
   SHOWN: 'shown',
   READY: 'ready'
+}
+
+// TODO: add OrgUserCounterType rows for these ids & empty orgId
+export const ANALYTICS_ORG_USER_COUNTER_TYPE_MAP = {
+  centsSpent: 'd6b09f10-33b1-11ec-bace-85a8f080b04c',
+  purchaseCount: 'd5f90ee0-33b1-11ec-bace-85a8f080b04c',
+  maxPurchaseCents: 'd514c960-33b1-11ec-bace-85a8f080b04c',
+  averagePurchaseCents: 'd427f860-33b1-11ec-bace-85a8f080b04c',
+  chatMessageCount: 'd3671960-33b1-11ec-bace-85a8f080b04c',
+  podcastPlayCount: 'd2b29670-33b1-11ec-bace-85a8f080b04c',
+  monthsSubscribed: 'd1d555d0-33b1-11ec-bace-85a8f080b04c',
+  // articleCount: '',
+  // commentCount: '',
+  // socialInteractionCount: '',
+  secondsInApp: 'd847e0e0-33b1-11ec-bace-85a8f080b04c'
 }

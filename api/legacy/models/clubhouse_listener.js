@@ -1,4 +1,4 @@
-import FormatService from 'https://tfl.dev/@truffle/utils@0.0.1/format/format.js'
+import { abbreviateNumber } from 'https://tfl.dev/@truffle/utils@0.0.1/format/format.js'
 
 // viewPrivateBlock, viewPrivateDashboard
 const ONE_MINUTE_SECONDS = 60
@@ -55,19 +55,19 @@ export default class ClubhouseListener {
         name: lang.get('adminClubhouseListeners.minutesInRoom'),
         minOptions: [
           { value: '0', text: lang.get('filter.noMin') },
-          { value: `${ONE_MINUTE_SECONDS}`, text: FormatService.abbreviateNumber(1) },
-          { value: `${5 * ONE_MINUTE_SECONDS}`, text: FormatService.abbreviateNumber(5) },
-          { value: `${10 * ONE_MINUTE_SECONDS}`, text: FormatService.abbreviateNumber(10) },
-          { value: `${20 * ONE_MINUTE_SECONDS}`, text: FormatService.abbreviateNumber(100) },
-          { value: `${40 * ONE_MINUTE_SECONDS}`, text: FormatService.abbreviateNumber(1000) }
+          { value: `${ONE_MINUTE_SECONDS}`, text: abbreviateNumber(1) },
+          { value: `${5 * ONE_MINUTE_SECONDS}`, text: abbreviateNumber(5) },
+          { value: `${10 * ONE_MINUTE_SECONDS}`, text: abbreviateNumber(10) },
+          { value: `${20 * ONE_MINUTE_SECONDS}`, text: abbreviateNumber(100) },
+          { value: `${40 * ONE_MINUTE_SECONDS}`, text: abbreviateNumber(1000) }
         ],
         maxOptions: [
           { value: '0', text: lang.get('filter.noMax') },
-          { value: `${ONE_MINUTE_SECONDS}`, text: FormatService.abbreviateNumber(1) },
-          { value: `${5 * ONE_MINUTE_SECONDS}`, text: FormatService.abbreviateNumber(5) },
-          { value: `${10 * ONE_MINUTE_SECONDS}`, text: FormatService.abbreviateNumber(10) },
-          { value: `${20 * ONE_MINUTE_SECONDS}`, text: FormatService.abbreviateNumber(100) },
-          { value: `${40 * ONE_MINUTE_SECONDS}`, text: FormatService.abbreviateNumber(1000) }
+          { value: `${ONE_MINUTE_SECONDS}`, text: abbreviateNumber(1) },
+          { value: `${5 * ONE_MINUTE_SECONDS}`, text: abbreviateNumber(5) },
+          { value: `${10 * ONE_MINUTE_SECONDS}`, text: abbreviateNumber(10) },
+          { value: `${20 * ONE_MINUTE_SECONDS}`, text: abbreviateNumber(100) },
+          { value: `${40 * ONE_MINUTE_SECONDS}`, text: abbreviateNumber(1000) }
         ]
       },
       {

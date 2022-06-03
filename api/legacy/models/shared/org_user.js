@@ -1,7 +1,7 @@
 import * as _ from 'https://jspm.dev/lodash-es'
 import { FRAGMENT_ORG_USER_WITH_ROLES, ANALYTICS_ORG_USER_COUNTER_TYPE_MAP } from '../../constants.js'
 
-import FormatService from 'https://tfl.dev/@truffle/utils@0.0.1/format/format.js'
+import { abbreviateDollar, abbreviateNumber } from 'https://tfl.dev/@truffle/utils@0.0.1/format/format.js'
 import { Obs } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 
 // viewPrivateBlock, viewPrivateDashboard
@@ -332,19 +332,19 @@ export default class OrgUser {
         name: lang.get('filter.moneySpent'),
         minOptions: [
           { value: `${0 * CENTS_IN_DOLLAR}`, text: lang.get('filter.noMin') },
-          { value: `${1 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(1) },
-          { value: `${10 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(10) },
-          { value: `${100 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(100) },
-          { value: `${1000 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(1000) },
-          { value: `${10000 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(10000) }
+          { value: `${1 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(1) },
+          { value: `${10 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(10) },
+          { value: `${100 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(100) },
+          { value: `${1000 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(1000) },
+          { value: `${10000 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(10000) }
         ],
         maxOptions: [
           { value: `${0 * CENTS_IN_DOLLAR}`, text: lang.get('filter.noMax') },
-          { value: `${1 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(1) },
-          { value: `${10 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(10) },
-          { value: `${100 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(100) },
-          { value: `${1000 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(1000) },
-          { value: `${10000 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(10000) }
+          { value: `${1 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(1) },
+          { value: `${10 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(10) },
+          { value: `${100 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(100) },
+          { value: `${1000 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(1000) },
+          { value: `${10000 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(10000) }
         ]
       },
       // {
@@ -354,19 +354,19 @@ export default class OrgUser {
       //   name: lang.get('filter.purchases'),
       //   minOptions: [
       //     { value: '0', text: lang.get('filter.noMin') },
-      //     { value: '1', text: FormatService.abbreviateNumber(1) },
-      //     { value: '5', text: FormatService.abbreviateNumber(5) },
-      //     { value: '10', text: FormatService.abbreviateNumber(10) },
-      //     { value: '100', text: FormatService.abbreviateNumber(100) },
-      //     { value: '1000', text: FormatService.abbreviateNumber(1000) }
+      //     { value: '1', text: abbreviateNumber(1) },
+      //     { value: '5', text: abbreviateNumber(5) },
+      //     { value: '10', text: abbreviateNumber(10) },
+      //     { value: '100', text: abbreviateNumber(100) },
+      //     { value: '1000', text: abbreviateNumber(1000) }
       //   ],
       //   maxOptions: [
       //     { value: '0', text: lang.get('filter.noMax') },
-      //     { value: '1', text: FormatService.abbreviateNumber(1) },
-      //     { value: '5', text: FormatService.abbreviateNumber(5) },
-      //     { value: '10', text: FormatService.abbreviateNumber(10) },
-      //     { value: '100', text: FormatService.abbreviateNumber(100) },
-      //     { value: '1000', text: FormatService.abbreviateNumber(1000) }
+      //     { value: '1', text: abbreviateNumber(1) },
+      //     { value: '5', text: abbreviateNumber(5) },
+      //     { value: '10', text: abbreviateNumber(10) },
+      //     { value: '100', text: abbreviateNumber(100) },
+      //     { value: '1000', text: abbreviateNumber(1000) }
       //   ]
       // },
       {
@@ -376,19 +376,19 @@ export default class OrgUser {
         name: lang.get('filter.chatMessageCount'),
         minOptions: [
           { value: '0', text: lang.get('filter.noMin') },
-          { value: '1', text: FormatService.abbreviateNumber(1) },
-          { value: '5', text: FormatService.abbreviateNumber(5) },
-          { value: '10', text: FormatService.abbreviateNumber(10) },
-          { value: '100', text: FormatService.abbreviateNumber(100) },
-          { value: '1000', text: FormatService.abbreviateNumber(1000) }
+          { value: '1', text: abbreviateNumber(1) },
+          { value: '5', text: abbreviateNumber(5) },
+          { value: '10', text: abbreviateNumber(10) },
+          { value: '100', text: abbreviateNumber(100) },
+          { value: '1000', text: abbreviateNumber(1000) }
         ],
         maxOptions: [
           { value: '0', text: lang.get('filter.noMax') },
-          { value: '1', text: FormatService.abbreviateNumber(1) },
-          { value: '5', text: FormatService.abbreviateNumber(5) },
-          { value: '10', text: FormatService.abbreviateNumber(10) },
-          { value: '100', text: FormatService.abbreviateNumber(100) },
-          { value: '1000', text: FormatService.abbreviateNumber(1000) }
+          { value: '1', text: abbreviateNumber(1) },
+          { value: '5', text: abbreviateNumber(5) },
+          { value: '10', text: abbreviateNumber(10) },
+          { value: '100', text: abbreviateNumber(100) },
+          { value: '1000', text: abbreviateNumber(1000) }
         ]
       },
       {
@@ -398,19 +398,19 @@ export default class OrgUser {
         name: lang.get('filter.podcastPlayCount'),
         minOptions: [
           { value: '0', text: lang.get('filter.noMin') },
-          { value: '1', text: FormatService.abbreviateNumber(1) },
-          { value: '5', text: FormatService.abbreviateNumber(5) },
-          { value: '10', text: FormatService.abbreviateNumber(10) },
-          { value: '100', text: FormatService.abbreviateNumber(100) },
-          { value: '1000', text: FormatService.abbreviateNumber(1000) }
+          { value: '1', text: abbreviateNumber(1) },
+          { value: '5', text: abbreviateNumber(5) },
+          { value: '10', text: abbreviateNumber(10) },
+          { value: '100', text: abbreviateNumber(100) },
+          { value: '1000', text: abbreviateNumber(1000) }
         ],
         maxOptions: [
           { value: '0', text: lang.get('filter.noMax') },
-          { value: '1', text: FormatService.abbreviateNumber(1) },
-          { value: '5', text: FormatService.abbreviateNumber(5) },
-          { value: '10', text: FormatService.abbreviateNumber(10) },
-          { value: '100', text: FormatService.abbreviateNumber(100) },
-          { value: '1000', text: FormatService.abbreviateNumber(1000) }
+          { value: '1', text: abbreviateNumber(1) },
+          { value: '5', text: abbreviateNumber(5) },
+          { value: '10', text: abbreviateNumber(10) },
+          { value: '100', text: abbreviateNumber(100) },
+          { value: '1000', text: abbreviateNumber(1000) }
         ]
       },
       // {
@@ -420,17 +420,17 @@ export default class OrgUser {
       //   name: lang.get('filter.maxPurchase'),
       //   minOptions: [
       //     { value: `${0 * CENTS_IN_DOLLAR}`, text: lang.get('filter.noMin') },
-      //     { value: `${10 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(10) },
-      //     { value: `${100 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(100) },
-      //     { value: `${1000 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(1000) },
-      //     { value: `${10000 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(10000) }
+      //     { value: `${10 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(10) },
+      //     { value: `${100 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(100) },
+      //     { value: `${1000 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(1000) },
+      //     { value: `${10000 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(10000) }
       //   ],
       //   maxOptions: [
       //     { value: `${0 * CENTS_IN_DOLLAR}`, text: lang.get('filter.noMax') },
-      //     { value: `${10 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(10) },
-      //     { value: `${100 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(100) },
-      //     { value: `${1000 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(1000) },
-      //     { value: `${10000 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(10000) }
+      //     { value: `${10 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(10) },
+      //     { value: `${100 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(100) },
+      //     { value: `${1000 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(1000) },
+      //     { value: `${10000 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(10000) }
       //   ]
       // },
       // {
@@ -440,19 +440,19 @@ export default class OrgUser {
       //   name: lang.get('filter.averagePurchase'),
       //   minOptions: [
       //     { value: `${0 * CENTS_IN_DOLLAR}`, text: lang.get('filter.noMin') },
-      //     { value: `${1 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(1) },
-      //     { value: `${5 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(5) },
-      //     { value: `${10 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(10) },
-      //     { value: `${50 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(50) },
-      //     { value: `${100 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(100) }
+      //     { value: `${1 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(1) },
+      //     { value: `${5 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(5) },
+      //     { value: `${10 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(10) },
+      //     { value: `${50 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(50) },
+      //     { value: `${100 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(100) }
       //   ],
       //   maxOptions: [
       //     { value: `${0 * CENTS_IN_DOLLAR}`, text: lang.get('filter.noMax') },
-      //     { value: `${1 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(1) },
-      //     { value: `${5 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(5) },
-      //     { value: `${10 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(10) },
-      //     { value: `${50 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(50) },
-      //     { value: `${100 * CENTS_IN_DOLLAR}`, text: FormatService.abbreviateDollar(100) }
+      //     { value: `${1 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(1) },
+      //     { value: `${5 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(5) },
+      //     { value: `${10 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(10) },
+      //     { value: `${50 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(50) },
+      //     { value: `${100 * CENTS_IN_DOLLAR}`, text: abbreviateDollar(100) }
       //   ]
       // },
       // {
@@ -462,19 +462,19 @@ export default class OrgUser {
       //   name: lang.get('filter.hoursInApp'),
       //   minOptions: [
       //     { value: '0', text: lang.get('filter.noMin') },
-      //     { value: `${ONE_HOUR_SECONDS}`, text: FormatService.abbreviateNumber(1) },
-      //     { value: `${5 * ONE_HOUR_SECONDS}`, text: FormatService.abbreviateNumber(5) },
-      //     { value: `${10 * ONE_HOUR_SECONDS}`, text: FormatService.abbreviateNumber(10) },
-      //     { value: `${100 * ONE_HOUR_SECONDS}`, text: FormatService.abbreviateNumber(100) },
-      //     { value: `${1000 * ONE_HOUR_SECONDS}`, text: FormatService.abbreviateNumber(1000) }
+      //     { value: `${ONE_HOUR_SECONDS}`, text: abbreviateNumber(1) },
+      //     { value: `${5 * ONE_HOUR_SECONDS}`, text: abbreviateNumber(5) },
+      //     { value: `${10 * ONE_HOUR_SECONDS}`, text: abbreviateNumber(10) },
+      //     { value: `${100 * ONE_HOUR_SECONDS}`, text: abbreviateNumber(100) },
+      //     { value: `${1000 * ONE_HOUR_SECONDS}`, text: abbreviateNumber(1000) }
       //   ],
       //   maxOptions: [
       //     { value: '0', text: lang.get('filter.noMax') },
-      //     { value: `${ONE_HOUR_SECONDS}`, text: FormatService.abbreviateNumber(1) },
-      //     { value: `${5 * ONE_HOUR_SECONDS}`, text: FormatService.abbreviateNumber(5) },
-      //     { value: `${10 * ONE_HOUR_SECONDS}`, text: FormatService.abbreviateNumber(10) },
-      //     { value: `${100 * ONE_HOUR_SECONDS}`, text: FormatService.abbreviateNumber(100) },
-      //     { value: `${1000 * ONE_HOUR_SECONDS}`, text: FormatService.abbreviateNumber(1000) }
+      //     { value: `${ONE_HOUR_SECONDS}`, text: abbreviateNumber(1) },
+      //     { value: `${5 * ONE_HOUR_SECONDS}`, text: abbreviateNumber(5) },
+      //     { value: `${10 * ONE_HOUR_SECONDS}`, text: abbreviateNumber(10) },
+      //     { value: `${100 * ONE_HOUR_SECONDS}`, text: abbreviateNumber(100) },
+      //     { value: `${1000 * ONE_HOUR_SECONDS}`, text: abbreviateNumber(1000) }
       //   ]
       // },
       {
