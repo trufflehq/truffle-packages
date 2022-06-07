@@ -1,12 +1,13 @@
-import * as Rx from 'https://jspm.dev/rxjs'
-import * as rx from 'https://jspm.dev/rxjs/operators'
-import * as _ from 'https://jspm.dev/lodash-es'
+import * as Rx from 'https://esm.sh/rxjs?bundle'
+import _ from 'https://esm.sh/lodash'
 // TODO: figure out an alternative to this package. it's 10kb
 // and probably doesn't need to be (it pulls in from some packages that are
 // similar to lodash, but not lodash: http://bundlephobia.com/package/dot-wild)
 import * as dot from 'https://jspm.dev/dot-wild'
 
-export { ajax } from 'https://jspm.dev/rxjs/ajax'
+const rx = Rx // operators, keeping separate namespace for now
+
+export const ajax = Rx.ajax
 
 // just to try to keep our implementation of rx simple, let's try
 // to limit to just these operators. that way when onboarding new

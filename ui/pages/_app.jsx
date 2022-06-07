@@ -13,7 +13,7 @@ function MyApp ({ Component, pageProps }) {
     const siteInfoReadyObs = Obs.of({ orgId: 'c3d130d0-e068-11ec-a6dd-a83786015fef' }) // FIXME pull from package.json?
     console.log('set site info ready', siteInfoReadyObs)
     model.auth.setSiteInfoReadyObs(siteInfoReadyObs)
-    if (typeof window !== 'undefined') {
+    if (typeof document !== 'undefined') {
       io.connect()
     }
   }, [])
@@ -29,7 +29,7 @@ MyApp.getInitialProps = async (appContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext)
 
-  if (typeof window === 'undefined') {
+  if (typeof document === 'undefined') {
     const WS = await import('ws')
     io.connect(WS.WebSocket)
     setSsrReq(appContext.ctx.req)

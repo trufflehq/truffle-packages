@@ -1,5 +1,5 @@
 // FIXME: get rid of lodash in all files
-import * as _ from 'https://jspm.dev/lodash-es'
+import _ from 'https://esm.sh/lodash'
 import { createSubject, op, Obs } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 import request from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/request.js'
 import { getUserAgent } from 'https://tfl.dev/@truffle/utils@0.0.1/request/request-info.js'
@@ -44,7 +44,7 @@ export default class Model {
   constructor () {
     console.log('new model')
     const cache = globalThis?.window?.[SERIALIZATION_KEY] || {}
-    if (typeof window !== 'undefined') {
+    if (typeof document !== 'undefined') {
       window[SERIALIZATION_KEY] = null
       // maybe this means less memory used for long caches
       const $$el = document.querySelector('.model')
@@ -62,6 +62,7 @@ export default class Model {
         console.log('error parsing cookie', err)
       }
       const sporeAdminSecret = getCookie('sporeAdmin')
+      console.log('emit', siteInfo, getCookie('siteInfo'))
       return io.emit(
         event,
         _.defaults({ accessToken, orgId: siteInfo?.orgId, userAgent: getUserAgent(), sporeAdminSecret, ip: this.ip }, opts)

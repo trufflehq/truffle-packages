@@ -1,4 +1,4 @@
-import * as _ from 'https://jspm.dev/lodash-es'
+import _ from 'https://esm.sh/lodash'
 import uuid from 'https://jspm.dev/uuid@3'
 
 import { createSubject } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'

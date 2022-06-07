@@ -14,7 +14,7 @@ import RPCClient, {
 const DEFAULT_HANDSHAKE_TIMEOUT_MS = 10000 // 10 seconds
 const SW_CONNECT_TIMEOUT_MS = 5000 // 5s
 
-const selfWindow = typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : null
+const selfWindow = typeof document !== 'undefined' ? window : typeof self !== 'undefined' ? self : null
 
 class BrowserComms {
   /*
@@ -35,7 +35,7 @@ class BrowserComms {
     // soon enough, so we rely on userAgent
     const isInAppBrowser = globalThis?.window?._browserCommsIsInAppBrowser ||
                       (navigator.userAgent.indexOf('/InAppBrowser') !== -1)
-    this.hasParent = ((typeof window !== 'undefined') && (window.self !== window.top)) || isInAppBrowser
+    this.hasParent = ((typeof document !== 'undefined') && (window.self !== window.top)) || isInAppBrowser
     this.parent = globalThis?.window?.parent
 
     this.client = new RPCClient({
@@ -151,7 +151,7 @@ window._browserCommsOnMessage('${escapedData}')\
     selfWindow?.addEventListener('message', this.onMessage);
 
     // set via win.executeScript in cordova
-    (typeof window !== 'undefined' && window !== null) && (window._browserCommsOnMessage = eStr => {
+    (typeof document !== 'undefined' && window !== null) && (window._browserCommsOnMessage = eStr => {
       return this.onMessage({
         debug: true,
         data: (() => {
@@ -321,7 +321,7 @@ window._browserCommsOnMessage('${escapedData}')\
       }
 
       const reply = function (message) {
-        if (typeof window !== 'undefined' && window !== null) {
+        if (typeof document !== 'undefined' && window !== null) {
           return e.source?.postMessage(JSON.stringify(message), '*')
         } else {
           return e.ports[0].postMessage(JSON.stringify(message))

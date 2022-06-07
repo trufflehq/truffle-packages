@@ -1,4 +1,4 @@
-import * as _ from 'https://jspm.dev/lodash-es'
+import _ from 'https://esm.sh/lodash'
 
 export default class Article {
   constructor ({ auth, podcastEpisode, proxy, apiUrl, graphqlClient }) {

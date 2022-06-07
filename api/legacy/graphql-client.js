@@ -1,5 +1,5 @@
 // docs: https://github.com/spore-gg/frontend-shared/blob/master/services/graphql_client.md
-import * as _ from 'https://jspm.dev/lodash-es'
+import _ from 'https://esm.sh/lodash'
 // get consistent hash from stringified results
 import stringify from 'https://jspm.dev/json-stable-stringify'
 import uuid from 'https://jspm.dev/uuid@3'
@@ -13,7 +13,7 @@ import { AUTH_COOKIE } from './constants.js'
 
 export default class GraphqlClient {
   constructor ({ ioEmit, cache }) {
-    this.isSsr = typeof window !== 'undefined'
+    this.isSsr = typeof document !== 'undefined'
     this._cache = {}
     this._batchQueue = []
     this._listeners = {}
@@ -187,13 +187,17 @@ export default class GraphqlClient {
     const batchId = uuid.v4()
     io.on(batchId, onSuccess, onError)
 
-    return this.ioEmit('graphqlClient', {
+    console.log('emitting')
+
+    this.ioEmit('graphqlClient', {
       connectionId: this.connectionId,
       batchId,
       requests: _.map(queue, ({ req, streamId, isStreamed }) => ({
         streamId, path: req.path, body: req.body, isStreamed
       }))
     })
+
+    console.log('emitted')
   }
 
   _combinedRequestObs = (req, options = {}) => {
@@ -524,7 +528,7 @@ export default class GraphqlClient {
     const obs = this._batchRequest(req, { isErrorable: true, streamId })
 
     const result = await obs.pipe(op.take(1)).toPromise()
-    if (result?.error && (typeof window !== 'undefined' && window !== null)) {
+    if (result?.error && (typeof document !== 'undefined' && window !== null)) {
       throw new Error(JSON.stringify(result?.error))
     }
     return result

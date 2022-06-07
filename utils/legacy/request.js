@@ -1,6 +1,6 @@
-import * as _ from 'https://jspm.dev/lodash-es'
+import _ from 'https://esm.sh/lodash'
 
-const isSsr = typeof window === 'undefined'
+const isSsr = typeof document === 'undefined'
 
 // we use instead of fetch bc fetch doesn't support progress listeners (for upload progress bar)
 export default async function request (url, { method = 'GET', query, body, headers = {}, beforeSend } = {}) {

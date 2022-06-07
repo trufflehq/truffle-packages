@@ -10,11 +10,6 @@
 //            we don't have a good way of telling when an async tree is done. in the future we can add a context.clear()
 //            method (that is backwards-compatible)
 
-// will need to use importmaps or compiler for this to not be bothersome in browser
-import { AsyncLocalStorage } from 'async_hooks'
-
-console.log('Server AsyncLocalStorage', AsyncLocalStorage)
-
 // FIXME: browser version isn't true to spec. it doesn't create a new context per run
 // https://github.com/legendecas/proposal-async-context
 // options:
@@ -23,7 +18,7 @@ console.log('Server AsyncLocalStorage', AsyncLocalStorage)
 //    throw error if server tries calling .setGlobalValue
 // 2) implement zone.js
 
-const IsomorphicAsyncLocalStorage = AsyncLocalStorage || class BrowserAsyncLocalStorage {
+class BrowserAsyncLocalStorage {
   constructor () {
     this.store = undefined
   }
@@ -38,19 +33,38 @@ const IsomorphicAsyncLocalStorage = AsyncLocalStorage || class BrowserAsyncLocal
   }
 }
 
+const isSsr = typeof document === 'undefined'
+// browser can be ready immediately. for node we need to wait for configure call
+let IsomorphicAsyncLocalStorage = isSsr ? undefined : BrowserAsyncLocalStorage
+
+export function configure ({ AsyncLocalStorage } = {}) {
+  console.log('config', AsyncLocalStorage)
+  IsomorphicAsyncLocalStorage = AsyncLocalStorage
+}
+
 // if node.js changes up their API for AsyncLocalStorage, we can't...
 // THIS CLASS NEEDS TO BE 100% BACKWARDS COMPATIBLE ALWAYS
 // hence why we aren't extending or returning class directly
-export default class FrozenAsyncLocalStorageAsContext {
-  constructor () {
-    this._instance = new IsomorphicAsyncLocalStorage()
+class FrozenAsyncLocalStorageAsContext {
+  // nothing outside of this file should ever rely on this as we'll likely kill it someday
+  // (if/when node supports importing local deps from network import)
+  _private_doNotUse_setInstanceIfNotExists = () => {
+    if (!this._instance && IsomorphicAsyncLocalStorage) {
+      this._instance = new IsomorphicAsyncLocalStorage()
+    } else if (!this._instance) {
+      console.warn('In SSR, you must call configure method before using context functions')
+    }
   }
 
   run = (store, fn, ...args) => {
-    return this._instance.run(store, fn, ...args)
+    this._private_doNotUse_setInstanceIfNotExists()
+    return this._instance?.run(store, fn, ...args)
   }
 
   getStore = () => {
-    return this._instance.getStore()
+    this._private_doNotUse_setInstanceIfNotExists()
+    return this._instance?.getStore()
   }
 }
+
+export default FrozenAsyncLocalStorageAsContext

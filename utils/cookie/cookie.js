@@ -13,7 +13,7 @@ class Cookie {
   }
 
   getInitialCookies () {
-    if (typeof window !== 'undefined') {
+    if (typeof document !== 'undefined') {
       return cookieLib.parse(document.cookie) || {}
     } else {
       return getSsrReq()?.cookies || {}
@@ -23,7 +23,7 @@ class Cookie {
   setCookie = (key, value, options) => {
     this.cookies[key] = value
     this.cookiesToSet.push({ key, value, options })
-    if (typeof window !== 'undefined') {
+    if (typeof document !== 'undefined') {
       document.cookie = cookieLib.serialize(key, value, options)
     } else {
       try {

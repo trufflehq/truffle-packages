@@ -1,4 +1,4 @@
-import * as _ from 'https://jspm.dev/lodash-es'
+import _ from 'https://esm.sh/lodash'
 import { FRAGMENT_ORG_USER_WITH_ROLES, ANALYTICS_ORG_USER_COUNTER_TYPE_MAP } from '../../constants.js'
 
 import { abbreviateDollar, abbreviateNumber } from 'https://tfl.dev/@truffle/utils@0.0.1/format/format.js'

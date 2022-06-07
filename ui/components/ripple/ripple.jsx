@@ -1,17 +1,12 @@
 import React, { useRef } from 'react'
-import { isAndroid } from 'https://tfl.dev/@truffle/utils@0.0.1/environment.js'
+import { isAndroid } from 'https://tfl.dev/@truffle/utils@0.0.1/environment/environment.js'
 import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js'
 
-import './ripple.scss'
+// import './ripple.scss'
 
 const ANIMATION_TIME_MS = 350
 
-function ripple (param) {
-  if (param == null) {
-    param = {}
-  }
-  const { $$target, color, isCenter, mouseX, mouseY, onComplete, fadeIn } =
-    param
+function ripple ({ $$target, color, isCenter, mouseX, mouseY, onComplete, fadeIn }) {
   const $$wave = $$target.querySelector('.wave')
 
   if (!$$wave) {

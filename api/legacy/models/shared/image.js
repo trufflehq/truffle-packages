@@ -1,4 +1,4 @@
-import * as _ from 'https://jspm.dev/lodash-es'
+import _ from 'https://esm.sh/lodash'
 
 function hashFn (s) {
   if (!s) {
@@ -38,7 +38,7 @@ export default class ImageModel {
   isLoaded = (url) => {
     // don't show for server-side otherwise it shows,
     // then hides, then shows again
-    return (typeof window !== 'undefined') &&
+    return (typeof document !== 'undefined') &&
       this.loadedImages[hashFn(url)] === true
   }
 
@@ -49,7 +49,7 @@ export default class ImageModel {
   isLoadedByHash = (hash) => {
     // don't show for server-side otherwise it shows,
     // then hides, then shows again
-    return (typeof window !== 'undefined') &&
+    return (typeof document !== 'undefined') &&
       this.loadedImages[hash] === true
   }
 

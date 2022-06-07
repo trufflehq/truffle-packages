@@ -1,4 +1,4 @@
-import * as _ from 'https://jspm.dev/lodash-es'
+import _ from 'https://esm.sh/lodash'
 
 // import $setNameSheet from '../components/set_name_sheet'
 // import $signInDialog from '../components/sign_in_dialog'

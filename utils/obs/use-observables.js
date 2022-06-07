@@ -1,8 +1,9 @@
 import { createContext, createElement, useContext, useState, useLayoutEffect, useMemo } from 'react'
 
-import * as _ from 'https://jspm.dev/lodash-es'
-import * as Rx from 'https://jspm.dev/rxjs'
-import * as rx from 'https://jspm.dev/rxjs/operators'
+import _ from 'https://esm.sh/lodash'
+import * as Rx from 'https://esm.sh/rxjs?bundle'
+
+const rx = Rx // operators, keeping as separate namespace for now
 
 export default function (cb) {
   const { awaitStable, cache, timeout } = useContext(RootContext) || {}
@@ -29,7 +30,7 @@ export default function (cb) {
     throw error
   }
 
-  if (typeof window !== 'undefined' && window !== null) {
+  if (typeof document !== 'undefined' && window !== null) {
     useLayoutEffect(() => {
       const subscription = state.subscribe((state) => {
         // FIXME: unsub to state immediately after route change
@@ -144,7 +145,7 @@ function State (initialState) {
   }
 
   // only need for ssr
-  if ((typeof window === 'undefined')) {
+  if ((typeof document === 'undefined')) {
     const pendingStream = _.isEmpty(observables)
       ? Rx.of(null)
       : Rx.combineLatest(

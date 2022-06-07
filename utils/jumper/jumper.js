@@ -9,13 +9,13 @@ const PLATFORMS = {
 
 class JumperInstance {
   constructor () {
-    if (typeof window !== 'undefined') {
+    if (typeof document !== 'undefined') {
       // TODO: setup service worker so it actually responds and doesn't timeout
       // when you're enabling this, test that it doesn't slow down the
       // first browsercomms call in browser extension
       const shouldConnectToServiceWorker = false
       // const shouldConnectToServiceWorker = navigator.serviceWorker &&
-      //   typeof window !== 'undefined' &&
+      //   typeof document !== 'undefined' &&
       //   window.location.protocol !== 'http:'
       this.jumper = new Jumper({
         shouldConnectToServiceWorker
@@ -27,7 +27,7 @@ class JumperInstance {
   }
 
   call = (...args) => {
-    if (typeof window === 'undefined' || window === null) {
+    if (typeof document === 'undefined' || window === null) {
       // throw new Error 'Comms called server-side'
       return console.log('Comms called server-side')
     }
@@ -46,7 +46,7 @@ class JumperInstance {
   }
 
   callWithError = (...args) => {
-    if (typeof window === 'undefined' || window === null) {
+    if (typeof document === 'undefined' || window === null) {
       // throw new Error 'Comms called server-side'
       return console.log('Comms called server-side')
     }
@@ -55,7 +55,7 @@ class JumperInstance {
   }
 
   listen = () => {
-    if (typeof window === 'undefined' || window === null) {
+    if (typeof document === 'undefined' || window === null) {
       throw new Error('Comms called server-side')
     }
 
@@ -165,7 +165,7 @@ class JumperInstance {
 }
 
 const jumper = new JumperInstance()
-if (typeof window !== 'undefined') {
+if (typeof document !== 'undefined') {
   jumper.listen()
 }
 

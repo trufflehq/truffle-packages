@@ -2,6 +2,14 @@ import React, { useContext } from 'react'
 
 import cssVars from '../../util/css-vars.js'
 
+// try {
+//   const b = './spinner.css?1'
+//   const a = import(b, { assert: { type: 'css' } })
+// } catch (err) {
+//   console.log('a', a);
+// }
+// import sheet from './spinner.css' assert { type: 'css' };
+
 const DEFAULT_SIZE = 50
 
 export default function Spinner ({ size = DEFAULT_SIZE }) {

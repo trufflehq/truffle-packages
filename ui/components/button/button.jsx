@@ -4,11 +4,11 @@ import { createSubject } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.
 import useObservables from 'https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js'
 import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js'
 
-import Icon from '../icon/icon.jsx'
+// import Icon from '../icon/icon.jsx'
 import Ripple from '../ripple/ripple.jsx'
 import cssVars from '../../util/css-vars.js'
 
-import './button.scss'
+// import './button.css'
 
 /**
  * @param {Object} props
@@ -139,13 +139,13 @@ export default function Button (props) {
 
   const $iconWrapper = icon && (
     <div className="icon-wrapper">
-      <Icon
+      {/* <Icon
         icon={icon}
         size={sizeInfo.iconSize}
         color={iconColor || (isSelected && styleInfo.selectedColor) || styleInfo.textColor}
         viewBox={iconViewBox}
         isCircled={iconCircled}
-      />
+      /> */}
     </div>
   )
 

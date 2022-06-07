@@ -1,4 +1,4 @@
-import * as _ from 'https://jspm.dev/lodash-es'
+import _ from 'https://esm.sh/lodash'
 
 import { API_URL } from './legacy/constants.js'
 
@@ -10,7 +10,7 @@ const RECONNECT_DELAY_MS = 2 * 1000 // 2s
 
 class IO {
   constructor () {
-    this.isSsr = typeof window === 'undefined'
+    this.isSsr = typeof document === 'undefined'
     this.url = API_URL
     this._queue = []
     this._listeners = {}

@@ -1,4 +1,4 @@
-import * as _ from 'https://jspm.dev/lodash-es'
+import _ from 'https://esm.sh/lodash'
 import {
   FRAGMENT_COMPONENT_INSTANCE_FIELDS_ADMIN, FRAGMENT_COMPONENT_INSTANCE_FIELDS
 } from '../constants.js'
