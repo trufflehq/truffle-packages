@@ -1,5 +1,3 @@
-/* FIXME: let compiler generate this */
-
 .z-ripple {
   position: absolute;
   top: 0;
@@ -9,6 +7,7 @@
   overflow: hidden;
   cursor: pointer;
 }
+
 .z-ripple > .wave {
   position: absolute;
   border-radius: 50%;
@@ -21,96 +20,76 @@
   pointer-events: none;
   visibility: hidden;
 }
+
 .z-ripple > .wave.is-visible {
   visibility: visible;
 }
+
 .z-ripple > .wave.is-visible.fade-in {
-  animation: z-ripple-animation-fade-in 0.5s;
+  -webkit-animation: z-ripple-animation-fade-in 0.5s;
+          animation: z-ripple-animation-fade-in 0.5s;
 }
+
 .z-ripple > .wave.is-visible:not(.fade-in) {
-  animation: z-ripple-animation 0.5s;
+  -webkit-animation: z-ripple-animation 0.5s;
+          animation: z-ripple-animation 0.5s;
 }
+
 .z-ripple.is-circle {
-  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
   border-radius: 50%;
 }
-@-moz-keyframes z-ripple-animation {
-  from {
-    transform: scale(0.1);
-    opacity: 0.25;
- }
-  to {
-    transform: scale(1);
-    opacity: 0;
- }
-}
+
 @-webkit-keyframes z-ripple-animation {
   from {
-    transform: scale(0.1);
+    -webkit-transform: scale(0.1);
+            transform: scale(0.1);
     opacity: 0.25;
- }
+  }
   to {
-    transform: scale(1);
+    -webkit-transform: scale(1);
+            transform: scale(1);
     opacity: 0;
- }
+  }
 }
-@-o-keyframes z-ripple-animation {
-  from {
-    transform: scale(0.1);
-    opacity: 0.25;
- }
-  to {
-    transform: scale(1);
-    opacity: 0;
- }
-}
+
 @keyframes z-ripple-animation {
   from {
-    transform: scale(0.1);
+    -webkit-transform: scale(0.1);
+            transform: scale(0.1);
     opacity: 0.25;
- }
+  }
   to {
-    transform: scale(1);
+    -webkit-transform: scale(1);
+            transform: scale(1);
     opacity: 0;
- }
+  }
 }
-@-moz-keyframes z-ripple-animation-fade-in {
-  from {
-    transform: scale(0.1);
-    opacity: 0.25;
- }
-  to {
-    transform: scale(1);
-    opacity: 1;
- }
-}
+
 @-webkit-keyframes z-ripple-animation-fade-in {
   from {
-    transform: scale(0.1);
+    -webkit-transform: scale(0.1);
+            transform: scale(0.1);
     opacity: 0.25;
- }
+  }
   to {
-    transform: scale(1);
+    -webkit-transform: scale(1);
+            transform: scale(1);
     opacity: 1;
- }
+  }
 }
-@-o-keyframes z-ripple-animation-fade-in {
-  from {
-    transform: scale(0.1);
-    opacity: 0.25;
- }
-  to {
-    transform: scale(1);
-    opacity: 1;
- }
-}
+
 @keyframes z-ripple-animation-fade-in {
   from {
-    transform: scale(0.1);
+    -webkit-transform: scale(0.1);
+            transform: scale(0.1);
     opacity: 0.25;
- }
+  }
   to {
-    transform: scale(1);
+    -webkit-transform: scale(1);
+            transform: scale(1);
     opacity: 1;
- }
+  }
 }
+/*# sourceMappingURL=ripple.css.map */

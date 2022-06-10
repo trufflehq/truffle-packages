@@ -1,0 +1,32 @@
+.c-image-by-aspect-ratio.is-centered {
+  margin: 0 auto;
+}
+
+.c-image-by-aspect-ratio.has-height.is-stretch {
+  width: 100%;
+}
+
+.c-image-by-aspect-ratio.has-height.is-stretch > .image {
+  height: 0;
+}
+
+.c-image-by-aspect-ratio.has-width.is-stretch {
+  height: 100%;
+}
+
+.c-image-by-aspect-ratio.has-width.is-stretch > .image {
+  width: 0;
+}
+
+.c-image-by-aspect-ratio.should-contain > .image {
+  background-size: contain;
+}
+
+.c-image-by-aspect-ratio > .image {
+  width: 100%;
+  height: 100%;
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/*# sourceMappingURL=image-by-aspect-ratio.css.map */

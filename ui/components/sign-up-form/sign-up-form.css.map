@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AACE,eADa,GACX,MAAM,CAAC;EAGP,UAAU,EAAE,MAAM;CACnB;;AALH,AAOE,eAPa,GAOX,YAAY,CAAC;EAGb,UAAU,EAAE,MAAM;EAClB,aAAa,EAAE,IAAI;CACpB;;AAZH,AAeI,eAfW,GAcX,KAAK,GACH,MAAM,CAAC;EACP,aAAa,EAAE,IAAI;CACpB;;AAjBL,AAmBI,eAnBW,GAcX,KAAK,GAKH,KAAK,CAAC;EACN,UAAU,EAAE,IAAI;CAWjB;;AA/BL,AAsBM,eAtBS,GAcX,KAAK,GAKH,KAAK,GAGH,MAAM,CAAC;EAGP,UAAU,EAAE,GAAG;CAKhB",
+    "sources": [
+        "sign-up-form.scss"
+    ],
+    "names": [],
+    "file": "sign-up-form.css"
+}
