@@ -31,6 +31,7 @@ export default class Auth {
   constructor ({ graphqlClient, onQuery }) {
     this.graphqlClient = graphqlClient
     this.onQuery = onQuery
+    this.siteInfoReadyStream = new Obs.ReplaySubject(0)
 
     const accessToken = getCookie(AUTH_COOKIE)
     let initialAccessTokenObs
@@ -211,7 +212,7 @@ export default class Auth {
     } else {
       obs = Obs.combineLatest(
         this.isAccessTokenReadyReplaySubject,
-        this.siteInfoReadyObs
+        this.siteInfoReadyStream
       ).pipe(op.switchMap(getObs))
     }
     if (shouldReturnInvalidateFn) {
@@ -233,7 +234,7 @@ export default class Auth {
 
     // accessToken, userAgent, product added in model/index.js ioEmit
     await this.isAccessTokenReadyReplaySubject.pipe(op.take(1)).toPromise()
-    await this.siteInfoReadyObs.pipe(op.take(1)).toPromise()
+    await this.siteInfoReadyStream.pipe(op.take(1)).toPromise()
     const response = await this.graphqlClient.call('graphql', { query, variables, streamOptions }, {
       additionalDataObs
     })
@@ -257,8 +258,9 @@ export default class Auth {
     }
   }
 
-  setSiteInfoReadyObs = (siteInfoReadyObs) => {
-    this.siteInfoReadyObs = siteInfoReadyObs
+  setSiteInfo = (siteInfo) => {
+    setCookie('siteInfo', JSON.stringify(siteInfo))
+    this.siteInfoReadyStream.next(siteInfo)
   }
 
   parseEmailPhone = (emailPhone) => {

@@ -8,6 +8,9 @@ import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.
 import Ripple from '../ripple/ripple.jsx'
 import cssVars from '../../util/css-vars.js'
 
+import styles from './button.css' assert { type: 'css' }
+document.adoptedStyleSheets = [...document.adoptedStyleSheets, styles]
+
 // import './button.css'
 
 /**

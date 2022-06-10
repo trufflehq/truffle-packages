@@ -57,7 +57,7 @@ export default function Icon (props) {
       tabIndex={hasRipple ? 0 : undefined}
       onClick={onclick}
       onMouseDown={onmousedown}
-      ontouchstart={ontouchstart}
+      onTouchStart={ontouchstart}
       style={{
         minWidth: isTouchTarget ? touchWidth : '0', // 100% makes having a wrapper div necessary
         minHeight: isTouchTarget ? touchHeight : '100%', // nec to center

@@ -136,8 +136,7 @@ class Model extends SharedModel {
 export function getModel () {
   const context = globalContext.getStore()
   if (!context) {
-    // TODO: look into why this happens and fix
-    return console.warn('Context not set yet')
+    return console.warn('Context not set yet. Things are going to break. Call globalContext.run()')
   }
 
   if (!context.model) {

@@ -2,7 +2,8 @@ import React, { useRef } from 'react'
 import { isAndroid } from 'https://tfl.dev/@truffle/utils@0.0.1/environment/environment.js'
 import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js'
 
-// import './ripple.scss'
+import styles from './ripple.css' assert { type: 'css' }
+document.adoptedStyleSheets = [...document.adoptedStyleSheets, styles]
 
 const ANIMATION_TIME_MS = 350
 
@@ -63,7 +64,7 @@ export default function Ripple (props) {
     <div
       className={'z-ripple ' + classKebab({ isCircle })}
       ref={$$ref}
-      ontouchstart={onTouch}
+      onTouchStart={onTouch}
       onMouseDown={isAndroid() ? null : onTouch}
     >
       <div className="wave" />
