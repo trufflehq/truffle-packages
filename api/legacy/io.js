@@ -1,6 +1,6 @@
 import _ from 'https://esm.sh/lodash?no-check'
 
-import { API_URL } from './legacy/constants.js'
+import { API_URL } from './constants.js'
 
 // if you update this, update value in backend too
 const SOCKET_PING_INTERVAL_MS = 24 * 1000 // 24s in between pings
