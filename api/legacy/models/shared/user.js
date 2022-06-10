@@ -1,4 +1,4 @@
-import _ from 'https://esm.sh/lodash'
+import _ from 'https://esm.sh/lodash?no-check'
 
 // import $setNameSheet from '../components/set_name_sheet'
 // import $signInDialog from '../components/sign_in_dialog'

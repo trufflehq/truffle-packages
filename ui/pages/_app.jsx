@@ -5,7 +5,7 @@ import '../styles/globals.css'
 // TODO: should this just be 'truffle-ssr'? so react can ignore dep?
 import { setSsrReq, setSsrRes } from 'https://tfl.dev/@truffle/utils@0.0.1/ssr.js'
 import { Obs } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
-import io from 'https://tfl.dev/@truffle/api@0.0.1/io.js'
+import io from 'https://tfl.dev/@truffle/api@0.0.1/legacy/io.js'
 import model from 'https://tfl.dev/@truffle/api@0.0.1/legacy/index.js'
 
 function MyApp ({ Component, pageProps }) {

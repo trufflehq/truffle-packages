@@ -1,4 +1,4 @@
-import _ from 'https://esm.sh/lodash'
+import _ from 'https://esm.sh/lodash?no-check'
 
 const isSsr = typeof document === 'undefined'
 

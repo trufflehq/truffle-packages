@@ -1,6 +1,6 @@
 import { createContext, createElement, useContext, useState, useLayoutEffect, useMemo } from 'react'
 
-import _ from 'https://esm.sh/lodash'
+import _ from 'https://esm.sh/lodash?no-check'
 import * as Rx from 'https://esm.sh/rxjs?bundle'
 
 const rx = Rx // operators, keeping as separate namespace for now

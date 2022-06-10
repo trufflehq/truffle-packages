@@ -1,4 +1,4 @@
-import _ from 'https://esm.sh/lodash'
+import _ from 'https://esm.sh/lodash?no-check'
 
 export function formatNumber (number) {
   // http://stackoverflow.com/a/2901298

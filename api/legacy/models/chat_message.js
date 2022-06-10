@@ -1,5 +1,5 @@
-import _ from 'https://esm.sh/lodash'
-import uuid from 'https://jspm.dev/uuid@3'
+import _ from 'https://esm.sh/lodash?no-check'
+import uuid from 'https://esm.sh/uuid@3'
 
 import { createSubject } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 

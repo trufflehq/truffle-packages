@@ -1,14 +1,14 @@
 // docs: https://github.com/spore-gg/frontend-shared/blob/master/services/graphql_client.md
-import _ from 'https://esm.sh/lodash'
+import _ from 'https://esm.sh/lodash?no-check'
 // get consistent hash from stringified results
-import stringify from 'https://jspm.dev/json-stable-stringify'
-import uuid from 'https://jspm.dev/uuid@3'
+import stringify from 'https://esm.sh/json-stable-stringify'
+import uuid from 'https://esm.sh/uuid@3'
 
 import { createSubject, op, Obs } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 import request from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/request.js'
 import { getCookie } from 'https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js'
 
-import io from '../io.js'
+import io from './io.js'
 import { AUTH_COOKIE } from './constants.js'
 
 export default class GraphqlClient {

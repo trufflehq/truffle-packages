@@ -1,9 +1,9 @@
 import * as Rx from 'https://esm.sh/rxjs?bundle'
-import _ from 'https://esm.sh/lodash'
+import _ from 'https://esm.sh/lodash?no-check'
 // TODO: figure out an alternative to this package. it's 10kb
 // and probably doesn't need to be (it pulls in from some packages that are
 // similar to lodash, but not lodash: http://bundlephobia.com/package/dot-wild)
-import * as dot from 'https://jspm.dev/dot-wild'
+import * as dot from 'https://esm.sh/dot-wild'
 
 const rx = Rx // operators, keeping separate namespace for now
 

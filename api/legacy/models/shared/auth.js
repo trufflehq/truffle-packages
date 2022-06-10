@@ -1,4 +1,4 @@
-import _ from 'https://esm.sh/lodash'
+import _ from 'https://esm.sh/lodash?no-check'
 
 import { op, Obs } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 import { getCookie, setCookie } from 'https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js'

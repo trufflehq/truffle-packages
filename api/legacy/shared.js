@@ -1,5 +1,5 @@
 // FIXME: get rid of lodash in all files
-import _ from 'https://esm.sh/lodash'
+import _ from 'https://esm.sh/lodash?no-check'
 import { createSubject, op, Obs } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 import request from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/request.js'
 import { getUserAgent } from 'https://tfl.dev/@truffle/utils@0.0.1/request/request-info.js'
@@ -27,7 +27,7 @@ import Time from './models/shared/time.js'
 import User from './models/shared/user.js'
 
 import { API_URL, CDN_URLS } from './constants.js'
-import io from '../../io.js'
+import io from './io.js'
 import GraphqlClient from './graphql-client.js'
 
 const SERIALIZATION_KEY = 'MODEL'
