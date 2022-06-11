@@ -36,9 +36,10 @@ class BrowserAsyncLocalStorage {
     this.store = undefined
   }
 
-  run = (store, fn, ...args) => {
+  // TODO: don't implement run until browsers have actual async context tracking
+
+  setGlobalValue = (store) => {
     this.store = store
-    return fn(...args)
   }
 
   getStore = () => {
