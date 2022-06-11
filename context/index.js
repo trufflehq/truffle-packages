@@ -4,19 +4,32 @@
 // this is so the global context remains consistent between all components
 // we have @truffle/global-context@1.0.0/index.js that needs to always return a backwards-compatible context
 
-// ** THE ONE DIFFERENCE BETWEEN CLIENT AND SERVER, is when context.getStore is called outside of run() fn:
-// in node: context.getStore() will return undefined
-// in client: context.getStore() will return the store. it does not clear automatically since
-//            we don't have a good way of telling when an async tree is done. in the future we can add a context.clear()
-//            method (that is backwards-compatible)
+// There is some inconsistency between browser, Node.js, and Deno support async context tracking
+// (context that persists across a single function call, even if child calls are async/callbacks)
+// Node.js has AsyncLocalStorage: https://nodejs.org/api/async_context.html
+// Browsers don't have anything currently implemented.
+//   - there was a proposal for Zones like Zone.js in ~2019 that was rejected for being too dangerous
+//     - https://gist.github.com/mhevery/63fdcdf7c65886051d55
+//     - https://github.com/angular/angular/tree/main/packages/zone.js
+//   - there is a current proposal: https://github.com/legendecas/proposal-async-context
+//     - this was last proposed in July 2020 and they weren't very receptive
+//     - https://github.com/tc39/notes/blob/167155eeb708d84e1758d99c88b15670f9b81f75/meetings/2020-07/july-23.md#async-context-updates--for-stage-1
+// Deno doesn't have AsyncLocalStorage, but should have Promise hooks soon, that can support this behavior
+//   - https://github.com/denoland/deno/issues/5638
 
-// FIXME: browser version isn't true to spec. it doesn't create a new context per run
-// https://github.com/legendecas/proposal-async-context
-// options:
-// 1) add a setGlobalValue() method (or something other than run) that client runs
-//    throw error if client tries calling .run()
-//    throw error if server tries calling .setGlobalValue
-// 2) implement zone.js
+// Libraries also have their own version of context, like React's Provider / useContext.
+// We don't want to be tied to that though - we want to let helper methods outside of React functions
+// grab context successfully.
+
+// We're going to go with the one implementation that exists: AsyncLocalStorage, but if/when the ES spec
+// implements, it may differ (https://github.com/legendecas/proposal-async-context uses setValue/getValue)
+
+// As a (hopefully) short-term solution for browsers, we'll use setGlobalValue(val) instead of run(val, fn).
+// This context won't be scoped at all, it will be global per `new Context()` instance
+
+// TODO: client should probably importmap this to nothing
+// or could try dynamic import
+import DenoAsyncLocalStorage from './deno-async-local-storage.jsx'
 
 class BrowserAsyncLocalStorage {
   constructor () {
@@ -35,35 +48,33 @@ class BrowserAsyncLocalStorage {
 
 const isSsr = typeof document === 'undefined'
 // browser can be ready immediately. for node we need to wait for configure call
-let IsomorphicAsyncLocalStorage = isSsr ? undefined : BrowserAsyncLocalStorage
+const IsomorphicAsyncLocalStorage = isSsr ? DenoAsyncLocalStorage : BrowserAsyncLocalStorage
 
-export function configure ({ AsyncLocalStorage } = {}) {
-  console.log('config', AsyncLocalStorage)
-  IsomorphicAsyncLocalStorage = AsyncLocalStorage
-}
-
-// if node.js changes up their API for AsyncLocalStorage, we can't...
 // THIS CLASS NEEDS TO BE 100% BACKWARDS COMPATIBLE ALWAYS
-// hence why we aren't extending or returning class directly
+// it's modeled after Node.js AsyncLocalStorage
 class FrozenAsyncLocalStorageAsContext {
-  // nothing outside of this file should ever rely on this as we'll likely kill it someday
-  // (if/when node supports importing local deps from network import)
-  _private_doNotUse_setInstanceIfNotExists = () => {
-    if (!this._instance && IsomorphicAsyncLocalStorage) {
-      this._instance = new IsomorphicAsyncLocalStorage()
-    } else if (!this._instance) {
-      console.warn('In SSR, you must call configure method before using context functions')
-    }
+  constructor () {
+    this._instance = new IsomorphicAsyncLocalStorage()
   }
 
+  // sets the context to store and calls fn with the additional args that are passed in
   run = (store, fn, ...args) => {
-    this._private_doNotUse_setInstanceIfNotExists()
-    return this._instance?.run(store, fn, ...args)
+    if (!this._instance.run) {
+      throw new Error('context.run is not implemented in this runtime, use context.setGlobalValue')
+    }
+    return this._instance.run(store, fn, ...args)
   }
 
+  // returns context value
   getStore = () => {
-    this._private_doNotUse_setInstanceIfNotExists()
-    return this._instance?.getStore()
+    return this._instance.getStore()
+  }
+
+  setGlobalValue = (store) => {
+    if (!this._instance.setGlobalValue) {
+      throw new Error('context.setGlobalValue is not implemented in this runtime, use context.run')
+    }
+    this._instance.setGlobalValue(store)
   }
 }
 
