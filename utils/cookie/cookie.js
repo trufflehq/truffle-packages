@@ -1,6 +1,6 @@
 // TODO: should this just be 'truffle-ssr'? so react can ignore dep?
 import { getSsrReq, getSsrRes } from 'https://tfl.dev/@truffle/utils@0.0.1/ssr/ssr.js'
-import cookieLib from 'https://esm.sh/cookie'
+import cookieLib from 'https://npm.tfl.dev/cookie'
 
 import { getHost } from '../request/request-info.js'
 

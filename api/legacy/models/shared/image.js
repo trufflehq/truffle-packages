@@ -1,4 +1,4 @@
-import _ from 'https://esm.sh/lodash?no-check'
+import _ from 'https://npm.tfl.dev/lodash?no-check'
 
 function hashFn (s) {
   if (!s) {
@@ -84,7 +84,7 @@ export default class ImageModel {
 
   parseExif = async (file, parsedDataStream) => {
     if (file.type.indexOf('jpeg') !== -1) {
-      const ExifParser = await import('https://esm.sh/exif-parser')
+      const ExifParser = await import('https://npm.tfl.dev/exif-parser')
       const reader = new FileReader()
       reader.onload = (e) => {
         const parser = ExifParser.create(e.target.result)

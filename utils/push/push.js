@@ -13,8 +13,8 @@ class PushService {
   setFirebaseInfo = (firebaseInfo) => {
     this.firebaseInfo = firebaseInfo
     this.isFirebaseImported = Promise.all([
-      import('https://esm.sh/firebase/app'),
-      import('https://esm.sh/firebase/messaging')
+      import('https://npm.tfl.dev/firebase/app'),
+      import('https://npm.tfl.dev/firebase/messaging')
     ])
       .then(([firebase, firebaseMessaging]) => {
         try {

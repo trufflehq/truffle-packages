@@ -1,5 +1,5 @@
 // FIXME: get rid of lodash in all files
-import _ from 'https://esm.sh/lodash?no-check'
+import _ from 'https://npm.tfl.dev/lodash?no-check'
 import { createSubject, op, Obs } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 import request from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/request.js'
 import { getUserAgent } from 'https://tfl.dev/@truffle/utils@0.0.1/request/request-info.js'

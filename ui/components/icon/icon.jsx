@@ -1,5 +1,5 @@
 import React from 'react'
-import _ from 'https://esm.sh/lodash?no-check'
+import _ from 'https://npm.tfl.dev/lodash?no-check'
 
 import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js'
 

@@ -20,7 +20,7 @@
  * with RPCCallback which should be used to emit callback responses
  */
 
-import uuid from 'https://esm.sh/uuid@3'
+import uuid from 'https://npm.tfl.dev/uuid@3'
 
 export const ERROR_CODES = {
   METHOD_NOT_FOUND: -32601,

@@ -29,7 +29,7 @@
 
 // TODO: client should probably importmap this to nothing
 // or could try dynamic import
-import DenoAsyncLocalStorage from './deno-async-local-storage.jsx'
+import DenoAsyncLocalStorage from './deno-async-local-storage.js'
 
 class BrowserAsyncLocalStorage {
   constructor () {
@@ -48,7 +48,6 @@ class BrowserAsyncLocalStorage {
 }
 
 const isSsr = typeof document === 'undefined'
-// browser can be ready immediately. for node we need to wait for configure call
 const IsomorphicAsyncLocalStorage = isSsr ? DenoAsyncLocalStorage : BrowserAsyncLocalStorage
 
 // THIS CLASS NEEDS TO BE 100% BACKWARDS COMPATIBLE ALWAYS

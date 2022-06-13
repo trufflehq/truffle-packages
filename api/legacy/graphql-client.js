@@ -1,8 +1,8 @@
 // docs: https://github.com/spore-gg/frontend-shared/blob/master/services/graphql_client.md
-import _ from 'https://esm.sh/lodash?no-check'
+import _ from 'https://npm.tfl.dev/lodash?no-check'
 // get consistent hash from stringified results
-import stringify from 'https://esm.sh/json-stable-stringify'
-import uuid from 'https://esm.sh/uuid@3'
+import stringify from 'https://npm.tfl.dev/json-stable-stringify'
+import uuid from 'https://npm.tfl.dev/uuid@3'
 
 import { createSubject, op, Obs } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 import request from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/request.js'

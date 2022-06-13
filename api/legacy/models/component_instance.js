@@ -1,4 +1,4 @@
-import _ from 'https://esm.sh/lodash?no-check'
+import _ from 'https://npm.tfl.dev/lodash?no-check'
 import {
   FRAGMENT_COMPONENT_INSTANCE_FIELDS_ADMIN, FRAGMENT_COMPONENT_INSTANCE_FIELDS
 } from '../constants.js'

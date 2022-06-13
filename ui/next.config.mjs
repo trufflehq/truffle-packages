@@ -6,7 +6,7 @@ const nextConfig = {
 
   experimental: {
     esmExternals: true,
-    urlImports: ['https://tfl.dev/', 'https://esm.sh/', 'https://jspm.io/', 'https://cdn.skypack.dev/', 'https://cdn.bio/']
+    urlImports: ['https://tfl.dev/', 'https://npm.tfl.dev/', 'https://jspm.io/', 'https://cdn.skypack.dev/', 'https://cdn.bio/']
   },
 
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
