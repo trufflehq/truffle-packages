@@ -1,0 +1,8 @@
+.z-snack-bar-container {
+  position: fixed;
+  bottom: 16px;
+  width: 95vw;
+  left: calc((100vw - 95vw) / 2);
+  overflow: visible;
+}
+/*# sourceMappingURL=snack-bar-container.css.map */
