@@ -51,7 +51,7 @@ export default function SnackBarProvider ({ children, visibilityDuration = DEFAU
 
   return (
     <>
-      <div className='z-snack-bar-container'>{ shouldRenderSnackBar && <$currentSnackBar /> }</div>
+      <div className='c-snack-bar-container'>{ shouldRenderSnackBar && <$currentSnackBar /> }</div>
       { children }
     </>
   )

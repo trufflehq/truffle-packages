@@ -1,4 +1,4 @@
-.z-ripple {
+.c-ripple {
   position: absolute;
   top: 0;
   left: 0;
@@ -8,7 +8,7 @@
   cursor: pointer;
 }
 
-.z-ripple > .wave {
+.c-ripple > .wave {
   position: absolute;
   border-radius: 50%;
   width: 200%;
@@ -21,21 +21,21 @@
   visibility: hidden;
 }
 
-.z-ripple > .wave.is-visible {
+.c-ripple > .wave.is-visible {
   visibility: visible;
 }
 
-.z-ripple > .wave.is-visible.fade-in {
+.c-ripple > .wave.is-visible.fade-in {
   -webkit-animation: z-ripple-animation-fade-in 0.5s;
           animation: z-ripple-animation-fade-in 0.5s;
 }
 
-.z-ripple > .wave.is-visible:not(.fade-in) {
+.c-ripple > .wave.is-visible:not(.fade-in) {
   -webkit-animation: z-ripple-animation 0.5s;
           animation: z-ripple-animation 0.5s;
 }
 
-.z-ripple.is-circle {
+.c-ripple.is-circle {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
   border-radius: 50%;
