@@ -16,7 +16,12 @@ export default function ThemeComponent ({
   colorOpt2 = '#E04C70',
   colorOpt3 = '#E0A158',
   colorOpt4 = '#A0C05B',
-  colorText = '#FFFFFF',
+  colorTextBgPrimary = '#FFFFFF',
+  colorTextBgSecondary = '#FFFFFF',
+  colorTextBgTertiary = '#FFFFFF',
+  colorTextPrimary = '#000000',
+  colorTextSecondary = '#000000',
+  colorTextBgGradient = '#000000',
   colorDemphasizedText = 'rgba(255, 255, 255, 0.76)',
   fontFamily = DEFAULT_FONT_FAMILY
 }) {
@@ -31,21 +36,42 @@ export default function ThemeComponent ({
           }
 
           :root {
+            /* backgrounds */
             --truffle-color-bg-primary: ${colorBgPrimary};
             --truffle-color-bg-secondary: ${colorBgSecondary};
             --truffle-color-bg-tertiary: ${colorBgTertiary};
             --truffle-color-bg-overlay: ${colorBgOverlay};
+            --truffle-gradient: ${gradient};
+
+            /* theme colors */
             --truffle-color-primary: ${colorPrimary};
             --truffle-color-secondary: ${colorSecondary};
-            --truffle-gradient: ${gradient};
+
+            /* error and positive colors */
             --truffle-color-error: ${colorError};
             --truffle-color-positive: ${colorPositive};
+
+            /* option colors */
             --truffle-color-opt-1: ${colorOpt1};
             --truffle-color-opt-2: ${colorOpt2};
             --truffle-color-opt-3: ${colorOpt3};
             --truffle-color-opt-4: ${colorOpt4};
-            --truffle-color-text: ${colorText};
-            --truffle-color-demphasized-text: ${colorDemphasizedText};
+
+            /* text colors */
+            /*
+              you should use one of these colors with the corresponding background
+              e.g. if you use --truffle-color-bg-primary as the background,
+              you should use --truffle-color-text-bg-primary as the text color
+            */
+            --truffle-color-text-bg-primary: ${colorTextBgPrimary};
+            --truffle-color-text-bg-secondary: ${colorTextBgSecondary};
+            --truffle-color-text-bg-tertiary: ${colorTextBgTertiary};
+            --truffle-color-text-primary: ${colorTextPrimary};
+            --truffle-color-text-secondary: ${colorTextSecondary};
+            --truffle-color-text-gradient: ${colorTextBgGradient};
+            --truffle-color-text-demphasized: ${colorDemphasizedText};
+
+            /* font family */
             --truffle-font-family: ${fontFamily};
           }
 
@@ -56,7 +82,7 @@ export default function ThemeComponent ({
             font-size: 10px;
             line-height: 24px;
             letter-spacing: 0.004em;
-            color: var(--truffle-color-text);
+            color: var(--truffle-color-text-bg-primary);
           }
 
           .truffle-text-body-2 {
@@ -66,7 +92,7 @@ export default function ThemeComponent ({
             font-size: 14px;
             line-height: 21px;
             letter-spacing: 0.0025em;
-            color: var(--truffle-color-text);
+            color: var(--truffle-color-text-bg-primary);
           }
 
           .truffle-text-header-1 {
@@ -76,7 +102,7 @@ export default function ThemeComponent ({
             font-size: 22px;
             line-height: 33px;
             letter-spacing: 0.04em;
-            color: var(--truffle-color-text);
+            color: var(--truffle-color-text-bg-primary);
           }
 
           .truffle-text-header-2 {
@@ -86,7 +112,7 @@ export default function ThemeComponent ({
             font-size: 18px;
             line-height: 27px;
             letter-spacing: 0.04em;
-            color: var(--truffle-color-text);
+            color: var(--truffle-color-text-bg-primary);
           }
 
           .truffle-text-header-caps {
@@ -97,7 +123,7 @@ export default function ThemeComponent ({
             line-height: 27px;
             letter-spacing: 0.02em;
             text-transform: uppercase;
-            color: var(--truffle-color-text);
+            color: var(--truffle-color-text-bg-primary);
           }
 
           .truffle-text-subtitle-1 {
@@ -107,7 +133,7 @@ export default function ThemeComponent ({
             font-size: 16px;
             line-height: 24px;
             letter-spacing: 0.005em;
-            color: var(--truffle-color-text);
+            color: var(--truffle-color-text-bg-primary);
           }
 
           .truffle-text-subtitle-2 {
@@ -117,7 +143,7 @@ export default function ThemeComponent ({
             font-size: 14px;
             line-height: 21px;
             letter-spacing: 0.0025em;
-            color: var(--truffle-color-text);
+            color: var(--truffle-color-text-bg-primary);
           }
 
           .truffle-text-caption {
@@ -127,7 +153,7 @@ export default function ThemeComponent ({
             font-size: 12px;
             line-height: 18px;
             letter-spacing: 0.004em;
-            color: var(--truffle-color-text);
+            color: var(--truffle-color-text-bg-primary);
           }
 
           .truffle-text-link {
@@ -148,7 +174,7 @@ export default function ThemeComponent ({
             font-size: 10px;
             line-height: 15px;
             letter-spacing: 0.004em;
-            color: var(--truffle-color-text);
+            color: var(--truffle-color-text-bg-primary);
           }
         `}
       </style>
