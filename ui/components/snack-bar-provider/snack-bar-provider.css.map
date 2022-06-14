@@ -2,8 +2,8 @@
     "version": 3,
     "mappings": "AAEA,AAAA,sBAAsB,CAAC;EACrB,QAAQ,EAAE,KAAK;EACf,MAAM,EAAE,IAAI;EACZ,KAAK,EALW,IAAI;EAMpB,IAAI,EAAE,wBAAuC;EAC7C,QAAQ,EAAE,OAAO;CAClB",
     "sources": [
-        "snack-bar-container.scss"
+        "snack-bar-provider.scss"
     ],
     "names": [],
-    "file": "snack-bar-container.css"
+    "file": "snack-bar-provider.css"
 }
