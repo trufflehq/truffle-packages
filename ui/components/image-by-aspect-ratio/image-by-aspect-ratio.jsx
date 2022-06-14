@@ -43,7 +43,7 @@ export default function $imageByAspectRatio (props) {
         hasHeight,
         shouldContain
       })}
-      style={{ style }}
+      style={style}
     >
       <div
         className="image"
