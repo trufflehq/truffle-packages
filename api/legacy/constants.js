@@ -64,6 +64,7 @@ fragment componentInstanceFields on ComponentInstance {
   cssVars
   component {
     id # req for cache categoryFn
+    module { url }
   }
   parentId
   treeSiblingIndex
