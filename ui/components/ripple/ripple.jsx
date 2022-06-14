@@ -62,7 +62,7 @@ export default function Ripple (props) {
 
   return (
     <div
-      className={'z-ripple ' + classKebab({ isCircle })}
+      className={'c-ripple ' + classKebab({ isCircle })}
       ref={$$ref}
       onTouchStart={onTouch}
       onMouseDown={isAndroid() ? null : onTouch}

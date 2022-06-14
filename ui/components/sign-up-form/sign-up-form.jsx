@@ -7,7 +7,8 @@ export default function SignUpForm (props) {
   </div>
 }
 
-export function FIXME (props) { // title
+// this may not be worth fixing if we're adopting an oauth flow
+/* export function FIXME (props) { // title
   const {
     onComplete, isLowFriction, initialEmailPhone, prefillName, infoMessage, source = 'other',
     inviteTokenStrObs, isSpore
@@ -224,4 +225,4 @@ export function FIXME (props) { // title
       </form>
     </div>
   )
-}
+} */

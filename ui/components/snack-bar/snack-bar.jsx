@@ -21,7 +21,7 @@ export default function SnackBar ({
   const fadeOutDelay = visibilityDuration + fadeDuration
   return (
     <div
-      className={`z-snack-bar-el ${style} ${className}`}
+      className={`c-snack-bar-el ${style} ${className}`}
       style={{
         animation: `slideIn linear ${fadeDuration}ms, stayVisible linear ${visibilityDuration}ms ${fadeDuration}ms, slideOut linear ${fadeDuration}ms ${fadeOutDelay}ms`
       }}

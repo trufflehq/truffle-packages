@@ -42,7 +42,7 @@ export default function Icon (props) {
 
   return (
     <Tag
-      className={'z-icon ' + classKebab({
+      className={'c-icon ' + classKebab({
         isAlignedTop,
         isAlignedLeft,
         isAlignedRight,

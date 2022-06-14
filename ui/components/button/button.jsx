@@ -162,7 +162,7 @@ export default function Button (props) {
 
   // TODO: routing w/o hard page load if href exists
   return <button
-    className={`z-button style-${style} size-${!isTileButton && size} icon-location-${iconLocation} ` + classKebab({
+    className={`c-button style-${style} size-${!isTileButton && size} icon-location-${iconLocation} ` + classKebab({
       hasIcon: Boolean(icon),
       isSelected,
       isDisabled,
