@@ -4,9 +4,9 @@ import _ from 'https://npm.tfl.dev/lodash?no-check'
 import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js'
 
 import * as legacyIcons from '../../legacy/icons.js'
-import cssVars from '../../util/css-vars.js'
 
-// import './icon.scss'
+import styles from './icon.css' assert { type: 'css' }
+document.adoptedStyleSheets = [...document.adoptedStyleSheets, styles]
 
 export default function Icon (props) {
   const {
@@ -51,8 +51,8 @@ export default function Icon (props) {
         isTouchTarget,
         isClickable,
         isCircled,
-        hasRippleWhite: hasRipple && color !== cssVars.$bgBaseText,
-        hasRippleHeader: hasRipple && color === cssVars.$bgBaseText
+        hasRippleWhite: hasRipple && color !== 'var(--truffle-color-text)',
+        hasRippleHeader: hasRipple && color === 'var(--truffle-color-text)'
       })}
       tabIndex={hasRipple ? 0 : undefined}
       onClick={onclick}
