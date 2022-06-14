@@ -42,7 +42,6 @@ const MAX_ACCEPTABLE_GRAPHQL_CLIENT_TIME_DIFF_MS = 1000 * 30 // 30 seconds
 
 export default class Model {
   constructor () {
-    console.log('new model')
     const cache = globalThis?.window?.[SERIALIZATION_KEY] || {}
     if (typeof document !== 'undefined') {
       window[SERIALIZATION_KEY] = null
@@ -62,7 +61,6 @@ export default class Model {
         console.log('error parsing cookie', err)
       }
       const sporeAdminSecret = getCookie('sporeAdmin')
-      console.log('emit', siteInfo, getCookie('siteInfo'))
       return io.emit(
         event,
         _.defaults({ accessToken, orgId: siteInfo?.orgId, userAgent: getUserAgent(), sporeAdminSecret, ip: this.ip }, opts)
@@ -104,7 +102,6 @@ export default class Model {
     this.initialCacheTime = cache.now
     // console.log('init', this.initialCache)
 
-    console.log('set graphql client')
     this.graphqlClient = new GraphqlClient({
       ioEmit,
       cache: this.initialCache

@@ -187,8 +187,6 @@ export default class GraphqlClient {
     const batchId = uuid.v4()
     io.on(batchId, onSuccess, onError)
 
-    console.log('emitting')
-
     this.ioEmit('graphqlClient', {
       connectionId: this.connectionId,
       batchId,
@@ -196,8 +194,6 @@ export default class GraphqlClient {
         streamId, path: req.path, body: req.body, isStreamed
       }))
     })
-
-    console.log('emitted')
   }
 
   _combinedRequestObs = (req, options = {}) => {
