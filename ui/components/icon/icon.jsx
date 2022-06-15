@@ -23,11 +23,12 @@ export default function Icon (props) {
     isCentered,
     hasRipple,
     viewBox = 24,
-    heightRatio = 1
+    heightRatio = 1,
+    units = 'px'
   } = props
   let {
     isTouchTarget,
-    size = '24px',
+    size = 24,
     touchWidth = '40px',
     touchHeight = '40px'
   } = props
@@ -62,10 +63,7 @@ export default function Icon (props) {
         minWidth: isTouchTarget ? touchWidth : '0', // 100% makes having a wrapper div necessary
         minHeight: isTouchTarget ? touchHeight : '100%', // nec to center
         width: size,
-        height:
-          size?.indexOf?.('%') !== -1
-            ? `${parseInt(size) * heightRatio}%`
-            : `${parseInt(size) * heightRatio}px`
+        height: `${parseInt(size) * heightRatio}${units}`
       }}
     >
       <svg
@@ -73,10 +71,7 @@ export default function Icon (props) {
         viewBox={`0 0 ${viewBox} ${viewBox * heightRatio}`}
         style={{
           width: size,
-          height:
-            size?.indexOf?.('%') !== -1
-              ? `${parseInt(size) * heightRatio}%`
-              : `${parseInt(size) * heightRatio}px`
+          height: `${parseInt(size) * heightRatio}${units}`
         }}
       >
         <path

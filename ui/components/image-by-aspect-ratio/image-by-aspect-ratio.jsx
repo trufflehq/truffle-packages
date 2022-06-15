@@ -11,26 +11,27 @@ export default function $imageByAspectRatio (props) {
   const {
     imageUrl,
     aspectRatio,
-    widthPx,
-    heightPx,
+    width,
+    height,
+    units = 'px',
     isStretch,
     isCentered,
     shouldContain = true
   } = props
 
-  const hasWidth = widthPx
-  const hasHeight = heightPx
+  const hasWidth = width
+  const hasHeight = height
 
   let style
   if (isStretch) {
     style = {
-      maxWidth: heightPx ? `${heightPx * aspectRatio}px` : `${widthPx}px`,
-      maxHeight: widthPx ? `${widthPx / aspectRatio}px` : `${heightPx}px`
+      maxWidth: height ? `${height * aspectRatio}${units}` : `${width}${units}`,
+      maxHeight: width ? `${width / aspectRatio}${units}` : `${height}${units}`
     }
   } else {
     style = {
-      width: heightPx ? `${heightPx * aspectRatio}px` : `${widthPx}px`,
-      height: widthPx ? `${widthPx / aspectRatio}px` : `${heightPx}px`
+      width: height ? `${height * aspectRatio}${units}` : `${width}${units}`,
+      height: width ? `${width / aspectRatio}${units}` : `${height}${units}`
     }
   }
 
@@ -49,9 +50,9 @@ export default function $imageByAspectRatio (props) {
         className="image"
         style={{
           paddingBottom:
-            !widthPx && isStretch ? `${(1 / aspectRatio) * 100}%` : undefined,
+            !width && isStretch ? `${(1 / aspectRatio) * 100}%` : undefined,
           paddingLeft:
-            widthPx && isStretch ? `${aspectRatio * 100}%` : undefined,
+            width && isStretch ? `${aspectRatio * 100}%` : undefined,
           backgroundImage: `url(${imageUrl})`
         }}
       />
