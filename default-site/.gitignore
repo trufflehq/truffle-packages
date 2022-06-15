@@ -1,3 +1,4 @@
-node_modules
-build
-truffle.secret.js
+.ultra
+vendorMap.json
+.DS_Store
+truffle.secret.*

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import AnotherComponent from '../another-component/another-component.jsx'
+import AnotherComponent from '../another-component/another-component.tsx'
 
 export default function DefaultSite ({ exampleProp }) {
   return <div>

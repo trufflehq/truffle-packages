@@ -4,6 +4,7 @@ import { getModel } from 'https://tfl.dev/@truffle/api@0.0.1/legacy/index.js'
 import config, { setConfig } from '../config/config.js'
 
 // NOTE: this gets injected into dom for client, so DO NOT put anything secret in here!!!
+console.log('client', globalThis?.Deno?.env.get('ULTRA_MODE'))
 const clientConfig = {
   IS_DEV_ENV: globalThis?.Deno?.env.get('ULTRA_MODE') === 'development',
   IS_STAGING_ENV: false,
@@ -30,10 +31,14 @@ function AsyncTruffleSetup ({ state, useAsync, children }) {
   // only use value if it's from Deno
   // useAsync gets run on server (to populate data) and client as fallback
   const config = useAsync('/client-config', () => globalThis?.Deno ? Promise.resolve(clientConfig) : {})
+  if (!Object.entries(config)?.length) {
+    console.warn('Config from ssr not found')
+  }
+  // FIXME: this is called way too much if domain is null (invalid page error log) for some reason
   setConfig(config)
   globalThis?.Deno && setConfig(serverConfig)
 
-  const hostname = state?.url?.hostname
+  const hostname = state?.url?.hostname || window.location.hostname
   const domain = useAsync('/domain', () => getDomainByDomainName(hostname))
   state.domain = domain
 
@@ -56,6 +61,7 @@ function useTruffleSetup ({ domain } = {}) {
 }
 
 async function getDomainByDomainName (domainName) {
+  console.log('setup isdev', config, domainName)
   if (config.IS_DEV_ENV) {
     domainName = `staging-dev.${config.HOSTNAME}`
   }
