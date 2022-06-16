@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DEFAULT_FONT_FAMILY = '\'Poppins\', sans-serif'
+const DEFAULT_FONT_FAMILY = 'Poppins, sans-serif'
 
 export default function ThemeComponent ({
   colorBgPrimary = '#050D13',
@@ -27,14 +27,11 @@ export default function ThemeComponent ({
 }) {
   return (
     <>
+      {fontFamily === DEFAULT_FONT_FAMILY &&
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />}
       <style>
+        {/* don't put quotes in this or react will escape in ssr and break hydration */}
         {`
-          ${
-            fontFamily === DEFAULT_FONT_FAMILY
-            ? '@import url(\'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap\');'
-            : ''
-          }
-
           :root {
             /* backgrounds */
             --truffle-color-bg-primary: ${colorBgPrimary};
