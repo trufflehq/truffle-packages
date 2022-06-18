@@ -1,5 +1,3 @@
-import { FRAGMENT_PAGE_WITH_EXTRAS } from '../constants.js'
-
 export default class Route {
   constructor ({ auth }) {
     this.auth = auth
@@ -12,12 +10,28 @@ export default class Route {
         query CacheableRouteWithExtras($packageVersionId: ID, $path: String) {
           route(packageVersionId: $packageVersionId, path: $path) {
             id # req for cache categoryFn
-            pathWithVariables
-            page {
-              ...pageWithExtras
+            componentInstanceId
+            componentInstances {
+              id # req for cache categoryFn
+              component {
+                id # req for cache categoryFn
+                module { url }
+              } 
+            }
+            routerId
+            routers {
+              id # req for cache categoryFn
+              parentId
+              componentInstance {
+                id # req for cache categoryFn
+                component {
+                  id # req for cache categoryFn
+                  module { url }
+                } 
+              }
             }
           }
-        } ${FRAGMENT_PAGE_WITH_EXTRAS}`,
+        }`,
       variables: { packageVersionId, path },
       pull: 'route'
     }, { isErrorable: true })

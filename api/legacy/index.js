@@ -64,13 +64,13 @@ import Tweet from './models/tweet.js'
 import WatchTime from './models/watch_time.js'
 import YoutubeVideo from './models/youtube_video.js'
 
-import { API_URL } from './constants.js'
+import config from 'https://tfl.dev/@truffle/utils@0.0.1/config/config.js'
 
 class Model extends SharedModel {
   constructor () {
     super()
     this.activePowerup = new ActivePowerup({ auth: this.auth })
-    this.alert = new Alert({ auth: this.auth, proxy: this.proxy, apiUrl: API_URL, graphqlClient: this.graphqlClient })
+    this.alert = new Alert({ auth: this.auth, proxy: this.proxy, apiUrl: config.API_URL, graphqlClient: this.graphqlClient })
     this.analyticsDashboard = new AnalyticsDashboard({ auth: this.auth })
     this.ban = new Ban({ auth: this.auth })
     this.blast = new Blast({ auth: this.auth })
@@ -82,7 +82,7 @@ class Model extends SharedModel {
     this.chat = new Chat({ auth: this.auth })
     this.chatMessage = new ChatMessage({ auth: this.auth, graphqlClient: this.graphqlClient, proxy: this.proxy })
     this.clubhouseListener = new ClubhouseListener({ auth: this.auth })
-    this.collaborator = new Collaborator({ auth: this.auth, proxy: this.proxy, apiUrl: API_URL, graphqlClient: this.graphqlClient })
+    this.collaborator = new Collaborator({ auth: this.auth, proxy: this.proxy, apiUrl: config.API_URL, graphqlClient: this.graphqlClient })
     this.comment = new Comment({ auth: this.auth })
     this.component = new Component({ auth: this.auth, localCache: this.localCache })
     this.componentInstance = new ComponentInstance({ auth: this.auth })
@@ -100,19 +100,19 @@ class Model extends SharedModel {
     this.rssFeedItem = new RssFeedItem({ auth: this.auth })
     this.youtubeVideo = new YoutubeVideo({ auth: this.auth })
     this.gif = new Gif()
-    this.link = new Link({ auth: this.auth, proxy: this.proxy, apiUrl: API_URL, graphqlClient: this.graphqlClient })
+    this.link = new Link({ auth: this.auth, proxy: this.proxy, apiUrl: config.API_URL, graphqlClient: this.graphqlClient })
     this.mogulTv = new MogulTv({ auth: this.auth, graphqlClient: this.graphqlClient })
     this.membership = new Membership({ auth: this.auth })
     this.printfulItem = new PrintfulItem({ auth: this.auth })
-    this.product = new Product({ auth: this.auth, proxy: this.proxy, apiUrl: API_URL, graphqlClient: this.graphqlClient })
-    this.productVariant = new ProductVariant({ auth: this.auth, proxy: this.proxy, apiUrl: API_URL, graphqlClient: this.graphqlClient })
-    this.membershipTier = new MembershipTier({ auth: this.auth, proxy: this.proxy, apiUrl: API_URL, graphqlClient: this.graphqlClient })
+    this.product = new Product({ auth: this.auth, proxy: this.proxy, apiUrl: config.API_URL, graphqlClient: this.graphqlClient })
+    this.productVariant = new ProductVariant({ auth: this.auth, proxy: this.proxy, apiUrl: config.API_URL, graphqlClient: this.graphqlClient })
+    this.membershipTier = new MembershipTier({ auth: this.auth, proxy: this.proxy, apiUrl: config.API_URL, graphqlClient: this.graphqlClient })
     this.package = new Package({ auth: this.auth })
-    this.page = new Page({ auth: this.auth, proxy: this.proxy, apiUrl: API_URL, graphqlClient: this.graphqlClient, org: this.org })
+    this.page = new Page({ auth: this.auth, proxy: this.proxy, apiUrl: config.API_URL, graphqlClient: this.graphqlClient, org: this.org })
     this.phoneNumber = new PhoneNumber({ auth: this.auth, org: this.org })
     this.podcast = new Podcast({ auth: this.auth })
     this.podcastEpisode = new PodcastEpisode({ auth: this.auth })
-    this.article = new Article({ auth: this.auth, podcastEpisode: this.podcastEpisode, proxy: this.proxy, apiUrl: API_URL, graphqlClient: this.graphqlClient })
+    this.article = new Article({ auth: this.auth, podcastEpisode: this.podcastEpisode, proxy: this.proxy, apiUrl: config.API_URL, graphqlClient: this.graphqlClient })
     this.collaboration = new Collaboration({ auth: this.auth, podcastEpisode: this.podcastEpisode })
     this.legacyOrgUserCounter = new LegacyOrgUserCounter({ auth: this.auth })
     this.legacyOrgUserCounterType = new LegacyOrgUserCounterType({ auth: this.auth })

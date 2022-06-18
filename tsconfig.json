@@ -1,22 +1,17 @@
 {
-	"compileOnSave": false,
-	"compilerOptions": {
-		"jsx": "preserve",
-		"jsxFactory": "preact.h",
-		"jsxFragmentFactory": "preact.Fragment",
-		"allowJs": true,
-		"checkJs": true,
-		// "strict": true,
-		"noEmit": true,
-		"moduleResolution": "node",
-		"target": "ESNext",
-		"module": "esnext",
-		"resolveJsonModule": true,
-		"allowSyntheticDefaultImports": true,
-		"downlevelIteration": true
-	},
-	"include": ["**/*"],
-	"typeAcquisition": {
-		"enable": true
-	}
+  // TODO: kill this tsconfig. just have to disable implicit any for now
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "inlineSourceMap": true,
+    "isolatedModules": true,
+    "jsx": "react",
+    "lib": ["deno.window"],
+    "module": "esnext",
+    "strict": true,
+    "target": "esnext",
+    "useDefineForClassFields": true
+  }
 }

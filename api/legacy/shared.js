@@ -4,6 +4,7 @@ import { createSubject, op, Obs } from 'https://tfl.dev/@truffle/utils@0.0.1/obs
 import request from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/request.js'
 import { getUserAgent } from 'https://tfl.dev/@truffle/utils@0.0.1/request/request-info.js'
 import { getCookie } from 'https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js'
+import config from 'https://tfl.dev/@truffle/utils@0.0.1/config/config.js'
 
 import Auth from './models/shared/auth.js'
 import Connection from './models/shared/connection.js'
@@ -26,7 +27,7 @@ import StatusBar from './models/shared/status_bar.js'
 import Time from './models/shared/time.js'
 import User from './models/shared/user.js'
 
-import { API_URL, CDN_URLS } from './constants.js'
+import { CDN_URLS } from './constants.js'
 import io from './io.js'
 import GraphqlClient from './graphql-client.js'
 
@@ -129,12 +130,12 @@ export default class Model {
       onQuery
     })
 
-    this.collectible = new Collectible({ auth: this.auth, proxy: this.proxy, apiUrl: API_URL, graphqlClient: this.graphqlClient })
+    this.collectible = new Collectible({ auth: this.auth, proxy: this.proxy, apiUrl: config.API_URL, graphqlClient: this.graphqlClient })
     this.image = new Image({ additionalScript: this.additionalScript, cdnUrls: CDN_URLS })
-    this.file = new File({ auth: this.auth, apiUrl: API_URL, proxy: this.proxy, graphqlClient: this.graphqlClient })
+    this.file = new File({ auth: this.auth, apiUrl: config.API_URL, proxy: this.proxy, graphqlClient: this.graphqlClient })
     this.connection = new Connection({ auth: this.auth })
     this.keyValue = new KeyValue({ auth: this.auth })
-    this.org = new Org({ auth: this.auth, proxy: this.proxy, graphqlClient: this.graphqlClient, apiUrl: API_URL })
+    this.org = new Org({ auth: this.auth, proxy: this.proxy, graphqlClient: this.graphqlClient, apiUrl: config.API_URL })
     this.orgConfig = new OrgConfig({ auth: this.auth, org: this.org })
     this.orgPrivateData = new OrgPrivateData({ auth: this.auth })
     this.orgUser = new OrgUser({ auth: this.auth })
@@ -150,7 +151,7 @@ export default class Model {
       auth: this.auth,
       proxy: this.proxy,
       graphqlClient: this.graphqlClient,
-      apiUrl: API_URL
+      apiUrl: config.API_URL
     })
 
     this.drawer = new Drawer()

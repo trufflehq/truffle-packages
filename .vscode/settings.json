@@ -2,12 +2,12 @@
   "deno.enable": true,
   "deno.lint": true,
   "deno.unstable": true,
-  "deno.importMap": "./import-map.json",
   "deno.suggest.imports.hosts": {
     "https://deno.land": true,
     "https://tfl.dev": true,
     "https://npm.tfl.dev": true
   },
+  "deno.config": "./tsconfig.json",
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },

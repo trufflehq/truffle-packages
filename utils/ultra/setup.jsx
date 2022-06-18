@@ -4,7 +4,6 @@ import { getModel } from 'https://tfl.dev/@truffle/api@0.0.1/legacy/index.js'
 import config, { setConfig } from '../config/config.js'
 
 // NOTE: this gets injected into dom for client, so DO NOT put anything secret in here!!!
-console.log('client', globalThis?.Deno?.env.get('ULTRA_MODE'))
 const clientConfig = {
   IS_DEV_ENV: globalThis?.Deno?.env.get('ULTRA_MODE') === 'development',
   IS_STAGING_ENV: false,
@@ -30,7 +29,9 @@ export function TruffleSetup ({ state, useAsync, children }) {
 function AsyncTruffleSetup ({ state, useAsync, children }) {
   // only use value if it's from Deno
   // useAsync gets run on server (to populate data) and client as fallback
-  const config = useAsync('/client-config', () => globalThis?.Deno ? Promise.resolve(clientConfig) : {})
+  // TODO: Promise.resolve doesn't work for some reason
+  const config = useAsync('/client-config', () => globalThis?.Deno ? new Promise((resolve) => setTimeout(() => resolve(clientConfig), 0)) : {})
+  console.log('config', config)
   if (!Object.entries(config)?.length) {
     console.warn('Config from ssr not found')
   }
@@ -63,7 +64,7 @@ function useTruffleSetup ({ domain } = {}) {
 async function getDomainByDomainName (domainName) {
   console.log('setup isdev', config, domainName)
   if (config.IS_DEV_ENV) {
-    domainName = `staging-dev.${config.HOSTNAME}`
+    domainName = config.HOSTNAME
   }
 
   const domainResponse = await graphqlQuery({

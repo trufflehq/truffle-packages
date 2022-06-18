@@ -1,6 +1,6 @@
 import _ from 'https://npm.tfl.dev/lodash?no-check'
 
-import { API_URL } from './constants.js'
+import config from 'https://tfl.dev/@truffle/utils@0.0.1/config/config.js'
 
 // if you update this, update value in backend too
 const SOCKET_PING_INTERVAL_MS = 24 * 1000 // 24s in between pings
@@ -9,9 +9,9 @@ const SOCKET_PING_TIMEOUT_MS = 3 * 1000 // 3s for server to send 'pong' back fro
 const RECONNECT_DELAY_MS = 2 * 1000 // 2s
 
 class IO {
-  constructor () {
+  constructor (apiUrl) {
+    console.log('api', apiUrl, apiUrl || config.API_URL)
     this.isSsr = typeof document === 'undefined'
-    this.url = API_URL
     this._queue = []
     this._listeners = {}
     this._reconnections = 0
@@ -20,7 +20,8 @@ class IO {
     this._isUnloaded = false
   }
 
-  connect (ssrWebSocket) {
+  connect (apiUrl, ssrWebSocket) {
+    const url = apiUrl || config.API_URL
     if (this.isSsr) {
       this.WebSocket = ssrWebSocket
     } else {
@@ -36,7 +37,7 @@ class IO {
       return console.log('already connected or connecting')
     }
     this._isConnecting = true
-    this.connection = new this.WebSocket(this.url.replace(/^http/, 'ws'))
+    this.connection = new this.WebSocket(url.replace(/^http/, 'ws'))
     console.log('ws connecting...')
 
     // TODO: 12/2/2021: sometimes socket seems to hang on trying to connect

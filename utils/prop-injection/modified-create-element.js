@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react'
 // may need this if using patched-react.js
-// import React, { createContext, useContext } from 'https://npm.tfl.dev/v86/react@18.2.0-next-47944142f-20220608/es2022/react.js?_truffle'
+// import React, { createContext, useContext } from 'https://npm.tfl.dev/v86/react@18/es2022/react.js?_truffle'
 
 const TruffleTreePathContext = createContext()
 
