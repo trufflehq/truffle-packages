@@ -41,18 +41,11 @@ function getNestedComponents(router, state) {
       {/* Layout needs to be scoped within a route, otherwise it shows for any route/route */}
       <Route path="/:any*">
         <Layout>
-          {/* need another router due to route above */}
-          <Router
-            base={router.base}
-            key={`${router.base}-inner`}
-            hook={isSsr ? staticLocationHook(state.url.pathname) : undefined}
-          >
-            <Route path="/">
-              <Suspense>
-                <Page />
-              </Suspense>
-            </Route>
-          </Router>
+          <Route path="/">
+            <Suspense>
+              <Page />
+            </Suspense>
+          </Route>
           {router.children.map((child) => getNestedComponents(child, state))}
         </Layout>
       </Route>
