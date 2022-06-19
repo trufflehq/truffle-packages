@@ -1,5 +1,5 @@
 import React, { lazy, memo, Suspense, useMemo } from "react";
-import { Route, Router } from "wouter";
+import { Route, Router, Switch } from "wouter";
 import staticLocationHook from "wouter/static-location";
 import { useAsync } from "@ultra/react";
 
@@ -28,31 +28,34 @@ function getNestedComponents(router, state) {
   const Layout = router.layout
     ? lazy(() => import(router.layout))
     : ({ children }) => children;
+  const Page = router.page ? lazy(() => import(router.page)) : () => "";
 
-  console.log("nested...", router);
+  console.log("nested...", state.url.pathname, router.base);
 
   return (
     <Router
       base={router.base}
+      key={router.base}
       hook={isSsr ? staticLocationHook(state.url.pathname) : undefined}
     >
-      <Layout>
-        {router.pages.map((page) => {
-          console.log(router, page);
-
-          const Page = page && lazy(() => import(page.path));
-          return (
-            <Route path={page.route}>
+      {/* Layout needs to be scoped within a route, otherwise it shows for any route/route */}
+      <Route path="/:any*">
+        <Layout>
+          {/* need another router due to route above */}
+          <Router
+            base={router.base}
+            key={`${router.base}-inner`}
+            hook={isSsr ? staticLocationHook(state.url.pathname) : undefined}
+          >
+            <Route path="/">
               <Suspense>
                 <Page />
               </Suspense>
             </Route>
-          );
-        })}
-        {router.children.map((child) => (
-          <Route path={child.base}>{getNestedComponents(child, state)}</Route>
-        ))}
-      </Layout>
+          </Router>
+          {router.children.map((child) => getNestedComponents(child, state))}
+        </Layout>
+      </Route>
     </Router>
   );
 }
