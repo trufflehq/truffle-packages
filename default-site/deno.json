@@ -1,11 +1,7 @@
 {
   "tasks": {
-    "dev": "importMap=import-map.json DENO_FUTURE_CHECK=1 ULTRA_MODE=development deno run -A --location=http://localhost:8000 --unstable server.tsx",
-    "start": "importMap=import-map.json ULTRA_MODE=production DENO_FUTURE_CHECK=1 deno run -A --location=http://localhost:8000 --unstable server.tsx",
-    "cache": "deno cache --reload --no-check server.tsx",
-    "vendor": "importMap=import-map.json deno run -A --unstable https://deno.land/x/ultra@v1.0.1/vendor.ts"
+    "dev": "DENO_FUTURE_CHECK=1 importMap=https://tfl.dev/@truffle/ultra-server@0.1.0/import-map.json deno run -A --unstable --importmap=https://tfl.dev/@truffle/ultra-server@0.1.0/import-map.json https://tfl.dev/@truffle/ultra-server@0.1.0/index.ts",
   },
-  "importMap": "import-map.json",
   "compilerOptions": {
     "jsx": "react-jsxdev",
     "jsxImportSource": "react",

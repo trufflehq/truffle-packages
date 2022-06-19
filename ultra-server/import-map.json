@@ -10,6 +10,10 @@
     "react-helmet": "https://npm.tfl.dev/react-helmet-async?deps=react@18&dev",
     "wouter": "https://npm.tfl.dev/wouter?deps=react@18&dev",
     "wouter/static-location": "https://npm.tfl.dev/wouter/static-location.js?deps=react@18&dev",
-    "@ultra/react": "https://raw.githubusercontent.com/austinhallock/ultra/v2/react.ts"
+    "@ultra/react": "https://raw.githubusercontent.com/austinhallock/ultra/v2/react.ts",
+    "@ultra-server/client": "https://tfl.dev/@truffle/ultra-server@0.1.0/client.tsx",
+    "@ultra-server/app": "https://tfl.dev/@truffle/ultra-server@0.1.0/app.tsx",
+    "@ultra-server/setup": "https://tfl.dev/@truffle/ultra-server@0.1.0/setup.jsx",
+    "@ultra-server/fs-router": "https://tfl.dev/@truffle/ultra-server@0.1.0/fs-router.tsx"
   }
 }

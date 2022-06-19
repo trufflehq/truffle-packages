@@ -1,3 +1,3 @@
 export default {
-  secretKey: 'replace me and DO NOT COMMIT'
+  secretKey: 'rename this file to truffle.secret.mjs and DO NOT COMMIT'
 }

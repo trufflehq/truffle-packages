@@ -1,44 +1,37 @@
+import React from "react";
 import { Router } from "wouter";
 import staticLocationHook from "wouter/static-location";
 import createServer from "https://raw.githubusercontent.com/austinhallock/ultra/v2/server.ts";
 import { reactHelmetPlugin } from "https://raw.githubusercontent.com/austinhallock/ultra/v2/src/plugins/react-helmet.ts";
 import { ServerAppProps } from "https://raw.githubusercontent.com/austinhallock/ultra/v2/src/types.ts";
+import globalContext from "https://tfl.dev/@truffle/global-context@1.0.0/index.js";
 
 // patch React.createElement to allow prop injection
 import "https://tfl.dev/@truffle/utils@0.0.1/prop-injection/patch-react.js";
 
-import globalContext from "https://tfl.dev/@truffle/global-context@1.0.0/index.js";
+import App from "./app.tsx";
 
-import TopRouteLayout from "./routes/layout.tsx";
+console.log("server...");
 
-/**
- * This is the component that will be rendered server side.
- */
 function ServerApp({ state }: ServerAppProps) {
-  // TODO: wrap this in globalContext.run when this is added:
-  // https://github.com/denoland/deno/issues/5638#issuecomment-1147780998
+  console.log("state", state);
+
   return globalContext.run(
     {},
     () => (
       <Router hook={staticLocationHook(state.url.pathname)}>
-        <TopRouteLayout state={state} />
+        <App state={state} />
       </Router>
     ),
   );
 }
 
 const server = await createServer(ServerApp, {
-  // mode: "production", // let env var dictate
-  bootstrapModules: ["./client.tsx"],
-  // renderStrategy: 'static' // static | stream
+  bootstrapModules: [
+    "https://tfl.dev/@truffle/ultra-server@0.1.0/client.tsx",
+    "https://tfl.dev/@truffle/ultra-server@0.1.0/app.tsx",
+  ],
 });
 
-/**
- * Register server plugins
- */
 server.register(reactHelmetPlugin);
-
-/**
- * Start the server!
- */
-server.start({ port: 8000 });
+server.start({ port: parseInt(Deno.env.get("SPOROCARP_PORT") || "8080") });

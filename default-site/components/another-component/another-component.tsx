@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 export default function AnotherComponent({ someProp }) {
   return (
     <div>
-      Another component...: {someProp}
+      Another component..: {someProp}
     </div>
   );
 }

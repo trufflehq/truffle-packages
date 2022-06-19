@@ -1,7 +1,8 @@
 import React, { Suspense, useMemo } from 'react'
 
 import { getModel } from 'https://tfl.dev/@truffle/api@0.0.1/legacy/index.js'
-import config, { setConfig } from '../config/config.js'
+import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.js'
+import config, { setConfig } from 'https://tfl.dev/@truffle/utils@0.0.1/config/config.js'
 
 // NOTE: this gets injected into dom for client, so DO NOT put anything secret in here!!!
 const clientConfig = {
@@ -31,7 +32,6 @@ function AsyncTruffleSetup ({ state, useAsync, children }) {
   // useAsync gets run on server (to populate data) and client as fallback
   // TODO: Promise.resolve doesn't work for some reason
   const config = useAsync('/client-config', () => globalThis?.Deno ? new Promise((resolve) => setTimeout(() => resolve(clientConfig), 0)) : {})
-  console.log('config', config)
   if (!Object.entries(config)?.length) {
     console.warn('Config from ssr not found')
   }
@@ -42,6 +42,9 @@ function AsyncTruffleSetup ({ state, useAsync, children }) {
   const hostname = state?.url?.hostname || window.location.hostname
   const domain = useAsync('/domain', () => getDomainByDomainName(hostname))
   state.domain = domain
+  const context = globalContext.getStore()
+  context.orgId = domain.orgId
+  context.packageVersionId = domain.packageVersionId
 
   useTruffleSetup({ domain })
 

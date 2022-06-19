@@ -1,12 +1,11 @@
 import React from "react";
 import { Helmet, HelmetProvider } from "react-helmet";
-import { Route, Router, Switch } from "wouter";
 import type { RenderState } from "https://raw.githubusercontent.com/austinhallock/ultra/v2/server.ts";
 import { useAsync } from "@ultra/react";
 
-import { TruffleSetup } from "https://tfl.dev/@truffle/utils@0.0.1/ultra/setup.jsx";
-
-import HomePage from "./home/page.tsx";
+// as of june 2022, import mapping required for ultra to know to compile these files
+import { TruffleSetup } from "@ultra-server/setup";
+import FsRouter from "@ultra-server/fs-router";
 
 type AppProps = {
   state: RenderState;
@@ -20,13 +19,8 @@ const Ultra = ({ state }: AppProps) => {
           <script
             dangerouslySetInnerHTML={{
               __html:
-                `window.esmsInitOptions = { polyfillEnable: ['css-modules', 'json-modules'] }`,
+                `window.esmsInitOptions = { polyfillEnable: ['json-modules'] }`,
             }}
-          >
-          </script>
-          <script
-            async
-            src="https://unpkg.com/construct-style-sheets-polyfill@3.1.0/dist/adoptedStyleSheets.js"
           >
           </script>
           <script
@@ -39,9 +33,17 @@ const Ultra = ({ state }: AppProps) => {
             dangerouslySetInnerHTML={{
               __html: `{
               "imports": {
+                "prop-types": "https://npm.tfl.dev/prop-types",
                 "react": "https://npm.tfl.dev/react@18?dev",
+                "react/jsx-runtime": "https://npm.tfl.dev/react@18/jsx-runtime.js?dev",
+                "react/jsx-dev-runtime": "https://npm.tfl.dev/react@18/jsx-dev-runtime.js?dev",
                 "react-dom": "https://npm.tfl.dev/react-dom@18?dev",
-                "prop-types": "https://npm.tfl.dev/prop-types"
+                "react-dom/client": "https://npm.tfl.dev/react-dom@18/client?dev",
+                "react-dom/server": "https://npm.tfl.dev/react-dom@18/server?dev",
+                "react-helmet": "https://npm.tfl.dev/react-helmet-async?deps=react@18&dev",
+                "wouter": "https://npm.tfl.dev/wouter?deps=react@18&dev",
+                "wouter/static-location": "https://npm.tfl.dev/wouter/static-location.js?deps=react@18&dev",
+                "@ultra/react": "https://raw.githubusercontent.com/austinhallock/ultra/v2/react.ts"
               }
             }`,
             }}
@@ -53,25 +55,7 @@ const Ultra = ({ state }: AppProps) => {
         </head>
         <body>
           <TruffleSetup state={state} useAsync={useAsync}>
-            <main>
-              <Router>
-                <Route path="/:abc">
-                  aa
-                  <Router base="/:abc">
-                    <Route path="/a">
-                      <div>inner</div>
-                    </Route>
-                  </Router>
-                </Route>
-              </Router>
-              {
-                /* <Switch>
-                <Route>
-                  <HomePage state={state} />
-                </Route>
-              </Switch> */
-              }
-            </main>
+            <FsRouter state={state} />
           </TruffleSetup>
         </body>
       </html>

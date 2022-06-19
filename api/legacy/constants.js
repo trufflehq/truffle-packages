@@ -1,3 +1,5 @@
+console.log('constants')
+
 export const AUTH_COOKIE = 'accessToken'
 // export const API_URL = 'https://mycelium.truffle.vip'
 export const API_URL = 'https://mycelium.staging.bio'

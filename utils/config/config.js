@@ -13,7 +13,6 @@ const config = {
 export default config
 
 export function setConfig (newConfig) {
-  console.log('setconfig', newConfig)
   // update in-place, so same default-exported object can be used
   Object.assign(config, newConfig)
 }
