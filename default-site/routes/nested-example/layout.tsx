@@ -1,12 +1,12 @@
 import React from "react";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 import Home from "../../components/home/home.tsx";
 
 export default function Layout({ children }) {
   return (
     <>
-      <Link href="/a">A</Link>
-      <Link href="/something">Something</Link>
+      <Link to="/nested-example/a">A</Link>
+      <Link to="/nested-example/something">Something</Link>
       nested ex {Math.random()}
       {children}
     </>

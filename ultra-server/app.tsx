@@ -41,8 +41,8 @@ const Ultra = ({ state }: AppProps) => {
                 "react-dom/client": "https://npm.tfl.dev/react-dom@18/client?dev",
                 "react-dom/server": "https://npm.tfl.dev/react-dom@18/server?dev",
                 "react-helmet": "https://npm.tfl.dev/react-helmet-async?deps=react@18&dev",
-                "wouter": "https://npm.tfl.dev/wouter?deps=react@18&dev",
-                "wouter/static-location": "https://npm.tfl.dev/wouter/static-location.js?deps=react@18&dev",
+                "react-router-dom": "https://npm.tfl.dev/react-router-dom@6?deps=react@18&dev",
+                "react-router-dom/server": "https://npm.tfl.dev/react-router-dom@6/server?deps=react@18&dev",
                 "@ultra/react": "https://raw.githubusercontent.com/austinhallock/ultra/v2/react.ts"
               }
             }`,

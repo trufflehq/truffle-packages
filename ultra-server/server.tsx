@@ -1,6 +1,5 @@
 import React from "react";
-import { Router } from "wouter";
-import staticLocationHook from "wouter/static-location";
+import { StaticRouter } from "react-router-dom/server";
 import createServer from "https://raw.githubusercontent.com/austinhallock/ultra/v2/server.ts";
 import { reactHelmetPlugin } from "https://raw.githubusercontent.com/austinhallock/ultra/v2/src/plugins/react-helmet.ts";
 import { ServerAppProps } from "https://raw.githubusercontent.com/austinhallock/ultra/v2/src/types.ts";
@@ -19,9 +18,9 @@ function ServerApp({ state }: ServerAppProps) {
   return globalContext.run(
     {},
     () => (
-      <Router hook={staticLocationHook(state.url.pathname)}>
+      <StaticRouter location={state.url.pathname}>
         <App state={state} />
-      </Router>
+      </StaticRouter>
     ),
   );
 }

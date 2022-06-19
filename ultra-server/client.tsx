@@ -1,6 +1,7 @@
 import React from "react";
 import { hydrateRoot } from "react-dom/client";
 import { Ultra } from "@ultra/react";
+import { BrowserRouter } from "react-router-dom";
 import globalContext from "https://tfl.dev/@truffle/global-context@1.0.0/index.js";
 
 // patch React.createElement to allow prop injection
@@ -13,7 +14,9 @@ console.log("client...");
 globalContext.setGlobalValue({});
 hydrateRoot(
   document,
-  <Ultra>
-    <App state={window.__ultra_renderState} />
-  </Ultra>,
+  <BrowserRouter>
+    <Ultra>
+      <App state={window.__ultra_renderState} />
+    </Ultra>
+  </BrowserRouter>,
 );
