@@ -6,8 +6,6 @@ const routers = getRouters();
 
 export const nestedRouters = getNestedRouters("");
 
-console.log("n1", nestedRouters);
-
 function getRouters() {
   return glob
     // only match directories
@@ -19,8 +17,10 @@ function getNestedRouters(base) {
   const depth = base.match(/\//g)?.length || 0;
   return {
     base,
+    // TODO: route index
     page: existsSync(`${dir}${base}/page.tsx`) &&
       getPath(`${base}/page.tsx`),
+    // TODO: route
     layout: existsSync(`${dir}${base}/layout.tsx`) &&
       getPath(`${base}/layout.tsx`),
     children: routers

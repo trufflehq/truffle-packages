@@ -1,10 +1,10 @@
-import React, { lazy, memo, Suspense, useMemo } from "react";
+import React, { lazy, Suspense, useMemo } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 import { useAsync } from "@ultra/react";
 
 const isSsr = globalThis?.Deno;
 
-export default function Routing({ state }) {
+export default function Routing() {
   const nestedRouters = useAsync(
     "nested-layouts",
     () =>
@@ -13,10 +13,9 @@ export default function Routing({ state }) {
         nestedRouters
       ),
   );
-  console.log("nested", nestedRouters);
 
   const nestedComponents = useMemo(
-    () => getNestedComponents(nestedRouters, state),
+    () => getNestedComponents(nestedRouters),
     [],
   );
 
@@ -27,25 +26,22 @@ export default function Routing({ state }) {
   );
 }
 
-function getNestedComponents(router, state) {
+function getNestedComponents(router) {
   const Layout = router.layout
     ? lazy(() => import(router.layout))
     : ({ children }) => children;
+  // so layouts can be nextjs style and don't need <Outlet />
+  const LayoutWrapper = () => (
+    <Layout>
+      <Outlet />
+    </Layout>
+  );
   const Page = router.page ? lazy(() => import(router.page)) : () => "";
 
-  console.log("nested...", state.url.pathname, router.base);
-
   return (
-    <Route
-      path={router.base}
-      element={
-        <Layout>
-          <Outlet />
-        </Layout>
-      }
-    >
+    <Route path={router.base} key={router.base} element={<LayoutWrapper />}>
       <Route index element={<Page />} />
-      {router.children.map((child) => getNestedComponents(child, state))}
+      {router.children.map(getNestedComponents)}
     </Route>
   );
 }
