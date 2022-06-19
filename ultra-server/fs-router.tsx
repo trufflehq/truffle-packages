@@ -38,7 +38,9 @@ function getNestedComponents(router, state) {
     >
       <Layout>
         {router.pages.map((page) => {
-          const Page = page && lazy(() => import(page));
+          console.log(router, page);
+
+          const Page = page && lazy(() => import(page.path));
           return (
             <Route path={page.route}>
               <Suspense>
@@ -47,7 +49,9 @@ function getNestedComponents(router, state) {
             </Route>
           );
         })}
-        {router.children.map((child) => getNestedComponents(child, state))}
+        {router.children.map((child) => (
+          <Route path={child.base}>{getNestedComponents(child, state)}</Route>
+        ))}
       </Layout>
     </Router>
   );

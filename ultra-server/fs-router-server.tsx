@@ -1,6 +1,9 @@
 import glob from "https://npm.tfl.dev/glob@8";
 import * as path from "https://deno.land/std@0.144.0/path/mod.ts";
 
+// FIXME: simplify router. maybe do router for each directory in /routes
+// then add in page and layout if they exist top-level in that dir
+// FIXME: make sure rest of ultra stuff works ok
 const pages = getRoutes("page");
 const layouts = getRoutes("layout");
 console.log(pages, layouts);
@@ -36,8 +39,16 @@ function getNestedRouters(route) {
     )
     .map((layout) => getNestedRouters(layout.route));
   router.pages = pages
-    .filter((page) => page.route.indexOf(route) !== -1)
-    .map((page) => page.path);
+    .filter((page, i) => {
+      if (page.route.indexOf(route) !== -1) {
+        pages.splice(i, 1); // don't route to this in different router elsewhere
+        return true;
+      }
+    });
+  // .map((page) => ({
+  //   ...page,
+  //   route: page.route.replace(router.base, ""),
+  // }));
 
   return router;
 }
