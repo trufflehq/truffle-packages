@@ -7,13 +7,12 @@ const config = {
   // TODO: prod
   PUBLIC_API_URL: 'https://mycelium.staging.bio',
   API_URL: 'https://mycelium.staging.bio',
-  HOSTNAME: 'sporocarp.dev'
+  HOST: 'sporocarp.dev'
 }
 
 export default config
 
 export function setConfig (newConfig) {
-  console.log('set config', newConfig)
   // update in-place, so same default-exported object can be used
   Object.assign(config, newConfig)
 }

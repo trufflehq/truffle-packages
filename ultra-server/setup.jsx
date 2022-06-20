@@ -11,7 +11,7 @@ const clientConfig = {
   IS_PROD_ENV: globalThis?.Deno?.env.get('ULTRA_MODE') !== 'development',
   PUBLIC_API_URL: globalThis?.Deno?.env.get('PUBLIC_MYCELIUM_API_URL'),
   API_URL: globalThis?.Deno?.env.get('PUBLIC_MYCELIUM_API_URL'),
-  HOSTNAME: globalThis?.Deno?.env.get('SPOROCARP_HOSTNAME')
+  HOST: globalThis?.Deno?.env.get('SPOROCARP_HOST')
 }
 const serverConfig = {
   PUBLIC_API_URL: globalThis?.Deno?.env.get('PUBLIC_MYCELIUM_API_URL'),
@@ -43,8 +43,8 @@ export function TruffleSetup ({ state, useAsync, children }) {
 }
 
 function AsyncTruffleSetup ({ state, useAsync, children }) {
-  const hostname = state?.url?.hostname || window.location.hostname
-  const domain = useAsync('/domain', () => getDomainByDomainName(hostname))
+  const host = state?.url?.host || window.location.host
+  const domain = useAsync('/domain', () => getDomainByDomainName(host))
 
   if (domain) {
     const context = globalContext.getStore()
@@ -60,15 +60,17 @@ function AsyncTruffleSetup ({ state, useAsync, children }) {
 async function getDomainByDomainName (domainName) {
   const client = getClient()
   if (config.IS_DEV_ENV) {
-    domainName = config.HOSTNAME
+    domainName = config.HOST
   }
+
+  console.log('get', domainName, config.HOST);
 
   const domainResponse = await client
     .query(GET_DOMAIN_QUERY, { domainName, _skipAuth: true })
     .toPromise()
   const domain = domainResponse?.data?.domain
 
-  console.log('got domain', domainName, domain, domainResponse)
+  console.log('got domain', domainName, domain, domainResponse?.error)
 
   if (!domain) {
     console.error(`Invalid page, ${domainName}`)

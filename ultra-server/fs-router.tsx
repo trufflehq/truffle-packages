@@ -2,20 +2,20 @@ import React, { lazy, Suspense, useMemo } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 import { useAsync } from "@ultra/react";
 
+import config from "https://tfl.dev/@truffle/utils@0.0.1/config/config.js";
+
 const isSsr = globalThis?.Deno;
 
 export default function Routing() {
-  const nestedRouters = useAsync(
+  const nestedRoutes = useAsync(
     "nested-layouts",
     () =>
       isSsr &&
-      import("./fs-router-server.tsx").then(({ nestedRouters }) =>
-        nestedRouters
-      ),
+      import("./fs-router-server.tsx").then(({ nestedRoutes }) => nestedRoutes),
   );
 
   const nestedComponents = useMemo(
-    () => getNestedComponents(nestedRouters),
+    () => getNestedComponents(nestedRoutes),
     [],
   );
 
@@ -26,9 +26,11 @@ export default function Routing() {
   );
 }
 
-function getNestedComponents(router) {
-  const Layout = router.layout
-    ? lazy(() => import(router.layout))
+function getNestedComponents(route) {
+  console.log("route", route);
+
+  const Layout = route.layout
+    ? lazy(() => import(getUrl(route.layout)))
     : ({ children }) => children;
   // so layouts can be nextjs style and don't need <Outlet />
   const LayoutWrapper = () => (
@@ -36,12 +38,29 @@ function getNestedComponents(router) {
       <Outlet />
     </Layout>
   );
-  const Page = router.page ? lazy(() => import(router.page)) : () => "";
+  const Page = route.page ? lazy(() => import(getUrl(route.page))) : () => "";
 
   return (
-    <Route path={router.base} key={router.base} element={<LayoutWrapper />}>
+    <Route path={route.path} key={route.path} element={<LayoutWrapper />}>
       <Route index element={<Page />} />
-      {router.children.map(getNestedComponents)}
+      {route.children.map(getNestedComponents)}
     </Route>
   );
+}
+
+function getUrl(localPath) {
+  // return `file://${path.resolve(dir, localPath)}`
+  // TODO: don't want deno to cache this...
+  // TODO: get file imports working for client-side fs-routing
+  return new URL(
+    `${localPath}.compiled.js`,
+    `${getLocation()}/@ultra/compiler/`,
+  ).toString();
+}
+
+function getLocation() {
+  const host = globalThis?.Deno?.env.get("SPOROCARP_HOST") ||
+    window.location.host;
+  const protocol = config.IS_DEV_ENV ? "http:" : "https:";
+  return `${protocol}//${host}`;
 }

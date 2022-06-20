@@ -11,8 +11,6 @@ import "https://tfl.dev/@truffle/utils@0.0.1/prop-injection/patch-react.js";
 import App from "./app.tsx";
 
 function ServerApp({ state }: ServerAppProps) {
-  console.log("state", state);
-
   return globalContext.run(
     {},
     () => (
