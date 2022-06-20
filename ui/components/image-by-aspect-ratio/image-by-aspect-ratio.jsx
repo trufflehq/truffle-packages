@@ -1,9 +1,7 @@
 import React from 'react'
+import root from 'https://npm.tfl.dev/react-shadow@19?deps=react@18&dev'
 
 import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js'
-
-import styles from './image-by-aspect-ratio.css' assert { type: 'css' }
-document.adoptedStyleSheets = [...document.adoptedStyleSheets, styles]
 
 // note that you can't do aspect ratio by height with padding-left
 // https://stackoverflow.com/questions/26438388/maintain-div-aspect-ratio-according-to-height
@@ -36,26 +34,32 @@ export default function $imageByAspectRatio (props) {
   }
 
   return (
-    <div
-      className={'c-image-by-aspect-ratio ' + classKebab({
-        isCentered,
-        isStretch,
-        hasWidth,
-        hasHeight,
-        shouldContain
-      })}
-      style={style}
-    >
-      <div
-        className="image"
-        style={{
-          paddingBottom:
-            !width && isStretch ? `${(1 / aspectRatio) * 100}%` : undefined,
-          paddingLeft:
-            width && isStretch ? `${aspectRatio * 100}%` : undefined,
-          backgroundImage: `url(${imageUrl})`
-        }}
+    <root.div>
+      <link
+        rel="stylesheet"
+        href={new URL('image-by-aspect-ratio.css', import.meta.url).toString()}
       />
-    </div>
+      <div
+        className={'c-image-by-aspect-ratio ' + classKebab({
+          isCentered,
+          isStretch,
+          hasWidth,
+          hasHeight,
+          shouldContain
+        })}
+        style={style}
+      >
+        <div
+          className="image"
+          style={{
+            paddingBottom:
+              !width && isStretch ? `${(1 / aspectRatio) * 100}%` : undefined,
+            paddingLeft:
+              width && isStretch ? `${aspectRatio * 100}%` : undefined,
+            backgroundImage: `url(${imageUrl})`
+          }}
+        />
+      </div>
+    </root.div>
   )
 }

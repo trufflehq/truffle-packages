@@ -1,39 +1,41 @@
-.c-image-by-aspect-ratio {
-  &.is-centered {
-    margin: 0 auto;
-  }
-
-  &.has-height {
-    &.is-stretch {
-      width: 100%;
-
-      > .image {
-        height: 0;
+:host {
+  .c-image-by-aspect-ratio {
+    &.is-centered {
+      margin: 0 auto;
+    }
+  
+    &.has-height {
+      &.is-stretch {
+        width: 100%;
+  
+        > .image {
+          height: 0;
+        }
       }
     }
-  }
-
-  &.has-width {
-    &.is-stretch {
-      height: 100%;
-
-      > .image {
-        width: 0;
+  
+    &.has-width {
+      &.is-stretch {
+        height: 100%;
+  
+        > .image {
+          width: 0;
+        }
       }
     }
-  }
-
-  &.should-contain {
+  
+    &.should-contain {
+      > .image {
+        background-size: contain;
+      }
+    }
+  
     > .image {
-      background-size: contain;
+      width: 100%;
+      height: 100%;
+      background-size: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
     }
-  }
-
-  > .image {
-    width: 100%;
-    height: 100%;
-    background-size: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
   }
 }
