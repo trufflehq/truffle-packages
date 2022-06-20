@@ -1,9 +1,9 @@
-.is-ios .c-icon > svg > path {
+:host .is-ios .c-icon > svg > path {
   -webkit-transition: none;
   transition: none;
 }
 
-.c-icon {
+:host .c-icon {
   text-align: center;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -12,62 +12,61 @@
   outline: none;
 }
 
-.c-icon > svg {
+:host .c-icon > svg {
   vertical-align: middle;
   margin: auto;
   -webkit-tap-highlight-color: transparent;
 }
 
-.c-icon.is-centered {
+:host .c-icon.is-centered {
   margin: auto;
 }
 
-.c-icon.is-circled {
+:host .c-icon.is-circled {
   background: var(--inherit-base);
   border: 1px solid var(--inherit-base-text-10);
   border-radius: 50%;
   cursor: pointer;
 }
 
-.c-icon.is-circled:hover {
+:host .c-icon.is-circled:hover {
   border: 1px solid var(--inherit-base-text-40);
 }
 
-.c-icon.is-clickable {
+:host .c-icon.is-clickable {
   cursor: pointer;
 }
 
-.c-icon.is-clickable.is-aligned-top {
+:host .c-icon.is-clickable.is-aligned-top {
   margin-top: -12px;
 }
 
-.c-icon.is-clickable.is-aligned-top > svg {
+:host .c-icon.is-clickable.is-aligned-top > svg {
   margin-top: 12px;
 }
 
-.c-icon.is-clickable.is-aligned-left {
+:host .c-icon.is-clickable.is-aligned-left {
   margin-left: -12px;
 }
 
-.c-icon.is-clickable.is-aligned-left > svg {
+:host .c-icon.is-clickable.is-aligned-left > svg {
   margin-left: 12px;
 }
 
-.c-icon.is-clickable.is-aligned-right {
+:host .c-icon.is-clickable.is-aligned-right {
   margin-left: auto;
   margin-right: -12px;
 }
 
-.c-icon.is-clickable.is-aligned-right > svg {
+:host .c-icon.is-clickable.is-aligned-right > svg {
   margin-right: 12px;
 }
 
-.c-icon.is-clickable.is-aligned-bottom {
+:host .c-icon.is-clickable.is-aligned-bottom {
   margin-left: auto;
   margin-bottom: -12px;
 }
 
-.c-icon.is-clickable.is-aligned-bottom > svg {
+:host .c-icon.is-clickable.is-aligned-bottom > svg {
   margin-bottom: 12px;
 }
-/*# sourceMappingURL=icon.css.map */

@@ -1,68 +1,70 @@
-.is-ios .c-icon > svg > path {
-  transition: none;
-}
+:host {
+  .is-ios .c-icon > svg > path {
+    transition: none;
+  }
 
-.c-icon {
-  text-align: center;
-  display: flex;
-  -webkit-tap-highlight-color: transparent;
-  outline: none;
-
-  > svg {
-    vertical-align: middle;
-    margin: auto;
+  .c-icon {
+    text-align: center;
+    display: flex;
     -webkit-tap-highlight-color: transparent;
-  }
-
-  &.is-centered {
-    margin: auto;
-  }
-
-  &.is-circled {
-    background: var(--inherit-base);
-    border: 1px solid var(--inherit-base-text-10);
-    border-radius: 50%;
-    cursor: pointer;
-
-    &:hover {
-      border: 1px solid var(--inherit-base-text-40);
+    outline: none;
+  
+    > svg {
+      vertical-align: middle;
+      margin: auto;
+      -webkit-tap-highlight-color: transparent;
     }
-  }
-
-  &.is-clickable {
-    cursor: pointer;
-
-    &.is-aligned-top {
-      margin-top: -12px;
-
-      > svg {
-        margin-top: 12px;
+  
+    &.is-centered {
+      margin: auto;
+    }
+  
+    &.is-circled {
+      background: var(--inherit-base);
+      border: 1px solid var(--inherit-base-text-10);
+      border-radius: 50%;
+      cursor: pointer;
+  
+      &:hover {
+        border: 1px solid var(--inherit-base-text-40);
       }
     }
-
-    &.is-aligned-left {
-      margin-left: -12px;
-
-      > svg {
-        margin-left: 12px;
+  
+    &.is-clickable {
+      cursor: pointer;
+  
+      &.is-aligned-top {
+        margin-top: -12px;
+  
+        > svg {
+          margin-top: 12px;
+        }
       }
-    }
-
-    &.is-aligned-right {
-      margin-left: auto;
-      margin-right: -12px;
-
-      > svg {
-        margin-right: 12px;
+  
+      &.is-aligned-left {
+        margin-left: -12px;
+  
+        > svg {
+          margin-left: 12px;
+        }
       }
-    }
-
-    &.is-aligned-bottom {
-      margin-left: auto;
-      margin-bottom: -12px;
-
-      > svg {
-        margin-bottom: 12px;
+  
+      &.is-aligned-right {
+        margin-left: auto;
+        margin-right: -12px;
+  
+        > svg {
+          margin-right: 12px;
+        }
+      }
+  
+      &.is-aligned-bottom {
+        margin-left: auto;
+        margin-bottom: -12px;
+  
+        > svg {
+          margin-bottom: 12px;
+        }
       }
     }
   }
