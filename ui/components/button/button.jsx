@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import root from "https://npm.tfl.dev/react-shadow@19?deps=react@18&dev";
 
 import { createSubject } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 import useObservables from 'https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js'
@@ -7,9 +8,6 @@ import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.
 import Icon from '../icon/icon.jsx'
 import ImageByAspectRatio from '../image-by-aspect-ratio/image-by-aspect-ratio.jsx'
 import Ripple from '../ripple/ripple.jsx'
-
-import styles from './button.css' assert { type: 'css' }
-document.adoptedStyleSheets = [...document.adoptedStyleSheets, styles]
 
 /**
  * @param {Object} props
@@ -184,34 +182,42 @@ export default function Button (props) {
   )
 
   // TODO: routing w/o hard page load if href exists
-  return <button
-    className={`c-button style-${style} size-${size} icon-location-${iconLocation} ` + classKebab({
-      hasIcon: Boolean(icon),
-      isSelected,
-      isFullWidth
-    })}
-    type={type}
-    disabled={Boolean(isDisabled)}
-    href={href}
-    target={target}
-    style={buttonStyles}
-    onMouseDown={onMouseDown}
-    onClick={async (e) => {
-      if (!isDisabled) {
-        shouldHandleLoading && isLoadingSubject.next(true)
-        try {
-          await onClick?.(e)
-          shouldHandleLoading && isLoadingSubject.next(false)
-        } catch (err) {
-          shouldHandleLoading && isLoadingSubject.next(false)
-          throw err
-        }
-      }
-    }}
-  >
-    {icon && iconLocation === 'left' && $iconWrapper}
-    {isLoading ? 'Loading...' : text}
-    {icon && iconLocation === 'right' && $iconWrapper}
-    <Ripple color={textColor} />
-  </button>
+  return (
+    <root.div>
+      <button
+        className={`c-button style-${style} size-${size} icon-location-${iconLocation} ` + classKebab({
+          hasIcon: Boolean(icon),
+          isSelected,
+          isFullWidth
+        })}
+        type={type}
+        disabled={Boolean(isDisabled)}
+        href={href}
+        target={target}
+        style={buttonStyles}
+        onMouseDown={onMouseDown}
+        onClick={async (e) => {
+          if (!isDisabled) {
+            shouldHandleLoading && isLoadingSubject.next(true)
+            try {
+              await onClick?.(e)
+              shouldHandleLoading && isLoadingSubject.next(false)
+            } catch (err) {
+              shouldHandleLoading && isLoadingSubject.next(false)
+              throw err
+            }
+          }
+        }}
+      >
+        <link
+            rel="stylesheet"
+            href={new URL('button.css', import.meta.url).toString()}
+          />
+        {icon && iconLocation === 'left' && $iconWrapper}
+        {isLoading ? 'Loading...' : text}
+        {icon && iconLocation === 'right' && $iconWrapper}
+        <Ripple color={textColor} />
+      </button>
+    </root.div>
+  )
 }

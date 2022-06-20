@@ -1,4 +1,4 @@
-.c-button {
+:host .c-button {
   border: none;
   cursor: pointer;
   max-width: 100%;
@@ -33,7 +33,7 @@
   outline: var(--outline);
 }
 
-.c-button:hover {
+:host .c-button:hover {
   -webkit-transition: var(--hover-transition);
   transition: var(--hover-transition);
   -webkit-transform: var(--transform-hover);
@@ -43,7 +43,7 @@
   outline: var(--outline-hover);
 }
 
-.c-button.is-selected {
+:host .c-button.is-selected {
   -webkit-transition: var(--selected-transition);
   transition: var(--selected-transition);
   -webkit-transform: var(--transform-selected);
@@ -53,30 +53,29 @@
   outline: var(--outline-selected);
 }
 
-.c-button.size-small {
+:host .c-button.size-small {
   padding: 8px 16px;
   font-size: 12px;
   font-weight: 400;
 }
 
-.c-button.size-medium {
+:host .c-button.size-medium {
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 600;
 }
 
-.c-button.size-large {
+:host .c-button.size-large {
   padding: 15px 30px;
   font-size: 18px;
   font-weight: 600;
 }
 
-.c-button.is-full-width {
+:host .c-button.is-full-width {
   width: 100%;
 }
 
-.c-button:disabled {
+:host .c-button:disabled {
   opacity: 0.5;
   pointer-events: none;
 }
-/*# sourceMappingURL=button.css.map */
