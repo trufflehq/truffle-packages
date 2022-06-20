@@ -18,6 +18,8 @@ const serverConfig = {
   API_URL: globalThis?.Deno?.env.get('MYCELIUM_API_URL')
 }
 
+setConfig(globalThis?.Deno ? { ...clientConfig, ...serverConfig } : window._truffleConfig)
+
 const GET_DOMAIN_QUERY = gql`query DomainByDomainName($domainName: String) {
   domain(domainName: $domainName) {
     orgId
@@ -34,28 +36,22 @@ export function TruffleSetup ({ state, useAsync, children }) {
         {children}
       </Provider>
     </AsyncTruffleSetup>
+    <script dangerouslySetInnerHTML={{
+      __html: `window._truffleConfig = ${JSON.stringify(window._truffleConfig || clientConfig)}`
+    }} />
   </Suspense>
 }
 
 function AsyncTruffleSetup ({ state, useAsync, children }) {
-  // only use value if it's from Deno
-  // useAsync gets run on server (to populate data) and client as fallback
-  // TODO: Promise.resolve doesn't work for some reason
-  const config = useAsync('/client-config', () => globalThis?.Deno ? new Promise((resolve) => setTimeout(() => resolve(clientConfig), 0)) : {})
-  if (!Object.entries(config)?.length) {
-    console.warn('Config from ssr not found')
-  }
-  // FIXME: this is called way too much if domain is null (invalid page error log) for some reason
-  setConfig(config)
-  globalThis?.Deno && setConfig(serverConfig)
-
   const hostname = state?.url?.hostname || window.location.hostname
   const domain = useAsync('/domain', () => getDomainByDomainName(hostname))
-  console.log('domain', domain)
-  if (domain) { // FIXME: figure out why this is sometimes null / errors on server
+
+  if (domain) {
     const context = globalContext.getStore()
     context.orgId = domain.orgId
     context.packageVersionId = domain.packageVersionId
+  } else {
+    console.error('Error fetching domain from server (useAsync)')
   }
 
   return children
@@ -72,7 +68,7 @@ async function getDomainByDomainName (domainName) {
     .toPromise()
   const domain = domainResponse?.data?.domain
 
-  console.log('got domain', domain)
+  console.log('got domain', domainName, domain, domainResponse)
 
   if (!domain) {
     console.error(`Invalid page, ${domainName}`)

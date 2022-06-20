@@ -10,8 +10,6 @@ import "https://tfl.dev/@truffle/utils@0.0.1/prop-injection/patch-react.js";
 
 import App from "./app.tsx";
 
-console.log("server...");
-
 function ServerApp({ state }: ServerAppProps) {
   console.log("state", state);
 
@@ -27,10 +25,10 @@ function ServerApp({ state }: ServerAppProps) {
 
 const server = await createServer(ServerApp, {
   bootstrapModules: [
-    "https://tfl.dev/@truffle/ultra-server@0.1.0/client.tsx",
-    "https://tfl.dev/@truffle/ultra-server@0.1.0/app.tsx",
+    "https://tfl.dev/@truffle/ultra-server@0.1.1/client.tsx",
+    "https://tfl.dev/@truffle/ultra-server@0.1.1/app.tsx",
   ],
 });
 
 server.register(reactHelmetPlugin);
-server.start({ port: parseInt(Deno.env.get("SPOROCARP_PORT") || "8080") });
+server.start({ port: parseInt(Deno.env.get("ULTRA_PORT") || "8000") });

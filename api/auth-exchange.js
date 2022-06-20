@@ -14,8 +14,6 @@ export function getAuthExchange () {
       operation
     }) => {
       const context = globalContext.getStore()
-      console.log('context', context)
-      console.log('addauth', authState)
       // the token isn't in the auth state, return the operation without changes
       // HACK: variables._skipAuth for domain query. ideally there's some way to bypass
       // auth via context instead of var
@@ -29,8 +27,6 @@ export function getAuthExchange () {
           ? operation.context.fetchOptions()
           : operation.context.fetchOptions || {}
 
-      console.log('add.........', authState.accessToken)
-
       return makeOperation(
         operation.kind,
         operation,
@@ -41,7 +37,7 @@ export function getAuthExchange () {
             headers: {
               ...fetchOptions.headers,
               'x-access-token': authState.accessToken,
-              'x-org-id': context.orgId
+              'x-org-id': context.orgId || ''
             }
           }
         }

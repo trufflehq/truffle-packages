@@ -40,6 +40,13 @@ function getPath(localPath) {
   // TODO: get file imports working for client-side fs-routing
   return new URL(
     `${dir}${localPath}.compiled.js`,
-    "http://localhost:50410/@ultra/compiler/",
+    `${getLocation()}/@ultra/compiler/`,
   ).toString();
+}
+
+function getLocation() {
+  const hostname = globalThis?.Deno.env.get("SPOROCARP_HOSTNAME");
+  const protocol = hostname === "localhost" ? "http" : "https";
+  const port = globalThis?.Deno.env.get("SPOROCARP_PORT");
+  return window?.location?.href || `${protocol}://${hostname}:${port}`;
 }

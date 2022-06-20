@@ -11,9 +11,9 @@
     "react-router-dom": "https://npm.tfl.dev/react-router-dom@6?deps=react@18&dev",
     "react-router-dom/server": "https://npm.tfl.dev/react-router-dom@6/server?deps=react@18&dev",
     "@ultra/react": "https://raw.githubusercontent.com/austinhallock/ultra/v2/react.ts",
-    "@ultra-server/client": "https://tfl.dev/@truffle/ultra-server@0.1.0/client.tsx",
-    "@ultra-server/app": "https://tfl.dev/@truffle/ultra-server@0.1.0/app.tsx",
-    "@ultra-server/setup": "https://tfl.dev/@truffle/ultra-server@0.1.0/setup.jsx",
-    "@ultra-server/fs-router": "https://tfl.dev/@truffle/ultra-server@0.1.0/fs-router.tsx"
+    "@ultra-server/client": "https://tfl.dev/@truffle/ultra-server@0.1.1/client.tsx",
+    "@ultra-server/app": "https://tfl.dev/@truffle/ultra-server@0.1.1/app.tsx",
+    "@ultra-server/setup": "https://tfl.dev/@truffle/ultra-server@0.1.1/setup.jsx",
+    "@ultra-server/fs-router": "https://tfl.dev/@truffle/ultra-server@0.1.1/fs-router.tsx"
   }
 }
