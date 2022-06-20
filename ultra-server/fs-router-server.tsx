@@ -18,10 +18,8 @@ function getNestedRoutes(path = "") {
 
   return {
     path,
-    // TODO: route index
     page: existsSync(`${dir}${path}/page.tsx`) &&
       `${dir}${path}/page.tsx`,
-    // TODO: route
     layout: existsSync(`${dir}${path}/layout.tsx`) &&
       `${dir}${path}/layout.tsx`,
     children: routes

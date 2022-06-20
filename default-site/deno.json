@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "DENO_FUTURE_CHECK=1 importMap=https://tfl.dev/@truffle/ultra-server@0.1.1/import-map.json deno run -A --unstable --importmap=https://tfl.dev/@truffle/ultra-server@0.1.1/import-map.json https://tfl.dev/@truffle/ultra-server@0.1.1/index.ts",
+    "dev": "DENO_FUTURE_CHECK=1 mode=development ULTRA_MODE=development importMap=https://tfl.dev/@truffle/ultra-server@0.1.1/import-map.json deno run -A --unstable --importmap=https://tfl.dev/@truffle/ultra-server@0.1.1/import-map.json https://tfl.dev/@truffle/ultra-server@0.1.1/index.ts"
   },
   "compilerOptions": {
     "jsx": "react-jsxdev",
