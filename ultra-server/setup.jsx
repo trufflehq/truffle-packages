@@ -1,6 +1,6 @@
-import React, { Suspense, useMemo } from 'react'
+import React, { Suspense } from 'react'
 
-import { getModel } from 'https://tfl.dev/@truffle/api@0.0.1/legacy/index.js'
+import { getClient, gql, Provider } from 'https://tfl.dev/@truffle/api@0.0.1/client.js'
 import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.js'
 import config, { setConfig } from 'https://tfl.dev/@truffle/utils@0.0.1/config/config.js'
 
@@ -18,11 +18,21 @@ const serverConfig = {
   API_URL: globalThis?.Deno?.env.get('MYCELIUM_API_URL')
 }
 
+const GET_DOMAIN_QUERY = gql`query DomainByDomainName($domainName: String) {
+  domain(domainName: $domainName) {
+    orgId
+    packageVersionId
+    org { slug }
+  }
+}`
+
 // only passing useAsync in vs importing directly because file is ts
 export function TruffleSetup ({ state, useAsync, children }) {
   return <Suspense>
     <AsyncTruffleSetup state={state} useAsync={useAsync}>
-      {children}
+      <Provider value={getClient()}>
+        {children}
+      </Provider>
     </AsyncTruffleSetup>
   </Suspense>
 }
@@ -41,64 +51,32 @@ function AsyncTruffleSetup ({ state, useAsync, children }) {
 
   const hostname = state?.url?.hostname || window.location.hostname
   const domain = useAsync('/domain', () => getDomainByDomainName(hostname))
-  state.domain = domain
-  const context = globalContext.getStore()
-  context.orgId = domain.orgId
-  context.packageVersionId = domain.packageVersionId
-
-  useTruffleSetup({ domain })
+  console.log('domain', domain)
+  if (domain) { // FIXME: figure out why this is sometimes null / errors on server
+    const context = globalContext.getStore()
+    context.orgId = domain.orgId
+    context.packageVersionId = domain.packageVersionId
+  }
 
   return children
 }
 
-function useTruffleSetup ({ domain } = {}) {
-  useMemo(() => {
-    if (domain) {
-      const siteInfo = {
-        packageVersionId: domain.packageVersionId,
-        orgId: domain.orgId
-      }
-
-      getModel().auth.setSiteInfo(siteInfo)
-    }
-  }, [Boolean(domain)])
-}
-
 async function getDomainByDomainName (domainName) {
-  console.log('setup isdev', config, domainName)
+  const client = getClient()
   if (config.IS_DEV_ENV) {
     domainName = config.HOSTNAME
   }
 
-  const domainResponse = await graphqlQuery({
-    query: `query DomainByDomainName($domainName: String) {
-      domain(domainName: $domainName) {
-        orgId
-        packageVersionId
-        org { slug }
-      }
-    }`,
-    variables: { domainName }
-  })
+  const domainResponse = await client
+    .query(GET_DOMAIN_QUERY, { domainName, _skipAuth: true })
+    .toPromise()
   const domain = domainResponse?.data?.domain
+
+  console.log('got domain', domain)
 
   if (!domain) {
     console.error(`Invalid page, ${domainName}`)
   }
 
   return domain || null
-}
-
-async function graphqlQuery ({ query, variables, orgId, accessToken }) {
-  const response = await fetch(`${config.API_URL}/graphql`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/plain',
-      'X-Access-Token': accessToken || '',
-      'X-Org-Id': orgId || ''
-    }, // Avoid CORS preflight
-    body: JSON.stringify({ query, variables })
-  })
-
-  return response.json()
 }
