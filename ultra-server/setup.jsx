@@ -11,7 +11,7 @@ const clientConfig = {
   IS_PROD_ENV: globalThis?.Deno?.env.get('ULTRA_MODE') !== 'development',
   PUBLIC_API_URL: globalThis?.Deno?.env.get('PUBLIC_MYCELIUM_API_URL'),
   API_URL: globalThis?.Deno?.env.get('PUBLIC_MYCELIUM_API_URL'),
-  HOST: globalThis?.Deno?.env.get('SPOROCARP_HOST')
+  HOST: globalThis?.Deno?.env.get('ULTRA_HOST') || 'staging-dev.sporocarp.dev'
 }
 const serverConfig = {
   PUBLIC_API_URL: globalThis?.Deno?.env.get('PUBLIC_MYCELIUM_API_URL'),
@@ -63,7 +63,7 @@ async function getDomainByDomainName (domainName) {
     domainName = config.HOST
   }
 
-  console.log('get', domainName, config.HOST);
+  console.log('get', domainName, config.HOST)
 
   const domainResponse = await client
     .query(GET_DOMAIN_QUERY, { domainName, _skipAuth: true })

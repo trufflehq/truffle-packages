@@ -17,7 +17,7 @@ function getNestedRoutes(path = "") {
   const depth = path.match(/\//g)?.length || 0;
 
   return {
-    path,
+    path: path || "/",
     page: existsSync(`${dir}${path}/page.tsx`) &&
       `${dir}${path}/page.tsx`,
     layout: existsSync(`${dir}${path}/layout.tsx`) &&

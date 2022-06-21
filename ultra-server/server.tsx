@@ -5,9 +5,6 @@ import { reactHelmetPlugin } from "https://raw.githubusercontent.com/austinhallo
 import { ServerAppProps } from "https://raw.githubusercontent.com/austinhallock/ultra/v2/src/types.ts";
 import globalContext from "https://tfl.dev/@truffle/global-context@1.0.0/index.js";
 
-// patch React.createElement to allow prop injection
-import "https://tfl.dev/@truffle/utils@0.0.1/prop-injection/patch-react.js";
-
 import App from "./app.tsx";
 
 function ServerApp({ state }: ServerAppProps) {
