@@ -41,7 +41,11 @@ function getNestedComponents(route) {
   const Page = route.page ? lazy(() => import(getUrl(route.page))) : () => "";
 
   return (
-    <Route path={route.path} key={route.path} element={<LayoutWrapper />}>
+    <Route
+      path={route.path}
+      key={JSON.stringify(route)}
+      element={<LayoutWrapper />}
+    >
       <Route index element={<Page />} />
       {route.children.map(getNestedComponents)}
     </Route>
@@ -59,8 +63,14 @@ function getUrl(localPath) {
 }
 
 function getLocation() {
-  const host = globalThis?.Deno?.env.get("SPOROCARP_HOST") ||
-    window.location.host;
+  let host;
+  if (globalThis?.Deno) {
+    const port = globalThis?.Deno?.env.get("ULTRA_PORT") || 8000;
+    const hostname = globalThis?.Deno?.env.get("ULTRA_HOST") || "localhost";
+    host = `${hostname}:${port}`;
+  } else {
+    host = window.location.host;
+  }
   const protocol = config.IS_DEV_ENV ? "http:" : "https:";
   return `${protocol}//${host}`;
 }
