@@ -1,71 +1,73 @@
-:host {
-  .is-ios .c-icon > svg > path {
+:host(.is-ios) {
+  >svg>path {
     transition: none;
   }
+}
 
-  .c-icon {
-    text-align: center;
-    display: flex;
+:host {
+  text-align: center;
+  display: flex;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+
+  >svg {
+    vertical-align: middle;
+    margin: auto;
     -webkit-tap-highlight-color: transparent;
-    outline: none;
-  
-    > svg {
-      vertical-align: middle;
-      margin: auto;
-      -webkit-tap-highlight-color: transparent;
-    }
-  
-    &.is-centered {
-      margin: auto;
-    }
-  
-    &.is-circled {
-      background: var(--inherit-base);
-      border: 1px solid var(--inherit-base-text-10);
-      border-radius: 50%;
-      cursor: pointer;
-  
-      &:hover {
-        border: 1px solid var(--inherit-base-text-40);
-      }
-    }
-  
-    &.is-clickable {
-      cursor: pointer;
-  
-      &.is-aligned-top {
-        margin-top: -12px;
-  
-        > svg {
-          margin-top: 12px;
-        }
-      }
-  
-      &.is-aligned-left {
-        margin-left: -12px;
-  
-        > svg {
-          margin-left: 12px;
-        }
-      }
-  
-      &.is-aligned-right {
-        margin-left: auto;
-        margin-right: -12px;
-  
-        > svg {
-          margin-right: 12px;
-        }
-      }
-  
-      &.is-aligned-bottom {
-        margin-left: auto;
-        margin-bottom: -12px;
-  
-        > svg {
-          margin-bottom: 12px;
-        }
-      }
-    }
+  }
+
+}
+
+:host(.is-centered) {
+  margin: auto;
+}
+
+:host(.is-circled) {
+  background: var(--inherit-base);
+  border: 1px solid var(--inherit-base-text-10);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+:host(.hover) {
+  border: 1px solid var(--inherit-base-text-40);
+}
+
+:host(.is-clickable) {
+  cursor: pointer;
+
+}
+
+:host(.is-aligned-top) {
+  margin-top: -12px;
+
+  >svg {
+    margin-top: 12px;
+  }
+}
+
+:host(.is-aligned-left) {
+  margin-left: -12px;
+
+  >svg {
+    margin-left: 12px;
+  }
+}
+
+:host(.is-aligned-right) {
+  margin-left: auto;
+  margin-right: -12px;
+
+  >svg {
+    margin-right: 12px;
+  }
+}
+
+:host(.is-aligned-bottom) {
+  margin-left: auto;
+  margin-bottom: -12px;
+
+  >svg {
+    margin-bottom: 12px;
   }
 }

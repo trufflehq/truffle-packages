@@ -1,9 +1,9 @@
-:host .is-ios .c-icon > svg > path {
+:host(.is-ios) > svg > path {
   -webkit-transition: none;
   transition: none;
 }
 
-:host .c-icon {
+:host {
   text-align: center;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -12,61 +12,61 @@
   outline: none;
 }
 
-:host .c-icon > svg {
+:host > svg {
   vertical-align: middle;
   margin: auto;
   -webkit-tap-highlight-color: transparent;
 }
 
-:host .c-icon.is-centered {
+:host(.is-centered) {
   margin: auto;
 }
 
-:host .c-icon.is-circled {
+:host(.is-circled) {
   background: var(--inherit-base);
   border: 1px solid var(--inherit-base-text-10);
   border-radius: 50%;
   cursor: pointer;
 }
 
-:host .c-icon.is-circled:hover {
+:host(.hover) {
   border: 1px solid var(--inherit-base-text-40);
 }
 
-:host .c-icon.is-clickable {
+:host(.is-clickable) {
   cursor: pointer;
 }
 
-:host .c-icon.is-clickable.is-aligned-top {
+:host(.is-aligned-top) {
   margin-top: -12px;
 }
 
-:host .c-icon.is-clickable.is-aligned-top > svg {
+:host(.is-aligned-top) > svg {
   margin-top: 12px;
 }
 
-:host .c-icon.is-clickable.is-aligned-left {
+:host(.is-aligned-left) {
   margin-left: -12px;
 }
 
-:host .c-icon.is-clickable.is-aligned-left > svg {
+:host(.is-aligned-left) > svg {
   margin-left: 12px;
 }
 
-:host .c-icon.is-clickable.is-aligned-right {
+:host(.is-aligned-right) {
   margin-left: auto;
   margin-right: -12px;
 }
 
-:host .c-icon.is-clickable.is-aligned-right > svg {
+:host(.is-aligned-right) > svg {
   margin-right: 12px;
 }
 
-:host .c-icon.is-clickable.is-aligned-bottom {
+:host(.is-aligned-bottom) {
   margin-left: auto;
   margin-bottom: -12px;
 }
 
-:host .c-icon.is-clickable.is-aligned-bottom > svg {
+:host(.is-aligned-bottom) > svg {
   margin-bottom: 12px;
 }

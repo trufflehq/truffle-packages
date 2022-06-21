@@ -33,18 +33,13 @@ export default function Icon (props) {
 
   const isClickable = Boolean(onclick || onmousedown || ontouchstart)
 
-  const Tag = hasRipple ? 'a' : 'div'
+  const Tag = hasRipple ? root.a : root.div
 
   if (isCircled) {
     isTouchTarget = isTouchTarget || true
   }
 
   return (
-    <root.div>
-      <link
-        rel="stylesheet"
-        href={new URL('icon.css', import.meta.url).toString()}
-      />
       <Tag
         className={'c-icon ' + classKebab({
           isAlignedTop,
@@ -69,6 +64,10 @@ export default function Icon (props) {
           height: `${parseInt(size) * heightRatio}${units}`
         }}
       >
+        <link
+          rel="stylesheet"
+          href={new URL('icon.css', import.meta.url).toString()}
+        />
         <svg
           namespace="http://www.w3.org/2000/svg"
           viewBox={`0 0 ${viewBox} ${viewBox * heightRatio}`}
@@ -85,6 +84,5 @@ export default function Icon (props) {
           />
         </svg>
       </Tag>
-    </root.div>
   )
 }
