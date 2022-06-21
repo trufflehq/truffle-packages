@@ -33,14 +33,12 @@ export default function Icon (props) {
 
   const isClickable = Boolean(onclick || onmousedown || ontouchstart)
 
-  const Tag = hasRipple ? root.a : root.div
-
   if (isCircled) {
     isTouchTarget = isTouchTarget || true
   }
 
   return (
-      <Tag
+      <root.div
         className={'c-icon ' + classKebab({
           isAlignedTop,
           isAlignedLeft,
@@ -50,8 +48,8 @@ export default function Icon (props) {
           isTouchTarget,
           isClickable,
           isCircled,
-          hasRippleWhite: hasRipple && color !== 'var(--truffle-color-text)',
-          hasRippleHeader: hasRipple && color === 'var(--truffle-color-text)'
+          hasRippleWhite: hasRipple && color !== 'var(--truffle-color-text-bg-primary)',
+          hasRippleHeader: hasRipple && color === 'var(--truffle-color-text-bg-primary)'
         })}
         tabIndex={hasRipple ? 0 : undefined}
         onClick={onclick}
@@ -79,10 +77,10 @@ export default function Icon (props) {
           <path
             namespace="http://www.w3.org/2000/svg"
             d={legacyIcons[`${_.camelCase(icon)}IconPath`] ?? icon}
-            fill={color}
+            fill={color ?? 'var(--truffle-color-text-bg-primary)'}
             fillRule="evenodd"
           />
         </svg>
-      </Tag>
+      </root.div>
   )
 }
