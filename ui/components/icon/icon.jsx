@@ -52,7 +52,6 @@ export default function Icon (props) {
           hasRippleHeader: hasRipple && color === 'var(--truffle-color-text-bg-primary)'
         })}
         tabIndex={hasRipple ? 0 : undefined}
-        onClick={onclick}
         onMouseDown={onmousedown}
         onTouchStart={ontouchstart}
         style={{
@@ -67,6 +66,7 @@ export default function Icon (props) {
           href={new URL('icon.css', import.meta.url).toString()}
         />
         <svg
+          onClick={onclick}
           namespace="http://www.w3.org/2000/svg"
           viewBox={`0 0 ${viewBox} ${viewBox * heightRatio}`}
           style={{
