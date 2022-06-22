@@ -212,7 +212,7 @@ export default function Button (props) {
         {icon && iconLocation === 'left' && $iconWrapper}
         {isLoading ? 'Loading...' : text}
         {icon && iconLocation === 'right' && $iconWrapper}
-        <Ripple color={textColor} />
+        {/* <Ripple color={textColor} /> */}
       </button>
     </ScopedStylesheet>
   )
