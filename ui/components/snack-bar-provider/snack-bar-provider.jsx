@@ -41,30 +41,18 @@ export default function SnackBarProvider ({ children, visibilityDuration = DEFAU
   useEffect(() => {
     let cancel = false
 
-    function emptyQueue (length) {
-      // base case; don't recurse after length goes below zero
-      if (length < 0) return
+    if (snackBarQueue.length > 0) {
       setTimeout(() => {
-        // If the queue has changed,
-        // the effect will run again
-        // and run emptyQueue again
-        // with the new version of
-        // the queue.
-        // If that happens, we want
-        // to cancel this instance
-        // of emptyQueue so that
-        // we're not double-removing
-        // items from the queue.
+        // If the queue has changed by the time we reach this,
+        // we want to cancel removing anything from the queue
+        // and let the new version of the effect do it instead.
         if (cancel) return
 
         // remove item from the front of the queue
         // and schedule the next item to be removed
         snackBarQueueSubject.next(snackBarQueue.slice(1))
-        emptyQueue(length - 1)
       }, visibilityDuration)
     }
-
-    emptyQueue(snackBarQueue.length)
 
     return () => { cancel = true }
   }, [snackBarQueue])
