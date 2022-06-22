@@ -1,5 +1,5 @@
 import React from 'react'
-import root from 'https://npm.tfl.dev/react-shadow@19?deps=react@18&dev'
+import ScopedStylesheet from '../scoped-stylesheet/scoped-stylesheet.jsx'
 
 const DEFAULT_VISIBILITY_DURATION_MS = 4000
 const DEFAULT_FADE_DURATION = 500
@@ -18,11 +18,7 @@ export default function SnackBar ({
 }) {
   const fadeOutDelay = visibilityDuration + fadeDuration
   return (
-    <root.div>
-      <link
-        rel="stylesheet"
-        href={new URL('snack-bar.css', import.meta.url).toString()}
-      />
+    <ScopedStylesheet url={new URL('snack-bar.css', import.meta.url)}>
       <div
         className={`c-snack-bar-el ${style} ${className}`}
         style={{
@@ -42,6 +38,6 @@ export default function SnackBar ({
           }}
         >{ value }</div>
       </div>
-    </root.div>
+    </ScopedStylesheet>
   )
 }
