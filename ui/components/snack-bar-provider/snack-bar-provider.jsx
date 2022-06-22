@@ -39,11 +39,20 @@ export default function SnackBarProvider ({ children, visibilityDuration = DEFAU
   const shouldRenderSnackBar = snackBarQueue.length > 0
 
   useEffect(() => {
-    // after a specified duration, pop off the snackbar at the front of the queue;
-    // this will trigger another execution of this function by useEffect
-    if (snackBarQueue.length > 0) {
-      setTimeout(() => snackBarQueueSubject.next(snackBarQueueSubject.getValue().slice(1)), visibilityDuration)
+    let cancel = false
+
+    function emptyQueue (length) {
+      if (length < 0) return
+      setTimeout(() => {
+        if (cancel) return
+        snackBarQueueSubject.next(snackBarQueue.slice(1))
+        emptyQueue(length - 1)
+      }, visibilityDuration)
     }
+
+    emptyQueue(snackBarQueue.length)
+
+    return () => { cancel = true }
   }, [snackBarQueue])
 
   return (
