@@ -29,13 +29,12 @@
   cursor: pointer;
 }
 
-:host(.hover) {
+:host(:hover) {
   border: 1px solid var(--inherit-base-text-40);
 }
 
 :host(.is-clickable) {
   cursor: pointer;
-
 }
 
 :host(.is-aligned-top) {

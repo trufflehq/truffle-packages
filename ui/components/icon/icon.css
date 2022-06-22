@@ -29,7 +29,7 @@
   cursor: pointer;
 }
 
-:host(.hover) {
+:host(:hover) {
   border: 1px solid var(--inherit-base-text-40);
 }
 
