@@ -1,43 +1,49 @@
 import React, { useMemo } from 'react'
+import root from "https://npm.tfl.dev/react-shadow@19?deps=react@18&dev";
 
 import { createSubject } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 import useObservables from 'https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js'
 import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js'
 
-// import Icon from '../icon/icon.jsx'
+import Icon from '../icon/icon.jsx'
+import ImageByAspectRatio from '../image-by-aspect-ratio/image-by-aspect-ratio.jsx'
 import Ripple from '../ripple/ripple.jsx'
-import cssVars from '../../util/css-vars.js'
-
-import styles from './button.css' assert { type: 'css' }
-document.adoptedStyleSheets = [...document.adoptedStyleSheets, styles]
-
-// import './button.css'
 
 /**
  * @param {Object} props
- * @param {primary|primary-outline|secondary|secondary-outline|bg|bgInverse|text} [props.style=primary] general style classification (color, border, etc...)
+ * @param {primary|secondary|gradient} [props.style=primary] general style classification (color, border, etc...)
  * @param {small|medium|large} [props.size=medium]
  * @param {button|submit} [props.type=button] native <button> type
- * @param {normal|tile} [props.display=normal] the display type of the button; if 'tile', it will display as a tile button.
- * @param {string} [props.bg] a value to be passed to the background style of the button
- * @param {string} [props.borderRadius] a value to be passed to the borderRadius style of the button
- * @param {string} [props.text]
- * @param {string} [props.textColor]
- * @param {string} [props.secondaryText] a second piece of text displayed on tile buttons. You can also pass JSX to this prop.
- * @param {string} [props.secondaryTextColor]
- * @param {string} [props.icon] the icon path
- * @param {left|right} [props.iconLocation=left]
+ * @param {string} [props.background] override the background
+ * @param {string} [props.backgroundHover] override the background on hover
+ * @param {string} [props.backgroundSelected] override the background when isSelected is true
+ * @param {string} [props.borderRadius] override the border radius
+ * @param {string} [props.borderRadiusHover] override the border radius on hover
+ * @param {string} [props.borderRadiusSelected] override the border radius when isSelected is true
+ * @param {string} [props.outline] override the outline
+ * @param {string} [props.outlineHover] override the outline on hover
+ * @param {string} [props.outlineSelected] override the outline when isSelected is true
+ * @param {string} [props.transformHover] set the css transform property on hover
+ * @param {string} [props.transformSelected] set the css transform property when isSelected is true
+ * @param {string} [props.hoverTransition] set the css transition property on hover
+ * @param {string} [props.selectedTransition] set the css transition property when isSelected is true
+ * @param {string} [props.text] the text inside the button
+ * @param {string} [props.textColor] the color of the text
+ * @param {string} [props.icon] can either be a url to an image or a string to be passed to the <Icon /> component (the button component will figure out which one it is)
+ * @param {left|right} [props.iconLocation=left] position of the icon
  * @param {number} [props.iconViewBox] passed directly to the viewBox prop of the icon component
  * @param {string} [props.iconColor] passed directly to the color prop of the icon component
  * @param {boolean} [props.iconCircled] passed directly to the isCircled prop of the icon component
+ * @param {number} [props.iconSize] size of the icon in pixels
  * @param {boolean} [props.shouldHandleLoading] if true, awaits onclick promise and shows loading during
  * @param {string} [props.href] if specified, the button is an <a>
  * @param {string} [props.target] specifies the link target
- * @param {function} [props.onclick]
+ * @param {function} [props.onClick]
+ * @param {function} [props.onMouseDown]
  * @param {boolean} [props.isDisabled]
  * @param {boolean} [props.isFullWidth] if true, is width: 100%
  * @param {boolean} [props.isSelected] eg if action button is causing is true (drawer opened)
- * @param {stream} [props.isLoadingStream]
+ * @param {subject} [props.isLoadingSubject]
  */
 
 export default function Button (props) {
@@ -45,172 +51,171 @@ export default function Button (props) {
     style = 'primary',
     size = 'medium',
     type = 'button',
-    display = 'normal',
-    bgColor,
-    bg,
+    background,
+    backgroundHover,
+    backgroundSelected,
+    outline,
+    outlineHover,
+    outlineSelected,
+    transformHover,
+    transformSelected,
     borderRadius,
+    borderRadiusHover,
+    borderRadiusSelected,
+    hoverTransition,
+    selectedTransition,
     text,
     textColor,
-    secondaryText,
-    secondaryTextColor,
     icon,
     iconViewBox,
     iconColor,
     iconCircled,
+    iconSize = 20,
     iconLocation = 'left',
     shouldHandleLoading,
     href,
-    onclick,
+    onClick,
     onMouseDown,
     isDisabled,
     isSelected,
     isFullWidth,
     target
   } = props
-  const { isLoadingStream } = useMemo(() => {
+  const { isLoadingSubject } = useMemo(() => {
     return {
-      isLoadingStream: props.isLoadingStream || createSubject(false)
+      isLoadingSubject: props.isLoadingSubject || createSubject(false)
     }
   }, [])
 
   const { isLoading } = useObservables(() => ({
-    isLoading: isLoadingStream.obs
+    isLoading: isLoadingSubject.obs
   }))
-
-  const isTileButton = display === 'tile'
 
   const styleInfoMap = {
     primary: {
-      textColor: cssVars.$primaryBaseText
-    },
-    'primary-outline': {
-      textColor: cssVars.$primaryBase
+      '--background': 'var(--truffle-color-primary)',
+      '--background-hover': 'var(--truffle-color-primary)',
+      '--background-selected': 'var(--truffle-color-primary)',
+      '--text-color': 'var(--truffle-color-text-primary)',
+      '--border-radius': '4px',
+      '--border-radius-hover': '4px',
+      '--border-radius-selected': '4px',
+      '--outline': 'none',
+      '--outline-hover': 'none',
+      '--outline-selected': 'none',
+      '--transform-hover': 'none',
+      '--transform-selected': 'none',
+      '--hover-transition': 'all 0.1s cubic-bezier(0.4, 0, 0.2, 1)',
+      '--selected-transition': 'all 0.1s cubic-bezier(0.4, 0, 0.2, 1)'
     },
     secondary: {
-      textColor: cssVars.$inheritBaseText
+      '--background': 'var(--truffle-color-tertiary)',
+      '--background-hover': 'var(--truffle-color-tertiary)',
+      '--background-selected': 'var(--truffle-color-tertiary)',
+      '--text-color': 'var(--truffle-color-text-tertiary)',
+      '--border-radius': '4px',
+      '--border-radius-hover': '4px',
+      '--border-radius-selected': '4px',
+      '--outline': 'none',
+      '--outline-hover': 'none',
+      '--outline-selected': 'none',
+      '--transform-hover': 'none',
+      '--transform-selected': 'none',
+      '--hover-transition': 'all 0.1s cubic-bezier(0.4, 0, 0.2, 1)',
+      '--selected-transition': 'all 0.1s cubic-bezier(0.4, 0, 0.2, 1)'
     },
-    'secondary-outline': {
-      textColor: cssVars.$secondaryBase
-    },
-    inherit: {
-      textColor: cssVars.$inheritBaseText
-    },
-    bgInverse: {
-      textColor: cssVars.$bgModInverse1Text
-    },
-    bg: {
-      textColor: cssVars.$bgBaseText,
-      selectedColor: cssVars.$secondaryBase
-    },
-    text: {
-      textColor: cssVars.$inheritBaseText
-    },
-    link: {
-      textColor: cssVars.$inheritBaseText
-    },
-    premium: {
-      textColor: cssVars.$bgBaseText
+    gradient: {
+      '--background': 'var(--truffle-gradient)',
+      '--background-hover': 'var(--truffle-gradient)',
+      '--background-selected': 'var(--truffle-gradient)',
+      '--text-color': 'var(--truffle-color-text-gradient)',
+      '--border-radius': '4px',
+      '--border-radius-hover': '4px',
+      '--border-radius-selected': '4px',
+      '--outline': 'none',
+      '--outline-hover': 'none',
+      '--outline-selected': 'none',
+      '--transform-hover': 'none',
+      '--transform-selected': 'none',
+      '--hover-transition': 'all 0.1s cubic-bezier(0.4, 0, 0.2, 1)',
+      '--selected-transition': 'all 0.1s cubic-bezier(0.4, 0, 0.2, 1)'
     }
   }
 
-  const sizeInfoMap = !isTileButton
-    ? {
-        small: {
-          iconSize: '20px'
-        },
-        medium: {
-          iconSize: '20px'
-        },
-        large: {
-          iconSize: '24px'
-        }
-      }
-    : {
-        small: {
-          iconSize: '20px'
-        },
-        medium: {
-          iconSize: '30px'
-        },
-        large: {
-          iconSize: '40px'
-        }
-      }
+  const buttonStyles = styleInfoMap[style]
 
-  const styleInfo = styleInfoMap[style] || {}
-  const sizeInfo = sizeInfoMap[size]
+  // allow the dev to override default styles
+  if (textColor) buttonStyles['--text-color'] = textColor
+  if (background) buttonStyles['--background'] = background
+  if (backgroundHover) buttonStyles['--background-hover'] = backgroundHover
+  if (backgroundSelected) buttonStyles['--background-selected'] = backgroundSelected
+  if (outline) buttonStyles['--outline'] = outline
+  if (outlineHover) buttonStyles['--outline-hover'] = outlineHover
+  if (outlineSelected) buttonStyles['--outline-selected'] = outlineSelected
+  if (borderRadius) buttonStyles['--border-radius'] = borderRadius
+  if (borderRadiusHover) buttonStyles['--border-radius-hover'] = borderRadiusHover
+  if (borderRadiusSelected) buttonStyles['--border-radius-selected'] = borderRadiusSelected
+  if (transformHover) buttonStyles['--transform-hover'] = transformHover
+  if (transformSelected) buttonStyles['--transform-selected'] = transformSelected
+  if (hoverTransition) buttonStyles['--hover-transition'] = hoverTransition
+  if (selectedTransition) buttonStyles['--selected-transition'] = selectedTransition
 
+  const isIconRemote = /^https?:\/\//.test(icon)
   const $iconWrapper = icon && (
     <div className="icon-wrapper">
-      {/* <Icon
-        icon={icon}
-        size={sizeInfo.iconSize}
-        color={iconColor || (isSelected && styleInfo.selectedColor) || styleInfo.textColor}
-        viewBox={iconViewBox}
-        isCircled={iconCircled}
-      /> */}
+      { isIconRemote
+        ? <ImageByAspectRatio
+            imageUrl={icon}
+            aspectRatio={1}
+            width={iconSize}
+            height={iconSize}
+          />
+        : <Icon
+            icon={icon}
+            size={iconSize}
+            color={iconColor || buttonStyles.color}
+            viewBox={iconViewBox}
+            isCircled={iconCircled}
+          />
+      }
     </div>
   )
 
-  const buttonStyles = {
-    borderRadius,
-    color: textColor
-  }
-
-  if (bgColor) buttonStyles.backgroundColor = bgColor
-  if (bg) buttonStyles.background = bg
-
   // TODO: routing w/o hard page load if href exists
-  return <button
-    className={`c-button style-${style} size-${!isTileButton && size} icon-location-${iconLocation} ` + classKebab({
-      hasIcon: Boolean(icon),
-      isSelected,
-      isDisabled,
-      isFullWidth,
-      removeBorder: !!bg,
-      tileButton: isTileButton
-    })}
-    type={type}
-    disabled={Boolean(isDisabled)}
-    href={href}
-    target={target}
-    style={buttonStyles}
-    onMouseDown={onMouseDown}
-    onClick={async (e) => {
-      if (!isDisabled) {
-        shouldHandleLoading && isLoadingStream.next(true)
-        try {
-          await onclick?.(e)
-          shouldHandleLoading && isLoadingStream.next(false)
-        } catch (err) {
-          shouldHandleLoading && isLoadingStream.next(false)
-          throw err
+  return (
+    <root.div
+      className={`c-button style-${style} size-${size} icon-location-${iconLocation} ` + classKebab({
+        hasIcon: Boolean(icon),
+        isSelected,
+        isFullWidth
+      })}
+      type={type}
+      disabled={Boolean(isDisabled)}
+      href={href}
+      target={target}
+      style={buttonStyles}
+      onMouseDown={onMouseDown}
+      onClick={async (e) => {
+        if (!isDisabled) {
+          shouldHandleLoading && isLoadingSubject.next(true)
+          try {
+            await onClick?.(e)
+            shouldHandleLoading && isLoadingSubject.next(false)
+          } catch (err) {
+            shouldHandleLoading && isLoadingSubject.next(false)
+            throw err
+          }
         }
-      }
-    }}
-  >
-    { isTileButton
-      ? <div className="tile-container">
-          {icon && $iconWrapper}
-          <div
-            className={`secondary-text ${(isLoading || !secondaryText) ? 'invisible' : ''}`}
-            style={{
-              color: secondaryTextColor ?? textColor
-            }}
-          >{ !isLoading && secondaryText }</div>
-          <div
-            className="primary-text"
-            style={{
-              color: textColor
-            }}
-          >{isLoading ? 'Loading...' : text }</div>
-        </div>
-      : <>
-          {icon && iconLocation === 'left' && $iconWrapper}
-          {isLoading ? 'Loading...' : text}
-          {icon && iconLocation === 'right' && $iconWrapper}
-        </>
-    }
-    <Ripple color={styleInfo.textColor} />
-  </button>
+      }}
+    >
+      <link
+        rel="stylesheet"
+        href={new URL('button.css', import.meta.url).toString()}
+      />
+      {icon && iconLocation === 'left' && $iconWrapper}
+      {isLoading ? 'Loading...' : text}
+      {icon && iconLocation === 'right' && $iconWrapper}
+      <Ripple color={textColor} />
+    </root.div>
+  )
 }
