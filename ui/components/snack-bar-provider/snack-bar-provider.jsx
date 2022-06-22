@@ -42,9 +42,23 @@ export default function SnackBarProvider ({ children, visibilityDuration = DEFAU
     let cancel = false
 
     function emptyQueue (length) {
+      // base case; don't recurse after length goes below zero
       if (length < 0) return
       setTimeout(() => {
+        // If the queue has changed,
+        // the effect will run again
+        // and run emptyQueue again
+        // with the new version of
+        // the queue.
+        // If that happens, we want
+        // to cancel this instance
+        // of emptyQueue so that
+        // we're not double-removing
+        // items from the queue.
         if (cancel) return
+
+        // remove item from the front of the queue
+        // and schedule the next item to be removed
         snackBarQueueSubject.next(snackBarQueue.slice(1))
         emptyQueue(length - 1)
       }, visibilityDuration)
