@@ -16,16 +16,21 @@ function getRoutes() {
 function getNestedRoutes(path = "") {
   const depth = path.match(/\//g)?.length || 0;
 
+  const pagePath = existsSync(`${dir}${path}/page.tsx`) &&
+    `${dir}${path}/page.tsx`;
+  const layoutPath = existsSync(`${dir}${path}/layout.tsx`) &&
+    `${dir}${path}/layout.tsx`;
+
   return {
     path: path || "/",
-    page: existsSync(`${dir}${path}/page.tsx`) &&
-      `${dir}${path}/page.tsx`,
-    layout: existsSync(`${dir}${path}/layout.tsx`) &&
-      `${dir}${path}/layout.tsx`,
+    page: pagePath,
+    layout: layoutPath,
     children: routes
       .filter((childRoute) => {
         const childDepth = childRoute.match(/\//g)?.length;
-        return childDepth === depth + 1 && childRoute.indexOf(path) !== -1;
+        const isNextDepth = childDepth === depth + 1;
+        const isSubroute = childRoute.indexOf(path) !== -1;
+        return isNextDepth && isSubroute;
       })
       .map((childRoute) => getNestedRoutes(childRoute)),
   };

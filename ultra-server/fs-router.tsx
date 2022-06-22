@@ -7,11 +7,9 @@ import config from "https://tfl.dev/@truffle/utils@0.0.1/config/config.js";
 const isSsr = globalThis?.Deno;
 
 export default function Routing() {
-  const nestedRoutes = useAsync(
-    "nested-layouts",
-    () =>
-      isSsr &&
-      import("./fs-router-server.tsx").then(({ nestedRoutes }) => nestedRoutes),
+  const { nestedRoutes } = useAsync(
+    "nested-routes",
+    () => isSsr && import("./fs-router-server.tsx"),
   );
 
   const nestedComponents = useMemo(
@@ -29,26 +27,34 @@ export default function Routing() {
 function getNestedComponents(route) {
   console.log("route", route);
 
-  const Layout = route.layout
-    ? lazy(() => import(getUrl(route.layout)))
-    : ({ children }) => children;
+  const Layout = route.layout && lazy(() => import(getUrl(route.layout)));
+  const Page = route.page && lazy(() => import(getUrl(route.page)));
   // so layouts can be nextjs style and don't need <Outlet />
-  const LayoutWrapper = () => (
+  let parentElement = Layout && (
     <Layout>
       <Outlet />
     </Layout>
   );
-  const Page = route.page ? lazy(() => import(getUrl(route.page))) : () => "";
 
-  console.log("path", route.path);
+  // wildcards can't have children and don't work with index route
+  const isWildcard = route.path.endsWith("*");
+  if (isWildcard && Layout) {
+    parentElement = (
+      <Layout>
+        <Page />
+      </Layout>
+    );
+  } else if (isWildcard) {
+    parentElement = <Page />;
+  }
 
   return (
     <Route
       path={route.path}
       key={JSON.stringify(route)}
-      element={<LayoutWrapper />}
+      element={parentElement || <Outlet />}
     >
-      <Route index element={<Page />} />
+      {Page && <Route index element={<Page />} />}
       {route.children.map(getNestedComponents)}
     </Route>
   );
