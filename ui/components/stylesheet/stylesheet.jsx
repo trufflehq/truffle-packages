@@ -1,6 +1,6 @@
 import React from 'react'
 
-// w/o the memo, browser css will flash every render
+// w/o the memo, browser css will flash every render if cache is disabled
 const MemoizeStylesheet = React.memo(({ url }) => {
   return (
     <link rel="stylesheet" href={url.toString()} />

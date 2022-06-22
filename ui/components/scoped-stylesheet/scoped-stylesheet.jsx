@@ -8,7 +8,7 @@ export default function ScopedStylesheet ({ children, url, element = 'div' }) {
   return (
     <ShadowRoot>
       <Stylesheet url="https://cdn.jsdelivr.net/gh/jgthms/minireset.css@master/minireset.min.css" />
-      <Stylesheet url={url.toString()} />
+      <Stylesheet url={url} />
       {children}
     </ShadowRoot>
   )
