@@ -173,7 +173,7 @@ export default function Button (props) {
         : <Icon
             icon={icon}
             size={iconSize}
-            color={iconColor || buttonStyles.color}
+            color={iconColor || buttonStyles['--text-color']}
             viewBox={iconViewBox}
             isCircled={iconCircled}
           />
