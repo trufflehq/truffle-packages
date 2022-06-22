@@ -40,6 +40,8 @@ function getNestedComponents(route) {
   );
   const Page = route.page ? lazy(() => import(getUrl(route.page))) : () => "";
 
+  console.log("path", route.path);
+
   return (
     <Route
       path={route.path}
@@ -56,18 +58,23 @@ function getUrl(localPath) {
   // return `file://${path.resolve(dir, localPath)}`
   // TODO: don't want deno to cache this...
   // TODO: get file imports working for client-side fs-routing
-  return new URL(
-    `${localPath}.compiled.js`,
-    `${getLocation()}/@ultra/compiler/`,
-  ).toString();
+  try {
+    return new URL(
+      `${localPath}.compiled.js`,
+      `${getLocation()}/@ultra/compiler/`,
+    ).toString();
+  } catch (err) {
+    console.error("error constructing url", localPath, getLocation());
+    console.error(err);
+  }
 }
 
 function getLocation() {
   let host;
   if (globalThis?.Deno) {
-    const port = globalThis?.Deno?.env.get("ULTRA_PORT") || 8000;
-    const hostname = globalThis?.Deno?.env.get("ULTRA_HOST") || "localhost";
-    host = `${hostname}:${port}`;
+    // NOTE: we can't include ULTRA_PORT, since we change from 8080 -> 80 in nginx
+    host = globalThis?.Deno?.env.get("ULTRA_HOST") ||
+      "localhost:8000";
   } else {
     host = window.location.host;
   }
