@@ -3,6 +3,7 @@ import React, { createContext, useContext } from 'react'
 // import React, { createContext, useContext } from 'https://npm.tfl.dev/v86/react@18/es2022/react.js?_truffle'
 
 import TruffleComponentInstancesContext from './component-instances-context.js'
+import { castProps } from './component-instance.jsx'
 
 const TruffleTreePathContext = createContext()
 
@@ -27,11 +28,11 @@ function TruffleComponentWrapper ({ childComponent }) {
     : truffleTreePath
 
   const foundComponentInstance = componentInstances?.find(({ treePath }) =>
-    // TODO: this should be childTreePath. root component seems wrong
-    treePath === truffleTreePath
+    // TODO: this should be childTruffleTreePath. root component seems wrong
+    treePath === childTruffleTreePath
   )
   if (foundComponentInstance?.props) {
-    props = { ...props, ...foundComponentInstance.props }
+    props = { ...props, ...castProps(foundComponentInstance.props, componentInstances) }
   }
 
   return <TruffleTreePathContext.Provider value={{ truffleTreePath: childTruffleTreePath }}>
