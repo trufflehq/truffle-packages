@@ -1,4 +1,4 @@
-import { createClient, defaultExchanges } from 'https://npm.tfl.dev/urql@2?deps=react@18&dev'
+import { createClient, defaultExchanges } from 'https://npm.tfl.dev/urql@2'
 import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.js'
 import { Obs } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 import config from 'https://tfl.dev/@truffle/utils@0.0.1/config/config.js'
@@ -24,4 +24,4 @@ export function queryObservable (query, variables) {
 }
 
 // useQuery, useMutation, Provider
-export * from 'https://npm.tfl.dev/urql@2?deps=react@18&dev'
+export * from 'https://npm.tfl.dev/urql@2'

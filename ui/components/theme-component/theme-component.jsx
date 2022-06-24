@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'https://npm.tfl.dev/react'
 
 const DEFAULT_FONT_FAMILY = 'Poppins, sans-serif'
 

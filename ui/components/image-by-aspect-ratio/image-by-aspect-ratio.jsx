@@ -1,5 +1,5 @@
-import React from 'react'
-import root from 'https://npm.tfl.dev/react-shadow@19?deps=react@18&dev'
+import React from 'https://npm.tfl.dev/react'
+import root from 'https://npm.tfl.dev/react-shadow@19'
 
 import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js'
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'https://npm.tfl.dev/react'
 
 // w/o the memo, browser css will flash every render if cache is disabled
 const MemoizeStylesheet = React.memo(({ url }) => {

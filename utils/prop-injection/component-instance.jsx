@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useContext, useMemo } from 'react'
+import React, { lazy, Suspense, useContext, useMemo } from 'https://npm.tfl.dev/react'
 
 import TruffleComponentInstancesContext from './component-instances-context.js'
 
@@ -17,9 +17,9 @@ export default function ComponentInstance ({ componentInstance, ...props }) {
   // but it's easy enough to just call createElement since we're converting jsx to createElement
   // for all tfl.dev components
 
-  // NOTE: if prop injection breaks, it's because `import { createElement } from 'react'` isn't patched.
-  // only `import React from 'react'; React.createElement`. if we need to support the former,
-  // we need to importmap from 'react', and the raw react js file on cdn to the patched-react.js.
+  // NOTE: if prop injection breaks, it's because `import { createElement } from 'https://npm.tfl.dev/react'` isn't patched.
+  // only `import React from 'https://npm.tfl.dev/react'; React.createElement`. if we need to support the former,
+  // we need to importmap from 'https://npm.tfl.dev/react', and the raw react js file on cdn to the patched-react.js.
   // right now we only use React.createElement when creating truffle elements, and we control this
   // (zygote module mutation + compilation-api)
   return (

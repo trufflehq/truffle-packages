@@ -1,4 +1,4 @@
-import { createContext, createElement, useContext, useState, useLayoutEffect, useMemo } from 'react'
+import { createContext, createElement, useContext, useState, useLayoutEffect, useMemo } from 'https://npm.tfl.dev/react'
 
 import _ from 'https://npm.tfl.dev/lodash?no-check'
 import * as Rx from 'https://npm.tfl.dev/rxjs?bundle'

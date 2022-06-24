@@ -1,5 +1,5 @@
-import React from 'react'
-import root from "https://npm.tfl.dev/react-shadow@19?deps=react@18&dev";
+import React from 'https://npm.tfl.dev/react'
+import root from "https://npm.tfl.dev/react-shadow@19";
 
 import Stylesheet from "../stylesheet/stylesheet.jsx"
 

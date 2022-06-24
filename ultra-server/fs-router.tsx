@@ -1,13 +1,19 @@
-import React, { lazy, Suspense, useMemo } from "react";
-import { Outlet, Route, Routes } from "react-router-dom";
-import { useAsync } from "@ultra/react";
+import React, { lazy, Suspense, useMemo } from "https://npm.tfl.dev/react";
+import {
+  Outlet,
+  Route,
+  Routes,
+} from "https://tfl.dev/@truffle/utils@0.0.1/router/router.js";
+// import { useSsrData } from "https://npm.tfl.dev/react-streaming@0";
+// see ./react-streaming/README.md
+import { useSsrData } from "./react-streaming/useSsrData.js";
 
 import config from "https://tfl.dev/@truffle/utils@0.0.1/config/config.js";
 
 const isSsr = globalThis?.Deno;
 
 export default function Routing() {
-  const { nestedRoutes } = useAsync(
+  const { nestedRoutes } = useSsrData(
     "nested-routes",
     () => isSsr && import("./fs-router-server.tsx"),
   );

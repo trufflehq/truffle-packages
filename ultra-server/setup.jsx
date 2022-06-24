@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense } from 'https://npm.tfl.dev/react'
 
 import { getClient, gql, Provider } from 'https://tfl.dev/@truffle/api@0.0.1/client.js'
 import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.js'
@@ -28,10 +28,10 @@ const GET_DOMAIN_QUERY = gql`query DomainByDomainName($domainName: String) {
   }
 }`
 
-// only passing useAsync in vs importing directly because file is ts
-export function TruffleSetup ({ state, useAsync, children }) {
+// only passing useSsrData in vs importing directly because file is ts
+export function TruffleSetup ({ state, useSsrData, children }) {
   return <Suspense>
-    <AsyncTruffleSetup state={state} useAsync={useAsync}>
+    <AsyncTruffleSetup state={state} useSsrData={useSsrData}>
       <Provider value={getClient()}>
         {children}
       </Provider>
@@ -42,16 +42,16 @@ export function TruffleSetup ({ state, useAsync, children }) {
   </Suspense>
 }
 
-function AsyncTruffleSetup ({ state, useAsync, children }) {
+function AsyncTruffleSetup ({ state, useSsrData, children }) {
   const host = state?.url?.host || window.location.host
-  const domain = useAsync('/domain', () => getDomainByDomainName(host))
+  const domain = useSsrData('/domain', () => getDomainByDomainName(host))
 
   if (domain) {
     const context = globalContext.getStore()
     context.orgId = domain.orgId
     context.packageVersionId = domain.packageVersionId
   } else {
-    console.error('Error fetching domain from server (useAsync)')
+    console.error('Error fetching domain from server (useSsrData)')
   }
 
   return children

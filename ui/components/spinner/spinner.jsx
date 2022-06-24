@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext } from 'https://npm.tfl.dev/react'
 
 import cssVars from '../../util/css-vars.js'
 
-import styles from './spinner.css' assert { type: 'css' }
-document.adoptedStyleSheets = [...document.adoptedStyleSheets, styles]
+// import styles from './spinner.css' assert { type: 'css' }
+// document.adoptedStyleSheets = [...document.adoptedStyleSheets, styles]
 
 const DEFAULT_SIZE = 50
 

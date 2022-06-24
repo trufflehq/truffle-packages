@@ -1,5 +1,5 @@
-import { makeOperation, gql } from 'https://npm.tfl.dev/urql@2?deps=react@18&dev'
-import { authExchange } from 'https://npm.tfl.dev/@urql/exchange-auth@0?dev'
+import { makeOperation, gql } from 'https://npm.tfl.dev/urql@2'
+import { authExchange } from 'https://npm.tfl.dev/@urql/exchange-auth@0'
 import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.js'
 import { getCookie } from 'https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js'
 

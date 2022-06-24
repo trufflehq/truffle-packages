@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, createContext, useContext } from 'react'
-import root from 'https://npm.tfl.dev/react-shadow@19?deps=react@18&dev'
+import React, { useEffect, useMemo, createContext, useContext } from 'https://npm.tfl.dev/react'
+import root from 'https://npm.tfl.dev/react-shadow@19'
 
 import { createSubject, op } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
 import useObservables from 'https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js'

@@ -1,4 +1,4 @@
-import React from "react";
+import React from "https://npm.tfl.dev/react";
 import Home from "../../components/home/home.tsx";
 import { gql, useQuery } from "https://tfl.dev/@truffle/api@0.0.1/client.js";
 

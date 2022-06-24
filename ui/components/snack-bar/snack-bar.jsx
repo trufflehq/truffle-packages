@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'https://npm.tfl.dev/react'
+
 import ScopedStylesheet from '../scoped-stylesheet/scoped-stylesheet.jsx'
 
 const DEFAULT_VISIBILITY_DURATION_MS = 4000
@@ -17,8 +18,11 @@ export default function SnackBar ({
   fadeDuration = DEFAULT_FADE_DURATION
 }) {
   const fadeOutDelay = visibilityDuration + fadeDuration
+  // TODO: figure out why jscodeshift throws for Converting circular structure to JSON
+  // if this is an inline prop w/o cssUrl var. I think it's probably from the getNode stuff
+  const cssUrl = new URL('./snack-bar.css', import.meta.url)
   return (
-    <ScopedStylesheet url={new URL('snack-bar.css', import.meta.url)}>
+    <ScopedStylesheet url={cssUrl}>
       <div
         className={`c-snack-bar-el ${style} ${className}`}
         style={{

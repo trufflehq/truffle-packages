@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext } from 'https://npm.tfl.dev/react'
 // may need this if using patched-react.js
 // import React, { createContext, useContext } from 'https://npm.tfl.dev/v86/react@18/es2022/react.js?_truffle'
 

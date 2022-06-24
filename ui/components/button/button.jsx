@@ -1,13 +1,13 @@
-import React, { useMemo } from 'react'
+import React, { useMemo } from "https://npm.tfl.dev/react";
 
-import { createSubject } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
-import useObservables from 'https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js'
-import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js'
+import { createSubject } from "https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js";
+import useObservables from "https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js";
+import classKebab from "https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js";
 
-import Icon from '../icon/icon.jsx'
-import ImageByAspectRatio from '../image-by-aspect-ratio/image-by-aspect-ratio.jsx'
-import Ripple from '../ripple/ripple.jsx'
-import ScopedStylesheet from '../scoped-stylesheet/scoped-stylesheet.jsx';
+import Icon from "../icon/icon.jsx";
+import ImageByAspectRatio from "../image-by-aspect-ratio/image-by-aspect-ratio.jsx";
+import Ripple from "../ripple/ripple.jsx";
+import ScopedStylesheet from "../scoped-stylesheet/scoped-stylesheet.jsx";
 
 /**
  * @param {Object} props
@@ -46,11 +46,11 @@ import ScopedStylesheet from '../scoped-stylesheet/scoped-stylesheet.jsx';
  * @param {subject} [props.isLoadingSubject]
  */
 
-export default function Button (props) {
+export default function Button(props) {
   const {
-    style = 'primary',
-    size = 'medium',
-    type = 'button',
+    style = "primary",
+    size = "medium",
+    type = "button",
     background,
     backgroundHover,
     backgroundSelected,
@@ -71,7 +71,7 @@ export default function Button (props) {
     iconColor,
     iconCircled,
     iconSize = 20,
-    iconLocation = 'left',
+    iconLocation = "left",
     shouldHandleLoading,
     href,
     onClick,
@@ -79,117 +79,135 @@ export default function Button (props) {
     isDisabled,
     isSelected,
     isFullWidth,
-    target
-  } = props
+    target,
+  } = props;
   const { isLoadingSubject } = useMemo(() => {
     return {
-      isLoadingSubject: props.isLoadingSubject || createSubject(false)
-    }
-  }, [])
+      isLoadingSubject: props.isLoadingSubject || createSubject(false),
+    };
+  }, []);
 
   const { isLoading } = useObservables(() => ({
-    isLoading: isLoadingSubject.obs
-  }))
+    isLoading: isLoadingSubject.obs,
+  }));
 
   const styleInfoMap = {
     primary: {
-      '--background': 'var(--truffle-color-primary)',
-      '--background-hover': 'var(--truffle-color-primary)',
-      '--background-selected': 'var(--truffle-color-primary)',
-      '--text-color': 'var(--truffle-color-text-primary)',
-      '--border-radius': '4px',
-      '--border-radius-hover': '4px',
-      '--border-radius-selected': '4px',
-      '--outline': 'none',
-      '--outline-hover': 'none',
-      '--outline-selected': 'none',
-      '--transform-hover': 'none',
-      '--transform-selected': 'none',
-      '--hover-transition': 'all 0.1s cubic-bezier(0.4, 0, 0.2, 1)',
-      '--selected-transition': 'all 0.1s cubic-bezier(0.4, 0, 0.2, 1)'
+      "--background": "var(--truffle-color-primary)",
+      "--background-hover": "var(--truffle-color-primary)",
+      "--background-selected": "var(--truffle-color-primary)",
+      "--text-color": "var(--truffle-color-text-primary)",
+      "--border-radius": "4px",
+      "--border-radius-hover": "4px",
+      "--border-radius-selected": "4px",
+      "--outline": "none",
+      "--outline-hover": "none",
+      "--outline-selected": "none",
+      "--transform-hover": "none",
+      "--transform-selected": "none",
+      "--hover-transition": "all 0.1s cubic-bezier(0.4, 0, 0.2, 1)",
+      "--selected-transition": "all 0.1s cubic-bezier(0.4, 0, 0.2, 1)",
     },
     secondary: {
-      '--background': 'var(--truffle-color-tertiary)',
-      '--background-hover': 'var(--truffle-color-tertiary)',
-      '--background-selected': 'var(--truffle-color-tertiary)',
-      '--text-color': 'var(--truffle-color-text-tertiary)',
-      '--border-radius': '4px',
-      '--border-radius-hover': '4px',
-      '--border-radius-selected': '4px',
-      '--outline': 'none',
-      '--outline-hover': 'none',
-      '--outline-selected': 'none',
-      '--transform-hover': 'none',
-      '--transform-selected': 'none',
-      '--hover-transition': 'all 0.1s cubic-bezier(0.4, 0, 0.2, 1)',
-      '--selected-transition': 'all 0.1s cubic-bezier(0.4, 0, 0.2, 1)'
+      "--background": "var(--truffle-color-tertiary)",
+      "--background-hover": "var(--truffle-color-tertiary)",
+      "--background-selected": "var(--truffle-color-tertiary)",
+      "--text-color": "var(--truffle-color-text-tertiary)",
+      "--border-radius": "4px",
+      "--border-radius-hover": "4px",
+      "--border-radius-selected": "4px",
+      "--outline": "none",
+      "--outline-hover": "none",
+      "--outline-selected": "none",
+      "--transform-hover": "none",
+      "--transform-selected": "none",
+      "--hover-transition": "all 0.1s cubic-bezier(0.4, 0, 0.2, 1)",
+      "--selected-transition": "all 0.1s cubic-bezier(0.4, 0, 0.2, 1)",
     },
     gradient: {
-      '--background': 'var(--truffle-gradient)',
-      '--background-hover': 'var(--truffle-gradient)',
-      '--background-selected': 'var(--truffle-gradient)',
-      '--text-color': 'var(--truffle-color-text-gradient)',
-      '--border-radius': '4px',
-      '--border-radius-hover': '4px',
-      '--border-radius-selected': '4px',
-      '--outline': 'none',
-      '--outline-hover': 'none',
-      '--outline-selected': 'none',
-      '--transform-hover': 'none',
-      '--transform-selected': 'none',
-      '--hover-transition': 'all 0.1s cubic-bezier(0.4, 0, 0.2, 1)',
-      '--selected-transition': 'all 0.1s cubic-bezier(0.4, 0, 0.2, 1)'
-    }
-  }
+      "--background": "var(--truffle-gradient)",
+      "--background-hover": "var(--truffle-gradient)",
+      "--background-selected": "var(--truffle-gradient)",
+      "--text-color": "var(--truffle-color-text-gradient)",
+      "--border-radius": "4px",
+      "--border-radius-hover": "4px",
+      "--border-radius-selected": "4px",
+      "--outline": "none",
+      "--outline-hover": "none",
+      "--outline-selected": "none",
+      "--transform-hover": "none",
+      "--transform-selected": "none",
+      "--hover-transition": "all 0.1s cubic-bezier(0.4, 0, 0.2, 1)",
+      "--selected-transition": "all 0.1s cubic-bezier(0.4, 0, 0.2, 1)",
+    },
+  };
 
-  const buttonStyles = styleInfoMap[style]
+  const buttonStyles = styleInfoMap[style];
 
   // allow the dev to override default styles
-  if (textColor) buttonStyles['--text-color'] = textColor
-  if (background) buttonStyles['--background'] = background
-  if (backgroundHover) buttonStyles['--background-hover'] = backgroundHover
-  if (backgroundSelected) buttonStyles['--background-selected'] = backgroundSelected
-  if (outline) buttonStyles['--outline'] = outline
-  if (outlineHover) buttonStyles['--outline-hover'] = outlineHover
-  if (outlineSelected) buttonStyles['--outline-selected'] = outlineSelected
-  if (borderRadius) buttonStyles['--border-radius'] = borderRadius
-  if (borderRadiusHover) buttonStyles['--border-radius-hover'] = borderRadiusHover
-  if (borderRadiusSelected) buttonStyles['--border-radius-selected'] = borderRadiusSelected
-  if (transformHover) buttonStyles['--transform-hover'] = transformHover
-  if (transformSelected) buttonStyles['--transform-selected'] = transformSelected
-  if (hoverTransition) buttonStyles['--hover-transition'] = hoverTransition
-  if (selectedTransition) buttonStyles['--selected-transition'] = selectedTransition
+  if (textColor) buttonStyles["--text-color"] = textColor;
+  if (background) buttonStyles["--background"] = background;
+  if (backgroundHover) buttonStyles["--background-hover"] = backgroundHover;
+  if (backgroundSelected) {
+    buttonStyles["--background-selected"] = backgroundSelected;
+  }
+  if (outline) buttonStyles["--outline"] = outline;
+  if (outlineHover) buttonStyles["--outline-hover"] = outlineHover;
+  if (outlineSelected) buttonStyles["--outline-selected"] = outlineSelected;
+  if (borderRadius) buttonStyles["--border-radius"] = borderRadius;
+  if (borderRadiusHover) {
+    buttonStyles["--border-radius-hover"] = borderRadiusHover;
+  }
+  if (borderRadiusSelected) {
+    buttonStyles["--border-radius-selected"] = borderRadiusSelected;
+  }
+  if (transformHover) buttonStyles["--transform-hover"] = transformHover;
+  if (transformSelected) {
+    buttonStyles["--transform-selected"] = transformSelected;
+  }
+  if (hoverTransition) buttonStyles["--hover-transition"] = hoverTransition;
+  if (selectedTransition) {
+    buttonStyles["--selected-transition"] = selectedTransition;
+  }
 
-  const isIconRemote = /^https?:\/\//.test(icon)
+  const isIconRemote = /^https?:\/\//.test(icon);
   const $iconWrapper = icon && (
     <div className="icon-wrapper">
-      { isIconRemote
-        ? <ImageByAspectRatio
+      {isIconRemote
+        ? (
+          <ImageByAspectRatio
             imageUrl={icon}
             aspectRatio={1}
             width={iconSize}
             height={iconSize}
           />
-        : <Icon
+        )
+        : (
+          <Icon
             icon={icon}
             size={iconSize}
-            color={iconColor || buttonStyles['--text-color']}
+            color={iconColor || buttonStyles["--text-color"]}
             viewBox={iconViewBox}
             isCircled={iconCircled}
           />
-      }
+        )}
     </div>
-  )
+  );
 
   // TODO: routing w/o hard page load if href exists
+
+  // TODO: figure out why jscodeshift throws for Converting circular structure to JSON
+  // if this is an inline prop w/o cssUrl var. I think it's probably from the getNode stuff
+  const cssUrl = new URL("./button.css", import.meta.url);
   return (
-    <ScopedStylesheet url={new URL('button.css', import.meta.url)}>
+    <ScopedStylesheet url={cssUrl}>
       <button
-        className={`c-button style-${style} size-${size} icon-location-${iconLocation} ` + classKebab({
-          hasIcon: Boolean(icon),
-          isSelected,
-          isFullWidth
-        })}
+        className={`c-button style-${style} size-${size} icon-location-${iconLocation} ` +
+          classKebab({
+            hasIcon: Boolean(icon),
+            isSelected,
+            isFullWidth,
+          })}
         type={type}
         disabled={Boolean(isDisabled)}
         href={href}
@@ -198,22 +216,22 @@ export default function Button (props) {
         onMouseDown={onMouseDown}
         onClick={async (e) => {
           if (!isDisabled) {
-            shouldHandleLoading && isLoadingSubject.next(true)
+            shouldHandleLoading && isLoadingSubject.next(true);
             try {
-              await onClick?.(e)
-              shouldHandleLoading && isLoadingSubject.next(false)
+              await onClick?.(e);
+              shouldHandleLoading && isLoadingSubject.next(false);
             } catch (err) {
-              shouldHandleLoading && isLoadingSubject.next(false)
-              throw err
+              shouldHandleLoading && isLoadingSubject.next(false);
+              throw err;
             }
           }
         }}
       >
-        {icon && iconLocation === 'left' && $iconWrapper}
-        {isLoading ? 'Loading...' : text}
-        {icon && iconLocation === 'right' && $iconWrapper}
+        {icon && iconLocation === "left" && $iconWrapper}
+        {isLoading ? "Loading..." : text}
+        {icon && iconLocation === "right" && $iconWrapper}
         {/* <Ripple color={textColor} /> */}
       </button>
     </ScopedStylesheet>
-  )
+  );
 }

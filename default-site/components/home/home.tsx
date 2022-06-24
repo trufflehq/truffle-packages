@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from "https://npm.tfl.dev/react";
+import PropTypes from "https://npm.tfl.dev/prop-types@15";
 
 import AnotherComponent from "../another-component/another-component.tsx";
 
