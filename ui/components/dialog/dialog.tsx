@@ -1,18 +1,19 @@
 import React from "https://npm.tfl.dev/react";
 import * as DialogPrimitive from "https://npm.tfl.dev/@radix-ui/react-dialog";
 import useObservables from "https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js";
-import globalContext from "https://tfl.dev/@truffle/global-context@1.0.0/index.js";
 
+// TODO: set ThemeContext.Provider in ultra-server/setup.jsx
+import { useThemeContext } from "../theme/theme-context.js";
 import ScopedStylesheet from "../scoped-stylesheet/scoped-stylesheet.jsx";
 
 export default function Dialog(props) {
-  const context = globalContext.getStore();
-  const Dialog = context.theme.components.dialog.Component || BaseDialog;
+  const themeContext = useThemeContext();
+  const Dialog = themeContext.components.dialog.Component || BaseDialog;
   return <Dialog {...props} />;
 }
 
 function BaseDialog(props) {
-  const context = globalContext.getStore();
+  const themeContext = useThemeContext();
 
   const {
     isOpen,
@@ -25,7 +26,7 @@ function BaseDialog(props) {
     onClose?.();
   };
 
-  const cssUrl = context.theme.components.dialog.cssUrl ||
+  const cssUrl = themeContext.components.dialog.cssUrl ||
     new URL("./dialog.css", import.meta.url);
 
   return (
