@@ -1,3 +1,5 @@
-export default function Home() {
-  return <div>Home example</div>;
+import Home from "../components/home/home.tsx";
+
+export default function HomePage() {
+  return <Home />;
 }
