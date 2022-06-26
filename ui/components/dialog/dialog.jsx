@@ -8,7 +8,7 @@ import ScopedStylesheet from "../scoped-stylesheet/scoped-stylesheet.jsx";
 
 export default function Dialog(props) {
   const themeContext = useThemeContext();
-  const Dialog = themeContext.components.dialog.Component || BaseDialog;
+  const Dialog = themeContext.components?.dialog.Component || BaseDialog;
   return <Dialog {...props} />;
 }
 
@@ -26,7 +26,7 @@ function BaseDialog(props) {
     onClose?.();
   };
 
-  const cssUrl = themeContext.components.dialog.cssUrl ||
+  const cssUrl = themeContext.components?.dialog.cssUrl ||
     new URL("./dialog.css", import.meta.url);
 
   return (
