@@ -21,6 +21,13 @@ function getNestedRoutes(path = "") {
   const layoutPath = existsSync(`${dir}${path}/layout.tsx`) &&
     `${dir}${path}/layout.tsx`;
 
+  // nextjs style catch alls `[...slug]`. dir names can't be * on windows
+  // TODO: support the difference between [[...slug]] and [...slug]
+  // https://nextjs.org/docs/routing/dynamic-routes#optional-catch-all-routes)
+  path = path.replace(/\[?\[\.\.\.(.*?)\]\]?/, "*");
+  // /abc/[param] -> /abc/:param
+  path = path.replace(/\[(.*?)\]/, ":$1");
+
   return {
     path: path || "/",
     page: pagePath,
