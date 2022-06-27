@@ -1,5 +1,5 @@
 import React from 'https://npm.tfl.dev/react'
-import root from 'https://npm.tfl.dev/react-shadow@19'
+import ScopedStylesheet from '../scoped-stylesheet/scoped-stylesheet.jsx'
 
 import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js'
 
@@ -34,11 +34,7 @@ export default function $imageByAspectRatio (props) {
   }
 
   return (
-    <root.div>
-      <link
-        rel="stylesheet"
-        href={new URL('image-by-aspect-ratio.css', import.meta.url).toString()}
-      />
+    <ScopedStylesheet url={new URL('image-by-aspect-ratio.css', import.meta.url)}>
       <div
         className={'c-image-by-aspect-ratio ' + classKebab({
           isCentered,
@@ -60,6 +56,6 @@ export default function $imageByAspectRatio (props) {
           }}
         />
       </div>
-    </root.div>
+    </ScopedStylesheet>
   )
 }
