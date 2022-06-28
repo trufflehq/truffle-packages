@@ -1,16 +1,18 @@
 import React, { useRef } from 'https://npm.tfl.dev/react'
 import useObservables from "https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js";
 
+import ScopedStylesheet from "../scoped-stylesheet/scoped-stylesheet.jsx";
+
 export default function Input ({ value, changeHandler, type = 'text', label, ref }) {
   const $ref = ref ?? useRef()
 
   return (
-    <div className='c-input'>
-      <label>
-        <div className="c-label">{label}</div>
-        <input ref={$ref} type={type} value={value ?? ''} onInput={changeHandler} />
+    <ScopedStylesheet url={new URL('./input.css', import.meta.url)}>
+      <label className="label-wrapper">
+        <div className="label">{label}</div>
+        <input className="input" ref={$ref} type={type} value={value ?? ''} onInput={changeHandler} />
       </label>
-    </div>
+    </ScopedStylesheet>
   )
 }
 

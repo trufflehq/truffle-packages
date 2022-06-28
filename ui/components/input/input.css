@@ -1,0 +1,21 @@
+:host {}
+
+:host>.label-wrapper>.label {
+  font-family: var(--truffle-font-family);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  margin-bottom: 8px;
+}
+
+:host>.label-wrapper>.input {
+  background: var(--truffle-color-bg-primary);
+  color: var(--truffle-color-text-bg-primary);
+  width: 100%;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  /* FIXME */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
