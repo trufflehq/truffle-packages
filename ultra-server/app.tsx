@@ -29,8 +29,7 @@ const Ultra = ({ state }: AppProps) => {
       <html lang="en">
         <head>
           <Helmet>
-            <title>Example Page</title>
-            <link rel="stylesheet" href="/public/global.css" />
+            <title>Truffle</title>
           </Helmet>
         </head>
         <body>
