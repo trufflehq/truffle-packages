@@ -1,6 +1,7 @@
 import React from 'https://npm.tfl.dev/react'
 
 const DEFAULT_FONT_FAMILY = 'Poppins, sans-serif'
+const DEFAULT_BORDER_RADIUS_MULTIPLIER = 1
 
 export default function ThemeComponent ({
   colorBgPrimary = '#050D13',
@@ -23,6 +24,7 @@ export default function ThemeComponent ({
   colorTextSecondary = '#000000',
   colorTextBgGradient = '#000000',
   colorDemphasizedText = 'rgba(255, 255, 255, 0.76)',
+  borderRadiusMultiplier = DEFAULT_BORDER_RADIUS_MULTIPLIER,
   fontFamily = DEFAULT_FONT_FAMILY
 }) {
   return (
@@ -70,6 +72,9 @@ export default function ThemeComponent ({
 
             /* font family */
             --truffle-font-family: ${fontFamily};
+
+            /* border radius */
+            --truffle-border-radius-multiplier: ${borderRadiusMultiplier};
           }
 
           .truffle-text-body-1 {

@@ -1,20 +1,4 @@
-.c-sign-up-form > .title {
-  text-align: center;
-}
-
-.c-sign-up-form > .description {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.c-sign-up-form > .form > .input {
-  margin-bottom: 12px;
-}
-
-.c-sign-up-form > .form > .save {
-  margin-top: 24px;
-}
-
-.c-sign-up-form > .form > .save > .terms {
-  margin-top: 8px;
+.c-description>.login-toggle {
+  margin-left: 8px;
+  cursor: pointer;
 }

@@ -1,10 +1,11 @@
 import React from "https://npm.tfl.dev/react";
-import * as DialogPrimitive from "https://npm.tfl.dev/@radix-ui/react-dialog";
+import * as DialogPrimitive from "https://npm.tfl.dev/@radix-ui/react-dialog@0";
 import useObservables from "https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js";
 
 // TODO: set ThemeContext.Provider in ultra-server/setup.jsx
 import { useThemeContext } from "../theme/theme-context.js";
 import ScopedStylesheet from "../scoped-stylesheet/scoped-stylesheet.jsx";
+import Icon from "../icon/icon.jsx";
 
 export default function Dialog(props) {
   const themeContext = useThemeContext();
@@ -12,15 +13,16 @@ export default function Dialog(props) {
   return <Dialog {...props} />;
 }
 
-function BaseDialog(props) {
-  const themeContext = useThemeContext();
-
+function BaseDialog(props) {  
   const {
     isOpen,
     onClose,
     title,
     description,
+    content
   } = props;
+
+  const themeContext = useThemeContext();
 
   const close = () => {
     onClose?.();
@@ -38,14 +40,15 @@ function BaseDialog(props) {
             className="content"
             onEscapeKeyDown={close}
           >
-            {title && <DialogPrimitive.Title>{title}</DialogPrimitive.Title>}
+            {title && <DialogPrimitive.Title className="title">{title}</DialogPrimitive.Title>}
             {description && (
-              <DialogPrimitive.Description>
+              <DialogPrimitive.Description className="description">
                 {description}
               </DialogPrimitive.Description>
             )}
+            <div className="inner-content">{content}</div>
             <DialogPrimitive.Close className="close" onClick={close}>
-              close
+              <Icon icon="close" />
             </DialogPrimitive.Close>
           </DialogPrimitive.Content>
         </ScopedStylesheet>
