@@ -1,12 +1,23 @@
 import React, { useMemo } from 'https://npm.tfl.dev/react'
 
 import { createSubject } from 'https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js'
+import { mutation } from 'https://tfl.dev/@truffle/api@0.0.1/client.js'
 
 import Button from '../button/button.jsx'
 import Dialog, { Dialog$ } from '../dialog/dialog.jsx'
 import { Input$ } from '../input/input.jsx'
 import { useThemeContext } from "../theme/theme-context.js";
 import ScopedStylesheet from "../scoped-stylesheet/scoped-stylesheet.jsx";
+
+const JOIN_MUTATION = gql`mutation UserJoin($input: UserJoinInput!) {
+  userJoin(input: $input) { accessToken }
+}`
+const RESET_PASSWORD_MUTATION = gql`mutation UserResetPassword($input: UserResetPasswordInput!) {
+  userResetPassword(input: $input) { hasSentResetEmail }
+}`
+const LOGIN_MUTATION = gql`mutation UserLoginEmailPhone($input: UserLoginEmailPhoneInput!) {
+  userLoginEmailPhone(input: $input) { accessToken }
+}`
 
 export default function AuthDialog(props) {
   const DialogElement = props.Dialog || Dialog
@@ -35,11 +46,26 @@ function Description () {
 }
 
 function Content () {
-  const { usernameSubject, emailOrPhoneSubject, passwordSubject } = useMemo(() => {
+  const {
+    nameSubject, nameErrorSubject, emailPhoneSubject,
+    emailPhoneErrorSubject, passwordSubject, passwordErrorSubject
+  } = useMemo(() => {
     return {
-      usernameSubject: createSubject(''),
-      emailOrPhoneSubject: createSubject(''),
-      passwordSubject: createSubject('')
+      isLoadingSubject: createSubject(false),
+      fields: {
+        name: {
+          valueSubject: createSubject(''),
+          errorSubject: createSubject()
+        },
+        emailPhone: {
+          valueSubject: createSubject(''),
+          errorSubject: createSubject()
+        },
+        password: {
+          valueSubject: createSubject(''),
+          errorSubject: createSubject()
+        }
+      }
     }
   }, [])
 
@@ -47,39 +73,41 @@ function Content () {
     if (isLoading) {
       return
     }
-    if (mode === 'join' && !name) {
     try {
       if (mode === 'signIn') {
-        useMutation(LOGIN_MUTATION, {
-
+        await mutation(LOGIN_MUTATION, {
+          input: {
+            emailPhone: fields.emailPhone.valueSubject.getValue(),
+            password: fields.password.valueSubject.getValue(),
+          }
         })
-
-        await model.auth.login({ emailPhone, password })
       } else if (mode === 'reset') {
-        await model.auth.resetPassword({ emailPhone })
+        await mutation(RESET_PASSWORD_MUTATION, {
+          input: {
+            emailPhone: fields.emailPhone.valueSubject.getValue()
+          }
+        })
       } else {
-        await model.auth.join({
-          name, emailPhone, password, source, inviteTokenStr
-        }, { overlay, cookie })
+        await mutation(JOIN_MUTATION, {
+          input: {
+            emailPhone: fields.emailPhone.valueSubject.getValue(),
+            password: fields.password.valueSubject.getValue(),
+          }
+        })
       }
     } catch (error) {
-      hasErrorStream.next(true)
-      let errorStream
-      switch (error.info?.field) {
-        case 'name': errorStream = nameErrorStream; break
-        case 'emailPhone': errorStream = emailPhoneErrorStream; break
-        case 'password': errorStream = passwordErrorStream; break
-        default: errorStream = emailPhoneErrorStream; break
-      }
-      errorStream.next(lang.get(error.info?.langKey || 'error.invalid'))
+      hasErrorSubject.next(true)
+      const errorSubject = fields[error.info?.field]?.errorSubject || fields.emailPhone.errorSubject
+      // TODO: better error messages
+      errorSubject.next(error.info?.langKey || 'Error')
     }
   }
 
   return <>
-    <Input$ label="Display name" valueSubject={usernameSubject} />
-    <Input$ label="Email or phone #" valueSubject={emailOrPhoneSubject} />
+    <Input$ label="Display name" valueSubject={nameSubject} />
+    <Input$ label="Email or phone #" valueSubject={emailPhoneSubject} />
     <Input$ label="Password" type="password" valueSubject={passwordSubject} />
-    <Button text="go" />
+    <Button text="go" onClick={onSubmit} />
   </>
 }
 

@@ -20,7 +20,12 @@ export function getClient () {
 }
 
 export function queryObservable (query, variables) {
+  // might be able to get rid of toPromise since urql returns an observable (wonka, not rxjs)
   return Obs.from(getClient().query(query, variables).toPromise())
+}
+
+export function mutation (query, variables) {
+  return getClient().mutation(query, variables).toPromise()
 }
 
 // useQuery, useMutation, Provider
