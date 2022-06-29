@@ -12,7 +12,8 @@ import { createPortal } from "https://npm.tfl.dev/react-dom";
 const Isolate = React.forwardRef(
   ({ children, element = "div", ...props }, ref) => {
     // FIXME: ssr won't have scoped stylesheets...
-    // could try declarative shadow root again
+    // could try declarative shadow root again? the problem with that is
+    // it only seems to work on initial page load, not when streamed in vs react streaming/suspense
     if (typeof document === "undefined") return <isolate-wrapper><isolate>{children}</isolate></isolate-wrapper>;
 
     const isolateRef = useRef();
