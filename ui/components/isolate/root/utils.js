@@ -1,3 +1,6 @@
+// https://github.com/austinhallock/ReactShadow
+// modified so refs are immediately available in useEffects
+// (content is mounted even if portal is not ready)
 import { createContext } from 'https://npm.tfl.dev/react';
 
 export const Context = createContext(null);

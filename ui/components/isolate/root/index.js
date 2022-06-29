@@ -1,3 +1,6 @@
+// https://github.com/austinhallock/ReactShadow
+// modified so refs are immediately available in useEffects
+// (content is mounted even if portal is not ready)
 import { useContext } from 'https://npm.tfl.dev/react';
 import { decamelize } from 'https://npm.tfl.dev/humps@2';
 import create from './core.js';

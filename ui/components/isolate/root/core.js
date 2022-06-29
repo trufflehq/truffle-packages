@@ -1,3 +1,6 @@
+// https://github.com/austinhallock/ReactShadow
+// modified so refs are immediately available in useEffects
+// (content is mounted even if portal is not ready)
 import React, { useState, useEffect, forwardRef } from 'https://npm.tfl.dev/react';
 import { useEnsuredForwardedRef } from 'https://npm.tfl.dev/react-use@17';
 import { createPortal } from 'https://npm.tfl.dev/react-dom';
@@ -5,7 +8,7 @@ import PropTypes from 'https://npm.tfl.dev/prop-types@15';
 import * as utils from './utils.js';
 
 function ShadowContent({ root, children }) {
-    return createPortal(children, root);
+    return root ? createPortal(children, root) : <>{children}</>;
 }
 
 ShadowContent.propTypes = {
@@ -52,27 +55,25 @@ export default function create(options) {
             return (
                 <>
                     <options.tag key={key} ref={node} {...props}>
-                        {(root || ssr) && (
-                            <utils.Context.Provider value={root}>
-                                {ssr ? (
-                                    <template shadowroot="open">
-                                        {options.render({
-                                            root,
-                                            ssr,
-                                            children,
-                                        })}
-                                    </template>
-                                ) : (
-                                    <ShadowContent root={root}>
-                                        {options.render({
-                                            root,
-                                            ssr,
-                                            children,
-                                        })}
-                                    </ShadowContent>
-                                )}
-                            </utils.Context.Provider>
-                        )}
+                        <utils.Context.Provider value={root}>
+                            {ssr ? (
+                                <template shadowroot="open">
+                                    {options.render({
+                                        root,
+                                        ssr,
+                                        children,
+                                    })}
+                                </template>
+                            ) : (
+                                <ShadowContent root={root}>
+                                    {options.render({
+                                        root,
+                                        ssr,
+                                        children,
+                                    })}
+                                </ShadowContent>
+                            )}
+                        </utils.Context.Provider>
                     </options.tag>
                 </>
             );
