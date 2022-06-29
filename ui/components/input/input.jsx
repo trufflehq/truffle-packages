@@ -5,15 +5,9 @@ import { Context as FormControlContext } from '../form-control/form-control.tsx'
 import Isolate from '../isolate/isolate.jsx'
 import Stylesheet from '../stylesheet/stylesheet.jsx'
 
-export default function Input (props) {
+const Input = React.forwardRef(function Input (props, ref) {
   const context = useContext(FormControlContext)
   const isInvalid = props.isInvalid ?? context?.isInvalid
-
-  const ref = useRef()
-
-  useLayoutEffect(() => {
-    console.log('layout', ref);
-  }, [ref])
 
   return (
     <Isolate>
@@ -21,7 +15,9 @@ export default function Input (props) {
       <input className="input" ref={ref} {...props} />
     </Isolate>
   )
-}
+})
+
+export default Input
 
 export function Input$(props) {
   const { valueSubject } = props;
