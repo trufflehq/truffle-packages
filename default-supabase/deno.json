@@ -1,0 +1,10 @@
+{
+  "tasks": {
+    "dev": "DENO_FUTURE_CHECK=1 mode=development ULTRA_MODE=development deno run -A --unstable https://tfl.dev/@truffle/ultra-server@0.2.0/index.ts"
+  },
+  "fmt": {
+    "options": {
+      "lineWidth": 100
+    }
+  }
+}
