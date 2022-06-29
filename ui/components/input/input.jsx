@@ -19,7 +19,7 @@ const Input = React.forwardRef(function Input (props, ref) {
 
 export default Input
 
-export function Input$(props) {
+export const Input$ = React.forwardRef(function Input$(props, ref) {
   const { valueSubject } = props;
 
   const { value } = useObservables(() => ({
@@ -35,5 +35,5 @@ export function Input$(props) {
     onChange,
   };
 
-  return <Input {...props} {...newProps} />;
-}
+  return <Input ref={ref} {...props} {...newProps} />;
+})
