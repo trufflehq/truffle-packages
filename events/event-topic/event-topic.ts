@@ -3,6 +3,8 @@ import {
   PathParts,
 } from "https://tfl.dev/@truffle/utils@0.0.1/packages/path-parts.ts";
 
+const EVENT_TOPIC_MODEL_NAME = "EventTopic";
+
 export function isTargetEventTopicByPath(
   eventTopicPath: string,
   targetEventSlug: string,
@@ -12,7 +14,7 @@ export function isTargetEventTopicByPath(
   if (!parts) return false;
 
   const { modelName, slug } = parts;
-  return modelName === "EventTopic" && slug === targetEventSlug;
+  return modelName === EVENT_TOPIC_MODEL_NAME && slug === targetEventSlug;
 }
 
 export function isTargetEventTopicByParts(
@@ -20,5 +22,5 @@ export function isTargetEventTopicByParts(
   targetEventSlug: string,
 ) {
   const { modelName, slug } = pathParts;
-  return modelName === "EventTopic" && slug === targetEventSlug;
+  return modelName === EVENT_TOPIC_MODEL_NAME && slug === targetEventSlug;
 }

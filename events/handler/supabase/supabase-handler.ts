@@ -11,7 +11,7 @@ import {
 
 export type SupabaseCallbackHandler<T> = (
   eventData: T | null,
-  parts?: PathParts | null,
+  eventTopicParts?: PathParts | null,
 ) => Response | Promise<Response>;
 
 export async function handleTruffleWebhookEventSupabase<
@@ -41,9 +41,9 @@ export async function handleTruffleWebhookEventSupabase<
 
     // parse the event topic path
     if (eventTopicPath) {
-      const pathParts = getPathParts(eventTopicPath);
+      const eventTopicParts = getPathParts(eventTopicPath);
 
-      return callback(eventData, pathParts);
+      return callback(eventData, eventTopicParts);
     }
 
     return callback(null);
