@@ -1,21 +1,33 @@
 export default {
   name: '@truffle/viewer-polls',
   version: '0.0.1',
-  apiUrl: 'http://192.168.0.2:50330/graphql',
+  apiUrl: 'https://mycelium.staging.bio/graphql',
   requestedPermissions: [
     {
-      filters: { collectible: { isAll: true, rank: 0 } }, action: 'update', value: true
+      filters: { collectible: { isAll: true, rank: 0 } },
+      action: 'update', 
+      value: true
     },
     {
       filters: { eventSubscription: { isAll: true, rank: 0 } },
-      action: 'create',
+      action: 'update',
       value: true
     },
     {
       filters: { eventTopic: { isAll: true, rank: 0 } },
       action: 'create',
       value: true
-    }
+    },
+    {
+      filters: { poll: { isAll: true, rank: 0 } },
+      action: 'update', 
+      value: true
+    },
+    {
+      filters: { poll: { isAll: true, rank: 0 } },
+      action: 'create', 
+      value: true
+    },
   ],
   installActionRel: {
     actionPath: '@truffle/core@latest/_Action/workflow',
@@ -44,7 +56,7 @@ export default {
           }
         },
         {
-          _findActionSlug: 'graphql', // we grab action id from this. only used in this file, not stored in db
+          actionPath: '@truffle/core@latest/_Action/graphql', // we grab action id from this. only used in this file, not stored in db
           runtimeData: {
             query: `
               mutation CollectibleUpsert ($input: CollectibleUpsertInput!) {
@@ -73,11 +85,11 @@ export default {
           }
         },
         {
-          _findActionSlug: 'graphql', // we grab @truffle/core action id from this. only used in this file, not stored in db
+          actionPath: '@truffle/core@latest/_Action/graphql', // we grab @truffle/core action id from this. only used in this file, not stored in db
           runtimeData: {
             query: `
-            mutation EventSubscriptionCreate ($input: EventSubscriptionCreateInput!) {
-              eventSubscriptionCreate(input: $input) {
+            mutation EventSubscriptionUpsert ($input: EventSubscriptionUpsertInput!) {
+              eventSubscriptionUpsert(input: $input) {
                 eventSubscription { id }
               }
             }`,
