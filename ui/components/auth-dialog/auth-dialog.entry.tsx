@@ -1,15 +1,17 @@
 import React, { useMemo, useRef } from "https://npm.tfl.dev/react";
+import PropTypes from "https://npm.tfl.dev/prop-types@15";
+import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
 
 import { createSubject } from "https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js";
 import useObservables from "https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js";
 import { gql, mutation } from "https://tfl.dev/@truffle/api@0.0.1/client.js";
 
 import Button from "../button/button.jsx";
-import Dialog, { Dialog$ } from "../dialog/dialog.jsx";
-import { Input$ } from "../input/input.jsx";
+import Dialog from "../dialog/dialog.entry.tsx";
+import Input$ from "../input/input.entry.jsx";
 import FormControl from "../form-control/form-control.tsx";
 import { useThemeContext } from "../theme/theme-context.js";
-import ScopedStylesheet from "../scoped-stylesheet/scoped-stylesheet.jsx";
+import Stylesheet from "../stylesheet/stylesheet.jsx";
 
 const JOIN_MUTATION = gql`mutation UserJoin($input: UserJoinInput!) {
   userJoin(input: $input) { accessToken }
@@ -23,7 +25,7 @@ const LOGIN_MUTATION = gql
   userLoginEmailPhone(input: $input) { accessToken }
 }`;
 
-export default function AuthDialog(props) {
+function AuthDialog(props) {
   const { modeSubject } = useMemo(() => {
     return {
       modeSubject: createSubject("join"),
@@ -51,6 +53,11 @@ export default function AuthDialog(props) {
   );
 }
 
+AuthDialog.propTypes = {
+  isOpenSubject: PropTypes.object,
+  Dialog: PropTypes.object,
+};
+
 function Description({ modeSubject }) {
   const themeContext = useThemeContext();
 
@@ -67,14 +74,15 @@ function Description({ modeSubject }) {
   };
 
   return (
-    <ScopedStylesheet url={cssUrl}>
+    <>
+      <Stylesheet url={cssUrl} />
       <div className="c-description">
         Already have an account?
         <span className="login-toggle" onClick={toggleMode}>
           {mode === "login" ? "Join" : "Login"}
         </span>
       </div>
-    </ScopedStylesheet>
+    </>
   );
 }
 
@@ -112,8 +120,6 @@ function Content({ modeSubject }) {
   const displayNameRef = useRef();
 
   const onSubmit = async () => {
-    console.log("submit", isLoading);
-
     if (isLoading) {
       return;
     }
@@ -152,19 +158,16 @@ function Content({ modeSubject }) {
     }
   };
 
-  console.log("ref111", displayNameRef);
-
   return (
     <>
       <FormControl isInvalid={true}>
+        {/* <Label>Display Name</Label> */}
         <Input$
-          ref={displayNameRef}
-          label="Display name"
+          reactRef={displayNameRef}
           valueSubject={fields.name.valueSubject}
         />
       </FormControl>
-      {
-        /* <Input$
+      <Input$
         label="Email or phone #"
         valueSubject={fields.emailPhone.valueSubject}
       />
@@ -172,19 +175,10 @@ function Content({ modeSubject }) {
         label="Password"
         type="password"
         valueSubject={fields.password.valueSubject}
-      /> */
-      }
+      />
       <Button text="go" onClick={onSubmit} />
     </>
   );
-}
-
-export function AuthDialog$(props) {
-  const newProps = {
-    Dialog: Dialog$,
-  };
-
-  return <AuthDialog {...props} {...newProps} />;
 }
 
 function parseEmailPhone(emailPhone) {
@@ -197,3 +191,5 @@ function parseEmailPhone(emailPhone) {
     return { email: emailPhone };
   }
 }
+
+export default toWebComponent(AuthDialog);

@@ -1,11 +1,12 @@
 import React from "https://npm.tfl.dev/react";
+import PropTypes from "https://npm.tfl.dev/prop-types@15";
 import * as DialogPrimitive from "https://npm.tfl.dev/@radix-ui/react-dialog@0";
 import useObservables from "https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js";
 
-// TODO: set ThemeContext.Provider in ultra-server/setup.jsx
 import { useThemeContext } from "../theme/theme-context.js";
-import ScopedStylesheet from "../scoped-stylesheet/scoped-stylesheet.jsx";
 import Icon from "../icon/icon.jsx";
+import Isolate from "../isolate/isolate.tsx";
+import Stylesheet from "../stylesheet/stylesheet.jsx";
 
 export default function Dialog(props) {
   const themeContext = useThemeContext();
@@ -13,13 +14,13 @@ export default function Dialog(props) {
   return <Dialog {...props} />;
 }
 
-function BaseDialog(props) {  
+function BaseDialog(props) {
   const {
     isOpen,
     onClose,
     title,
     description,
-    content
+    content,
   } = props;
 
   const themeContext = useThemeContext();
@@ -34,13 +35,18 @@ function BaseDialog(props) {
   return (
     <DialogPrimitive.Root open={isOpen}>
       <DialogPrimitive.Portal>
-        <ScopedStylesheet url={cssUrl}>
+        <Isolate>
+          <Stylesheet url={cssUrl} />
           <DialogPrimitive.Overlay className="overlay" onClick={close} />
           <DialogPrimitive.Content
             className="content"
             onEscapeKeyDown={close}
           >
-            {title && <DialogPrimitive.Title className="title">{title}</DialogPrimitive.Title>}
+            {title && (
+              <DialogPrimitive.Title className="title">
+                {title}
+              </DialogPrimitive.Title>
+            )}
             {description && (
               <DialogPrimitive.Description className="description">
                 {description}
@@ -51,11 +57,18 @@ function BaseDialog(props) {
               <Icon icon="close" />
             </DialogPrimitive.Close>
           </DialogPrimitive.Content>
-        </ScopedStylesheet>
+        </Isolate>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
   );
 }
+
+BaseDialog.propTypes = {
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
+  title: PropTypes.string,
+  description: PropTypes.string,
+};
 
 export function Dialog$(props) {
   const { isOpenSubject } = props;

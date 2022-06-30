@@ -14,7 +14,7 @@ const isSsr = globalThis?.Deno;
 
 export default function Routing() {
   const { nestedRoutes } = useSsrData(
-    "nested-routes",
+    "/nested-routes",
     () => isSsr && import("./fs-router-server.tsx"),
   );
 
