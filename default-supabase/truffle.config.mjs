@@ -2,38 +2,50 @@ export default {
   name: '@truffle/viewer-polls',
   version: '0.0.1',
   apiUrl: 'https://mycelium.staging.bio/graphql',
+
+  // This is used to specify the required permissions that the package
   requestedPermissions: [
+    // permission to update a collectible
     {
       filters: { collectible: { isAll: true, rank: 0 } },
       action: 'update', 
       value: true
     },
+    // permission to update an event subscription
     {
       filters: { eventSubscription: { isAll: true, rank: 0 } },
       action: 'update',
       value: true
     },
+    // permission to create an event topic
     {
       filters: { eventTopic: { isAll: true, rank: 0 } },
       action: 'create',
       value: true
     },
+    // permission to update a poll
     {
       filters: { poll: { isAll: true, rank: 0 } },
       action: 'update', 
       value: true
     },
+    // permission to create a poll
     {
       filters: { poll: { isAll: true, rank: 0 } },
       action: 'create', 
       value: true
     },
   ],
+  // installActionRel specifies a workflow action that will run upon installation 
   installActionRel: {
+    // a workflow run a list of actions
     actionPath: '@truffle/core@latest/_Action/workflow',
     runtimeData: {
-      mode: 'sequential',
+      mode: 'sequential', // sequential | parallel
       stepActionRels:  [
+        // This action will create a custom event topic 'viewer-create-poll'
+        // that will be broadcast when the collectible is redeemed. This is
+        // used to forward an event to 3rd party services and packages
         {
           actionPath: '@truffle/core@latest/_Action/graphql',
           runtimeData: {
@@ -55,8 +67,10 @@ export default {
             }
           }
         },
+        // This action will create a collectible that users can redeem and will broadcast the custom
+        // 'viewer-create-poll' event topic
         {
-          actionPath: '@truffle/core@latest/_Action/graphql', // we grab action id from this. only used in this file, not stored in db
+          actionPath: '@truffle/core@latest/_Action/graphql',
           runtimeData: {
             query: `
               mutation CollectibleUpsert ($input: CollectibleUpsertInput!) {
@@ -84,8 +98,9 @@ export default {
             }
           }
         },
+        // This action will create an event subscription for a webhook to a 3rd party service
         {
-          actionPath: '@truffle/core@latest/_Action/graphql', // we grab @truffle/core action id from this. only used in this file, not stored in db
+          actionPath: '@truffle/core@latest/_Action/graphql',
           runtimeData: {
             query: `
             mutation EventSubscriptionUpsert ($input: EventSubscriptionUpsertInput!) {
@@ -95,10 +110,12 @@ export default {
             }`,
             variables: {
               input: {
+                // The event topic the subscription exists for
                 eventTopicPath: '@truffle/viewer-polls@latest/_EventTopic/viewer-create-poll',
                 actionRel: {
                   actionPath: '@truffle/core@1.0.0/_Action/webhook',
                   runtimeData: {
+                    // The endpoint for the supabase edge function
                     endpoint: 'https://qvxhlnszjqwditgwritg.functions.supabase.co/viewer-polls-example-handler'
                   }
                 }
