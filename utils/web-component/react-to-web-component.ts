@@ -68,6 +68,12 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
 
     // when any undefined property is set, create a getter/setter that re-renders
     set: function (target, key, value, receiver) {
+      // react seems to add __reactFiber and __reactProps, which cause errors
+      // when attempting to unmount component
+      if (key.startsWith?.("__react")) {
+        return true;
+      }
+
       if (rendering) {
         renderAddedProperties[key] = true;
       }
