@@ -2,6 +2,7 @@ import React, { useContext } from 'https://npm.tfl.dev/react'
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
 import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js"
 
+// FIXME: react context doesn't work between web components
 import { Context as FormControlContext } from '../form-control/form-control.tsx'
 import Stylesheet from '../stylesheet/stylesheet.jsx'
 
@@ -17,13 +18,15 @@ function Input ({ reactRef, handleChange, ...props }) {
   )
 }
 
-Input.propTypes = {
+export const propTypes = {
   handleChange: PropTypes.func,
+  type: PropTypes.string,
   // https://stackoverflow.com/a/51127130
   reactRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.elementType })
   ])
 };
+Input.propTypes = propTypes
 
 export default toWebComponent(Input)

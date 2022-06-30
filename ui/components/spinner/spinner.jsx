@@ -1,14 +1,14 @@
-import React, { useContext } from 'https://npm.tfl.dev/react'
+import React from 'https://npm.tfl.dev/react'
+import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
 
-import cssVars from '../../util/css-vars.js'
+// import cssVars from '../../util/css-vars.js'
 
 // import styles from './spinner.css' assert { type: 'css' }
 // document.adoptedStyleSheets = [...document.adoptedStyleSheets, styles]
 
 const DEFAULT_SIZE = 50
 
-export default function Spinner ({ size = DEFAULT_SIZE }) {
-
+export default toWebComponent(function Spinner ({ size = DEFAULT_SIZE }) {
   return (
     <div
       className="c-spinner"
@@ -18,9 +18,9 @@ export default function Spinner ({ size = DEFAULT_SIZE }) {
         <li
           key={i}
           style={{
-            border: `${Math.round(size * 0.06)}px solid ${cssVars.$primaryBase}`
+            border: `${Math.round(size * 0.06)}px solid var(--truffle-color-bg-secondary)`
           }} />
       )}
     </div>
   )
-}
+})

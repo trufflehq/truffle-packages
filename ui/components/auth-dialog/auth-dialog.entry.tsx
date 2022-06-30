@@ -8,8 +8,9 @@ import { gql, mutation } from "https://tfl.dev/@truffle/api@0.0.1/client.js";
 
 import Button from "../button/button.jsx";
 import Dialog from "../dialog/dialog.entry.tsx";
-import Input$ from "../input/input.entry.jsx";
+import InputObs from "../input/input-obs.entry.tsx";
 import FormControl from "../form-control/form-control.tsx";
+import FormLabel from "../form-label/form-label.tsx";
 import { useThemeContext } from "../theme/theme-context.js";
 import Stylesheet from "../stylesheet/stylesheet.jsx";
 
@@ -120,35 +121,46 @@ function Content({ modeSubject }) {
   const displayNameRef = useRef();
 
   const onSubmit = async () => {
+    console.log("submit");
+
     if (isLoading) {
       return;
     }
     let mutationRes;
     if (mode === "login") {
-      await mutation(LOGIN_MUTATION, {
+      mutationRes = await mutation(LOGIN_MUTATION, {
         input: {
           ...parseEmailPhone(fields.emailPhone.valueSubject.getValue()),
           password: fields.password.valueSubject.getValue(),
         },
       });
     } else if (mode === "reset") {
-      await mutation(RESET_PASSWORD_MUTATION, {
+      mutationRes = await mutation(RESET_PASSWORD_MUTATION, {
         input: {
           ...parseEmailPhone(fields.emailPhone.valueSubject.getValue()),
         },
       });
     } else {
+      console.log("sub", {
+        ...parseEmailPhone(fields.emailPhone.valueSubject.getValue()),
+        password: fields.password.valueSubject.getValue(),
+      });
+
       mutationRes = await mutation(JOIN_MUTATION, {
         input: {
           ...parseEmailPhone(fields.emailPhone.valueSubject.getValue()),
           password: fields.password.valueSubject.getValue(),
         },
       });
+      console.log(mutationRes);
     }
+
     if (mutationRes?.error) {
       // TODO: surely a cleaner way to do this
       const errorInfo = mutationRes?.error?.graphQLErrors?.[0]?.extensions
         ?.info;
+
+      console.log("error", errorInfo);
 
       hasErrorSubject.next(true);
       const errorSubject = fields[errorInfo?.field]?.errorSubject ||
@@ -161,21 +173,26 @@ function Content({ modeSubject }) {
   return (
     <>
       <FormControl isInvalid={true}>
-        {/* <Label>Display Name</Label> */}
-        <Input$
+        <FormLabel>Display Name</FormLabel>
+        <InputObs
+          id=""
           reactRef={displayNameRef}
           valueSubject={fields.name.valueSubject}
         />
       </FormControl>
-      <Input$
-        label="Email or phone #"
-        valueSubject={fields.emailPhone.valueSubject}
-      />
-      <Input$
-        label="Password"
-        type="password"
-        valueSubject={fields.password.valueSubject}
-      />
+      <FormControl isInvalid={true}>
+        <FormLabel>Email or phone #</FormLabel>
+        <InputObs
+          valueSubject={fields.emailPhone.valueSubject}
+        />
+      </FormControl>
+      <FormControl isInvalid={true}>
+        <FormLabel>Password</FormLabel>
+        <InputObs
+          type="password"
+          valueSubject={fields.password.valueSubject}
+        />
+      </FormControl>
       <Button text="go" onClick={onSubmit} />
     </>
   );
