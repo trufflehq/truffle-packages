@@ -7,7 +7,7 @@ import {
   isWebhookVerificationPayload,
   respondWithChallenge,
   TruffleEventPayload,
-} from "https://tfl.dev/@truffle/events@0.0.1/handler/handler.ts";
+} from "../handler.ts";
 
 export type SupabaseCallbackHandler<T> = (
   eventData: T | null,
