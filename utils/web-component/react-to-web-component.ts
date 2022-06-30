@@ -31,6 +31,42 @@ const define = {
   },
 };
 
+function isAllCaps(word) {
+  return word.split("").every((c) => c.toUpperCase() === c);
+}
+
+function flattenIfOne(arr) {
+  if (!Array.isArray(arr)) {
+    return arr;
+  }
+  if (arr.length === 1) {
+    return arr[0];
+  } else if (arr.length === 0) {
+    return undefined;
+  }
+  return arr;
+}
+
+function mapChildren(React, node) {
+  if (node.nodeType === Node.TEXT_NODE) {
+    return node.textContent.toString();
+  }
+
+  return flattenIfOne(
+    Array.from(node.childNodes).map((c) => {
+      if (c.nodeType === Node.TEXT_NODE) {
+        return c.textContent.toString();
+      }
+      // BR = br, ReactElement = ReactElement
+      var nodeName = isAllCaps(c.nodeName)
+        ? c.nodeName.toLowerCase()
+        : c.nodeName;
+      var children = flattenIfOne(mapChildren(React, c));
+      return React.createElement(nodeName, c.attributes, children);
+    }),
+  );
+}
+
 /**
  * Converts a React component into a webcomponent by wrapping it in a Proxy object.
  * @param {ReactComponent}
@@ -132,7 +168,12 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
       // Container is either shadow DOM or light DOM depending on `shadow` option.
       const container = options.shadow ? this.shadowRoot : this;
 
-      const element = React.createElement(ReactComponent, data);
+      // Array.from(this.attributes).forEach(function (attr) {
+      //   data[attr.name] = attr.nodeValue;
+      // });
+      const children = flattenIfOne(mapChildren(React, this));
+
+      const element = React.createElement(ReactComponent, data, children);
 
       // Use react to render element in container
       if (typeof ReactDOM.createRoot === "function") {
