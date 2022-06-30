@@ -1,127 +1,17 @@
 import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
-
 import {
   handleTruffleWebhookEventSupabase,
   isTargetEventTopicByParts,
   TruffleCollectibleRedeemEventData,
 } from "https://tfl.dev/@truffle/events@0.0.1/index.ts";
+import {
+  createPoll,
+  getUserById,
+  ViewerCreatePollUserInput,
+} from "./api/truffle/index.ts";
+import { getPollQuestionWithAuthorName } from "./utils/polls.ts";
 
 const VIEWER_CREATED_POLL_EVENT_SLUG = "viewer-create-poll";
-const VIEWER_POLL_TIME_LIMIT_SECONDS = 60;
-const TRUFFLE_API_URL =
-  "https://c0e4-2601-285-680-370-bc14-1217-8d64-9c71.ngrok.io/graphql";
-
-function truffleFetch(query: string, variables: Record<string, unknown>) {
-  return fetch(TRUFFLE_API_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
-    headers: new Headers({
-      "Authorization": `Bearer ${Deno.env.get("TRUFFLE_API_KEY")}`,
-    }),
-  });
-}
-
-type UserPayload = {
-  data: {
-    user: {
-      id: string;
-      name: string;
-      time: Date;
-      avatarImage: {
-        cdn: string;
-        prefix: string;
-        ext: string;
-        data: unknown;
-        aspectRatio: number;
-      };
-    };
-  };
-};
-
-async function getUserById(id: string) {
-  const query = `query UserById ($input: UserInput) {
-    user(input: $input) {
-      id
-      name
-      time
-    }
-  }`;
-
-  const variables = {
-    input: {
-      id,
-    },
-  };
-
-  try {
-    const response = await truffleFetch(query, variables);
-    const data: UserPayload = await response.json();
-
-    return data.data.user;
-  } catch (err) {
-    console.error("error during truffle fetch", err.message);
-  }
-}
-
-type PollUpsertPayload = {
-  data: {
-    pollUpsert: {
-      poll: {
-        id: string;
-        question: string;
-        options: ViewerCreatePollUserInputOption[];
-      };
-    };
-  };
-};
-
-async function createPoll(
-  question: string,
-  options: ViewerCreatePollUserInputOption[],
-) {
-  const query = `mutation PollUpsert ($input: PollUpsertInput) {
-    pollUpsert(input: $input) {
-        poll {
-            id
-            question
-            options {
-              text
-              index
-            }
-        }
-    }
-  }`;
-
-  const variables = {
-    input: {
-      question,
-      options,
-      durationSeconds: VIEWER_POLL_TIME_LIMIT_SECONDS,
-    },
-  };
-
-  try {
-    const response = await truffleFetch(query, variables);
-    const data: PollUpsertPayload = await response.json();
-
-    return data.data.pollUpsert.poll;
-  } catch (err) {
-    console.error("error during truffle fetch", err.message);
-  }
-}
-
-type ViewerCreatePollUserInputOption = {
-  text: string;
-  index: number;
-};
-
-type ViewerCreatePollUserInput = {
-  question: string;
-  options: ViewerCreatePollUserInputOption[];
-};
 
 // You can define types for the custom payload of your event
 // that you can use to add type safety for your event inside of `handleTruffleWebhookEventSupabase`
@@ -133,6 +23,8 @@ const handler = (request: Request) =>
   handleTruffleWebhookEventSupabase<ViewCollectibleEventData>(
     request,
     async (eventData, eventTopicParts) => {
+      // persists the raw result if you need something from the request
+      // outside of the eventData
       const rawResult = await request.json();
 
       if (!eventData) {
@@ -142,40 +34,33 @@ const handler = (request: Request) =>
         );
       }
 
-      const body = {
-        eventData,
-        eventTopicParts,
-      };
-
       if (eventTopicParts) {
-        if (
-          isTargetEventTopicByParts(
-            eventTopicParts,
-            VIEWER_CREATED_POLL_EVENT_SLUG,
-          )
-        ) {
-          console.log("processing events:", eventTopicParts.slug, eventData);
+        const isViewerCreatedPollEvent = isTargetEventTopicByParts(
+          eventTopicParts,
+          VIEWER_CREATED_POLL_EVENT_SLUG,
+        );
 
+        if (isViewerCreatedPollEvent) {
           const question = eventData.data.additionalData.question;
           const pollOptions = eventData.data.additionalData.options;
           const userId = eventData.data.userId;
-          console.log("poll question", question);
-          console.log("pollOptions", pollOptions);
 
           if (userId) {
             const truffleUser = await getUserById(userId);
-            const authoredQuestion = `${question} (created by ${
-              truffleUser?.name ?? "Anonymous"
-            })`;
+            const authoredQuestion = getPollQuestionWithAuthorName(
+              question,
+              truffleUser?.name,
+            );
+
             const poll = await createPoll(authoredQuestion, pollOptions);
 
-            console.log("created poll", JSON.stringify(poll));
+            console.log("poll created", JSON.stringify(poll));
           }
         }
       }
 
       return new Response(
-        JSON.stringify(body),
+        JSON.stringify("OK"),
         { headers: { "Content-Type": "application/json" } },
       );
     },
