@@ -4,7 +4,12 @@ import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/t
 
 import { createSubject } from "https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js";
 import useObservables from "https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js";
-import { gql, mutation } from "https://tfl.dev/@truffle/api@0.0.1/client.js";
+import {
+  _clearCache,
+  gql,
+  mutation,
+} from "https://tfl.dev/@truffle/api@0.0.1/client.js";
+import { setCookie } from "https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js";
 
 import Button from "../button/button.jsx";
 import Dialog from "../dialog/dialog.entry.tsx";
@@ -45,12 +50,11 @@ function AuthDialog(props) {
 
   const DialogElement = props.Dialog || Dialog;
   return (
-    <DialogElement
-      {...props}
-      title={title}
-      description={<Description modeSubject={modeSubject} />}
-      content={<Content modeSubject={modeSubject} />}
-    />
+    <DialogElement {...props}>
+      <DialogTitle></DialogTitle>
+      <DialogContent></DialogContent>
+      <DialogActions></DialogActions>
+    </DialogElement>
   );
 }
 
@@ -118,8 +122,6 @@ function Content({ modeSubject }) {
     mode: modeSubject.obs,
   }));
 
-  const displayNameRef = useRef();
-
   const onSubmit = async () => {
     console.log("submit");
 
@@ -141,18 +143,18 @@ function Content({ modeSubject }) {
         },
       });
     } else {
-      console.log("sub", {
-        ...parseEmailPhone(fields.emailPhone.valueSubject.getValue()),
-        password: fields.password.valueSubject.getValue(),
-      });
-
       mutationRes = await mutation(JOIN_MUTATION, {
         input: {
+          name: fields.name.valueSubject.getValue(),
           ...parseEmailPhone(fields.emailPhone.valueSubject.getValue()),
           password: fields.password.valueSubject.getValue(),
         },
       });
-      console.log(mutationRes);
+      const accessToken = mutationRes?.data?.userJoin?.accessToken;
+      if (accessToken) {
+        setCookie("accessToken", accessToken);
+        _clearCache();
+      }
     }
 
     if (mutationRes?.error) {
@@ -170,25 +172,28 @@ function Content({ modeSubject }) {
     }
   };
 
+  // FIXME: get id, value to pass through to react component
   return (
     <>
       <FormControl isInvalid={true}>
-        <FormLabel>Display Name</FormLabel>
+        <FormLabel htmlFor="display-name">Display Name</FormLabel>
         <InputObs
-          id=""
-          reactRef={displayNameRef}
+          id="name"
+          id2="name2"
           valueSubject={fields.name.valueSubject}
         />
       </FormControl>
       <FormControl isInvalid={true}>
         <FormLabel>Email or phone #</FormLabel>
         <InputObs
+          id="email-phone"
           valueSubject={fields.emailPhone.valueSubject}
         />
       </FormControl>
       <FormControl isInvalid={true}>
         <FormLabel>Password</FormLabel>
         <InputObs
+          id="password"
           type="password"
           valueSubject={fields.password.valueSubject}
         />

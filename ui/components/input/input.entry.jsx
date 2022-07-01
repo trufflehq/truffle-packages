@@ -19,6 +19,8 @@ function Input ({ reactRef, handleChange, ...props }) {
 }
 
 export const propTypes = {
+  id: PropTypes.string,
+  id2: PropTypes.string,
   handleChange: PropTypes.func,
   type: PropTypes.string,
   // https://stackoverflow.com/a/51127130

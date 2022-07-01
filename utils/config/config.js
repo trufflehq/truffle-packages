@@ -7,7 +7,7 @@ const config = {
   // TODO: prod
   PUBLIC_API_URL: 'https://mycelium.staging.bio',
   API_URL: 'https://mycelium.staging.bio',
-  HOST: 'staging-dev.sporocarp.dev'
+  HOST: 'dev.sporocarp.dev'
 }
 
 export default config

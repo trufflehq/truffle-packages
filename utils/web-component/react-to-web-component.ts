@@ -97,7 +97,12 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
   // But have that prototype be wrapped in a proxy.
   const proxyPrototype = new Proxy(targetPrototype, {
     has: function (target, key) {
-      console.log("has", key, targetPrototype);
+      console.log(
+        "has",
+        key,
+        key in ReactComponent.propTypes || key in targetPrototype,
+      );
+
       return key in ReactComponent.propTypes ||
         key in targetPrototype;
     },
@@ -125,7 +130,6 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
     },
     // makes sure the property looks writable
     getOwnPropertyDescriptor: function (target, key) {
-      console.log("check", target, key);
       const own = Reflect.getOwnPropertyDescriptor(target, key);
       if (own) {
         return own;

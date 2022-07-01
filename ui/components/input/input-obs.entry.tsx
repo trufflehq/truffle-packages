@@ -5,8 +5,8 @@ import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/t
 
 import Input, { propTypes as inputPropTypes } from "./input.entry.jsx";
 
-function InputObs(props) {
-  const { valueSubject } = props;
+function InputObs({ valueSubject, ...props }) {
+  console.log("props", props);
 
   const { value } = useObservables(() => ({
     value: valueSubject?.obs,

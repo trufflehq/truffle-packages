@@ -1,6 +1,6 @@
 import React, { useState } from "https://npm.tfl.dev/react";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
-import ScopedStylesheet from "https://tfl.dev/@truffle/ui@0.0.1/components/scoped-stylesheet/scoped-stylesheet.jsx";
+import ScopedStylesheet from "https://tfl.dev/@truffle/ui@0.0.1/components/scoped-stylesheet/scoped-stylesheet.js";
 
 export default function Counter({ initialCount = 0 }) {
   const [count, setCount] = useState(initialCount);
