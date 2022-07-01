@@ -1,23 +1,22 @@
 import React from "https://npm.tfl.dev/react";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
-import * as DialogPrimitive from "https://npm.tfl.dev/@radix-ui/react-dialog@0";
 import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
 
 import Stylesheet from "../stylesheet/stylesheet.jsx";
 
-function DialogContent({ children }) {
+function DialogActions({ children }) {
   return (
     <>
-      <Stylesheet url={new URL("./dialog-content.css", import.meta.url)} />
-      <DialogPrimitive.Content>
+      <Stylesheet url={new URL("./dialog-actions.css", import.meta.url)} />
+      <>
         {children}
-      </DialogPrimitive.Content>
+      </>
     </>
   );
 }
 
-DialogContent.propTypes = {
+DialogActions.propTypes = {
   // htmlFor: PropTypes.string,
 };
 
-export default toWebComponent(DialogContent);
+export default toWebComponent(DialogActions);

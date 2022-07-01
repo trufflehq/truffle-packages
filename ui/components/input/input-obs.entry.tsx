@@ -3,7 +3,7 @@ import PropTypes from "https://npm.tfl.dev/prop-types@15";
 import useObservables from "https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js";
 import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
 
-import Input, { propTypes as inputPropTypes } from "./input.entry.jsx";
+import Input from "./input.entry.jsx";
 
 function InputObs({ valueSubject, ...props }) {
   console.log("props", props);
@@ -25,7 +25,6 @@ function InputObs({ valueSubject, ...props }) {
 }
 
 InputObs.propTypes = {
-  ...inputPropTypes,
   valueSubject: PropTypes.object,
 };
 console.log("proptypes", InputObs.propTypes);

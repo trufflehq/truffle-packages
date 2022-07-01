@@ -5,19 +5,19 @@ import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/t
 
 import Stylesheet from "../stylesheet/stylesheet.jsx";
 
-function DialogContent({ children }) {
+function DialogTitle({ children }) {
   return (
     <>
-      <Stylesheet url={new URL("./dialog-content.css", import.meta.url)} />
-      <DialogPrimitive.Content>
+      <Stylesheet url={new URL("./dialog-title.css", import.meta.url)} />
+      <DialogPrimitive.Title>
         {children}
-      </DialogPrimitive.Content>
+      </DialogPrimitive.Title>
     </>
   );
 }
 
-DialogContent.propTypes = {
+DialogTitle.propTypes = {
   // htmlFor: PropTypes.string,
 };
 
-export default toWebComponent(DialogContent);
+export default toWebComponent(DialogTitle);

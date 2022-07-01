@@ -51,9 +51,11 @@ function AuthDialog(props) {
   const DialogElement = props.Dialog || Dialog;
   return (
     <DialogElement {...props}>
-      <DialogTitle></DialogTitle>
+      {
+        /* <DialogTitle></DialogTitle>
       <DialogContent></DialogContent>
-      <DialogActions></DialogActions>
+      <DialogActions></DialogActions> */
+      }
     </DialogElement>
   );
 }

@@ -29,6 +29,9 @@ export default function ThemeComponent ({
 }) {
   return (
     <>
+      {/* TODO: our own theme */}
+      <link rel="stylesheet" href="https://npm.tfl.dev/@shoelace-style/shoelace@2.0.0-beta.77/dist/themes/light.css" />
+
       {fontFamily === DEFAULT_FONT_FAMILY &&
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />}
       <style>
