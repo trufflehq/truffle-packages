@@ -1,1 +1,0 @@
-# Truffle Webhook Example Supabase
