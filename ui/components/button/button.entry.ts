@@ -1,11 +1,24 @@
-// FIXME: https://github.com/shoelace-style/shoelace/issues/705
-// FIXME: also need npm.tfl.dev to not bundle everything together in single file (ie import the shared deps)
-import SlButton from "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.77/dist/components/button/button.js";
+import {
+  Button as FoundationButton,
+  buttonTemplate,
+  DesignSystem,
+} from "https://npm.tfl.dev/@microsoft/fast-foundation@2";
+import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@1";
 
-class Button extends SlButton {}
+class Button extends FoundationButton {}
 
-export const name = "truffle.ui-button"; // should convert to truffle.ui.0.0.2.button on build
+const template = html`
+  <link rel="stylesheet" href="${new URL("./button.css", import.meta.url)}" />
+  ${buttonTemplate}`;
 
-customElements.define(name, Button);
+const buttonDefinition = Button.compose({
+  template,
+  styles: () => css``, // we set styles in template so they can change depending on theme
+});
 
-export default name;
+const elementName = "truffle.ui-button";
+const [prefix, baseName] = elementName.split("-");
+
+DesignSystem.getOrCreate().register(buttonDefinition({ prefix, baseName }));
+
+export default elementName;

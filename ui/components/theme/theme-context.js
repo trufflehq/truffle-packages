@@ -4,5 +4,5 @@ export const ThemeContext = createContext({});
 
 export function useThemeContext() {
   // return useContext(ThemeContext);
-  return {}
+  return {};
 }

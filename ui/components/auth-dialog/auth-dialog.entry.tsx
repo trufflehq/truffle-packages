@@ -14,7 +14,6 @@ import { setCookie } from "https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js
 import Button from "../button/button.entry.ts";
 import Dialog from "../dialog/dialog.entry.ts";
 import Input from "../input/input.entry.ts";
-import { useThemeContext } from "../theme/theme-context.js";
 import Stylesheet from "../stylesheet/stylesheet.jsx";
 
 const JOIN_MUTATION = gql`mutation UserJoin($input: UserJoinInput!) {
@@ -65,6 +64,11 @@ function AuthDialog({ isOpenSubject }) {
     if (isLoading) {
       return;
     }
+    // reset errors
+    Object.values(fields).forEach((field) => {
+      field.errorSubject.next(null);
+    });
+
     isLoadingSubject.next(true);
     let mutationRes;
     if (mode === "login") {
@@ -88,6 +92,7 @@ function AuthDialog({ isOpenSubject }) {
           password: fields.password.valueSubject.getValue(),
         },
       });
+      // TODO: cleanup and handle login/reset
       const accessToken = mutationRes?.data?.userJoin?.accessToken;
       if (accessToken) {
         setCookie("accessToken", accessToken);
@@ -108,6 +113,8 @@ function AuthDialog({ isOpenSubject }) {
         fields.emailPhone.errorSubject;
       // TODO: better error messages
       errorSubject.next(errorInfo?.langKey || "Error");
+    } else {
+      isOpenSubject.next(false);
     }
   };
 
@@ -119,16 +126,16 @@ function AuthDialog({ isOpenSubject }) {
 
   return (
     <Dialog
-      open={isOpen}
-      onsl-hide={() => {
+      hidden={!isOpen}
+      modal={true}
+      oncancel={() => {
         isOpenSubject.next(false);
       }}
     >
       <Stylesheet url={new URL("./auth-dialog.css", import.meta.url)} />
-      <Header slot="label" actionText={actionText} modeSubject={modeSubject} />
+      <Header actionText={actionText} modeSubject={modeSubject} />
       <Content mode={mode} fields={fields} />
       <Footer
-        slot="footer"
         actionText={actionText}
         onSubmit={onSubmit}
         isLoading={isLoading}
@@ -180,7 +187,7 @@ function InputWrapper({ type = "text", label, field }) {
   );
 }
 
-function Header({ slot, modeSubject, actionText }) {
+function Header({ modeSubject, actionText }) {
   const { mode } = useObservables(() => ({
     mode: modeSubject.obs,
   }));
@@ -190,7 +197,7 @@ function Header({ slot, modeSubject, actionText }) {
   };
 
   return (
-    <div className="header" slot={slot}>
+    <div className="header">
       <div className="title">{actionText}</div>
       <div className="description">
         Already have an account?
@@ -202,9 +209,9 @@ function Header({ slot, modeSubject, actionText }) {
   );
 }
 
-function Footer({ slot, onSubmit, actionText, isLoading }) {
+function Footer({ onSubmit, actionText, isLoading }) {
   return (
-    <Button slot={slot} onClick={onSubmit} loading={isLoading}>
+    <Button onClick={onSubmit} loading={isLoading}>
       {actionText}
     </Button>
   );

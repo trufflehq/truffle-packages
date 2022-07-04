@@ -1,11 +1,24 @@
-// FIXME: https://github.com/shoelace-style/shoelace/issues/705
-// FIXME: also need npm.tfl.dev to not bundle everything together in single file (ie import the shared deps)
-import SlDialog from "https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.77/dist/components/dialog/dialog.js";
+import {
+  DesignSystem,
+  Dialog as FoundationDialog,
+  dialogTemplate,
+} from "https://npm.tfl.dev/@microsoft/fast-foundation@2";
+import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@1";
 
-class Dialog extends SlDialog {}
+class Dialog extends FoundationDialog {}
 
-export const name = "truffle.ui-dialog"; // should convert to truffle.ui.0.0.2.dialog on build
+const template = html`
+  <link rel="stylesheet" href="${new URL("./dialog.css", import.meta.url)}" />
+  ${dialogTemplate}`;
 
-customElements.define(name, Dialog);
+const dialogDefinition = Dialog.compose({
+  template,
+  styles: () => css``, // we set styles in template so they can change depending on theme
+});
 
-export default name;
+const elementName = "truffle.ui-dialog";
+const [prefix, baseName] = elementName.split("-");
+
+DesignSystem.getOrCreate().register(dialogDefinition({ prefix, baseName }));
+
+export default elementName;

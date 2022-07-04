@@ -20,8 +20,8 @@ function ServerApp({ state }: ServerAppProps) {
 
 const server = await createServer(ServerApp, {
   bootstrapModules: [
-    "https://tfl.dev/@truffle/ultra-server@0.2.0/client.js",
-    "https://tfl.dev/@truffle/ultra-server@0.2.0/app.js",
+    "https://tfl.dev/@truffle/ultra-server@0.3.0/client.js",
+    "https://tfl.dev/@truffle/ultra-server@0.3.0/app.js",
   ],
 });
 
