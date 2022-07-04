@@ -1,6 +1,6 @@
 /**
  * Do not edit directly
- * Generated on Mon, 04 Jul 2022 21:00:46 GMT
+ * Generated on Mon, 04 Jul 2022 21:23:57 GMT
  */
 
  :root {
@@ -37,6 +37,7 @@
   --tfl-color-primary-fill-disabled: rgba(150, 65, 105, 1);
   --tfl-color-on-primary-fill-disabled: rgba(255, 255, 255, 1);
   --tfl-color-primary-border: rgba(250, 108, 175, 1);
+  --tfl-color-primary-text: rgba(250, 108, 175, 1);
   --tfl-color-surface-fill: rgba(255, 255, 255, 0.2);
   --tfl-color-on-surface-fill: rgba(255, 255, 255, 1);
   --tfl-color-surface-fill-hovered: rgba(255, 255, 255, 0.15);
@@ -47,6 +48,8 @@
   --tfl-color-on-surface-fill-disabled: rgba(255, 255, 255, 1);
   --tfl-color-surface-border: rgba(255, 255, 255, 0.2);
   --tfl-color-surface-border-selected: var(--tfl-color-primary-border);
+  --tfl-color-critical-border: rgba(251, 122, 122, 1);
+  --tfl-color-critical-text: rgba(251, 122, 122, 1);
   --tfl-cursor-auto: auto;
   --tfl-cursor-default: default;
   --tfl-cursor-disabled: disabled;

@@ -60,7 +60,8 @@ function AuthDialog({ isOpenSubject }) {
     isLoading: isLoadingSubject.obs,
   }));
 
-  const onSubmit = async () => {
+  const onSubmit = async (e) => {
+    e.preventDefault()
     if (isLoading) {
       return;
     }
@@ -133,13 +134,15 @@ function AuthDialog({ isOpenSubject }) {
       }}
     >
       <Stylesheet url={new URL("./auth-dialog.css", import.meta.url)} />
-      <Header actionText={actionText} modeSubject={modeSubject} />
-      <Content mode={mode} fields={fields} />
-      <Footer
-        actionText={actionText}
-        onSubmit={onSubmit}
-        isLoading={isLoading}
-      />
+      <form onSubmit={onSubmit}>
+        <Header actionText={actionText} modeSubject={modeSubject} />
+        <Content mode={mode} fields={fields} />
+        <Footer
+          actionText={actionText}
+          onSubmit={onSubmit}
+          isLoading={isLoading}
+        />
+      </form>
     </Dialog>
   );
 }
@@ -214,7 +217,7 @@ function Header({ modeSubject, actionText }) {
 function Footer({ onSubmit, actionText, isLoading }) {
   return (
     <div className="footer">
-      <Button appearance="primary" onClick={onSubmit} loading={isLoading}>
+      <Button appearance="primary" type="submit" loading={isLoading}>
         {actionText}
       </Button>
     </div>

@@ -15,6 +15,7 @@
 }
 
 .header>.description>.login-toggle {
+  color: var(--tfl-color-primary-text);
   margin-left: 8px;
   cursor: pointer;
 }
@@ -27,8 +28,12 @@
 
 .input-wrapper {
   margin: 16px 0;
+  position: relative;
 }
 
-.input-wrapper.has-error {
-  color: red;
+.input-wrapper.has-error > .error {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: var(--tfl-color-critical-text);
 }
