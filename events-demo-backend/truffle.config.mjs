@@ -3,7 +3,7 @@ export default {
   version: '0.0.7',
   apiUrl: 'https://mycelium.staging.bio/graphql',
   
-  // This is used to specify the required permissions that the package
+  // This is used to specify the required permissions that the package has access to
   requestedPermissions: [
     // permission to update a collectible
     {
