@@ -1,4 +1,3 @@
-// const TRUFFLE_API_URL = "https://c4b4-98-142-186-46.ngrok.io/graphql";
 const TRUFFLE_API_URL = "https://mycelium.staging.bio/graphql";
 
 export function truffleFetch(
