@@ -4,10 +4,13 @@ import reactToWebComponent from "./react-to-web-component.ts";
 
 const isSsr = typeof document === "undefined";
 
-export default function toWebComponent(ReactComponent) {
+export default function toWebComponent(
+  ReactComponent,
+  { isShadowDom = true } = {},
+) {
   if (isSsr) return "div";
   const WebComponent = reactToWebComponent(ReactComponent, React, ReactDOM, {
-    shadow: true,
+    shadow: isShadowDom,
     dashStyleAttributes: true,
   });
   const randomStr = (Math.random() + 1).toString(36).substring(2);

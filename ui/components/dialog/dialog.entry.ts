@@ -5,10 +5,13 @@ import {
 } from "https://npm.tfl.dev/@microsoft/fast-foundation@2";
 import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@1";
 
+import Stylesheet from "../stylesheet/stylesheet.jsx";
+
 class Dialog extends FoundationDialog {}
 
+const stylesUrl = new URL("./dialog.css", import.meta.url);
 const template = html`
-  <link rel="stylesheet" href="${new URL("./dialog.css", import.meta.url)}" />
+  <${Stylesheet} url="${stylesUrl}"></${Stylesheet}>
   ${dialogTemplate}`;
 
 const dialogDefinition = Dialog.compose({
@@ -17,7 +20,8 @@ const dialogDefinition = Dialog.compose({
 });
 
 const elementName = "truffle.ui-dialog";
-const [prefix, baseName] = elementName.split("-");
+const [prefix, ...rest] = elementName.split("-");
+const baseName = rest.join("-");
 
 DesignSystem.getOrCreate().register(dialogDefinition({ prefix, baseName }));
 

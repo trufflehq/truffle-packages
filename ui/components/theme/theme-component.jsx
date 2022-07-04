@@ -10,6 +10,10 @@ export default function ThemeComponent() {
           color: var(--tfl-color-on-bg-fill);
           font-family: var(--tfl-font-family-body-sans);
         }
+        /* avoid fouc */
+        :not(:defined) {
+          visibility: hidden;
+        }
       `}</style>
 
       {/* TODO: specify this somewhere else */}

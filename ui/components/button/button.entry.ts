@@ -5,10 +5,13 @@ import {
 } from "https://npm.tfl.dev/@microsoft/fast-foundation@2";
 import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@1";
 
+import Stylesheet from "../stylesheet/stylesheet.jsx";
+
 class Button extends FoundationButton {}
 
+const stylesUrl = new URL("./button.css", import.meta.url);
 const template = html`
-  <link rel="stylesheet" href="${new URL("./button.css", import.meta.url)}" />
+  <${Stylesheet} url="${stylesUrl}"></${Stylesheet}>
   ${buttonTemplate}`;
 
 const buttonDefinition = Button.compose({
@@ -17,7 +20,8 @@ const buttonDefinition = Button.compose({
 });
 
 const elementName = "truffle.ui-button";
-const [prefix, baseName] = elementName.split("-");
+const [prefix, ...rest] = elementName.split("-");
+const baseName = rest.join("-");
 
 DesignSystem.getOrCreate().register(buttonDefinition({ prefix, baseName }));
 

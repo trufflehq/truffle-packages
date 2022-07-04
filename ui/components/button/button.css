@@ -13,13 +13,14 @@
   font-size: var(--tflf-ont-size-body-md);
   background-color: var(--tfl-color-bg-fill);
   color: var(--tfl-color-on-bg-fill);
+  border: var(--tfl-border-width-sm) solid var(--tfl-color-on-bg-fill);
   border-radius: var(--tfl-border-radius-md);
   fill: currentcolor;
   cursor: pointer;
 }
 
 .control {
-  background: transparent;
+  all:unset;
   height: inherit;
   flex-grow: 1;
   box-sizing: border-box;
@@ -30,7 +31,6 @@
   white-space: nowrap;
   outline: none;
   text-decoration: none;
-  /* border: var(--tfl-border-width-sm) solid transparent; */
   color: inherit;
   border-radius: inherit;
   fill: inherit;
@@ -39,14 +39,6 @@
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
-}
-
-:host(:hover) {
-  background-color: var(--truffle-neutral-fill-hover);
-}
-
-:host(:active) {
-  background-color: var(--truffle-neutral-fill-active);
 }
 
 .control:focus {

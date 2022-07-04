@@ -5,13 +5,13 @@ import {
 } from "https://npm.tfl.dev/@microsoft/fast-foundation@2";
 import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@1";
 
+import Stylesheet from "../stylesheet/stylesheet.jsx";
+
 class TextField extends FoundationTextField {}
 
+const stylesUrl = new URL("./text-field.css", import.meta.url);
 const template = html`
-  <link rel="stylesheet" href="${new URL(
-  "./text-field.css",
-  import.meta.url,
-)}" />
+  <${Stylesheet} url="${stylesUrl}"></${Stylesheet}>
   ${textFieldTemplate}`;
 
 const textFieldDefinition = TextField.compose({
@@ -20,7 +20,8 @@ const textFieldDefinition = TextField.compose({
 });
 
 const elementName = "truffle.ui-text-field";
-const [prefix, baseName] = elementName.split("-");
+const [prefix, ...rest] = elementName.split("-");
+const baseName = rest.join("-");
 
 DesignSystem.getOrCreate().register(textFieldDefinition({ prefix, baseName }));
 

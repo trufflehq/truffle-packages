@@ -7,10 +7,11 @@
   color: inherit;
   background: transparent;
   border: 0;
-  height: calc(100% - 4px);
   margin-top: auto;
   margin-bottom: auto;
-  /* padding: 0 calc(${designUnit} * 2px + 1px); */
+  padding: var(--tfl-spacing-xs) var(--tfl-spacing-sm);
+  border: var(--tfl-border-width-sm) solid var(--tfl-color-on-bg-fill);
+  border-radius: var(--tfl-border-radius-md);
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
@@ -21,9 +22,9 @@
 }
 .start {
   display: flex;
-  margin-inline-start: 11px;
+  margin-inline-start: var(--tfl-spacing-sm);
 }
 .end {
   display: flex;
-  margin-inline-end: 11px;
+  margin-inline-end: var(--tfl-spacing-sm);
 }

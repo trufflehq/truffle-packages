@@ -13,7 +13,7 @@ import { setCookie } from "https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js
 
 import Button from "../button/button.entry.ts";
 import Dialog from "../dialog/dialog.entry.ts";
-import Input from "../input/input.entry.ts";
+import TextField from "../text-field/text-field.entry.ts";
 import Stylesheet from "../stylesheet/stylesheet.jsx";
 
 const JOIN_MUTATION = gql`mutation UserJoin($input: UserJoinInput!) {
@@ -175,14 +175,14 @@ function InputWrapper({ type = "text", label, field }) {
 
   return (
     <div className={`input-wrapper ${error ? "has-error" : ""}`}>
-      <Input
-        label={label}
+      <TextField
         type={type}
-        // invalid={Boolean(error)}
-        helpText={error}
         value={value}
         onInput={(e) => field.valueSubject.next(e.target.value)}
-      />
+      >
+        {label}
+      </TextField>
+      {error && <div className="error">{error}</div>}
     </div>
   );
 }
