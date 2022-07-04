@@ -1,81 +1,296 @@
+:host([disabled]),
+:host([disabled]:hover),
+:host([disabled]:active) {
+  opacity: var(--truffle-disabled-opacity);
+  background-color: var(--truffle-neutral-fill-rest);
+  cursor: var(--truffle-disabled-cursor);
+}
+
 :host {
-  border: none;
-  cursor: pointer;
-  max-width: 100%;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  gap: 10px;
-  position: relative;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  text-align: center;
+  font-family: var(--tfl-font-family-body-sans);
   outline: none;
-  background: transparent;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: var(--tflf-ont-size-body-md);
+  background-color: var(--tfl-color-bg-fill);
+  color: var(--tfl-color-on-bg-fill);
+  border: var(--tfl-border-width-sm) solid var(--tfl-color-on-bg-fill);
+  border-radius: var(--tfl-border-radius-md);
+  fill: currentcolor;
+  cursor: pointer;
+}
+
+.control {
+  all:unset;
+  height: inherit;
+  flex-grow: 1;
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  align-items: baseline;
+  padding: var(--tfl-spacing-xs) var(--tfl-spacing-lg);
   white-space: nowrap;
-  -webkit-tap-highlight-color: transparent;
-  font-family: var(--truffle-font-family);
-  background: var(--background);
-  color: var(--text-color);
-  border-radius: var(--border-radius);
-  outline: var(--outline);
+  outline: none;
+  text-decoration: none;
+  color: inherit;
+  border-radius: inherit;
+  fill: inherit;
+  cursor: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 
-:host(:hover) {
-  -webkit-transition: var(--hover-transition);
-  transition: var(--hover-transition);
-  -webkit-transform: var(--transform-hover);
-          transform: var(--transform-hover);
-  background: var(--background-hover);
-  border-radius: var(--border-radius-hover);
-  outline: var(--outline-hover);
+.control:focus {
+  border-color: var(--truffle-focus-stroke-outer);
+  box-shadow: 0 0 0 calc((var(--truffle-focus-stroke-width) - var(--truffle-stroke-width)) * 1px) var(--truffle-focus-stroke-outer) inset;
 }
 
-:host(.is-selected) {
-  -webkit-transition: var(--selected-transition);
-  transition: var(--selected-transition);
-  -webkit-transform: var(--transform-selected);
-          transform: var(--transform-selected);
-  background: var(--background-selected);
-  border-radius: var(--border-radius-selected);
-  outline: var(--outline-selected);
+.control::-moz-focus-inner {
+  border: 0;
 }
 
-:host(.size-small) {
-  padding: 8px 16px;
-  font-size: 12px;
-  font-weight: 400;
+.start,
+.content,
+.end {
+  align-self: center;
 }
 
-:host(.size-medium) {
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
+.start,
+.end {
+  display: flex;
 }
 
-:host(.size-large) {
-  padding: 15px 30px;
-  font-size: 18px;
-  font-weight: 600;
+.control.icon-only {
+  padding: 0;
+  line-height: 0;
 }
 
-:host(.is-full-width) {
-  width: 100%;
-}
-
-:host(.disabled) {
-  opacity: 0.5;
+::slotted(svg) {
+  width: 16px;
+  height: 16px;
   pointer-events: none;
+}
+
+.start {
+  margin-inline-end: 11px;
+}
+
+.end {
+  margin-inline-start: 11px;
+}
+
+:host .control {
+  background-color: var(--truffle-button-face);
+  border-color: var(--truffle-button-text);
+  color: var(--truffle-button-text);
+  fill: currentColor;
+}
+
+:host(:hover) .control {
+  forced-color-adjust: none;
+  background-color: var(--tfl-color-bg-fill-hovered);
+  color: var(--tfl-color-on-bg-fill-hovered);
+}
+
+.control:focus {
+  forced-color-adjust: none;
+  background-color: var(--truffle-highlight);
+  border-color: var(--truffle-button-text);
+  box-shadow: 0 0 0 calc((var(--truffle-focus-stroke-width) - var(--truffle-stroke-width)) * 1px) var(--truffle-button-text) inset;
+  color: var(--truffle-highlight-text);
+}
+
+
+:host([disabled]),
+:host([disabled]) .control,
+:host([disabled]:hover),
+:host([disabled]:active) {
+  forced-color-adjust: none;
+  background-color: var(--truffle-button-face);
+  border-color: var(--truffle-gray-text);
+  color: var(--truffle-gray-text);
+  cursor: var(--truffle-disabled-cursor);
+  opacity: 1;
+}
+
+
+
+/* ACCENT */
+
+:host([appearance="secondary"][disabled]),
+:host([appearance="secondary"][disabled]:hover),
+:host([appearance="secondary"][disabled]:active) {
+  background: var(--truffle-secondary-fill-rest);
+}
+:host([appearance="secondary"]) {
+  background: var(--truffle-secondary-fill-rest);
+  color: var(--truffle-foreground-on-secondary-rest);
+}
+
+:host([appearance="secondary"]:hover) {
+  background: var(--truffle-secondary-fill-hover);
+  color: var(--truffle-foreground-on-secondary-hover);
+}
+
+:host([appearance="secondary"]:active) .control:active {
+  background: var(--truffle-secondary-fill-active);
+  color: var(--truffle-foreground-on-secondary-active);
+}
+
+:host([appearance="secondary"]) .control:focus {
+  box-shadow: 0 0 0 calc((var(--truffle-focus-stroke-width) - var(--truffle-stroke-width)) * 1px) var(--truffle-focus-stroke-outer) inset,
+      0 0 0 calc((var(--truffle-focus-stroke-width) + var(--truffle-stroke-width)) * 1px) var(--truffle-focus-stroke-inner) inset;
+}
+:host([appearance="secondary"][disabled]) .control,
+:host([appearance="secondary"][disabled]) .control:hover {
+  background: var(--truffle-button-face);
+  border-color: var(--truffle-gray-text);
+  color: var(--truffle-gray-text);
+}
+
+
+
+/* OUTLINE */
+
+:host([appearance="outline"][disabled]),
+:host([appearance="outline"][disabled]:hover),
+:host([appearance="outline"][disabled]:active) {
+  background: transparent;
+  border-color: var(--truffle-secondary-fill-rest);
+}
+:host([appearance="outline"][disabled]) .control {
+  border-color: var(--truffle-gray-text);
+}
+
+.control:hover,
+:host([appearance="outline"]) .control:hover {
+  border-color: var(--truffle-button-text);
+}
+
+:host([href]) .control {
+    border-color: var(--truffle-link-text);
+    color: var(--truffle-link-text);
+}
+
+:host([href]) .control:hover,
+:host([href]) .control:focus{
+  forced-color-adjust: none;
+  background: var(--truffle-button-face);
+  border-color: var(--truffle-link-text);
+  box-shadow: 0 0 0 1px var(--truffle-link-text) inset;
+  color: var(--truffle-link-text);
+  fill: currentColor;
+}
+:host([appearance="outline"]) {
+    background: transparent;
+    border-color: var(--truffle-secondary-fill-rest);
+}
+
+:host([appearance="outline"]:hover) {
+    border-color: var(--truffle-secondary-fill-hover);
+}
+
+:host([appearance="outline"]:active) {
+    border-color: var(--truffle-secondary-fill-active);
+}
+
+:host([appearance="outline"]) .control {
+    border-color: inherit;
+}
+
+:host([appearance="outline"]) .control:focus {
+    box-shadow: 0 0 0 calc((var(--truffle-focus-stroke-width) - var(--truffle-stroke-width)) * 1px) var(--truffle-focus-stroke-outer) inset;
+    border-color: var(--truffle-focus-stroke-outer);
+}
+:host([appearance="outline"]) .control {
+    border-color: var(--truffle-button-text);
+}
+:host([appearance="outline"]) .control:focus {
+  forced-color-adjust: none;
+  background-color: var(--truffle-highlight);
+  border-color: var(--truffle-button-text);
+  box-shadow: 0 0 0 calc((var(--truffle-focus-stroke-width) - var(--truffle-stroke-width)) * 1px) var(--truffle-button-text) inset;
+  color: var(--truffle-highlight-text);
+  fill: currentColor;
+}
+:host([appearance="outline"][href]) .control {
+    background: var(--truffle-button-face);
+    border-color: var(--truffle-link-text);
+    color: var(--truffle-link-text);
+    fill: currentColor;
+}
+:host([appearance="outline"][href]) .control:hover,
+:host([appearance="outline"][href]) .control:focus {
+  forced-color-adjust: none;
+  border-color: var(--truffle-link-text);
+  box-shadow: 0 0 0 1px var(--truffle-link-text) inset;
+}
+
+/* STEALTH */
+
+:host([appearance="stealth"][disabled]),
+:host([appearance="stealth"][disabled]:hover),
+:host([appearance="stealth"][disabled]:active) {
+  background: var(--truffle-neutral-fill-stealth-rest);
+}
+
+:host([appearance="stealth"]) {
+  background: var(--truffle-neutral-fill-stealth-rest);
+}
+
+:host([appearance="stealth"]:hover) {
+  background: var(--truffle-neutral-fill-stealth-hover);
+}
+
+:host([appearance="stealth"]:active) {
+  background: var(--truffle-neutral-fill-stealth-active);
+}
+
+:host([appearance="stealth"]),
+:host([appearance="stealth"]) .control {
+  forced-color-adjust: none;
+  background: var(--truffle-button-face);
+  border-color: transparent;
+  color: var(--truffle-button-text);
+  fill: currentColor;
+}
+
+:host([appearance="stealth"]:hover) .control {
+  background: var(--truffle-highlight);
+  border-color: var(--truffle-highlight);
+  color: var(--truffle-highlight-text);
+  fill: currentColor;
+}
+
+:host([appearance="stealth"]:focus) .control {
+  background: var(--truffle-highlight);
+  box-shadow: 0 0 0 1px var(--truffle-highlight);
+  color: var(--truffle-highlight-text);
+  fill: currentColor;
+}
+
+:host([appearance="stealth"][href]) .control {
+  color: var(--truffle-link-text);
+}
+
+:host([appearance="stealth"][href]:hover) .control,
+:host([appearance="stealth"][href]:focus) .control {
+  background: var(--truffle-link-text);
+  border-color: var(--truffle-link-text);
+  color: var(--truffle-highlight-text);
+  fill: currentColor;
+}
+
+:host([appearance="stealth"][href]:focus) .control {
+  forced-color-adjust: none;
+  box-shadow: 0 0 0 1px var(--truffle-link-text);
+}
+:host([appearance="stealth"][disabled]) {
+  background: var(--truffle-button-face);
+}
+:host([appearance="stealth"][disabled]) .control {
+  background: var(--truffle-button-face);
+  border-color: transparent;
+  color: var(--truffle-gray-text);
 }

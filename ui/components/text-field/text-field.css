@@ -1,0 +1,30 @@
+.root {
+  display: flex;
+  flex-direction: row;
+}
+.control {
+  -webkit-appearance: none;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: var(--tfl-spacing-xs) var(--tfl-spacing-sm);
+  border: var(--tfl-border-width-sm) solid var(--tfl-color-on-bg-fill);
+  border-radius: var(--tfl-border-radius-md);
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+.start, .end {
+  display: flex;
+  margin: auto;
+}
+.start {
+  display: flex;
+  margin-inline-start: var(--tfl-spacing-sm);
+}
+.end {
+  display: flex;
+  margin-inline-end: var(--tfl-spacing-sm);
+}

@@ -1,7 +1,8 @@
 import React, { useRef, useLayoutEffect, useState } from 'https://npm.tfl.dev/react'
+import PropTypes from "https://npm.tfl.dev/prop-types@15";
+import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
 
-// w/o the memo, browser css will flash every render if cache is disabled
-const MemoizeStylesheet = React.memo(({ url }) => {
+const Stylesheet = ({ url }) => {
   // if in web component, hide until stylesheet is loaded in, to prevent fouc
   const ref = useRef()
   const [isLoaded, setIsLoaded] = useState(false)
@@ -18,6 +19,10 @@ const MemoizeStylesheet = React.memo(({ url }) => {
       <link ref={ref} rel="stylesheet" href={url.toString()} />
     </>
   )
-}, (prevProps, nextProps) => prevProps.url.toString() === nextProps.url.toString())
+}
 
-export default MemoizeStylesheet
+Stylesheet.propTypes = {
+  url: PropTypes.string,
+}
+
+export default toWebComponent(Stylesheet, { isShadowDom: false })

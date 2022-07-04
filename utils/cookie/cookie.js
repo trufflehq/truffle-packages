@@ -23,6 +23,7 @@ class Cookie {
   setCookie = (key, value, options) => {
     this.cookies[key] = value
     this.cookiesToSet.push({ key, value, options })
+    console.log('setcookie', key,value, options)
     if (typeof document !== 'undefined') {
       document.cookie = cookieLib.serialize(key, value, options)
     } else {

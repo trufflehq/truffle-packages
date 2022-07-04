@@ -1,9 +1,0 @@
-{
-  "imports": {
-    "@ultra/react": "https://raw.githubusercontent.com/austinhallock/ultra/v2/react.ts",
-    "@ultra-server/client": "https://tfl.dev/@truffle/ultra-server@0.1.1/client.tsx",
-    "@ultra-server/app": "https://tfl.dev/@truffle/ultra-server@0.1.1/app.tsx",
-    "@ultra-server/setup": "https://tfl.dev/@truffle/ultra-server@0.1.1/setup.jsx",
-    "@ultra-server/fs-router": "https://tfl.dev/@truffle/ultra-server@0.1.1/fs-router.tsx"
-  }
-}

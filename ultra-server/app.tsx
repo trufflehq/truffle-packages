@@ -3,7 +3,7 @@ import {
   Helmet,
   HelmetProvider,
 } from "https://npm.tfl.dev/react-helmet-async@1";
-import type { RenderState } from "https://raw.githubusercontent.com/austinhallock/ultra/truffle/server.ts";
+import type { RenderState } from "https://raw.githubusercontent.com/austinhallock/ultra/truffle3/server.ts";
 // import { useSsrData } from "https://npm.tfl.dev/react-streaming@0";
 // see ./react-streaming/README.md
 import { useSsrData } from "./react-streaming/useSsrData.js";
