@@ -68,7 +68,11 @@ export const op = {
   switchAll: rx.switchAll,
   // apply a function to each item emitted by an Observable, sequentially,
   // and emit each successive value
-  scan: rx.scan
+  scan: rx.scan,
+
+  // a convenience function to make polling easier
+  poll: (interval) =>
+    (obs) => Rx.timer(0, interval).pipe(Rx.switchMap(() => obs))
 }
 
 // functions that return observables
@@ -89,6 +93,7 @@ export const Obs = {
   merge: Rx.merge,
 
   interval: Rx.interval,
+  timer: Rx.timer,
   //
 
   // NOTE: you hopefully won't need to use these
