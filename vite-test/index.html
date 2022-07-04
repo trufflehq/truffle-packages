@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <script type="module">
+    import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.js'
+    import Component from "./components/sandbox/sandbox.entry.tsx";
+
+    globalContext.setGlobalValue({});
+
+    document.getElementById("root").innerHTML = `<${Component}></${Component}>`
+  </script>
+  <!-- FIXME: get theme component working -->
+  <link rel="stylesheet" href="https://tfl.dev/@truffle/ui@0.0.2/components/theme/variables.css">
+  <style>
+    :root {
+      background: var(--tfl-color-bg-fill);
+      color: var(--tfl-color-on-bg-fill);
+      font-family: var(--tfl-font-family-body-sans);
+    }
+    /* avoid fouc */
+    :not(:defined) {
+      visibility: hidden;
+    }
+  </style>
+  <div id="root"></div>
+</body>
+</html>
