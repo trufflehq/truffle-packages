@@ -165,7 +165,7 @@ function Content({ mode, fields }) {
   );
 }
 
-function InputWrapper({ type = "text", label, field }) {
+const InputWrapper = React.memo(function InputWrapper({ type = "text", label, field }) {
   const { value, error } = useObservables(() => ({
     value: field.valueSubject.obs,
     error: field.errorSubject.obs,
@@ -185,7 +185,9 @@ function InputWrapper({ type = "text", label, field }) {
       {error && <div className="error">{error}</div>}
     </div>
   );
-}
+}, (prevProps, nextProps) =>
+  prevProps.type === nextProps.type && prevProps.label === nextProps.label
+)
 
 function Header({ modeSubject, actionText }) {
   const { mode } = useObservables(() => ({
@@ -211,9 +213,11 @@ function Header({ modeSubject, actionText }) {
 
 function Footer({ onSubmit, actionText, isLoading }) {
   return (
-    <Button onClick={onSubmit} loading={isLoading}>
-      {actionText}
-    </Button>
+    <div className="footer">
+      <Button appearance="primary" onClick={onSubmit} loading={isLoading}>
+        {actionText}
+      </Button>
+    </div>
   );
 }
 

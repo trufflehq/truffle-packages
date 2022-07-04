@@ -2,20 +2,24 @@
   display: flex;
   flex-direction: row;
 }
-.control {
-  -webkit-appearance: none;
-  color: inherit;
-  background: transparent;
-  border: 0;
-  margin-top: auto;
-  margin-bottom: auto;
-  padding: var(--tfl-spacing-xs) var(--tfl-spacing-sm);
-  border: var(--tfl-border-width-sm) solid var(--tfl-color-on-bg-fill);
-  border-radius: var(--tfl-border-radius-md);
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
+.label {
+  display: block;
+  font-size: var(--tfl-font-size-body-md);
+  margin-bottom: var(--tfl-spacing-xs);
 }
+
+.control {
+  all: unset;
+  padding: var(--tfl-spacing-xs) var(--tfl-spacing-sm);
+  border: var(--tfl-border-width-sm) solid var(--tfl-color-surface-border);
+  border-radius: var(--tfl-border-radius-md);
+  width: 100%;
+}
+
+.control:focus {
+  border: var(--tfl-border-width-sm) solid var(--tfl-color-surface-border-selected);
+}
+
 .start, .end {
   display: flex;
   margin: auto;

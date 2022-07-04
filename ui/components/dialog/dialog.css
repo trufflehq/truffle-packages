@@ -3,8 +3,8 @@
 }
 
 :host {
-  --dialog-height: 480px;
-  --dialog-width: 640px;
+  --dialog-width: 480px;
+  --dialog-min-height: 200px;
   display: block;
 }
 
@@ -32,12 +32,11 @@
 .control {
   margin-top: auto;
   margin-bottom: auto;
-  border-radius: calc(var(--tfl-border-radius-md));
+  border-radius: calc(var(--tfl-border-radius-lg));
   width: var(--dialog-width);
-  height: var(--dialog-height);
+  min-height: var(--dialog-min-height);
   background: var(--tfl-color-surface-fill);
   color: var(--tfl-color-on-surface-fill);
-  z-index: 1;
-  border: var(--tfl-border-width-sm) solid transparent;
   padding: var(--tfl-spacing-xl) var(--tfl-spacing-lg);
+  z-index: var(--tfl-z-300);
 }

@@ -1,4 +1,4 @@
-:host .header>.title {
+.header>.title {
   font-family: var(--truffle-font-family);
   font-weight: 600;
   font-size: 24px;
@@ -7,22 +7,28 @@
   margin-bottom: 8px;
 }
 
-:host .header>.description {
+.header>.description {
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   text-align: center;
 }
 
-:host .header>.description>.login-toggle {
+.header>.description>.login-toggle {
   margin-left: 8px;
   cursor: pointer;
 }
 
-:host .input-wrapper {
+.footer {
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.input-wrapper {
   margin: 16px 0;
 }
 
-:host .input-wrapper.has-error {
+.input-wrapper.has-error {
   color: red;
 }

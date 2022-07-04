@@ -1,6 +1,6 @@
 /**
  * Do not edit directly
- * Generated on Mon, 04 Jul 2022 04:40:21 GMT
+ * Generated on Mon, 04 Jul 2022 21:00:46 GMT
  */
 
  :root {
@@ -26,10 +26,8 @@
   --tfl-color-on-bg-fill-hovered: rgba(255, 255, 255, 1);
   --tfl-color-bg-fill-selected: rgba(30, 30, 30, 1);
   --tfl-color-on-bg-fill-selected: rgba(30, 30, 30, 1);
-  --tfl-color-bg-fill-backdrop: rgba(255, 255, 255, 0.3);
-  --tfl-color-on-bg-fill-backdrop: rgba(0, 0, 0, 1);
-  --tfl-color-surface-fill: rgba(20, 20, 20, 1);
-  --tfl-color-on-surface-fill: rgba(255, 255, 255, 1);
+  --tfl-color-bg-fill-backdrop: rgba(0, 0, 0, 0.4);
+  --tfl-color-on-bg-fill-backdrop: rgba(255, 255, 255, 1);
   --tfl-color-primary-fill: rgba(250, 108, 175, 1);
   --tfl-color-on-primary-fill: rgba(255, 255, 255, 1);
   --tfl-color-primary-fill-hovered: rgba(251, 123, 183, 1);
@@ -38,6 +36,54 @@
   --tfl-color-on-primary-fill-pressed: rgba(255, 255, 255, 1);
   --tfl-color-primary-fill-disabled: rgba(150, 65, 105, 1);
   --tfl-color-on-primary-fill-disabled: rgba(255, 255, 255, 1);
+  --tfl-color-primary-border: rgba(250, 108, 175, 1);
+  --tfl-color-surface-fill: rgba(255, 255, 255, 0.2);
+  --tfl-color-on-surface-fill: rgba(255, 255, 255, 1);
+  --tfl-color-surface-fill-hovered: rgba(255, 255, 255, 0.15);
+  --tfl-color-on-surface-fill-hovered: rgba(255, 255, 255, 1);
+  --tfl-color-surface-fill-pressed: rgba(255, 255, 255, 0.17);
+  --tfl-color-on-surface-fill-pressed: rgba(255, 255, 255, 1);
+  --tfl-color-surface-fill-disabled: rgba(255, 255, 255, 0.1);
+  --tfl-color-on-surface-fill-disabled: rgba(255, 255, 255, 1);
+  --tfl-color-surface-border: rgba(255, 255, 255, 0.2);
+  --tfl-color-surface-border-selected: var(--tfl-color-primary-border);
+  --tfl-cursor-auto: auto;
+  --tfl-cursor-default: default;
+  --tfl-cursor-disabled: disabled;
+  --tfl-cursor-none: none;
+  --tfl-cursor-context-menu: context-menu;
+  --tfl-cursor-help: help;
+  --tfl-cursor-pointer: pointer;
+  --tfl-cursor-progress: progress;
+  --tfl-cursor-wait: wait;
+  --tfl-cursor-cell: cell;
+  --tfl-cursor-crosshair: crosshair;
+  --tfl-cursor-text: text;
+  --tfl-cursor-vertical-text: vertical-text;
+  --tfl-cursor-alias: alias;
+  --tfl-cursor-copy: copy;
+  --tfl-cursor-move: move;
+  --tfl-cursor-no-drop: no-drop;
+  --tfl-cursor-not-allowed: not-allowed;
+  --tfl-cursor-grab: grab;
+  --tfl-cursor-grabbing: grabbing;
+  --tfl-cursor-all-scroll: all-scroll;
+  --tfl-cursor-col-resize: col-resize;
+  --tfl-cursor-row-resize: row-resize;
+  --tfl-cursor-n-resize: n-resize;
+  --tfl-cursor-e-resize: e-resize;
+  --tfl-cursor-s-resize: s-resize;
+  --tfl-cursor-w-resize: w-resize;
+  --tfl-cursor-ne-resize: ne-resize;
+  --tfl-cursor-nw-resize: nw-resize;
+  --tfl-cursor-se-resize: se-resize;
+  --tfl-cursor-sw-resize: sw-resize;
+  --tfl-cursor-ew-resize: ew-resize;
+  --tfl-cursor-ns-resize: ns-resize;
+  --tfl-cursor-nesw-resize: nesw-resize;
+  --tfl-cursor-nwse-resize: nwse-resize;
+  --tfl-cursor-zoom-in: zoom-in;
+  --tfl-cursor-zoom-out: zoom-out;
   --tfl-font-family-body-mono: ui-monospace, monospace;
   --tfl-font-family-body-sans: Poppins, 'Helvetica Neue', sans-serif;
   --tfl-font-family-heading-mono: ui-monospace, monospace;
@@ -64,24 +110,24 @@
   --tfl-font-weight-heading-medium: 500;
   --tfl-font-weight-heading-semibold: 600;
   --tfl-font-weight-heading-bold: 700;
-  --tfl-duration-0: 0ms;
-  --tfl-duration-50: 50ms;
-  --tfl-duration-100: 100ms;
-  --tfl-duration-150: 150ms;
-  --tfl-duration-200: 200ms;
-  --tfl-duration-250: 250ms;
-  --tfl-duration-300: 300ms;
-  --tfl-duration-350: 350ms;
-  --tfl-duration-400: 400ms;
-  --tfl-duration-450: 450ms;
-  --tfl-duration-500: 500ms;
-  --tfl-ease: ease;
-  --tfl-ease-in: ease-in;
-  --tfl-ease-in-out: ease-in-out;
-  --tfl-ease-out: ease-out;
-  --tfl-linear: linear;
-  --tfl-step-end: step-send;
-  --tfl-step-start: step-start;
+  --tfl-motion-duration-0: 0ms;
+  --tfl-motion-duration-50: 50ms;
+  --tfl-motion-duration-100: 100ms;
+  --tfl-motion-duration-150: 150ms;
+  --tfl-motion-duration-200: 200ms;
+  --tfl-motion-duration-250: 250ms;
+  --tfl-motion-duration-300: 300ms;
+  --tfl-motion-duration-350: 350ms;
+  --tfl-motion-duration-400: 400ms;
+  --tfl-motion-duration-450: 450ms;
+  --tfl-motion-duration-500: 500ms;
+  --tfl-motion-ease: ease;
+  --tfl-motion-ease-in: ease-in;
+  --tfl-motion-ease-in-out: ease-in-out;
+  --tfl-motion-ease-out: ease-out;
+  --tfl-motion-linear: linear;
+  --tfl-motion-step-end: step-send;
+  --tfl-motion-step-start: step-start;
   --tfl-opacity-0: 0;
   --tfl-opacity-10: 10;
   --tfl-opacity-20: 20;
