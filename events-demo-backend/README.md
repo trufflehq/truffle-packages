@@ -32,7 +32,7 @@ This guide will walk you through how to create a backend Truffle package that wi
 * Update the `endpoint` attribute of the EventSubscription installation step to the public url of your edge function.
 * Deploy the package version. `truffle-cli deploy`
   * _The package install flow (permissions & installAction) uses the deployed version of your package_
-* Install the package with `truffle-cli install @truffle/events-demo-backend@latest`. Where `@truffle/events-demo-backend@latest` corresponds to your package path `@orgSlug/<package name>@<packageVersion semver>`.
+* Install the package into the front-end package you've already setup with `truffle-cli install @truffle/events-demo-backend@latest`. Where `@truffle/events-demo-backend@latest` corresponds to your package path `@orgSlug/<package name>@<packageVersion semver>`.
   * You can also just install the lastest version of your package by grabbing the package name from `truffle.config.mjs` and appending `@latest` like in the example above.
 * To test out the package's backend functionality grab the created collectible. Here's a Graphql query you can use to fetch all of the org's redeemable collectibles:
 ```graphql
