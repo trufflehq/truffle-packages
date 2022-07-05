@@ -11,7 +11,9 @@ import {
 } from "./api/truffle/index.ts";
 import { getPollQuestionWithAuthorName } from "./utils/polls.ts";
 
-const VIEWER_CREATED_POLL_EVENT_SLUG = "viewer-create-poll";
+const VIEWER_CREATED_POLL_EVENT_TOPIC_SLUG = Deno.env.get(
+  "VIEWER_CREATED_POLL_EVENT_TOPIC_SLUG",
+);
 
 // You can define types for the custom payload of your event
 // that you can use to add type safety for your event inside of `handleTruffleWebhookEventSupabase`
@@ -34,10 +36,10 @@ const handler = (request: Request) =>
         );
       }
 
-      if (eventTopicParts) {
+      if (eventTopicParts && VIEWER_CREATED_POLL_EVENT_TOPIC_SLUG) {
         const isViewerCreatedPollEvent = isTargetEventTopicByParts(
           eventTopicParts,
-          VIEWER_CREATED_POLL_EVENT_SLUG,
+          VIEWER_CREATED_POLL_EVENT_TOPIC_SLUG,
         );
 
         if (isViewerCreatedPollEvent) {
