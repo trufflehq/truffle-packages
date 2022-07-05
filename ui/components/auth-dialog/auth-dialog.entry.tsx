@@ -10,6 +10,7 @@ import {
   mutation,
 } from "https://tfl.dev/@truffle/api@0.0.1/client.js";
 import { setCookie } from "https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js";
+import { component, useState } from 'https://npm.tfl.dev/haunted@5.0.0';
 
 import Button from "../button/button.entry.ts";
 import Dialog from "../dialog/dialog.entry.ts";
@@ -28,7 +29,7 @@ const LOGIN_MUTATION = gql
   userLoginEmailPhone(input: $input) { accessToken }
 }`;
 
-function AuthDialog({ isOpenSubject }) {
+function AuthDialog({ hidden, onClose, abc, ...props }) {
   const { modeSubject, isLoadingSubject, hasErrorSubject, fields } = useMemo(
     () => {
       return {
@@ -54,9 +55,8 @@ function AuthDialog({ isOpenSubject }) {
     [],
   );
 
-  const { mode, isOpen, isLoading } = useObservables(() => ({
+  const { mode, isLoading } = useObservables(() => ({
     mode: modeSubject.obs,
-    isOpen: isOpenSubject.obs,
     isLoading: isLoadingSubject.obs,
   }));
 
@@ -115,7 +115,7 @@ function AuthDialog({ isOpenSubject }) {
       // TODO: better error messages
       errorSubject.next(errorInfo?.langKey || "Error");
     } else {
-      isOpenSubject.next(false);
+      onClose?.()
     }
   };
 
@@ -127,10 +127,15 @@ function AuthDialog({ isOpenSubject }) {
 
   return (
     <Dialog
-      hidden={!isOpen}
+      hidden={hidden}
       modal={true}
       oncancel={() => {
-        isOpenSubject.next(false);
+        console.log('cancel');
+        onClose?.()
+      }}
+      onclose={() => {
+        console.log('close');
+        onClose?.()
       }}
     >
       <Stylesheet url={new URL("./auth-dialog.css", import.meta.url)} />
@@ -148,8 +153,9 @@ function AuthDialog({ isOpenSubject }) {
 }
 
 AuthDialog.propTypes = {
-  isOpenSubject: PropTypes.object,
-  Dialog: PropTypes.object,
+  hidden: PropTypes.bool,
+  onClose: PropTypes.func,
+  abc: PropTypes.string,
 };
 
 function Content({ mode, fields }) {

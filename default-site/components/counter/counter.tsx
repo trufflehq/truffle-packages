@@ -1,17 +1,19 @@
 import React, { useState } from "https://npm.tfl.dev/react";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
-import ScopedStylesheet from "https://tfl.dev/@truffle/ui@0.0.1/components/scoped-stylesheet/scoped-stylesheet.js";
+import Stylesheet from "https://tfl.dev/@truffle/ui@0.0.2/components/stylesheet/stylesheet.js";
+import Button from "https://tfl.dev/@truffle/ui@0.0.2/components/button/button.entry.js"
 
 export default function Counter({ initialCount = 0 }) {
   const [count, setCount] = useState(initialCount);
 
   return (
-    <ScopedStylesheet url={new URL("./counter.css", import.meta.url)}>
+    <>
+      <Stylesheet url={new URL("./counter.css", import.meta.url)} />
       <div className="count">Count: {count}</div>
-      <button className="button" onClick={() => setCount(count + 1)}>
+      <Button className="button" onClick={() => setCount(count + 1)}>
         Increment
-      </button>
-    </ScopedStylesheet>
+      </Button>
+    </>
   );
 }
 

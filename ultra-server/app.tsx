@@ -4,6 +4,7 @@ import {
   HelmetProvider,
 } from "https://npm.tfl.dev/react-helmet-async@1";
 import type { RenderState } from "https://raw.githubusercontent.com/austinhallock/ultra/truffle3/server.ts";
+import ThemeComponent from "https://tfl.dev/@truffle/ui@0.0.2/components/theme/theme-component.js";
 // import { useSsrData } from "https://npm.tfl.dev/react-streaming@0";
 // see ./react-streaming/README.md
 import { useSsrData } from "./react-streaming/useSsrData.js";
@@ -33,6 +34,7 @@ const Ultra = ({ state }: AppProps) => {
           </Helmet>
         </head>
         <body>
+          <ThemeComponent />
           <TruffleSetup state={state} useSsrData={useSsrData}>
             <FsRouter state={state} />
           </TruffleSetup>

@@ -1,10 +1,11 @@
 import React, { useEffect } from "https://npm.tfl.dev/react";
 import jumper from "https://tfl.dev/@truffle/utils@0.0.1/jumper/jumper.js";
-import Stylesheet from "https://tfl.dev/@truffle/ui@0.0.1/components/stylesheet/stylesheet.js";
+import Stylesheet from "https://tfl.dev/@truffle/ui@0.0.2/components/stylesheet/stylesheet.js";
 import Button from "https://tfl.dev/@truffle/ui@0.0.2/components/button/button.entry.js";
 import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
 
 import Counter from "../counter/counter.tsx";
+import UserInfo from "../user-info/user-info.tsx";
 
 function ExtensionMapping() {
   useEffect(() => {
@@ -28,8 +29,9 @@ function ExtensionMapping() {
   return (
     <>
       <Stylesheet url={new URL("./home.css", import.meta.url)} />
-      This is my extension mapping
+      Hello world!
       <Counter initialCount={2} />
+      <UserInfo />
     </>
   );
 }

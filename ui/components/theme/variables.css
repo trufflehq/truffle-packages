@@ -1,6 +1,6 @@
 /**
  * Do not edit directly
- * Generated on Mon, 04 Jul 2022 21:23:57 GMT
+ * Generated on Tue, 05 Jul 2022 19:41:18 GMT
  */
 
  :root {
@@ -38,6 +38,8 @@
   --tfl-color-on-primary-fill-disabled: rgba(255, 255, 255, 1);
   --tfl-color-primary-border: rgba(250, 108, 175, 1);
   --tfl-color-primary-text: rgba(250, 108, 175, 1);
+  --tfl-color-dialog-fill: rgba(30, 30, 30, 1);
+  --tfl-color-on-dialog-fill: rgba(255, 255, 255, 1);
   --tfl-color-surface-fill: rgba(255, 255, 255, 0.2);
   --tfl-color-on-surface-fill: rgba(255, 255, 255, 1);
   --tfl-color-surface-fill-hovered: rgba(255, 255, 255, 0.15);

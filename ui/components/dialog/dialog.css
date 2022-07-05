@@ -35,8 +35,8 @@
   border-radius: calc(var(--tfl-border-radius-lg));
   width: var(--dialog-width);
   min-height: var(--dialog-min-height);
-  background: var(--tfl-color-surface-fill);
-  color: var(--tfl-color-on-surface-fill);
+  background: var(--tfl-color-dialog-fill);
+  color: var(--tfl-color-on-dialog-fill);
   padding: var(--tfl-spacing-xl) var(--tfl-spacing-lg);
   z-index: var(--tfl-z-300);
 }
