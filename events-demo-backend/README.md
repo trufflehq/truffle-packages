@@ -24,7 +24,7 @@ This guide will walk you through how to create a backend Truffle package that wi
 * Next, you should define the installation workflow inside the `installActionRel` in `truffle.config.mjs`. Inside the `installActionRel` you will need to update:
   * The EventTopic slug in the EventTopicUpsert step to signify the unique event topic for your package
   * Update the `eventTopicPath` attributes to follow the path format for your package `@orgSlug/<packageSlug>@latest/_EventTopic/<eventTopicSlug from previous step>` 
-    * `@truffle/events-demo-backend@latest/_EventTopic/viewer-create-poll` -> `@truffle-dev-early-access/my-custom-event-package@latest/_EventTopic/custom-event-topic`
+    > e.g rename `@truffle/events-demo-backend@latest/_EventTopic/viewer-create-poll` from the forked example -> `@truffle-dev-early-access/my-custom-event-package@latest/_EventTopic/custom-event-topic`
   * Update the collectible slug from the CollectibleUpsert to a unique collectible slug.
 * After you've defined the install steps, the next step is to setup and deploy the Supabase Edge function which will handle the custom webhook triggered during the viewer poll collectible redemption. Run through the edge function specific steps in the [`backend/README.md`](./backend/README.md) and deploy the edge function so the edge function can verify the event subscription during package installation.
 * Update the `endpoint` attribute of the EventSubscription installation step to the public url of your edge function.
@@ -100,7 +100,7 @@ mutation OwnedCollectibleIncrement ($input: OwnedCollectibleIncrementInput!) {
   }
 }
 ```
-* Once the user has been give the collectible, redeem the collectible and verify that the edge function was called and a poll was created. To redeem a user's owned collectible, you can use the following Graphql query:
+* Once the user has been given the collectible, redeem the collectible and verify that the edge function was called and a poll was created. To redeem a user's owned collectible, you can use the following Graphql query:
 ```graphql
 mutation OwnedCollectibleRedeem ($input: OwnedCollectibleRedeemInput) {
     ownedCollectibleRedeem(input: $input) {
@@ -130,8 +130,8 @@ mutation OwnedCollectibleRedeem ($input: OwnedCollectibleRedeemInput) {
 ```
 To verify that the poll was successfully created use the following Graphql Query:
 ```graphql
-query PollConnectionQuery ($input: PollConnectionInput, $first: Int, $after: String, $last: Int, $before: String) {
-    pollConnection(input: $input, first: $first, after: $after, last: $last, before: $before) {
+query PollConnectionQuery ($first: Int, $after: String, $last: Int, $before: String) {
+    pollConnection(first: $first, after: $after, last: $last, before: $before) {
         pageInfo {
             endCursor
             hasNextPage

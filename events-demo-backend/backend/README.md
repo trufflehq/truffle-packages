@@ -17,6 +17,7 @@ To get setup on the Supabase side of things you can follow the guide from the Su
   * `VIEWER_CREATED_POLL_EVENT_TOPIC_SLUG` is used to specify the custom event topic defined in the collectible,  grab the slug from the EventTopicUpsert installation step.
 * Deploy the Supabase Edge Function `supabase functions deploy viewer-polls-example-handler --no-verify-jwt`
   * **Note: Make sure you deploy the function with the `--no-verify-jwt` flag so the function can receive requests from Truffle API webhooks**
+  > 💡 REMEMBER TO SET YOUR ENV VARS IN backend/supabase/.env before deploying
 * Test out executing the remote function with:
 ```shell
 curl -L -X POST '<supabase function url>' --data '{"name":"Functions"}'
