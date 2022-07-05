@@ -10,29 +10,22 @@ const USER_GET_ME_QUERY = gql`
 `
 
 export default function UserInfo() {
-  const [meResult, meReexecuteQuery] = useQuery({ query: USER_GET_ME_QUERY });
+  const [meResult] = useQuery({ query: USER_GET_ME_QUERY });
   const [isAuthDialogHidden, setIsAuthDialogHidden] = useState(true);
 
-  console.log('me', meResult);
+  const { name, id } = meResult.data?.me || {}
 
   return (
     <>
       <Stylesheet url={new URL("./user-info.css", import.meta.url)} />
       <h3>User info</h3>
-      <div>ID: {meResult.data?.me?.id}</div>
-      <div>Name: {meResult.data?.me?.name}</div>
-      <Button onClick={() => setIsAuthDialogHidden(false)}>Login</Button>
+      <div>ID: {id}</div>
+      <div>Name: {name}</div>
+      {!name && <Button onClick={() => setIsAuthDialogHidden(false)}>Login</Button>}
       {!isAuthDialogHidden && <AuthDialog
-        abc="123"
         hidden={isAuthDialogHidden}
-        onclose={() => {
-          setIsAuthDialogHidden(true)
-        }}
+        onclose={() => { setIsAuthDialogHidden(true) }}
       />}
     </>
   );
 }
-
-UserInfo.propTypes = {
-  someProp: PropTypes.number,
-};
