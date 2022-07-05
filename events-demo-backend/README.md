@@ -80,6 +80,20 @@ query CollectibleConnectionQuery ($input: CollectibleConnectionInput, $first: In
 
 Grab the ID of the collectible created from the installation steps.
 
+* For the next step you'll need to increment the number of owned collectibles for a user so they can redeem the package collectible. To get a userId to use in the following query you can query for an orgUserConnection:
+```graphql
+query OrgUserConnectionQuery ($input: OrgUserConnectionInput!) {
+    orgUserConnection(input: $input) {
+        totalCount
+        nodes {
+           userId
+            orgId
+            name
+        }
+    }
+}
+```
+
 * Next, give a user the package collectible by calling the `ownedCollectibleIncrement` mutation for a user. Here's the Graphql query to increment a user's owned collectible:
 ```graphql
 mutation OwnedCollectibleIncrement ($input: OwnedCollectibleIncrementInput!) {
