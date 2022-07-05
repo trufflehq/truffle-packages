@@ -16,14 +16,18 @@ This package holds the backend functionality for viewer generated polls that cre
 
 This guide will walk you through how to create a backend Truffle package that will receive webhooks from a collectible created by the package and call the Truffle Graphql API to create a poll.
 
-* Start off by forking this demo package with `truffle-cli fork @truffle/events-demo-backend <package name>`. This command will setup a new backend package forked off this example. **Note: <package name> must be unique for the devlopment org**
+* Start off by forking this demo package with `truffle-cli fork @truffle/events-demo-backend <package name>`. This command will setup a new backend package forked off this example. **Note: <package name> must be unique for the development org**
 * After you've forked the package, the next step is to setup and deploy the Supabase Edge function which will handle the custom webhook triggered during the viewer poll collectible redemption. Run through the edge function specific steps in the [`backend/README.md`](./backend/README.md) and deploy the edge function so the edge function can verify the event subscription during package installation.
-* Next, you should define the installation workflow inside the `installActionRel` in `truffle.config.mjs`. **If you're forking directly from this package note that collectibles and event topics must be unique at the Org level, so rename `viewer-create-poll` to something else specific to your package.
+* Next, you should define the installation workflow inside the `installActionRel` in `truffle.config.mjs`. Inside the `installActionRel` you will need to update:
+  * The EventTopic slug in the EventTopicUpsert step to signify the unique event topic for your package
+  * Update the `eventTopicPath` attributes to follow the path format for your package `@orgSlug/<packageSlug>@latest/_EventTopic/<eventTopicSlug from previous stem>
+  * Update the `endpoint` in the EventSubscription upsert to the Supabase Edge function public url
+* Update the `VIEWER_CREATED_POLL_EVENT_TOPIC_SLUG` environment variable for the Supabase Edge Function and redeploy the function.
 * Update the `endpoint` attribute of the EventSubscription installation step to the public url of your edge function.
-* Deploy the package version once you're happy with it. **The package install flow uses the deployed version of your package**. `truffle-cli deploy`
+* Deploy the package version. __The package install flow uses the deployed version of your package__**__. `truffle-cli deploy`
 * Install the package with `truffle-cli install @truffle/events-demo-backend@latest`. Where `@truffle/events-demo-backend@latest` corresponds to your package path `@orgSlug/<package name>@<packageVersion semver>`. You can also just install the lastest version of your package by grabbing the package name from `truffle.config.mjs` and appending `@latest` like in the example above.
 * To test out the package's backend functionality grab the created collectible. Here's a Graphql query you can use to fetch all of the org's redeemable collectibles:
-```
+```graphql
 query CollectibleConnectionQuery ($input: CollectibleConnectionInput, $first: Int, $after: String, $last: Int, $before: String) {
     collectibleConnection(input: $input, first: $first, after: $after, last: $last, before: $before) {
         pageInfo {
@@ -57,7 +61,7 @@ query CollectibleConnectionQuery ($input: CollectibleConnectionInput, $first: In
     }
 }
 ```
-```
+```json
 {
     "input": {
         "type": "redeemable"
@@ -69,7 +73,7 @@ query CollectibleConnectionQuery ($input: CollectibleConnectionInput, $first: In
 Grab the ID of the collectible created from the installation steps.
 
 * Next, give a user the package collectible by calling the `ownedCollectibleIncrement` mutation for a user. Here's the Graphql query to increment the owned collectible:
-```
+```graphql
 mutation OwnedCollectibleIncrement ($input: OwnedCollectibleIncrementInput!) {
     ownedCollectibleIncrement(input: $input) {
         collectible {
@@ -81,7 +85,7 @@ mutation OwnedCollectibleIncrement ($input: OwnedCollectibleIncrementInput!) {
     }
 }
 ```
-```
+```json
 {
   "input": {
       "collectibleId": "<package collectibleId>",
@@ -91,7 +95,7 @@ mutation OwnedCollectibleIncrement ($input: OwnedCollectibleIncrementInput!) {
 }
 ```
 * Once the user has been give the collectible, redeem the collectible and verify that the edge function was called and a poll was created. To redeem an owned collectible, you can use the following Graphql query:
-```
+```graphql
 mutation OwnedCollectibleRedeem ($input: OwnedCollectibleRedeemInput) {
     ownedCollectibleRedeem(input: $input) {
         redeemResponse
@@ -99,7 +103,7 @@ mutation OwnedCollectibleRedeem ($input: OwnedCollectibleRedeemInput) {
     }
 }
 ```
-```
+```json
 {
    "input": {
        "userId": "<userId>",
@@ -119,7 +123,7 @@ mutation OwnedCollectibleRedeem ($input: OwnedCollectibleRedeemInput) {
 }
 ```
 To verify that the poll was successfully created use the following Graphql Query:
-```
+```graphql
 query PollConnectionQuery ($input: PollConnectionInput, $first: Int, $after: String, $last: Int, $before: String) {
     pollConnection(input: $input, first: $first, after: $after, last: $last, before: $before) {
         pageInfo {
