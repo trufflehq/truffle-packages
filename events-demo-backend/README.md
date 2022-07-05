@@ -22,3 +22,126 @@ This guide will walk you through how to create a backend Truffle package that wi
 * Update the `endpoint` attribute of the EventSubscription installation step to the public url of your edge function.
 * Deploy the package version once you're happy with it. **The package install flow uses the deployed version of your package**. `truffle-cli deploy`
 * Install the package with `truffle-cli install @truffle/events-demo-backend@latest`. Where `@truffle/events-demo-backend@latest` corresponds to your package path `@orgSlug/<package name>@<packageVersion semver>`. You can also just install the lastest version of your package by grabbing the package name from `truffle.config.mjs` and appending `@latest` like in the example above.
+* To test out the package's backend functionality grab the created collectible. Here's a Graphql query you can use to fetch all of the org's redeemable collectibles:
+```
+query CollectibleConnectionQuery ($input: CollectibleConnectionInput, $first: Int, $after: String, $last: Int, $before: String) {
+    collectibleConnection(input: $input, first: $first, after: $after, last: $last, before: $before) {
+        pageInfo {
+            endCursor
+            hasNextPage
+            startCursor
+            hasPreviousPage
+        }
+        nodes {
+            id
+            orgId
+            slug
+            name
+            fileRel {
+                fileId
+                fileObj {
+                    cdn
+                    ext
+                    prefix
+                }
+            }
+            type
+            targetType
+            data {
+                category
+                redeemType
+                description
+                redeemData
+            }
+        }
+    }
+}
+```
+```
+{
+    "input": {
+        "type": "redeemable"
+    },
+    "first": 100
+}
+```
+
+Grab the ID of the collectible created from the installation steps.
+
+* Next, give a user the package collectible by calling the `ownedCollectibleIncrement` mutation for a user. Here's the Graphql query to increment the owned collectible:
+```
+mutation OwnedCollectibleIncrement ($input: OwnedCollectibleIncrementInput!) {
+    ownedCollectibleIncrement(input: $input) {
+        collectible {
+            id
+            name
+            type
+        }
+
+    }
+}
+```
+```
+{
+  "input": {
+      "collectibleId": "<package collectibleId>",
+      "userId": "<userId>",
+      "count": 100
+  }
+}
+```
+* Once the user has been give the collectible, redeem the collectible and verify that the edge function was called and a poll was created. To redeem an owned collectible, you can use the following Graphql query:
+```
+mutation OwnedCollectibleRedeem ($input: OwnedCollectibleRedeemInput) {
+    ownedCollectibleRedeem(input: $input) {
+        redeemResponse
+        redeemError
+    }
+}
+```
+```
+{
+   "input": {
+       "userId": "<userId>",
+       "collectibleId": "<collectibleId>",
+       "additionalData": {
+           "question": "IT WORKING",
+           "options": [
+               {
+                   "text": "9:00pm"
+               },
+               {
+                   "text": "9:00am"
+               }
+           ]
+       }
+   }
+}
+```
+To verify that the poll was successfully created use the following Graphql Query:
+```
+query PollConnectionQuery ($input: PollConnectionInput, $first: Int, $after: String, $last: Int, $before: String) {
+    pollConnection(input: $input, first: $first, after: $after, last: $last, before: $before) {
+        pageInfo {
+            endCursor
+            hasNextPage
+            startCursor
+            hasPreviousPage
+        }
+        nodes {
+            id
+            orgId
+            question
+            options {
+                text
+                index
+            }
+            time
+        }
+    }
+}
+```
+
+### Scripts
+* `deno task deploy-fn`: This script will deploy the Supabase Edge Function, update this to the name of the edge function in your project
+* `deno task deploy-pkg`: This script will deploy the Truffle package (wrapper around `truffle-cli deploy`)
