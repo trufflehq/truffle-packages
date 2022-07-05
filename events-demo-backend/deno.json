@@ -1,6 +1,7 @@
 {
   "tasks": {
-    "deploy": "cd backend/ && supabase functions deploy viewer-polls-example-handler --no-verify-jwt"
+    "deploy-pkg": "truffle-cli deploy",
+    "deploy-fn": "cd backend/ && supabase functions deploy viewer-polls-example-handler --no-verify-jwt"
   },
   "fmt": {
     "options": {
