@@ -77,7 +77,7 @@ query CollectibleConnectionQuery ($input: CollectibleConnectionInput, $first: In
 
 Grab the ID of the collectible created from the installation steps.
 
-* Next, give a user the package collectible by calling the `ownedCollectibleIncrement` mutation for a user. Here's the Graphql query to increment the owned collectible:
+* Next, give a user the package collectible by calling the `ownedCollectibleIncrement` mutation for a user. Here's the Graphql query to increment a user's owned collectible:
 ```graphql
 mutation OwnedCollectibleIncrement ($input: OwnedCollectibleIncrementInput!) {
     ownedCollectibleIncrement(input: $input) {
@@ -99,7 +99,7 @@ mutation OwnedCollectibleIncrement ($input: OwnedCollectibleIncrementInput!) {
   }
 }
 ```
-* Once the user has been give the collectible, redeem the collectible and verify that the edge function was called and a poll was created. To redeem an owned collectible, you can use the following Graphql query:
+* Once the user has been give the collectible, redeem the collectible and verify that the edge function was called and a poll was created. To redeem a user's owned collectible, you can use the following Graphql query:
 ```graphql
 mutation OwnedCollectibleRedeem ($input: OwnedCollectibleRedeemInput) {
     ownedCollectibleRedeem(input: $input) {
