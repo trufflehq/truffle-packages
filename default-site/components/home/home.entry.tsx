@@ -27,7 +27,7 @@ function ExtensionMapping() {
 
   return (
     <>
-      <Stylesheet url={new URL("./extension-mapping.css", import.meta.url)} />
+      <Stylesheet url={new URL("./home.css", import.meta.url)} />
       This is my extension mapping
       <Counter initialCount={2} />
     </>
