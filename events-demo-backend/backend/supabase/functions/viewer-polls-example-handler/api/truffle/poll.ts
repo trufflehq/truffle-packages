@@ -27,6 +27,7 @@ export type PollUpsertPayload = {
 export async function createPoll(
   question: string,
   options: ViewerCreatePollUserInputOption[],
+  orgId?: string,
 ) {
   const query = `mutation PollUpsert ($input: PollUpsertInput) {
     pollUpsert(input: $input) {
@@ -50,7 +51,7 @@ export async function createPoll(
   };
 
   try {
-    const response = await truffleFetch(query, variables);
+    const response = await truffleFetch(query, variables, orgId);
     const data: PollUpsertPayload = await response.json();
 
     return data.data.pollUpsert.poll;
