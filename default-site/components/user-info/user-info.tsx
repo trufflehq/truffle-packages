@@ -25,7 +25,9 @@ export default function UserInfo() {
       {!isAuthDialogHidden && <AuthDialog
         abc="123"
         hidden={isAuthDialogHidden}
-        onClose={() => setIsAuthDialogHidden(true)}
+        onclose={() => {
+          setIsAuthDialogHidden(true)
+        }}
       />}
     </>
   );

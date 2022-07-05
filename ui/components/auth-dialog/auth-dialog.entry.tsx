@@ -1,21 +1,22 @@
-import React, { useMemo, useRef } from "https://npm.tfl.dev/react";
+import { component, useMemo } from 'https://npm.tfl.dev/haunted@5.0.0';
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
-import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
 
 import { createSubject } from "https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js";
-import useObservables from "https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables.js";
+import useObservables from "https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables-haunted.js";
 import {
   _clearCache,
   gql,
   mutation,
 } from "https://tfl.dev/@truffle/api@0.0.1/client.js";
 import { setCookie } from "https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js";
-import { component, useState } from 'https://npm.tfl.dev/haunted@5.0.0';
+// unsafeStatic was solution to https://stackoverflow.com/a/59833334
+import { html, unsafeStatic } from "https://npm.tfl.dev/lit-html@2/static";
 
 import Button from "../button/button.entry.ts";
 import Dialog from "../dialog/dialog.entry.ts";
 import TextField from "../text-field/text-field.entry.ts";
 import Stylesheet from "../stylesheet/stylesheet.jsx";
+import { emit } from '../../utils/event.ts'
 
 const JOIN_MUTATION = gql`mutation UserJoin($input: UserJoinInput!) {
   userJoin(input: $input) { accessToken }
@@ -29,7 +30,11 @@ const LOGIN_MUTATION = gql
   userLoginEmailPhone(input: $input) { accessToken }
 }`;
 
-function AuthDialog({ hidden, onClose, abc, ...props }) {
+function AuthDialog({ hidden, abc, ...props }) {
+  const onClose = () => {
+    emit(this, 'close')
+  }
+
   const { modeSubject, isLoadingSubject, hasErrorSubject, fields } = useMemo(
     () => {
       return {
@@ -125,31 +130,19 @@ function AuthDialog({ hidden, onClose, abc, ...props }) {
     ? "Reset"
     : "Join";
 
-  return (
-    <Dialog
-      hidden={hidden}
-      modal={true}
-      oncancel={() => {
-        console.log('cancel');
-        onClose?.()
-      }}
-      onclose={() => {
-        console.log('close');
-        onClose?.()
-      }}
-    >
-      <Stylesheet url={new URL("./auth-dialog.css", import.meta.url)} />
-      <form onSubmit={onSubmit}>
-        <Header actionText={actionText} modeSubject={modeSubject} />
-        <Content mode={mode} fields={fields} />
-        <Footer
-          actionText={actionText}
-          onSubmit={onSubmit}
-          isLoading={isLoading}
-        />
-      </form>
-    </Dialog>
-  );
+  return html`<${unsafeStatic(Dialog)}
+    hidden=${hidden}
+    modal=${true}
+    @cancel=${onClose}
+    @close=${onClose}
+  >
+    <${unsafeStatic(Stylesheet)} url="${new URL("./auth-dialog.css", import.meta.url)}"></${unsafeStatic(Stylesheet)}>
+    <form @submit=${onSubmit}>
+      ${Header({ actionText, modeSubject })}
+      ${Content({ mode, fields })}
+      ${Footer({ actionText, onSubmit, isLoading })}
+    </form>
+  </${unsafeStatic(Dialog)}>`
 }
 
 AuthDialog.propTypes = {
@@ -159,22 +152,14 @@ AuthDialog.propTypes = {
 };
 
 function Content({ mode, fields }) {
-  return (
-    <>
-      {mode === "join" && (
-        <InputWrapper label="Display name" field={fields.name} />
-      )}
-      <InputWrapper label="Email or phone #" field={fields.emailPhone} />
-      <InputWrapper
-        type="password"
-        label="Password"
-        field={fields.password}
-      />
-    </>
-  );
+  return html`
+  ${mode === "join" && 
+    InputWrapper({ label: "Display name", field: fields.name })}
+  ${InputWrapper({ label: "Email or phone #", field: fields.emailPhone })}
+  ${InputWrapper({ label: "Password", type: "password", field: fields.password })}`
 }
 
-const InputWrapper = React.memo(function InputWrapper({ type = "text", label, field }) {
+const InputWrapper = function InputWrapper({ type = "text", label, field }) {
   const { value, error } = useObservables(() => ({
     value: field.valueSubject.obs,
     error: field.errorSubject.obs,
@@ -182,21 +167,17 @@ const InputWrapper = React.memo(function InputWrapper({ type = "text", label, fi
 
   console.log(value, error);
 
-  return (
-    <div className={`input-wrapper ${error ? "has-error" : ""}`}>
-      <TextField
-        type={type}
-        value={value}
-        onInput={(e) => field.valueSubject.next(e.target.value)}
-      >
-        {label}
-      </TextField>
-      {error && <div className="error">{error}</div>}
-    </div>
-  );
-}, (prevProps, nextProps) =>
-  prevProps.type === nextProps.type && prevProps.label === nextProps.label
-)
+  return html`<div class=${`input-wrapper ${error ? "has-error" : ""}`}>
+    <${unsafeStatic(TextField)}
+      type=${type}
+      value=${value}
+      @input=${(e) => field.valueSubject.next(e.target.value)}
+    >
+      ${label}
+    </${unsafeStatic(TextField)}>
+    ${error && html`<div class="error">${error}</div>`}
+  </div>`
+}
 
 function Header({ modeSubject, actionText }) {
   const { mode } = useObservables(() => ({
@@ -207,27 +188,23 @@ function Header({ modeSubject, actionText }) {
     modeSubject.next(mode === "login" ? "join" : "login");
   };
 
-  return (
-    <div className="header">
-      <div className="title">{actionText}</div>
-      <div className="description">
-        Already have an account?
-        <span className="login-toggle" onClick={toggleMode}>
-          {mode === "login" ? "Join" : "Login"}
-        </span>
-      </div>
+  return html`<div class="header">
+    <div class="title">${actionText}</div>
+    <div class="description">
+      Already have an account?
+      <span class="login-toggle" @click=${toggleMode}>
+        ${mode === "login" ? "Join" : "Login"}
+      </span>
     </div>
-  );
+  </div>`
 }
 
-function Footer({ onSubmit, actionText, isLoading }) {
-  return (
-    <div className="footer">
-      <Button appearance="primary" type="submit" loading={isLoading}>
-        {actionText}
-      </Button>
-    </div>
-  );
+function Footer({ actionText, isLoading }) {
+  return html`<div class="footer">
+    <${unsafeStatic(Button)} appearance="primary" type="submit" loading=${isLoading}>
+      ${actionText}
+    </${unsafeStatic(Button)}>
+  </div>`
 }
 
 function parseEmailPhone(emailPhone) {
@@ -241,4 +218,6 @@ function parseEmailPhone(emailPhone) {
   }
 }
 
-export default toWebComponent(AuthDialog);
+const elementName = "truffle.ui-auth-dialog";
+customElements.define(elementName, component(AuthDialog));
+export default elementName
