@@ -23,11 +23,13 @@ This guide will walk you through how to create a backend Truffle package that wi
 * Start off by forking this demo package with `truffle-cli fork @truffle/events-demo-backend <package name>`. This command will setup a new backend package forked off this example. **Note: <package name> must be unique for the development org**
 * Next, you should define the installation workflow inside the `installActionRel` in `truffle.config.mjs`. Inside the `installActionRel` you will need to update:
   * The EventTopic slug in the EventTopicUpsert step to signify the unique event topic for your package
-  * Update the `eventTopicPath` attributes to follow the path format for your package `@orgSlug/<packageSlug>@latest/_EventTopic/<eventTopicSlug from previous step>` (e.g rename the event topic `@truffle/events-demo-backend@latest/_EventTopic/viewer-create-poll` -> `@truffle-dev-early-access/my-custom-event-package@latest/_EventTopic/custom-event-topic`)
+  * Update the `eventTopicPath` attributes to follow the path format for your package `@orgSlug/<packageSlug>@latest/_EventTopic/<eventTopicSlug from previous step>` 
+    * `@truffle/events-demo-backend@latest/_EventTopic/viewer-create-poll` -> `@truffle-dev-early-access/my-custom-event-package@latest/_EventTopic/custom-event-topic`
   * Update the collectible slug from the CollectibleUpsert to a unique slug for the org.
 * After you've defined the install steps, the next step is to setup and deploy the Supabase Edge function which will handle the custom webhook triggered during the viewer poll collectible redemption. Run through the edge function specific steps in the [`backend/README.md`](./backend/README.md) and deploy the edge function so the edge function can verify the event subscription during package installation.
 * Update the `endpoint` attribute of the EventSubscription installation step to the public url of your edge function.
-* Deploy the package version. _The package install flow uses the deployed version of your package_. `truffle-cli deploy`
+* Deploy the package version. `truffle-cli deploy`
+  * _The package install flow uses the deployed version of your package_
 * Install the package with `truffle-cli install @truffle/events-demo-backend@latest`. Where `@truffle/events-demo-backend@latest` corresponds to your package path `@orgSlug/<package name>@<packageVersion semver>`. You can also just install the lastest version of your package by grabbing the package name from `truffle.config.mjs` and appending `@latest` like in the example above.
 * To test out the package's backend functionality grab the created collectible. Here's a Graphql query you can use to fetch all of the org's redeemable collectibles:
 ```graphql
