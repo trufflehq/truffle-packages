@@ -27,7 +27,8 @@ export function pollingQueryObservable (interval, query, variables) {
   // https://stackoverflow.com/questions/66309283/convert-ecmascript-observable-zen-observable-to-rxjs-observable/66380963#66380963
   const obs = new Observable((observer) => {
     pipe(
-      // have to use `executeQuery` if we want to pass in `requestPolicy`
+      // have to use `executeQuery` if we want to pass in `requestPolicy`;
+      // setting `requestPolicy` to 'network-only' bypasses urql's cache
       getClient().executeQuery(
         createRequest(query, variables),
         { requestPolicy: "network-only" }
