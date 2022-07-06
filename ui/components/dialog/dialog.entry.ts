@@ -1,17 +1,18 @@
+// SSR breaks on npm.tfl version atm
 import {
   DesignSystem,
   Dialog as FoundationDialog,
   dialogTemplate,
-} from "https://npm.tfl.dev/@microsoft/fast-foundation@2";
-import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@1";
+} from "https://cdn.skypack.dev/@microsoft/fast-foundation@alpha";
+import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
 
-import Stylesheet from "../stylesheet/stylesheet.jsx";
+import Stylesheet from "../stylesheet/stylesheet.ts";
 
 class Dialog extends FoundationDialog {}
 
 const stylesUrl = new URL("./dialog.css", import.meta.url);
 const template = html`
-  <${Stylesheet} url="${stylesUrl}"></${Stylesheet}>
+  <${Stylesheet} :url="${stylesUrl}"></${Stylesheet}>
   ${dialogTemplate}`;
 
 const dialogDefinition = Dialog.compose({

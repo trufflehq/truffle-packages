@@ -1,17 +1,18 @@
+// SSR breaks on npm.tfl version atm
 import {
   DesignSystem,
   TextField as FoundationTextField,
   textFieldTemplate,
-} from "https://npm.tfl.dev/@microsoft/fast-foundation@2";
-import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@1";
+} from "https://cdn.skypack.dev/@microsoft/fast-foundation@alpha";
+import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
 
-import Stylesheet from "../stylesheet/stylesheet.jsx";
+import Stylesheet from "../stylesheet/stylesheet.ts";
 
 class TextField extends FoundationTextField {}
 
 const stylesUrl = new URL("./text-field.css", import.meta.url);
 const template = html`
-  <${Stylesheet} url="${stylesUrl}"></${Stylesheet}>
+  <${Stylesheet} :url="${stylesUrl}"></${Stylesheet}>
   ${textFieldTemplate}`;
 
 const textFieldDefinition = TextField.compose({

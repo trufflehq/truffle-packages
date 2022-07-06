@@ -29,7 +29,8 @@
 
 // TODO: client should probably importmap this to nothing
 // or could try dynamic import
-import DenoAsyncLocalStorage from './deno-async-local-storage.js'
+// import DenoAsyncLocalStorage from './deno-async-local-storage.js'
+// import { AsyncLocalStorage } from 'node:async_hooks'
 
 class BrowserAsyncLocalStorage {
   constructor () {
@@ -47,14 +48,18 @@ class BrowserAsyncLocalStorage {
   }
 }
 
-const isSsr = typeof document === 'undefined'
-const IsomorphicAsyncLocalStorage = isSsr ? DenoAsyncLocalStorage : BrowserAsyncLocalStorage
-
 // THIS CLASS NEEDS TO BE 100% BACKWARDS COMPATIBLE ALWAYS
 // it's modeled after Node.js AsyncLocalStorage
 class FrozenAsyncLocalStorageAsContext {
   constructor () {
+    const IsomorphicAsyncLocalStorage = globalThis?.Deno ? DenoAsyncLocalStorage : BrowserAsyncLocalStorage
     this._instance = new IsomorphicAsyncLocalStorage()
+  }
+
+  // NOTE: you *should* be able to remove this AsyncLocalStorage argument and not worry about 
+  // backwards compatibility. All that uses it is Sporocarp SSR and local dev setups
+  _PRIVATE_setInstance = (asyncLocalStorageInstance) => {
+    this._instance = asyncLocalStorageInstance
   }
 
   // sets the context to store and calls fn with the additional args that are passed in

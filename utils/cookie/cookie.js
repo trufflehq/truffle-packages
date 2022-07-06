@@ -14,7 +14,7 @@ class Cookie {
 
   getInitialCookies () {
     if (typeof document !== 'undefined') {
-      return cookieLib.parse(document.cookie) || {}
+      return cookieLib.parse(document.cookie || '') || {}
     } else {
       return getSsrReq()?.cookies || {}
     }

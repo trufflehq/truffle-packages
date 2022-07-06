@@ -30,7 +30,7 @@ const LOGIN_MUTATION = gql
   userLoginEmailPhone(input: $input) { accessToken }
 }`;
 
-function AuthDialog({ hidden, abc, ...props }) {
+function AuthDialog({ hidden }) {
   const onClose = () => {
     emit(this, 'close')
   }
@@ -136,11 +136,11 @@ function AuthDialog({ hidden, abc, ...props }) {
     @cancel=${onClose}
     @close=${onClose}
   >
-    <${unsafeStatic(Stylesheet)} url="${new URL("./auth-dialog.css", import.meta.url)}"></${unsafeStatic(Stylesheet)}>
+    <${unsafeStatic(Stylesheet)} .url="${new URL("./auth-dialog.css", import.meta.url)}"></${unsafeStatic(Stylesheet)}>
     <form @submit=${onSubmit}>
       ${Header({ actionText, modeSubject })}
       ${Content({ mode, fields })}
-      ${Footer({ actionText, onSubmit, isLoading })}
+      ${Footer({ actionText, isLoading })}
     </form>
   </${unsafeStatic(Dialog)}>`
 }

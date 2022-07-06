@@ -1,17 +1,18 @@
+// SSR breaks on npm.tfl version atm
 import {
   Button as FoundationButton,
   buttonTemplate,
   DesignSystem,
-} from "https://npm.tfl.dev/@microsoft/fast-foundation@2";
-import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@1";
+} from "https://cdn.skypack.dev/@microsoft/fast-foundation@alpha";
+import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
 
 import Stylesheet from "../stylesheet/stylesheet.jsx";
 
 class Button extends FoundationButton {}
 
-const stylesUrl = new URL("./button.css", import.meta.url);
+const stylesUrl = new URL("./button.css", import.meta.url).toString();
 const template = html`
-  <${Stylesheet} url="${stylesUrl}"></${Stylesheet}>
+  <${Stylesheet} :url="${stylesUrl}"></${Stylesheet}>
   ${buttonTemplate}`;
 
 const buttonDefinition = Button.compose({
