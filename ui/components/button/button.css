@@ -1,0 +1,32 @@
+:host([disabled]),
+:host([disabled]:hover),
+:host([disabled]:active) {
+  background-color: var(--tfl-color-surface-fill-disabled);
+  cursor: var(--tfl-cursor-disabled);
+}
+
+:host {
+  all: unset;
+  display: inline-flex;
+  font-family: var(--tfl-font-family-body-sans);
+  font-size: var(--tfl-font-size-body-md);
+  background-color: var(--tfl-color-surface-fill);
+  color: var(--tfl-color-on-bg-fill);
+  border: var(--tfl-border-width-sm) solid var(--tfl-color-surface-border);
+  border-radius: var(--tfl-border-radius-md);
+  cursor: var(--tfl-cursor-pointer);
+}
+
+:host(:hover) {
+  background-color: var(--tfl-color-surface-fill-hovered);
+}
+
+:host(:active) {
+  background-color: var(--tfl-color-surface-fill-pressed);
+}
+
+.control {
+  all: unset;
+  padding: var(--tfl-spacing-xs) var(--tfl-spacing-lg);
+  white-space: nowrap;
+}

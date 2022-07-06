@@ -1,0 +1,19 @@
+{
+  "tasks": {
+    "dev": "npx vite",
+    "devold": "DENO_FUTURE_CHECK=1 mode=development ULTRA_MODE=development deno run -A --unstable https://tfl.dev/@truffle/ultra-server@0.3.0/index.ts"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsxdev",
+    "jsxImportSource": "react",
+    "lib": [
+      "deno.ns",
+      "dom"
+    ]
+  },
+  "fmt": {
+    "options": {
+      "lineWidth": 100
+    }
+  }
+}

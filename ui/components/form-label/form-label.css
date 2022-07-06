@@ -1,0 +1,9 @@
+:host {
+  display: block;
+  font-family: var(--truffle-font-family);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  margin-bottom: 8px;
+}
