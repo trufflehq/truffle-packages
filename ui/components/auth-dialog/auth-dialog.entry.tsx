@@ -1,4 +1,4 @@
-import { component, useMemo } from 'https://npm.tfl.dev/haunted@5.0.0';
+import { component, useMemo } from 'https://npm.tfl.dev/haunted@5.0.0?bundle';
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
 
 import { createSubject } from "https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js";
@@ -10,7 +10,7 @@ import {
 } from "https://tfl.dev/@truffle/api@0.0.1/client.js";
 import { setCookie } from "https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js";
 // unsafeStatic was solution to https://stackoverflow.com/a/59833334
-import { html, unsafeStatic } from "https://npm.tfl.dev/lit-html@2/static";
+import { html, unsafeStatic } from "https://npm.tfl.dev/lit-html@2/static?bundle";
 
 import Button from "../button/button.entry.ts";
 import Dialog from "../dialog/dialog.entry.ts";
