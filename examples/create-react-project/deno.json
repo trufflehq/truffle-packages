@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "DENO_FUTURE_CHECK=1 mode=development ULTRA_MODE=development deno run -A --unstable https://tfl.dev/@truffle/ultra-server@0.3.0/index.ts"
+    "dev": "we'll add as soon as deno is ready for us :)"
   },
   "compilerOptions": {
     "jsx": "react-jsxdev",
