@@ -1,2 +1,2 @@
 export { truffleFetch } from "./fetch.ts";
-export { getDiscordConnection } from "./user.ts";
+export { getUserDiscordConnection } from "./connection.ts";

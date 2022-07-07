@@ -1,6 +1,6 @@
 import { truffleFetch } from "./fetch.ts";
 
-export type GetDiscordConnectionJSONResponse = {
+export type GetUserDiscordConnectionJSONResponse = {
   data: {
     connection: {
       id: string;
@@ -18,7 +18,7 @@ export type GetDiscordConnectionJSONResponse = {
   };
 };
 
-export async function getDiscordConnection(
+export async function getUserDiscordConnection(
   orgId: string,
   sourceId: string,
   sourceType = "discord",
@@ -53,7 +53,51 @@ export async function getDiscordConnection(
 
   try {
     const response = await truffleFetch(query, variables);
-    const data: GetDiscordConnectionJSONResponse = await response.json();
+    const data: GetUserDiscordConnectionJSONResponse = await response.json();
+
+    return data.data.connection;
+  } catch (err) {
+    console.error("error during truffle fetch", err.message);
+  }
+}
+
+export type GetDiscordServerConnectionJSONResponse = {
+  data: {
+    connection: {
+      id: string;
+      orgId: string;
+      sourceType: string;
+      sourceId: string;
+    };
+  };
+};
+
+export async function getDiscordServerConnection(
+  serverId: string,
+  sourceType = "discordGuild",
+) {
+  const query = `query GetDiscordServerConnection(
+    $sourceType: String!
+    $sourceId: String!
+  ) {
+    connection(input: { sourceType: $sourceType, sourceId: $sourceId }) {
+      id
+      orgId
+      sourceType
+      sourceId
+    }
+  }
+  
+  `;
+
+  const variables = {
+    sourceType,
+    sourceId: serverId,
+  };
+
+  try {
+    const response = await truffleFetch(query, variables);
+    const data: GetDiscordServerConnectionJSONResponse = await response.json();
 
     return data.data.connection;
   } catch (err) {
