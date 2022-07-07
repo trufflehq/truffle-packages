@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Default component that sites get setup with",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "node --experimental-import-meta-resolve --experimental-network-imports ./node_modules/truffle-dev-server/server.js"
   },
