@@ -36,6 +36,7 @@ export async function getUserDiscordConnection(
       sourceId
       secondarySourceId
       orgUser {
+        bio
         socials
         user {
           name

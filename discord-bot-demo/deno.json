@@ -1,11 +1,12 @@
 {
-  "tasks": {
-    "deploy-pkg": "truffle-cli deploy",
-    "deploy-fn": "cd backend/ && supabase functions deploy viewer-polls-example-handler --no-verify-jwt"
-  },
-  "fmt": {
-    "options": {
-      "lineWidth": 140
+    "tasks": {
+        "deploy-pkg": "truffle-cli deploy",
+        "deploy-fn": "cd backend/ && supabase functions deploy viewer-polls-example-handler --no-verify-jwt",
+        "deploy-commands": "cd backend/supabase && deno run --allow-env --allow-net scripts/deployCommands.ts"
+    },
+    "fmt": {
+        "options": {
+            "lineWidth": 140
+        }
     }
-  }
 }

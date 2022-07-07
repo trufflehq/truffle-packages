@@ -9,23 +9,33 @@ import {
   getUserDiscordConnection,
 } from "../util/truffle/index.ts";
 import { createResponse } from "../util/respond.ts";
+import { SOCIAL_MEDIA_EMOJIS, SOCIAL_MEDIA_LINKS } from "../util/constants.ts";
 
 export async function userInfo(
   interaction: APIChatInputApplicationCommandInteraction,
   user?: Snowflake,
 ) {
+  if (!interaction.guild_id || !interaction.member) {
+    return createResponse(
+      "You must be in a server to use this command",
+      true,
+    );
+  }
   // fetch the configured Discord server connection
   const serverConnection = await getDiscordServerConnection(
     interaction.guild_id!,
   );
+  console.dir(serverConnection);
   const { orgId } = serverConnection!;
 
   // fetch the Discord connection of userId
-  const userId = user || interaction.user!.id;
+  const userId = user ?? interaction.member!.user.id;
+  console.log({ userId });
   const connection = await getUserDiscordConnection(
     orgId,
     userId,
   );
+  console.dir(connection);
   if (!connection) {
     return createResponse(
       `No Truffle account found for <@${userId}>.`,
@@ -35,15 +45,27 @@ export async function userInfo(
 
   // finally, display our data!
   const embed: APIEmbed = {
-    title: `${connection!.orgUser.user.name}'s Discord Connection`,
+    author: {
+      name: connection!.orgUser.user.name,
+      icon_url: connection!.orgUser.user.avatar_url,
+    },
     description: stripIndents`
-		${connection.orgUser.bio ?? "No Bio"}
-		${
-      Object.entries(connection.orgUser.socials).map((s) => `${s[0]}: ${s[1]}`)
-        .join("\n")
-    }
-	`,
+      <@${userId}> - ${connection.orgUser.bio ?? "No Bio"}
+    `,
+    fields: [{
+      name: "Social Media",
+      value: Object.entries(connection.orgUser.socials).map((
+        [platform, username],
+      ) => {
+        const emoji = SOCIAL_MEDIA_EMOJIS[platform];
+        const link = platform !== "youtube"
+          ? `[@${username}](${SOCIAL_MEDIA_LINKS[platform]}${username}])`
+          : username;
+        return `${emoji} ${link}`;
+      }).join(" • "),
+    }],
   };
+  console.dir(embed);
 
   return createResponse("", false, { embeds: [embed] });
 }

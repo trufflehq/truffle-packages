@@ -29,7 +29,7 @@ export function createResponse(
         allowed_mentions: { parse, users },
       },
     }),
-    { status: 200 },
+    { status: 200, headers: { "Content-Type": "application/json" } },
   );
 }
 
@@ -58,6 +58,9 @@ export async function sendFollowup(
         flags: ephemeral ? 64 : 0,
         allowed_mentions: { parse, users },
       }),
+      headers: {
+        "Content-Type": "application/json",
+      },
     },
   );
   return response.json();
@@ -69,7 +72,7 @@ export function defer(ephemeral = false) {
       type: InteractionResponseType.DeferredChannelMessageWithSource,
       data: { flags: ephemeral ? 64 : 0 },
     }),
-    { status: 200 },
+    { status: 200, headers: { "Content-Type": "application/json" } },
   );
 }
 
@@ -78,6 +81,6 @@ export function ack() {
     JSON.stringify({
       type: 1,
     }),
-    { status: 200 },
+    { status: 200, headers: { "Content-Type": "application/json" } },
   );
 }
