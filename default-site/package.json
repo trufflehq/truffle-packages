@@ -4,11 +4,11 @@
   "description": "Default component that sites get setup with",
   "main": "index.js",
   "scripts": {
-    "dev": "node --experimental-import-meta-resolve --experimental-network-imports ./node_modules/vite-test/server.js"
+    "dev": "node --experimental-import-meta-resolve --experimental-network-imports ./node_modules/truffle-dev-server/server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "vite-test": "file:../vite-test"
+    "truffle-dev-server": "github:trufflehq/truffle-dev-server"
   }
 }
