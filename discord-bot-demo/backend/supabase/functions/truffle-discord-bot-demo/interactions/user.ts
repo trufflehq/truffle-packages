@@ -1,6 +1,7 @@
 import {
   APIChatInputApplicationCommandInteraction,
   APIEmbed,
+  APIEmbedField,
   Snowflake,
 } from "https://deno.land/x/discord_api_types@0.36.1/v10.ts";
 import { stripIndents } from "https://deno.land/x/deno_tags@1.8.0/tags/stripIndents.ts";
@@ -43,16 +44,9 @@ export async function userInfo(
     );
   }
 
-  // finally, display our data!
-  const embed: APIEmbed = {
-    author: {
-      name: connection!.orgUser.user.name,
-      icon_url: connection!.orgUser.user.avatar_url,
-    },
-    description: stripIndents`
-      <@${userId}> - ${connection.orgUser.bio ?? "No Bio"}
-    `,
-    fields: [{
+  const fields: APIEmbedField[] = [];
+  if (Object.values(connection.orgUser.socials).length) {
+    fields.push({
       name: "Social Media",
       value: Object.entries(connection.orgUser.socials).map((
         [platform, username],
@@ -63,7 +57,19 @@ export async function userInfo(
           : username;
         return `${emoji} ${link}`;
       }).join(" • "),
-    }],
+    });
+  }
+
+  // finally, display our data!
+  const embed: APIEmbed = {
+    author: {
+      name: connection!.orgUser.user.name,
+      icon_url: connection!.orgUser.user.avatar_url,
+    },
+    description: stripIndents`
+      <@${userId}> - ${connection.orgUser.bio ?? "No Bio"}
+    `,
+    fields,
   };
   console.dir(embed);
 
