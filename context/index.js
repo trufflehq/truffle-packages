@@ -52,7 +52,8 @@ class BrowserAsyncLocalStorage {
 // it's modeled after Node.js AsyncLocalStorage
 class FrozenAsyncLocalStorageAsContext {
   constructor () {
-    const IsomorphicAsyncLocalStorage = globalThis?.Deno ? DenoAsyncLocalStorage : BrowserAsyncLocalStorage
+    // const IsomorphicAsyncLocalStorage = globalThis?.Deno ? DenoAsyncLocalStorage : BrowserAsyncLocalStorage
+    const IsomorphicAsyncLocalStorage = BrowserAsyncLocalStorage
     this._instance = new IsomorphicAsyncLocalStorage()
   }
 

@@ -11,7 +11,7 @@ const template = html`
   <link
     @load=${(x) => x.isLoaded = true}
     rel="stylesheet"
-    href="${(x) => x.url.toString()}"
+    href="${(x) => (x.url || x.attributes.url).toString()}"
   />`;
 
 const elementName = "truffle.ui-stylesheet";
