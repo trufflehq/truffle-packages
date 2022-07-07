@@ -16,6 +16,7 @@ export default function Dropdown ({
       value={value}
       onChange={(e) => valueSubject.next(e.target.value)}
     >
+      <option disabled selected value={null}>Select</option>
       {
         options.map((option, idx) => typeof option === 'string'
           ? <option value={idx}>{option}</option>
