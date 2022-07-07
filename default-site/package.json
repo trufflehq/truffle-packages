@@ -1,0 +1,14 @@
+{
+  "name": "default-site",
+  "version": "1.0.0",
+  "description": "Default component that sites get setup with",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --experimental-import-meta-resolve --experimental-network-imports ./node_modules/vite-test/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vite-test": "file:../vite-test"
+  }
+}

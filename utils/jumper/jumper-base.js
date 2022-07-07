@@ -34,7 +34,7 @@ class BrowserComms {
     // window?._browserCommsIsInAppBrowser is set by native app. on iOS it isn't set
     // soon enough, so we rely on userAgent
     const isInAppBrowser = globalThis?.window?._browserCommsIsInAppBrowser ||
-                      (navigator.userAgent.indexOf('/InAppBrowser') !== -1)
+                      (globalThis?.navigator?.userAgent.indexOf('/InAppBrowser') !== -1)
     this.hasParent = ((typeof document !== 'undefined') && (window.self !== window.top)) || isInAppBrowser
     this.parent = globalThis?.window?.parent
 

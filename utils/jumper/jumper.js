@@ -7,9 +7,12 @@ const PLATFORMS = {
   WEB: 'web'
 }
 
+// TODO: smarter detection of node and deno in sep lib or context
+const isSsr = typeof document === 'undefined' || globalThis?.process?.release?.name === 'node'
+
 class JumperInstance {
   constructor () {
-    if (typeof document !== 'undefined') {
+    if (!isSsr) {
       // TODO: setup service worker so it actually responds and doesn't timeout
       // when you're enabling this, test that it doesn't slow down the
       // first browsercomms call in browser extension
@@ -27,7 +30,7 @@ class JumperInstance {
   }
 
   call = (...args) => {
-    if (typeof document === 'undefined' || window === null) {
+    if (isSsr) {
       // throw new Error 'Comms called server-side'
       return console.log('Comms called server-side')
     }
@@ -46,7 +49,7 @@ class JumperInstance {
   }
 
   callWithError = (...args) => {
-    if (typeof document === 'undefined' || window === null) {
+    if (isSsr) {
       // throw new Error 'Comms called server-side'
       return console.log('Comms called server-side')
     }
@@ -55,7 +58,7 @@ class JumperInstance {
   }
 
   listen = () => {
-    if (typeof document === 'undefined' || window === null) {
+    if (isSsr) {
       throw new Error('Comms called server-side')
     }
 
@@ -109,7 +112,7 @@ class JumperInstance {
   }
 
   isChrome () {
-    return navigator.userAgent.match(/chrome/i)
+    return globalThis?.navigator?.userAgent.match(/chrome/i)
   }
 
   appOnResume = (callback) => {
@@ -165,7 +168,7 @@ class JumperInstance {
 }
 
 const jumper = new JumperInstance()
-if (typeof document !== 'undefined') {
+if (!isSsr) {
   jumper.listen()
 }
 

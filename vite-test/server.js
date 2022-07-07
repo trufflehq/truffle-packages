@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import { AsyncLocalStorage } from "node:async_hooks";
 import { createServer as createViteServer } from "vite";
 import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.js'
@@ -7,7 +8,12 @@ import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.j
 globalContext._PRIVATE_setInstance(new AsyncLocalStorage())
 
 const vite = await createViteServer({
-  server: { middlewareMode: "ssr" },
+  server: {
+    middlewareMode: "ssr",
+    // FIXME: I think we might be able to disable when this package is installed via hosted github
+    // (vs installed from local)
+    fs: { strict: false }
+  },
 });
 
 const app = express();
@@ -19,7 +25,9 @@ app.use('*', (req, res, next) => {
 
   try {
     globalContext.run({}, async () => {
-      const { render } = await vite.ssrLoadModule("./entry.js");
+      // vite doesn't like file urls :(
+      const entry = (await import.meta.resolve("./server-entry.ts")).toString().replace('file://', '')
+      const { render } = await vite.ssrLoadModule(entry);
       const appHtml = await render(url);
       const html = await vite.transformIndexHtml(url, appHtml);
       res.status(200).set({ "Content-Type": "text/html" }).end(html);

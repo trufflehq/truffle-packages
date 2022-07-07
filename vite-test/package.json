@@ -5,18 +5,16 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "node --experimental-network-imports ./server.js"
+    "dev": "node --experimental-import-meta-resolve --experimental-network-imports ./server.js"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^18.0.2"
-  },
   "dependencies": {
     "@lit-labs/ssr": "^2.2.1",
     "@microsoft/fast-element": "^2.0.0-beta.3",
     "@microsoft/fast-ssr": "^1.0.0-beta.2",
     "express": "^4.18.1",
+    "glob": "^8.0.3",
     "snowpack": "^3.8.8",
     "ts-node": "^10.8.2",
     "tsc-esm-fix": "^2.18.0",
