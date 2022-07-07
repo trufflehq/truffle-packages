@@ -18,3 +18,9 @@ Similar to React context. Lets us store state without having to create a new cla
 
 ### @truffle/global-context
 The context we store global state on. If you import `https://tfl.dev/@truffle/global-context@1.0.0/index.js`, you can use `getStore()` which will return the global context (including the unique context for each SSR run)
+
+# Contributing
+## Prevent committing secrets
+Use [git-secrets](https://github.com/awslabs/git-secrets#installing-git-secrets)
+- `git secrets --install`
+- `git secrets --add 'sk_([a-zA-Z0-9]+)'`
