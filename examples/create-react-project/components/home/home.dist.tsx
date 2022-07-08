@@ -5,6 +5,7 @@ import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/inde
 
 import Counter from "../counter/counter.tsx";
 import UserInfo from "../user-info/user-info.tsx";
+import Link from "https://tfl.dev/@truffle/router@1.0.0/components/link/link.tag.js"
 
 function ExtensionMapping() {
   useEffect(() => {
@@ -31,6 +32,7 @@ function ExtensionMapping() {
       Hello world!
       <Counter initialCount={2} />
       <UserInfo />
+      <Link href="/abc">My link</Link>
     </>
   );
 }
