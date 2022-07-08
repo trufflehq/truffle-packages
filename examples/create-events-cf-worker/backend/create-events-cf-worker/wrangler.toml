@@ -1,7 +1,0 @@
-name = "create-events-cf-worker"
-main = "src/index.ts"
-compatibility_date = "2022-07-07"
-
-
-[vars]
-VIEWER_CREATED_POLL_EVENT_TOPIC_SLUG = "viewer-create-poll-topic-cf"
