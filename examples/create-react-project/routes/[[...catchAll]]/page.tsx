@@ -1,5 +1,5 @@
 import React from "https://npm.tfl.dev/react";
-import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
+import { toWebComponent } from "https://tfl.dev/@truffle/web-component@1.0.0/index.js";
 
 function Page() {
   return (
@@ -9,4 +9,4 @@ function Page() {
   );
 }
 
-export default toWebComponent(Page)
+export default toWebComponent('react', Page, import.meta.url)

@@ -1,3 +1,3 @@
-import Home from "../components/home/home.entry.tsx";
+import Home from "../components/home/home.dist.tsx";
 
 export default Home

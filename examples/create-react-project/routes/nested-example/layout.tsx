@@ -1,15 +1,11 @@
-import { component } from 'https://npm.tfl.dev/haunted@5.0.0?bundle';
-import { html, unsafeStatic } from "https://npm.tfl.dev/lit-html@2/static";
+import React from "https://npm.tfl.dev/react";
+import { toWebComponent } from "https://tfl.dev/@truffle/web-component@1.0.0/index.js";
 
 function NestedExampleLayout({ children }) {
-  return html`
+  return <>
     This is a layout that applies to all nested children
-    ${children}
-  `
+    {children}
+  </>
 }
 
-// export default toWebComponent(NestedExampleLayout)
-
-const elementName = "truffle-layout";
-customElements.define(elementName, component(NestedExampleLayout));
-export default elementName
+export default toWebComponent('react', NestedExampleLayout, import.meta.url)

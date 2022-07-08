@@ -2,11 +2,11 @@
 import {
   Button as FoundationButton,
   buttonTemplate,
-  DesignSystem,
 } from "https://cdn.skypack.dev/@microsoft/fast-foundation@alpha";
 import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
+import { toWebComponent } from "https://tfl.dev/@truffle/web-component@1.0.0/index.js";
 
-import Stylesheet from "../stylesheet/stylesheet.jsx";
+import Stylesheet from "../stylesheet/stylesheet.ts";
 
 class Button extends FoundationButton {}
 
@@ -20,10 +20,8 @@ const buttonDefinition = Button.compose({
   styles: () => css``, // we set styles in template so they can change depending on theme
 });
 
-const elementName = "truffle.ui-button";
-const [prefix, ...rest] = elementName.split("-");
-const baseName = rest.join("-");
-
-DesignSystem.getOrCreate().register(buttonDefinition({ prefix, baseName }));
-
-export default elementName;
+export default toWebComponent(
+  "fast-foundation",
+  buttonDefinition,
+  import.meta.url,
+);

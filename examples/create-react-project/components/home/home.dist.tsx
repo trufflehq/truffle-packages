@@ -1,7 +1,7 @@
 import React, { useEffect } from "https://npm.tfl.dev/react";
 import jumper from "https://tfl.dev/@truffle/utils@0.0.1/jumper/jumper.js";
 import Stylesheet from "https://tfl.dev/@truffle/ui@0.0.2/components/stylesheet/stylesheet.js";
-import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
+import { toWebComponent } from "https://tfl.dev/@truffle/web-component@1.0.0/index.js";
 
 import Counter from "../counter/counter.tsx";
 import UserInfo from "../user-info/user-info.tsx";
@@ -35,4 +35,4 @@ function ExtensionMapping() {
   );
 }
 
-export default toWebComponent(ExtensionMapping)
+export default toWebComponent('react', ExtensionMapping, import.meta.url)

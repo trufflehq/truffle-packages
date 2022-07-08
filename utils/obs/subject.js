@@ -3,7 +3,7 @@ import _ from 'https://npm.tfl.dev/lodash?no-check'
 // TODO: figure out an alternative to this package. it's 10kb
 // and probably doesn't need to be (it pulls in from some packages that are
 // similar to lodash, but not lodash: http://bundlephobia.com/package/dot-wild)
-import * as dot from 'https://npm.tfl.dev/dot-wild'
+import * as dot from 'https://npm.tfl.dev/dot-wild?bundle'
 
 const rx = Rx // operators, keeping separate namespace for now
 

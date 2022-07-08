@@ -1,6 +1,7 @@
-import { component, useMemo } from 'https://npm.tfl.dev/haunted@5.0.0?bundle';
+import { useMemo } from "https://npm.tfl.dev/haunted@5";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
 
+import { toWebComponent } from "https://tfl.dev/@truffle/web-component@1.0.0/index.js";
 import { createSubject } from "https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js";
 import useObservables from "https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables-haunted.js";
 import {
@@ -10,13 +11,16 @@ import {
 } from "https://tfl.dev/@truffle/api@0.0.1/client.js";
 import { setCookie } from "https://tfl.dev/@truffle/utils@0.0.1/cookie/cookie.js";
 // unsafeStatic was solution to https://stackoverflow.com/a/59833334
-import { html, unsafeStatic } from "https://npm.tfl.dev/lit-html@2/static?bundle";
+import {
+  html,
+  unsafeStatic,
+} from "https://npm.tfl.dev/lit-html@2/static?bundle";
 
-import Button from "../button/button.entry.ts";
-import Dialog from "../dialog/dialog.entry.ts";
-import TextField from "../text-field/text-field.entry.ts";
-import Stylesheet from "../stylesheet/stylesheet.jsx";
-import { emit } from '../../utils/event.ts'
+import Button from "../button/button.tag.ts";
+import Dialog from "../dialog/dialog.tag.ts";
+import TextField from "../text-field/text-field.tag.ts";
+import Stylesheet from "../stylesheet/stylesheet.ts";
+import { emit } from "../../utils/event.ts";
 
 const JOIN_MUTATION = gql`mutation UserJoin($input: UserJoinInput!) {
   userJoin(input: $input) { accessToken }
@@ -30,10 +34,12 @@ const LOGIN_MUTATION = gql
   userLoginEmailPhone(input: $input) { accessToken }
 }`;
 
+console.log(Stylesheet, unsafeStatic(Stylesheet));
+
 function AuthDialog({ hidden }) {
   const onClose = () => {
-    emit(this, 'close')
-  }
+    emit(this, "close");
+  };
 
   const { modeSubject, isLoadingSubject, hasErrorSubject, fields } = useMemo(
     () => {
@@ -66,7 +72,7 @@ function AuthDialog({ hidden }) {
   }));
 
   const onSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (isLoading) {
       return;
     }
@@ -120,7 +126,7 @@ function AuthDialog({ hidden }) {
       // TODO: better error messages
       errorSubject.next(errorInfo?.langKey || "Error");
     } else {
-      onClose?.()
+      onClose?.();
     }
   };
 
@@ -136,13 +142,16 @@ function AuthDialog({ hidden }) {
     @cancel=${onClose}
     @close=${onClose}
   >
-    <${unsafeStatic(Stylesheet)} .url="${new URL("./auth-dialog.css", import.meta.url)}"></${unsafeStatic(Stylesheet)}>
+    <${unsafeStatic(Stylesheet)} .url="${new URL(
+    "./auth-dialog.css",
+    import.meta.url,
+  )}"></${unsafeStatic(Stylesheet)}>
     <form @submit=${onSubmit}>
       ${Header({ actionText, modeSubject })}
       ${Content({ mode, fields })}
       ${Footer({ actionText, isLoading })}
     </form>
-  </${unsafeStatic(Dialog)}>`
+  </${unsafeStatic(Dialog)}>`;
 }
 
 AuthDialog.propTypes = {
@@ -153,10 +162,18 @@ AuthDialog.propTypes = {
 
 function Content({ mode, fields }) {
   return html`
-  ${mode === "join" && 
-    InputWrapper({ label: "Display name", field: fields.name })}
+  ${
+    mode === "join" &&
+    InputWrapper({ label: "Display name", field: fields.name })
+  }
   ${InputWrapper({ label: "Email or phone #", field: fields.emailPhone })}
-  ${InputWrapper({ label: "Password", type: "password", field: fields.password })}`
+  ${
+    InputWrapper({
+      label: "Password",
+      type: "password",
+      field: fields.password,
+    })
+  }`;
 }
 
 const InputWrapper = function InputWrapper({ type = "text", label, field }) {
@@ -176,8 +193,8 @@ const InputWrapper = function InputWrapper({ type = "text", label, field }) {
       ${label}
     </${unsafeStatic(TextField)}>
     ${error && html`<div class="error">${error}</div>`}
-  </div>`
-}
+  </div>`;
+};
 
 function Header({ modeSubject, actionText }) {
   const { mode } = useObservables(() => ({
@@ -196,15 +213,17 @@ function Header({ modeSubject, actionText }) {
         ${mode === "login" ? "Join" : "Login"}
       </span>
     </div>
-  </div>`
+  </div>`;
 }
 
 function Footer({ actionText, isLoading }) {
   return html`<div class="footer">
-    <${unsafeStatic(Button)} appearance="primary" type="submit" loading=${isLoading}>
+    <${
+    unsafeStatic(Button)
+  } appearance="primary" type="submit" loading=${isLoading}>
       ${actionText}
     </${unsafeStatic(Button)}>
-  </div>`
+  </div>`;
 }
 
 function parseEmailPhone(emailPhone) {
@@ -218,6 +237,4 @@ function parseEmailPhone(emailPhone) {
   }
 }
 
-const elementName = "truffle.ui-auth-dialog";
-customElements.define(elementName, component(AuthDialog));
-export default elementName
+export default toWebComponent("haunted", AuthDialog, import.meta.url);
