@@ -1,6 +1,6 @@
 import React from "https://npm.tfl.dev/react";
 import { useParams } from "https://tfl.dev/@truffle/utils@0.0.1/router/router.js";
-import { toWebComponent } from "https://tfl.dev/@truffle/web-component@1.0.0/index.js";
+import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
 
 function MyVarPage() {
   const params = useParams();
@@ -12,4 +12,4 @@ function MyVarPage() {
   );
 }
 
-export default toWebComponent('react', MyVarPage, import.meta.url)
+export default toDist('react', MyVarPage, import.meta.url)

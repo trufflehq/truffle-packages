@@ -15,7 +15,7 @@ async function getReactDOM() {
   return ReactDOM;
 }
 
-export default function toWebComponent(
+export default function toDist(
   ReactComponent,
   { isShadowDom = true } = {},
 ) {

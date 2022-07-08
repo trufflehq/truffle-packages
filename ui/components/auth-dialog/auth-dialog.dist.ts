@@ -1,7 +1,7 @@
 import { useMemo } from "https://npm.tfl.dev/haunted@5";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
 
-import { toWebComponent } from "https://tfl.dev/@truffle/web-component@1.0.0/index.js";
+import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
 import { createSubject } from "https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js";
 import useObservables from "https://tfl.dev/@truffle/utils@0.0.1/obs/use-observables-haunted.js";
 import {
@@ -19,7 +19,7 @@ import {
 import Button from "../button/button.tag.ts";
 import Dialog from "../dialog/dialog.tag.ts";
 import TextField from "../text-field/text-field.tag.ts";
-import Stylesheet from "../stylesheet/stylesheet.ts";
+import Stylesheet from "../stylesheet/stylesheet.tag.ts";
 import { emit } from "../../utils/event.ts";
 
 const JOIN_MUTATION = gql`mutation UserJoin($input: UserJoinInput!) {
@@ -237,4 +237,4 @@ function parseEmailPhone(emailPhone) {
   }
 }
 
-export default toWebComponent("haunted", AuthDialog, import.meta.url);
+export default toDist("haunted", AuthDialog, import.meta.url);

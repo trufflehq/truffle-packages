@@ -1,6 +1,6 @@
 import { DesignSystem } from "https://cdn.skypack.dev/@microsoft/fast-foundation@alpha";
 
-export default function defineAndGetWebComponent(definition, tagName) {
+export function defineAndGetWebComponent(definition, tagName) {
   const [prefix, ...rest] = tagName.split("-");
   const baseName = rest.join("-");
   return {

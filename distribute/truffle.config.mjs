@@ -1,5 +1,5 @@
 export default {
-  name: '@truffle/web-component',
+  name: '@truffle/distribute',
   version: '1.0.0',
   // apiUrl: 'https://mycelium.truffle.vip/graphql',
   apiUrl: 'https://mycelium.staging.bio/graphql'

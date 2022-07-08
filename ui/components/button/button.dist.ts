@@ -4,7 +4,7 @@ import {
   buttonTemplate,
 } from "https://cdn.skypack.dev/@microsoft/fast-foundation@alpha";
 import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
-import { toWebComponent } from "https://tfl.dev/@truffle/web-component@1.0.0/index.js";
+import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
 
 import Stylesheet from "../stylesheet/stylesheet.ts";
 
@@ -20,7 +20,7 @@ const buttonDefinition = Button.compose({
   styles: () => css``, // we set styles in template so they can change depending on theme
 });
 
-export default toWebComponent(
+export default toDist(
   "fast-foundation",
   buttonDefinition,
   import.meta.url,

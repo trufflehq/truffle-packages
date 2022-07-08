@@ -16,7 +16,7 @@ async function getReactDOM() {
   return ReactDOM;
 }
 
-export default function defineAndGetWebComponent(
+export function defineAndGetWebComponent(
   component,
   tagName,
   { isShadowDom = true } = {},

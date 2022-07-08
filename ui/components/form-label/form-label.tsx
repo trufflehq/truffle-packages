@@ -1,6 +1,6 @@
 import React from "https://npm.tfl.dev/react";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
-import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
+import toDist from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
 
 import Stylesheet from "../stylesheet/stylesheet.jsx";
 
@@ -19,4 +19,4 @@ FormLabel.propTypes = {
   htmlFor: PropTypes.string,
 };
 
-export default toWebComponent(FormLabel);
+export default toDist(FormLabel);

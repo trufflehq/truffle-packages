@@ -1,9 +1,9 @@
 import {
-  customElement,
   FASTElement,
   html,
   observable,
 } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
+import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
 
 // TODO: would have to figure out how to wait for <link>.onload
 const template = html`
@@ -14,16 +14,19 @@ const template = html`
     href="${(x) => (x.url || x.attributes.url).toString()}"
   />`;
 
-const elementName = "truffle.ui-stylesheet";
-
-@customElement({
-  name: elementName,
-  template,
-  shadowOptions: null, // light-dom
-})
-export class Stylesheet extends FASTElement {
+class Stylesheet extends FASTElement {
   @observable
   isLoaded: boolean = false;
 }
 
-export default elementName;
+export default toDist(
+  "fast",
+  {
+    decoratorObj: {
+      template,
+      shadowOptions: null, // light-dom
+    },
+    Class: Stylesheet,
+  },
+  import.meta.url,
+);

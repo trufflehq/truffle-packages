@@ -1,5 +1,5 @@
 import React from 'https://npm.tfl.dev/react'
-import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
+import toDist from "https://tfl.dev/@truffle/utils@0.0.1/web-component/to-web-component.js";
 
 // import cssVars from '../../util/css-vars.js'
 
@@ -8,7 +8,7 @@ import toWebComponent from "https://tfl.dev/@truffle/utils@0.0.1/web-component/t
 
 const DEFAULT_SIZE = 50
 
-export default toWebComponent(function Spinner ({ size = DEFAULT_SIZE }) {
+export default toDist(function Spinner ({ size = DEFAULT_SIZE }) {
   return (
     <div
       className="c-spinner"

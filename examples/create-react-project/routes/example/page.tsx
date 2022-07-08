@@ -1,8 +1,8 @@
 import React from "https://npm.tfl.dev/react";
-import { toWebComponent } from "https://tfl.dev/@truffle/web-component@1.0.0/index.js";
+import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
 
 function ExamplePage() {
   return "This is an example top-level route (/example)";
 }
 
-export default toWebComponent('react', ExamplePage, import.meta.url);
+export default toDist('react', ExamplePage, import.meta.url);
