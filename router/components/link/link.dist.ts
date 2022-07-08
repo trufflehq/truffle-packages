@@ -5,12 +5,15 @@ import {
   slotted,
 } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
 import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
+import { push } from "https://tfl.dev/@truffle/router@1.0.0/history.js";
+
+const onClick = (x, c) => {
+  push(x.attributes.href.value);
+};
 
 const template = html`
   <a
-    @click="${(x, c) => {
-  console.log(x, c.event);
-}}"
+    @click="${onClick}"
     href="${(x) => x.attributes.href.value}"
   >
     <slot ${slotted("defaultSlottedContent")}></slot>
@@ -24,7 +27,9 @@ class Link extends FASTElement {
 export default toDist(
   "fast",
   {
-    decoratorObj: { template },
+    decoratorObj: {
+      template,
+    },
     Class: Link,
   },
   import.meta.url,
