@@ -29,7 +29,7 @@
 
 // TODO: client should probably importmap this to nothing
 // or could try dynamic import
-// import DenoAsyncLocalStorage from './deno-async-local-storage.js'
+import DenoAsyncLocalStorage from './deno-async-local-storage.js'
 // import { AsyncLocalStorage } from 'node:async_hooks'
 
 class BrowserAsyncLocalStorage {
@@ -52,8 +52,8 @@ class BrowserAsyncLocalStorage {
 // it's modeled after Node.js AsyncLocalStorage
 class FrozenAsyncLocalStorageAsContext {
   constructor () {
-    // const IsomorphicAsyncLocalStorage = globalThis?.Deno ? DenoAsyncLocalStorage : BrowserAsyncLocalStorage
-    const IsomorphicAsyncLocalStorage = BrowserAsyncLocalStorage
+    const IsomorphicAsyncLocalStorage = globalThis?.Deno ? DenoAsyncLocalStorage : BrowserAsyncLocalStorage
+    // const IsomorphicAsyncLocalStorage = BrowserAsyncLocalStorage
     this._instance = new IsomorphicAsyncLocalStorage()
   }
 
