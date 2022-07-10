@@ -1,5 +1,4 @@
 import * as Rx from 'https://npm.tfl.dev/rxjs?bundle'
-import _ from 'https://npm.tfl.dev/lodash?no-check'
 // TODO: figure out an alternative to this package. it's 10kb
 // and probably doesn't need to be (it pulls in from some packages that are
 // similar to lodash, but not lodash: http://bundlephobia.com/package/dot-wild)
@@ -194,20 +193,24 @@ export function createSubject (observableOrPrimative, options = {}) {
       // subscribe to the childConfigStream's stream
       // for any with shouldUpdateParentOnChange: true
       // and pass in both the stream value and overall config
-      Rx.combineLatest(_.filter(_.map(cachedChildStreamConfigs, ({ stream, childStreamConfig }) =>
-        childStreamConfig.shouldUpdateParentOnChange && stream.obs.pipe(
-          rx.map((value) => ({
-            value,
-            childStreamConfig
-          }))
-        )
-      )))
+      Rx.combineLatest(
+        Object.values(cachedChildStreamConfigs)
+          .map(({ stream, childStreamConfig }) =>
+            childStreamConfig.shouldUpdateParentOnChange && stream.obs.pipe(
+              rx.map((value) => ({
+                value,
+                childStreamConfig
+              }))
+            )
+          )
+          .filter(Boolean)
+      )
     )
   }
 
   const embedChildStreamInValue = (value, childStreamConfigs) => {
     // add any _streams we want to use to the result
-    _.forEach(childStreamConfigs, (childStreamConfig) => {
+    Object.values(childStreamConfigs).map((childStreamConfig) => {
       const { streamPath, objectPath } = childStreamConfig
 
       const embedChildStreamAtStreamPath = (childObject, key, context, path) => {
@@ -270,7 +273,7 @@ export function createSubject (observableOrPrimative, options = {}) {
     )
   ).pipe(
     rx.map((value) => {
-      if (!_.isEmpty(childStreamConfigs)) {
+      if (Object.values(childStreamConfigs).length === 0) {
         return embedChildStreamInValue(value, childStreamConfigs)
       }
       return value
@@ -289,7 +292,7 @@ export function createSubject (observableOrPrimative, options = {}) {
       rx.tap((childStreamConfigs) => {
         try {
           // update the nextable with the new value calculated from child stream changes
-          _.forEach(childStreamConfigs, ({ childStreamConfig, value }) => {
+          Object.values(childStreamConfigs).forEach(({ childStreamConfig, value }) => {
             if (childStreamConfig.parentMergeFn) {
               currentValue = childStreamConfig.parentMergeFn(currentValue, value)
             } else {
@@ -331,7 +334,7 @@ export function createSubject (observableOrPrimative, options = {}) {
     if (cachedChildStreamConfigs[id]) {
       // stream already exists. we want to keep using, but we can update the value
       const isObservable = observableOrPrimative?.subscribe
-      const hasChanged = !isObservable && !_.isEqual(observableOrPrimative, cachedChildStreamConfigs[id].stream.getValue())
+      const hasChanged = !isObservable && !isEqual(observableOrPrimative, cachedChildStreamConfigs[id].stream.getValue())
       // NOTE: we don't want to update the value if this child *caused* the update
       // TODO: there's probably a better way to do this. involving making sure the parent update happens before this is called
       if (hasChanged && !childStreamConfig.shouldUpdateParentOnChange) {
@@ -384,7 +387,7 @@ export function createSubject (observableOrPrimative, options = {}) {
     next,
     isChanged: () => {
       const isEmpty = currentValue == null && cachedObsResult == null
-      return !isEmpty && !_.isEqual(currentValue, cachedObsResult)
+      return !isEmpty && !isEqual(currentValue, cachedObsResult)
     },
     reset: () => nextableReplaySubject.next(cachedObsResult),
     replaceObs,
@@ -399,7 +402,7 @@ export function createSubject (observableOrPrimative, options = {}) {
 // if we've embedded streams inside this stream value, we want to still
 // accurately compare them
 function isEqualWithObservables (prevProps, nextProps) {
-  return _.isEqualWith(prevProps, nextProps, (val1, val2, key) => {
+  return isEqual(prevProps, nextProps, (val1, val2, key) => {
     if (!key) {
       // not sure why, but lodash tries comparing the entire props objects first
       return undefined
@@ -410,9 +413,24 @@ function isEqualWithObservables (prevProps, nextProps) {
       return val1IsStream && val1IsStream
     }
     if (typeof val1 === 'object' && typeof val2 === 'object') {
-      return _.isEqual(val1, val2)
+      return isEqual(val1, val2)
     }
     // eslint-disable-next-line eqeqeq
     return val1 == val2
   })
+}
+
+// untested
+function isEqual(obj1, obj2, predicate) {
+  predicate = predicate || ((a, b) => a !== b)
+  for (const key in obj2) {
+    if (predicate(obj1[key], obj2[key], key))
+      return false
+  }
+  // check for missing keys
+  for (const key in obj1) {
+    if (!(key in obj2))
+      return false
+  }
+  return true
 }

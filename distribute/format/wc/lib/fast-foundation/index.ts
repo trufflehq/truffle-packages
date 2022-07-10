@@ -1,4 +1,4 @@
-import { DesignSystem } from "https://cdn.skypack.dev/@microsoft/fast-foundation@alpha";
+import { DesignSystem } from "https://npm.tfl.dev/@microsoft/fast-foundation@alpha";
 
 export function defineAndGetWebComponent(definition, tagName) {
   const [prefix, ...rest] = tagName.split("-");

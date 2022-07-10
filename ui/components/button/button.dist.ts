@@ -1,8 +1,8 @@
-// SSR breaks on npm.tfl version atm
+// If you have problems with this and SSR, switch to skypack
 import {
   Button as FoundationButton,
   buttonTemplate,
-} from "https://cdn.skypack.dev/@microsoft/fast-foundation@alpha";
+} from "https://npm.tfl.dev/@microsoft/fast-foundation@alpha";
 import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
 import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
 

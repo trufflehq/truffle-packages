@@ -1,4 +1,3 @@
-import _ from 'https://npm.tfl.dev/lodash?no-check'
 import * as Rx from 'https://npm.tfl.dev/rxjs?bundle'
 
 const rx = Rx // operators, keeping as separate namespace for now
@@ -14,7 +13,7 @@ export default function (cb, { useState, useLayoutEffect, useMemo }) {
       state: State(initialState),
       // this is a terrible hash and not unique at all. but i can't think of
       // anything better
-      hash: (awaitStable || cache) && (initialState?._ssrCacheKey || JSON.stringify(_.keys(initialState)))
+      hash: (awaitStable || cache) && (initialState?._ssrCacheKey || JSON.stringify(Object.keys(initialState)))
     }
   }
   , [])
@@ -70,31 +69,31 @@ export default function (cb, { useState, useLayoutEffect, useMemo }) {
 }
 
 function State (initialState) {
-  if (!_.isPlainObject(initialState)) {
+  if (isPlainObject(initialState)) {
     throw new Error('initialState must be a plain object')
   }
 
-  let currentState = _.mapValues(initialState, (val) => {
+  let currentState = Object.fromEntries(Object.entries(initialState).map(([key, val]) => {
     if (val?.subscribe != null) {
       try {
         let value
         // behaviorsubjects & obs with startWith
         val.pipe(rx.take(1)).subscribe((subValue) => { value = subValue })
         // don't return observables
-        return value?.subscribe ? null : value
+        return [key, value?.subscribe ? null : value]
       } catch {
-        return null
+        return [key, null]
       }
     } else {
-      return val
+      return [key, val]
     }
-  })
+  }))
   const stateSubject = new Rx.BehaviorSubject(currentState)
-  const observables = _.pickBy(initialState, x => x?.subscribe != null)
+  const observables = pickBy(initialState, x => x?.subscribe != null)
 
   const state = Rx.combineLatest(
     [stateSubject].concat(
-      _.map(observables, (val, key) =>
+      Object.entries(observables).map(([key, val]) =>
         // defer seems unnecessary. removing for slight per improvement?
         // Rx.defer(() => Rx.of(currentState[key]))
         // Rx.of(currentState[key])
@@ -123,12 +122,12 @@ function State (initialState) {
 
   state.getValue = () => currentState
   state.set = function (diff) {
-    if (!_.isPlainObject(diff)) {
+    if (!isPlainObject(diff)) {
       throw new Error('diff must be a plain object')
     }
 
     let didReplace = false
-    _.map(diff, function (val, key) {
+    Object.entries(diff).map((val, key) => {
       if (initialState[key]?.subscribe != null) {
         throw new Error('Attempted to set observable value')
       } else {
@@ -139,20 +138,20 @@ function State (initialState) {
     })
 
     if (didReplace) {
-      currentState = _.assign(_.clone(currentState), diff)
+      currentState = { ...currentState, ...diff }
       return stateSubject.next(currentState)
     }
   }
 
   // only need for ssr
   if ((typeof document === 'undefined')) {
-    const pendingStream = _.isEmpty(observables)
+    const pendingStream = Object.values(observables || {}).length === 0
       ? Rx.of(null)
       : Rx.combineLatest(
-        _.map(observables, (val, key) =>
+        Object.entries(observables).map((val, key) =>
           val.pipe(
             rx.tap((update) => {
-              currentState = _.assign(_.clone(currentState), { [key]: update })
+              currentState = { ...currentState, [key]: update }
             })
           )
         )
@@ -178,4 +177,12 @@ function State (initialState) {
   }
 
   return state
+}
+
+function isPlainObject (obj) {
+  return obj != null && typeof(obj) === "object" && Object.getPrototypeOf(obj) === Object.prototype 
+}
+
+function pickBy (object, predicate = v => v) {
+  return Object.fromEntries(Object.entries(object).filter(([, v]) => predicate(v)))
 }

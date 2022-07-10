@@ -1,5 +1,3 @@
-import _ from 'https://npm.tfl.dev/lodash?no-check'
-
 export function formatNumber (number) {
   // http://stackoverflow.com/a/2901298
   if (number != null) {
@@ -204,26 +202,4 @@ export function parseToCents (n) {
 
 export function zeroPrefix (number) {
   return parseInt(number) < 10 && parseInt(number) > 0 ? `0${number}` : number
-}
-
-export function strReplaceWithComponent (text, regex, $component) {
-  let textArray
-  // if we already replaced and now have an array
-  if (_.isArray(text)) {
-    textArray = _.flatten(_.map(text, (chunk) => {
-      if (typeof chunk === 'string') {
-        return chunk.split(regex)
-      } else {
-        return chunk
-      }
-    }))
-  } else {
-    textArray = text.split(regex)
-  }
-  return _.map(textArray, (chunk) => {
-    if (typeof chunk === 'string' && regex.test(chunk)) {
-      return $component
-    }
-    return chunk
-  })
 }
