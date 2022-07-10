@@ -69,7 +69,7 @@ export default function (cb, { useState, useLayoutEffect, useMemo }) {
 }
 
 function State (initialState) {
-  if (isPlainObject(initialState)) {
+  if (!isPlainObject(initialState)) {
     throw new Error('initialState must be a plain object')
   }
 
@@ -180,7 +180,7 @@ function State (initialState) {
 }
 
 function isPlainObject (obj) {
-  return obj != null && typeof(obj) === "object" && Object.getPrototypeOf(obj) === Object.prototype 
+  return Object.prototype.toString.call(obj) === '[object Object]'
 }
 
 function pickBy (object, predicate = v => v) {
