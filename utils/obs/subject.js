@@ -194,7 +194,7 @@ export function createSubject (observableOrPrimative, options = {}) {
       // for any with shouldUpdateParentOnChange: true
       // and pass in both the stream value and overall config
       Rx.combineLatest(
-        Object.values(cachedChildStreamConfigs)
+        Object.values(cachedChildStreamConfigs || {})
           .map(({ stream, childStreamConfig }) =>
             childStreamConfig.shouldUpdateParentOnChange && stream.obs.pipe(
               rx.map((value) => ({
@@ -210,7 +210,7 @@ export function createSubject (observableOrPrimative, options = {}) {
 
   const embedChildStreamInValue = (value, childStreamConfigs) => {
     // add any _streams we want to use to the result
-    Object.values(childStreamConfigs).map((childStreamConfig) => {
+    Object.values(childStreamConfigs || {}).map((childStreamConfig) => {
       const { streamPath, objectPath } = childStreamConfig
 
       const embedChildStreamAtStreamPath = (childObject, key, context, path) => {
@@ -273,7 +273,7 @@ export function createSubject (observableOrPrimative, options = {}) {
     )
   ).pipe(
     rx.map((value) => {
-      if (Object.values(childStreamConfigs).length === 0) {
+      if (Object.values(childStreamConfigs || {}).length === 0) {
         return embedChildStreamInValue(value, childStreamConfigs)
       }
       return value
@@ -292,7 +292,7 @@ export function createSubject (observableOrPrimative, options = {}) {
       rx.tap((childStreamConfigs) => {
         try {
           // update the nextable with the new value calculated from child stream changes
-          Object.values(childStreamConfigs).forEach(({ childStreamConfig, value }) => {
+          Object.values(childStreamConfigs || {}).forEach(({ childStreamConfig, value }) => {
             if (childStreamConfig.parentMergeFn) {
               currentValue = childStreamConfig.parentMergeFn(currentValue, value)
             } else {

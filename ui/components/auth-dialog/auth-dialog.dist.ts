@@ -163,8 +163,9 @@ AuthDialog.propTypes = {
 function Content({ mode, fields }) {
   return html`
   ${
-    mode === "join" &&
-    InputWrapper({ label: "Display name", field: fields.name })
+    mode === "join"
+      ? InputWrapper({ label: "Display name", field: fields.name })
+      : ""
   }
   ${InputWrapper({ label: "Email or phone #", field: fields.emailPhone })}
   ${
@@ -181,8 +182,6 @@ const InputWrapper = function InputWrapper({ type = "text", label, field }) {
     value: field.valueSubject.obs,
     error: field.errorSubject.obs,
   }));
-
-  console.log(value, error);
 
   return html`<div class=${`input-wrapper ${error ? "has-error" : ""}`}>
     <${unsafeStatic(TextField)}
