@@ -14,7 +14,7 @@ class Cookie {
   getInitialCookies () {
     if (isSsr) {
       const context = globalContext.getStore()
-      return cookieLib.parse(context.ssr.req.headers.cookie)
+      return cookieLib.parse(context.ssr.req.headers.cookie || '')
     } else {
       return cookieLib.parse(document.cookie || '') || {}
     }
