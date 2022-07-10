@@ -21,7 +21,7 @@ const defineAndGetWebComponentFns = {
   "react": reactDefineAndGetWebComponent,
 };
 
-export function toDist(from, component, url) {
+export function toDist(from, component, url, propTypes) {
   const tagName = urlToTagName(url);
   const defineAndGetWebComponentFn = defineAndGetWebComponentFns[from];
   const { webComponent, libSlug, libSemver } = defineAndGetWebComponentFn(
@@ -34,6 +34,7 @@ export function toDist(from, component, url) {
     webComponent,
     libSlug,
     libSemver,
+    propTypes,
     // so other files know how to parse this component's export
     _componentFormatSlug: "wc",
     _componentFormatSemver: "1", // wc@1 is { tagName, webComponent, libSlug, libSemver}

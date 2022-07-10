@@ -3,6 +3,7 @@ import {
   Button as FoundationButton,
   buttonTemplate,
 } from "https://npm.tfl.dev/@microsoft/fast-foundation@alpha";
+import PropTypes from "https://npm.tfl.dev/prop-types@15";
 import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
 import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
 
@@ -24,4 +25,7 @@ export default toDist(
   "fast-foundation",
   buttonDefinition,
   import.meta.url,
+  {
+    appearance: PropTypes.oneOf(["primary", "surface"]),
+  },
 );
