@@ -3,8 +3,8 @@ import { createBrowserHistory } from "https://npm.tfl.dev/history@5";
 
 function getHistory() {
   const context = globalContext.getStore();
-  context.history = context.history || createBrowserHistory();
-  return context.history;
+  context._history = context._history || createBrowserHistory();
+  return context._history;
 }
 
 export function listen(fn) {

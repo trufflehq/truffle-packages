@@ -34,8 +34,6 @@ const LOGIN_MUTATION = gql
   userLoginEmailPhone(input: $input) { accessToken }
 }`;
 
-console.log(Stylesheet, unsafeStatic(Stylesheet));
-
 function AuthDialog({ hidden }) {
   const onClose = () => {
     emit(this, "close");

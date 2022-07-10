@@ -176,8 +176,6 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
       // Use react to render element in container
       if (typeof ReactDOM.createRoot === "function") {
         if (!this[rootSymbol] || true) { // FIXME? w/o true, routing break
-          console.log("create new");
-
           this[rootSymbol] = ReactDOM.createRoot(container);
         }
 

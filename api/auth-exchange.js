@@ -63,13 +63,10 @@ export function getAuthExchange () {
     },
     getAuth: async ({ authState, mutate }) => {
       // try existing accessToken
-      console.log('getauth', ACCESS_TOKEN_COOKIE)
       let accessToken = getCookie(ACCESS_TOKEN_COOKIE)
-      console.log('at', accessToken)
       if (!accessToken) {
         const response = await mutate(LOGIN_ANON_MUTATION)
         accessToken = response?.data?.userLoginAnon?.accessToken
-        console.log('newat', accessToken, response?.error)
       }
       return { accessToken }
     }
