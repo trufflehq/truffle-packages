@@ -1,6 +1,6 @@
 import React, { useState } from "https://npm.tfl.dev/react";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
-import Stylesheet from "https://tfl.dev/@truffle/ui@0.0.3/components/stylesheet/stylesheet.js";
+import Stylesheet from "https://tfl.dev/@truffle/ui@0.0.3/components/stylesheet/stylesheet.tag.js";
 import Button from "https://tfl.dev/@truffle/ui@0.0.3/components/button/button.tag.js"
 
 export default function Counter({ initialCount = 0 }) {

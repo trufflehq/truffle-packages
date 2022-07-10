@@ -11,7 +11,7 @@ export default html`
     /* avoid fouc */
     :not(:defined) {
       visibility: hidden;
-    }
+    }    
   </style>
 
   <link
