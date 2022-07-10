@@ -1,3 +1,10 @@
-import Home from "../components/home/home.dist.tsx";
+import React from "https://npm.tfl.dev/react";
+import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
 
-export default Home
+import Home from "../components/home/home.tsx"
+
+function HomePage() {
+  return <Home />;
+}
+
+export default toDist('react', HomePage, import.meta.url)

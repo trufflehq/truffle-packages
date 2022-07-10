@@ -97,13 +97,7 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
   // But have that prototype be wrapped in a proxy.
   const proxyPrototype = new Proxy(targetPrototype, {
     has: function (target, key) {
-      console.log(
-        "has",
-        key,
-        key in ReactComponent.propTypes || key in targetPrototype,
-      );
-
-      return key in ReactComponent.propTypes ||
+      return key in (ReactComponent.propTypes || {}) ||
         key in targetPrototype;
     },
 
@@ -155,8 +149,6 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
   };
   targetPrototype.disconnectedCallback = function () {
     if (typeof ReactDOM.createRoot === "function") {
-      console.log("discon", rootSymbol);
-
       this[rootSymbol].unmount();
     } else {
       ReactDOM.unmountComponentAtNode(this);
@@ -182,15 +174,12 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
       const element = React.createElement(ReactComponent, data, children);
 
       // Use react to render element in container
-      console.log("r123", ReactDOM);
-
       if (typeof ReactDOM.createRoot === "function") {
         if (!this[rootSymbol] || true) { // FIXME? w/o true, routing break
           console.log("create new");
 
           this[rootSymbol] = ReactDOM.createRoot(container);
         }
-        console.log("root", this[rootSymbol]);
 
         this[rootSymbol].render(element);
       } else {

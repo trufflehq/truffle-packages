@@ -1,8 +1,7 @@
-// TODO: should this just be 'truffle-ssr'? so react can ignore dep?
-import { getSsrReq, getSsrRes } from 'https://tfl.dev/@truffle/utils@0.0.1/ssr/ssr.js'
 import cookieLib from 'https://npm.tfl.dev/cookie'
+import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.js'
 
-import { getHost } from '../request/request-info.js'
+import isSsr from '../ssr/is-ssr.ts'
 
 const COOKIE_DURATION_MS = 365 * 24 * 3600 * 1000 // 1 year
 
@@ -13,33 +12,35 @@ class Cookie {
   }
 
   getInitialCookies () {
-    if (typeof document !== 'undefined') {
-      return cookieLib.parse(document.cookie || '') || {}
+    if (isSsr) {
+      const context = globalContext.getStore()
+      return cookieLib.parse(context.ssr.req.headers.cookie)
     } else {
-      return getSsrReq()?.cookies || {}
+      return cookieLib.parse(document.cookie || '') || {}
     }
   }
 
   setCookie = (key, value, options) => {
     this.cookies[key] = value
     this.cookiesToSet.push({ key, value, options })
-    console.log('setcookie', key,value, options)
-    if (typeof document !== 'undefined') {
-      document.cookie = cookieLib.serialize(key, value, options)
-    } else {
+    if (isSsr) {
       try {
+        const context = globalContext.getStore()
         // set all cookies in a single header
-        getSsrRes()?.setHeader('Set-Cookie', this.cookiesToSet.map(({ key, value, options }) =>
+        context.ssr.res?.setHeader('Set-Cookie', this.cookiesToSet.map(({ key, value, options }) =>
           cookieLib.serialize(key, value, options)
         ))
       } catch (err) {
         console.log('error setting cookie ssr', err)
       }
+    } else {
+      document.cookie = cookieLib.serialize(key, value, options)
     }
   }
 
   getCookieOpts = (key, { ttlMs = COOKIE_DURATION_MS, host, allowSubdomains }) => {
-    host = host || getHost()
+    const context = globalContext.getStore()
+    host = host || context.config.host
     const hostname = host.split(':')[0] // ignore port
 
     const isIp = hostname.match(/^[0-9]{1,3}(\.[0-9]{1,3}){3}$/)
@@ -78,12 +79,13 @@ class Cookie {
   }
 }
 
-const cookie = new Cookie()
-
-// TODO: use asyncLocalStorage to get cookie instance for ssr
 export const setCookie = (key, value, options) => {
+  const context = globalContext.getStore()
+  const cookie = context._cookie || new Cookie()
   return cookie.set(key, value, options)
 }
 export const getCookie = (key) => {
+  const context = globalContext.getStore()
+  const cookie = context._cookie || new Cookie()
   return cookie.get(key)
 }

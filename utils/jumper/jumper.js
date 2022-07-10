@@ -1,14 +1,12 @@
 import Jumper from './jumper-base.js'
 import PushService from '../push/push.js'
+import isSsr from '../ssr/is-ssr.ts'
 
 const LOCAL_STORAGE_PREFIX = 'truffle'
 const PLATFORMS = {
   APP: 'app',
   WEB: 'web'
 }
-
-// TODO: smarter detection of node and deno in sep lib or context
-const isSsr = typeof document === 'undefined' || globalThis?.process?.release?.name === 'node'
 
 class JumperInstance {
   constructor () {

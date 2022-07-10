@@ -63,5 +63,5 @@ export function usePollingQuery (interval, queryInput) {
 // private method for now, potentially don't want to support this forever
 export function _clearCache () {
   const context = globalContext.getStore();
-  context.graphqlClient = makeClient()
+  context._graphqlClient = makeClient()
 }

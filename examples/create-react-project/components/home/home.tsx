@@ -1,10 +1,9 @@
 import React, { useEffect } from "https://npm.tfl.dev/react";
 import jumper from "https://tfl.dev/@truffle/utils@0.0.1/jumper/jumper.js";
 import Stylesheet from "https://tfl.dev/@truffle/ui@0.0.3/components/stylesheet/stylesheet.js";
-import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
 
 import Counter from "../counter/counter.tsx";
-import UserInfo from "../user-info/user-info.tsx";
+// import UserInfo from "../user-info/user-info.tsx";
 import Link from "https://tfl.dev/@truffle/router@1.0.0/components/link/link.tag.js"
 
 function ExtensionMapping() {
@@ -31,10 +30,10 @@ function ExtensionMapping() {
       <Stylesheet url={new URL("./home.css", import.meta.url)} />
       Hello world!
       <Counter initialCount={2} />
-      <UserInfo />
+      {/* <UserInfo /> */}
       <Link href="/abc">My link</Link>
     </>
   );
 }
 
-export default toDist('react', ExtensionMapping, import.meta.url)
+export default ExtensionMapping
