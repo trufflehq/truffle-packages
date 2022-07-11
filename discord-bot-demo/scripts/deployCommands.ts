@@ -1,5 +1,8 @@
 // run with --allow-env --allow-net
-import { ApplicationCommandOptionType, RESTPutAPIApplicationCommandsJSONBody } from "https://deno.land/x/discord_api_types@0.36.1/v10.ts";
+import {
+  ApplicationCommandOptionType,
+  RESTPutAPIApplicationCommandsJSONBody,
+} from "https://deno.land/x/discord_api_types@0.36.1/v10.ts";
 
 const DISCORD_TOKEN = Deno.env.get("DISCORD_TOKEN")!;
 const DISCORD_APPLICATION_ID = Deno.env.get("DISCORD_APPLICATION_ID")!;
@@ -13,6 +16,9 @@ const body: RESTPutAPIApplicationCommandsJSONBody = [{
     required: false,
     type: ApplicationCommandOptionType.User,
   }],
+}, {
+  name: "ping",
+  description: "Ensures the bot is responding.",
 }];
 
 const res = await fetch(

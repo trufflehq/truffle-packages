@@ -1,8 +1,8 @@
 {
   "tasks": {
     "deploy-pkg": "truffle-cli deploy",
-    "deploy-fn": "cd backend/ && supabase functions deploy truffle-discord-bot-demo --no-verify-jwt",
-    "deploy-commands": "cd backend/supabase && deno run --allow-env --allow-net scripts/deployCommands.ts"
+    "deploy-fn": "supabase functions deploy truffle-discord-bot-demo --no-verify-jwt",
+    "deploy-commands": "deno run --allow-env --allow-net scripts/deployCommands.ts"
   },
   "fmt": {
     "options": {

@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
 import { APIChatInputApplicationCommandInteraction } from "https://deno.land/x/discord_api_types@0.36.1/v10.ts";
 import { verifySignature } from "./util/verifySignature.ts";
-import { ack } from "./util/respond.ts";
+import { ack, createResponse } from "./util/respond.ts";
 import { userInfo } from "./interactions/user.ts";
 
 const publicKey = Deno.env.get("DISCORD_PUBLIC_KEY")!;
@@ -40,6 +40,10 @@ const handler = async (request: Request): Promise<Response> => {
           body as APIChatInputApplicationCommandInteraction,
           args.user,
         );
+      }
+
+      if (name === "ping") {
+        return createResponse("Pong!");
       }
     }
 
