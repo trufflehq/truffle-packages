@@ -21,6 +21,7 @@ To get setup on the Supabase side of things you can follow the guide from the Su
 - Deploy the Supabase Edge Function `supabase functions deploy truffle-discord-bot-demo --no-verify-jwt`
   - **Note: Make sure you deploy the function with the `--no-verify-jwt` flag so the function can receive requests from Discord API
     webhooks** (we perform our own [validation](./supabase/functions/truffle-discord-bot-demo/index.ts#L24))
+- Create a [new Discord application](https://discord.com/developers/applications). Use the name and avatar of your choice.
 - If you're using the Supabase Edge Function template, you will need to setup a couple of environment variables for your function. To setup
   the environment variables you can add them to `backend/supabase/.env` and sync them with your remote Supabase project w/
   `supabase secrets set --env-file ./supabase/.env` **after you've deployed the function, otherwise they'll be overwritten.**
