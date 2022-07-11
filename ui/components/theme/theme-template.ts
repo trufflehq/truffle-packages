@@ -3,6 +3,10 @@ import { html } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
 export default html`
   <link rel="stylesheet" href=${new URL("./variables.css", import.meta.url)} />
   <style>
+    html, body, #root {
+      width: 100%;
+      height: 100%;
+    }
     :root {
       background: var(--tfl-color-bg-fill);
       color: var(--tfl-color-on-bg-fill);

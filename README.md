@@ -5,10 +5,10 @@
 ## Packages:
 
 ### @truffle/api
-For WebSockets / API requests (need to clean this up a lot)
+For API requests
 
 ### @truffle/utils
-For misc stuff like streams, formatting, cookies, etc... (need to clean this up a lot)
+For misc stuff like streams, formatting, cookies, etc...
 
 ### @truffle/ui
 UI components that anyone can use
