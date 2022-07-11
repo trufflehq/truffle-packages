@@ -1,0 +1,4 @@
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+truffle.secret.*
