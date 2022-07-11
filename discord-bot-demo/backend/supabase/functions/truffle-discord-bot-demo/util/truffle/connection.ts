@@ -13,6 +13,12 @@ export type GetUserDiscordConnectionJSONResponse = {
         bio: string;
         socials: Record<string, string>;
         user: Record<string, string>;
+        seasonPass: {
+          orgUserStats: {
+            xp: number;
+            levelNum: number;
+          };
+        };
       };
     };
   };
@@ -24,26 +30,34 @@ export async function getUserDiscordConnection(
   sourceType = "discord",
 ) {
   const query = `query GetDiscordConnection(
-    $sourceType: String
-    $sourceId: String
-    $orgId: ID
-  ) {
-    connection(input: { sourceType: $sourceType, sourceId: $sourceId, orgId: $orgId }) {
-      id
-      orgId
-      userId
-      sourceType
-      sourceId
-      secondarySourceId
-      orgUser {
-        bio
-        socials
-        user {
-          name
+      $sourceType: String!
+      $sourceId: String!
+      $orgId: ID!
+    ) {
+      connection(
+        input: { sourceType: $sourceType, sourceId: $sourceId, orgId: $orgId }
+      ) {
+        id
+        orgId
+        userId
+        sourceType
+        sourceId
+        secondarySourceId
+        orgUser {
+          bio
+          socials
+          user {
+            name
+          }
+          seasonPass {
+            orgUserStats {
+              xp
+              levelNum
+            }
+          }
         }
       }
     }
-  }
   `;
 
   const variables = {
@@ -88,7 +102,6 @@ export async function getDiscordServerConnection(
       sourceId
     }
   }
-  
   `;
 
   const variables = {
