@@ -40,7 +40,7 @@ class Cookie {
 
   getCookieOpts = (key, { ttlMs = COOKIE_DURATION_MS, host, allowSubdomains }) => {
     const context = globalContext.getStore()
-    host = host || context.config.host
+    host = host || context.config.HOST
     const hostname = host.split(':')[0] // ignore port
 
     const isIp = hostname.match(/^[0-9]{1,3}(\.[0-9]{1,3}){3}$/)
