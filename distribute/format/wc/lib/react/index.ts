@@ -1,10 +1,7 @@
 import React from "https://npm.tfl.dev/react";
+import isSsr from "https://tfl.dev/@truffle/utils@0.0.2/ssr/is-ssr.js";
 
 import reactToWebComponent from "./react-to-web-component.ts";
-
-// TODO: smarter detection of node and deno in sep lib or context
-const isSsr = typeof document === "undefined" ||
-  globalThis?.process?.release?.name === "node";
 
 let ReactDOM;
 
