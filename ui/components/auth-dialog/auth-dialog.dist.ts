@@ -1,4 +1,4 @@
-import { useMemo } from "https://npm.tfl.dev/haunted@5";
+import { useMemo } from "https://npm.tfl.dev/haunted@5/core";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
 
 import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
