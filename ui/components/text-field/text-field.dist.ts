@@ -6,7 +6,7 @@ import {
 import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
 import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
 
-import Stylesheet from "../stylesheet/stylesheet.ts";
+import Stylesheet from "../stylesheet/stylesheet.tag.ts";
 
 class TextField extends FoundationTextField {}
 

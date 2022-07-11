@@ -5,9 +5,23 @@ import {
 } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
 import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
 
-// TODO: would have to figure out how to wait for <link>.onload
+// initial-state is a property only we should be using atm
+// eventually we could document, but need to see how we like it first.
+// unsure on the current naming.
+// use if display-none for elements that will be position: fixed
+// alternative would be to add  <style></style> to the relevant component (eg dialog)
 const template = html`
-  <style>:host { opacity: ${(x) => x.isLoaded ? "inherit" : "0"} }</style>
+  <style>
+    :host {
+      ${(x) => {
+  if (x.attributes["initial-state"]?.value === "display-none") {
+    return x.isLoaded ? "display: inherit" : "display: none";
+  } else {
+    return x.isLoaded ? "opacity: inherit" : "opacity: 0";
+  }
+}}
+    }
+  </style>
   <link
     @load=${(x) => x.isLoaded = true}
     rel="stylesheet"

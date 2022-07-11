@@ -5,7 +5,6 @@
 :host {
   --dialog-width: 480px;
   --dialog-min-height: 200px;
-  display: block;
 }
 
 .overlay {
