@@ -1,1 +1,3 @@
-export default typeof document === 'undefined' || globalThis?.process?.release?.name === 'node'
+export default typeof document === "undefined" ||
+  globalThis?.process?.release?.name === "node" ||
+  globalThis?.Deno;
