@@ -4,7 +4,7 @@ import {
   dialogTemplate,
 } from "https://npm.tfl.dev/@microsoft/fast-foundation@alpha";
 import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
-import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
+import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.ts";
 
 import Stylesheet from "../stylesheet/stylesheet.tag.ts";
 

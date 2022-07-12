@@ -1,7 +1,7 @@
 import React from 'https://npm.tfl.dev/react'
 import ScopedStylesheet from '../scoped-stylesheet/scoped-stylesheet.jsx'
 
-import classKebab from 'https://tfl.dev/@truffle/utils@~0.0.2/legacy/class-kebab.js'
+import classKebab from 'https://tfl.dev/@truffle/utils@~0.0.2/legacy/class-kebab.ts'
 
 // note that you can't do aspect ratio by height with padding-left
 // https://stackoverflow.com/questions/26438388/maintain-div-aspect-ratio-according-to-height

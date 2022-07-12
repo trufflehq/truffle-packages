@@ -1,15 +1,15 @@
 import { useMemo } from "https://npm.tfl.dev/haunted@5/core";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
 
-import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
-import { createSubject } from "https://tfl.dev/@truffle/utils@~0.0.2/obs/subject.js";
-import useObservables from "https://tfl.dev/@truffle/utils@~0.0.2/obs/use-observables-haunted.js";
+import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.ts";
+import { createSubject } from "https://tfl.dev/@truffle/utils@~0.0.2/obs/subject.ts";
+import useObservables from "https://tfl.dev/@truffle/utils@~0.0.2/obs/use-observables-haunted.ts";
 import {
   _clearCache,
   gql,
   mutation,
-} from "https://tfl.dev/@truffle/api@~0.1.0/client.js";
-import { setCookie } from "https://tfl.dev/@truffle/utils@~0.0.2/cookie/cookie.js";
+} from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+import { setCookie } from "https://tfl.dev/@truffle/utils@~0.0.2/cookie/cookie.ts";
 // unsafeStatic was solution to https://stackoverflow.com/a/59833334
 // TODO: switch back to npm.tfl.dev when circular dependency error is fixed
 import { html, unsafeStatic } from "https://cdn.skypack.dev/lit-html@2/static";

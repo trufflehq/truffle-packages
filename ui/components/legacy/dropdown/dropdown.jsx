@@ -1,6 +1,6 @@
 import React from 'https://npm.tfl.dev/react'
-import useObservables from "https://tfl.dev/@truffle/utils@~0.0.2/obs/use-observables.js";
-import { createSubject } from 'https://tfl.dev/@truffle/utils@~0.0.2/obs/subject.js'
+import useObservables from "https://tfl.dev/@truffle/utils@~0.0.2/obs/use-observables.ts";
+import { createSubject } from 'https://tfl.dev/@truffle/utils@~0.0.2/obs/subject.ts'
 
 export default function Dropdown ({
   valueSubject,

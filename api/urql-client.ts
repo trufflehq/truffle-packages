@@ -2,8 +2,8 @@ import { createClient, defaultExchanges } from "https://npm.tfl.dev/urql@2";
 import {
   getPackageContext,
   setPackageContext,
-} from "https://tfl.dev/@truffle/global-context@^1.0.0/package-context.js";
-import config from "https://tfl.dev/@truffle/config@^1.0.0/index.js";
+} from "https://tfl.dev/@truffle/global-context@^1.0.0/package-context.ts";
+import config from "https://tfl.dev/@truffle/config@^1.0.0/index.ts";
 
 import { getAuthExchange } from "./auth-exchange.js";
 

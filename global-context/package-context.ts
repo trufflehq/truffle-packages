@@ -1,5 +1,5 @@
 // leave as absolute url so we get same context instance
-import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.js";
+import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 
 export function getPackageContext(packagePath) {
   if (!packagePath) {

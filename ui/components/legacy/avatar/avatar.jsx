@@ -1,7 +1,7 @@
 import React from 'https://npm.tfl.dev/react'
-import classKebab from "https://tfl.dev/@truffle/utils@~0.0.2/legacy/class-kebab.js";
+import classKebab from "https://tfl.dev/@truffle/utils@~0.0.2/legacy/class-kebab.ts";
 import ScopedStylesheet from '../scoped-stylesheet/scoped-stylesheet.jsx'
-import { getSrcByImageObj } from "https://tfl.dev/@truffle/utils@~0.0.2/legacy/image.js";
+import { getSrcByImageObj } from "https://tfl.dev/@truffle/utils@~0.0.2/legacy/image.ts";
 
 const DEFAULT_SIZE = '40px'
 
