@@ -1,4 +1,4 @@
-import globalContext from "https://tfl.dev/@truffle/global-context@1.0.0/index.js";
+import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.js";
 import { createBrowserHistory } from "https://npm.tfl.dev/history@5";
 
 // FIXME: move getHistory() and listen() to truffle-dev-server, so they're not exposed

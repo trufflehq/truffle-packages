@@ -1,5 +1,5 @@
-import { Obs, op } from 'https://tfl.dev/@truffle/utils@0.0.2/obs/subject.js'
-import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.js'
+import { Obs, op } from 'https://tfl.dev/@truffle/utils@~0.0.2/obs/subject.js'
+import globalContext from 'https://tfl.dev/@truffle/global-context@^1.0.0/index.js'
 import { useEffect } from 'https://npm.tfl.dev/react'
 import { createRequest } from 'https://npm.tfl.dev/urql@2'
 import { pipe, toObservable, take } from "https://npm.tfl.dev/wonka@4.0.15"

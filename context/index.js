@@ -2,7 +2,7 @@
 // it *can* be updated, without breaking changes, and can be versioned
 
 // this is so the global context remains consistent between all components
-// we have @truffle/global-context@1.0.0/index.js that needs to always return a backwards-compatible context
+// we have @truffle/global-context@^1.0.0/index.js that needs to always return a backwards-compatible context
 
 // There is some inconsistency between browser, Node.js, and Deno support async context tracking
 // (context that persists across a single function call, even if child calls are async/callbacks)

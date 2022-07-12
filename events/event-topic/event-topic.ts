@@ -1,7 +1,7 @@
 import {
   getPathParts,
   PathParts,
-} from "https://tfl.dev/@truffle/utils@0.0.1/packages/path-parts.ts";
+} from "https://tfl.dev/@truffle/utils@~0.0.2/packages/path-parts.ts";
 
 const EVENT_TOPIC_MODEL_NAME = "EventTopic";
 

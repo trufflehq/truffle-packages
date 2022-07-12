@@ -5,7 +5,7 @@ import {
   slotted,
 } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
 import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/index.js";
-import { push } from "https://tfl.dev/@truffle/router@1.0.0/history.js";
+import { push } from "https://tfl.dev/@truffle/router@^1.0.0/history.js";
 
 const onClick = (x, c) => {
   push(x.attributes.href.value);

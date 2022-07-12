@@ -1,6 +1,6 @@
 import React, { useRef } from 'https://npm.tfl.dev/react'
-import { isAndroid } from 'https://tfl.dev/@truffle/utils@0.0.1/environment/environment.js'
-import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js'
+import { isAndroid } from 'https://tfl.dev/@truffle/utils@~0.0.2/environment/environment.js'
+import classKebab from 'https://tfl.dev/@truffle/utils@~0.0.2/legacy/class-kebab.js'
 
 // import styles from './ripple.css' assert { type: 'css' }
 // document.adoptedStyleSheets = [...document.adoptedStyleSheets, styles]

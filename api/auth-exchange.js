@@ -1,7 +1,7 @@
 import { makeOperation, gql } from 'https://npm.tfl.dev/urql@2'
 import { authExchange } from 'https://npm.tfl.dev/@urql/exchange-auth@0'
-import globalContext from 'https://tfl.dev/@truffle/global-context@1.0.0/index.js'
-import { getCookie, setCookie } from 'https://tfl.dev/@truffle/utils@0.0.2/cookie/cookie.js'
+import globalContext from 'https://tfl.dev/@truffle/global-context@^1.0.0/index.js'
+import { getCookie, setCookie } from 'https://tfl.dev/@truffle/utils@~0.0.2/cookie/cookie.js'
 
 const LOGIN_ANON_MUTATION = gql`mutation LoginAnon { userLoginAnon { accessToken } }`
 

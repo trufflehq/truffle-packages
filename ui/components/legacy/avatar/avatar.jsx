@@ -1,5 +1,5 @@
 import React from 'https://npm.tfl.dev/react'
-import classKebab from "https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js";
+import classKebab from "https://tfl.dev/@truffle/utils@~0.0.2/legacy/class-kebab.js";
 import ScopedStylesheet from '../scoped-stylesheet/scoped-stylesheet.jsx'
 import { getModel } from "https://tfl.dev/@truffle/api@0.0.1/legacy/index.js";
 

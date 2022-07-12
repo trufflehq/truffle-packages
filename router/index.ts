@@ -1,4 +1,4 @@
-import globalContext from "https://tfl.dev/@truffle/global-context@1.0.0/index.js";
+import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.js";
 import UniversalRouter from "https://npm.tfl.dev/universal-router@9";
 
 // FIXME: move setRoutes and getRouter to truffle-dev-server/router.ts

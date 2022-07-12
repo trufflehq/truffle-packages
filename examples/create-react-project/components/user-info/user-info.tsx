@@ -1,9 +1,9 @@
 import React, { useState } from "https://npm.tfl.dev/react";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
-import AuthDialog from "https://tfl.dev/@truffle/ui@0.0.3/components/auth-dialog/auth-dialog.tag.js";
-import Button from "https://tfl.dev/@truffle/ui@0.0.3/components/button/button.tag.js";
-import Stylesheet from "https://tfl.dev/@truffle/ui@0.0.3/components/stylesheet/stylesheet.tag.js";
-import { gql, useQuery } from "https://tfl.dev/@truffle/api@0.1.0/client.js";
+import AuthDialog from "https://tfl.dev/@truffle/ui@~0.0.3/components/auth-dialog/auth-dialog.tag.js";
+import Button from "https://tfl.dev/@truffle/ui@~0.0.3/components/button/button.tag.js";
+import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.js";
+import { gql, useQuery } from "https://tfl.dev/@truffle/api@~0.1.0/client.js";
 
 const USER_GET_ME_QUERY = gql`
   query { me { id, name } }

@@ -1,5 +1,5 @@
 import { createClient, defaultExchanges } from "https://npm.tfl.dev/urql@2";
-import globalContext from "https://tfl.dev/@truffle/global-context@1.0.0/index.js";
+import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.js";
 
 import { getAuthExchange } from "./auth-exchange.js";
 

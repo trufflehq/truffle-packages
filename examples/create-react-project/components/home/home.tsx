@@ -1,10 +1,10 @@
 import React, { useEffect } from "https://npm.tfl.dev/react";
-import jumper from "https://tfl.dev/@truffle/utils@0.0.1/jumper/jumper.js";
-import Stylesheet from "https://tfl.dev/@truffle/ui@0.0.3/components/stylesheet/stylesheet.tag.js";
+import jumper from "https://tfl.dev/@truffle/utils@~0.0.2/jumper/jumper.js";
+import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.js";
 
 import Counter from "../counter/counter.tsx";
 import UserInfo from "../user-info/user-info.tsx";
-import Link from "https://tfl.dev/@truffle/router@1.0.0/components/link/link.tag.js"
+import Link from "https://tfl.dev/@truffle/router@^1.0.0/components/link/link.tag.js"
 
 function ExtensionMapping() {
   useEffect(() => {

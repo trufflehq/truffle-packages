@@ -2,7 +2,7 @@ import React from 'https://npm.tfl.dev/react'
 import root from 'https://npm.tfl.dev/react-shadow@19'
 import _ from 'https://npm.tfl.dev/lodash?no-check'
 
-import classKebab from 'https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js'
+import classKebab from 'https://tfl.dev/@truffle/utils@~0.0.2/legacy/class-kebab.js'
 
 import * as legacyIcons from '../../legacy/icons.js'
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, createContext, useContext } from 'https://npm.tfl.dev/react'
 import root from 'https://npm.tfl.dev/react-shadow@19'
 
-import { createSubject, op } from 'https://tfl.dev/@truffle/utils@0.0.2/obs/subject.js'
-import useObservables from 'https://tfl.dev/@truffle/utils@0.0.2/obs/use-observables.js'
+import { createSubject, op } from 'https://tfl.dev/@truffle/utils@~0.0.2/obs/subject.js'
+import useObservables from 'https://tfl.dev/@truffle/utils@~0.0.2/obs/use-observables.js'
 
 class SnackBarSerivce {
   _queueSubject
