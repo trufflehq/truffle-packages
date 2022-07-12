@@ -1,7 +1,7 @@
 import React from 'https://npm.tfl.dev/react'
 import classKebab from "https://tfl.dev/@truffle/utils@~0.0.2/legacy/class-kebab.js";
 import ScopedStylesheet from '../scoped-stylesheet/scoped-stylesheet.jsx'
-import { getModel } from "https://tfl.dev/@truffle/api@0.0.1/legacy/index.js";
+import { getSrcByImageObj } from "https://tfl.dev/@truffle/utils@~0.0.2/legacy/image.js";
 
 const DEFAULT_SIZE = '40px'
 
@@ -10,7 +10,7 @@ export default function Avatar ({ user, src, rotation, size = DEFAULT_SIZE }) {
   if (user?.avatarImage) {
     if (!src) {
       const sizePx = parseInt(size)
-      src = getModel().image.getSrcByImageObj(user.avatarImage, {
+      src = getSrcByImageObj(user.avatarImage, {
         size: sizePx > 60 ? 'large' : 'small'
       })
     }
