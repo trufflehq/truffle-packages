@@ -1,21 +1,23 @@
 import { createClient, defaultExchanges } from "https://npm.tfl.dev/urql@2";
-import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.js";
+import {
+  getPackageContext,
+  setPackageContext,
+} from "https://tfl.dev/@truffle/global-context@^1.0.0/package-context.js";
+import config from "https://tfl.dev/@truffle/config@^1.0.0/index.js";
 
 import { getAuthExchange } from "./auth-exchange.js";
 
 export function getClient() {
-  const context = globalContext.getStore();
-
-  context._graphqlClient = context._graphqlClient || makeClient();
-
-  return context._graphqlClient;
+  const context = getPackageContext("@truffle/api@0");
+  setPackageContext("@truffle/api@0", {
+    client: context.client || makeClient(),
+  });
+  return context.client;
 }
 
 export function makeClient() {
-  const context = globalContext.getStore();
-
   return createClient({
-    url: `${context.config.API_URL}/graphql`,
+    url: `${config.API_URL}/graphql`,
     exchanges: [
       getAuthExchange(),
       ...defaultExchanges,

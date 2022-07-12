@@ -1,5 +1,6 @@
 import cookieLib from 'https://npm.tfl.dev/cookie'
 import globalContext from 'https://tfl.dev/@truffle/global-context@^1.0.0/index.js'
+import config from "https://tfl.dev/@truffle/config@^1.0.0/index.js";
 
 import isSsr from '../ssr/is-ssr.ts'
 
@@ -39,8 +40,7 @@ class Cookie {
   }
 
   getCookieOpts = (key, { ttlMs = COOKIE_DURATION_MS, host, allowSubdomains }) => {
-    const context = globalContext.getStore()
-    host = host || context.config.HOST
+    host = host || config.HOST
     const hostname = host.split(':')[0] // ignore port
 
     const isIp = hostname.match(/^[0-9]{1,3}(\.[0-9]{1,3}){3}$/)
