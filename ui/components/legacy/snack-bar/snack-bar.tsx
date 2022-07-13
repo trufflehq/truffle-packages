@@ -1,6 +1,6 @@
 import React from "https://npm.tfl.dev/react";
 
-import ScopedStylesheet from "../scoped-stylesheet/scoped-stylesheet.jsx";
+import ScopedStylesheet from "../scoped-stylesheet/scoped-stylesheet.tsx";
 
 const DEFAULT_VISIBILITY_DURATION_MS = 4000;
 const DEFAULT_FADE_DURATION = 500;
