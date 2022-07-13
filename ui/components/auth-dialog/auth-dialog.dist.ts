@@ -86,12 +86,15 @@ function AuthDialog({ hidden }) {
           password: fields.password.valueSubject.getValue(),
         },
       });
+      setAccessToken(mutationRes?.data?.userLoginEmailPhone?.accessToken);
+      isLoadingSubject.next(false);
     } else if (mode === "reset") {
       mutationRes = await mutation(RESET_PASSWORD_MUTATION, {
         input: {
           ...parseEmailPhone(fields.emailPhone.valueSubject.getValue()),
         },
       });
+      // FIXME: implement reset
     } else {
       mutationRes = await mutation(JOIN_MUTATION, {
         input: {
@@ -100,12 +103,7 @@ function AuthDialog({ hidden }) {
           password: fields.password.valueSubject.getValue(),
         },
       });
-      // TODO: cleanup and handle login/reset
-      const accessToken = mutationRes?.data?.userJoin?.accessToken;
-      if (accessToken) {
-        setCookie("accessToken", accessToken);
-        _clearCache();
-      }
+      setAccessToken(mutationRes?.data?.userJoin?.accessToken);
       isLoadingSubject.next(false);
     }
 
@@ -229,6 +227,13 @@ function parseEmailPhone(emailPhone) {
     return { phone: emailPhone };
   } else {
     return { email: emailPhone };
+  }
+}
+
+function setAccessToken(accessToken) {
+  if (accessToken) {
+    setCookie("accessToken", accessToken);
+    _clearCache();
   }
 }
 
