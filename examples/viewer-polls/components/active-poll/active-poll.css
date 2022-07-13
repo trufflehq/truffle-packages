@@ -1,0 +1,32 @@
+:host>.count {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 8px;
+}
+
+:host>.button {
+  background: rgba(255, 0, 0, 0.2);
+  border: none;
+  padding: 8px;
+  margin-top: 4px;
+  cursor: pointer;
+}
+
+:host >.c-active-poll {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  padding: var(--tfl-spacing-lg);
+}
+
+:host >.c-active-poll>.title {
+  font-size: var(--tfl-font-size-heading-md);
+  font-family: var(--tfl-font-family-body-sans);
+
+  margin-bottom: var(--tfl-spacing-sm);
+}
+
+:host >.c-active-poll>.option {
+  padding: var(--tfl-spacing-lg);
+  border: var(--tfl-border-width-sm) solid var(--tfl-color-primary-border);
+}
