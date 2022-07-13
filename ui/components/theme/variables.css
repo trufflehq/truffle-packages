@@ -1,10 +1,10 @@
 /**
  * Do not edit directly
- * Generated on Mon, 11 Jul 2022 19:34:08 GMT
+ * Generated on Wed, 13 Jul 2022 00:11:42 GMT
  */
 
  :root {
-  --tfl-border-base: var(--tfl-border-width-1) solid var(--tfl-color-border);
+  --tfl-border-base: var(--tfl-border-width-sm) solid var(--tfl-color-primary-border);
   --tfl-border-radius-sm: 2px;
   --tfl-border-radius-md: 4px;
   --tfl-border-radius-lg: 8px;
@@ -100,7 +100,7 @@
   --tfl-cursor-zoom-in: zoom-in;
   --tfl-cursor-zoom-out: zoom-out;
   --tfl-font-family-body-mono: ui-monospace, monospace;
-  --tfl-font-family-body-sans: Poppins, 'Helvetica Neue', sans-serif;
+  --tfl-font-family-body-sans: Inter;
   --tfl-font-family-heading-mono: ui-monospace, monospace;
   --tfl-font-family-heading-sans: Poppins, 'Helvetica Neue', sans-serif;
   --tfl-font-size-body-2xl: 20px;
@@ -117,14 +117,14 @@
   --tfl-font-size-heading-sm: 20px;
   --tfl-font-size-heading-xs: 18px;
   --tfl-font-size-heading-2xs: 16px;
-  --tfl-font-weight-body-regular: 400;
-  --tfl-font-weight-body-medium: 500;
-  --tfl-font-weight-body-semibold: 600;
-  --tfl-font-weight-body-bold: 700;
-  --tfl-font-weight-heading-regular: 400;
-  --tfl-font-weight-heading-medium: 500;
-  --tfl-font-weight-heading-semibold: 600;
-  --tfl-font-weight-heading-bold: 700;
+  --tfl-font-weight-body-regular: Regular;
+  --tfl-font-weight-body-medium: Medium;
+  --tfl-font-weight-body-semibold: Semi Bold;
+  --tfl-font-weight-body-bold: Bold;
+  --tfl-font-weight-heading-regular: Regular;
+  --tfl-font-weight-heading-medium: Medium;
+  --tfl-font-weight-heading-semibold: Semi Bold;
+  --tfl-font-weight-heading-bold: Bold;
   --tfl-motion-duration-0: 0ms;
   --tfl-motion-duration-50: 50ms;
   --tfl-motion-duration-100: 100ms;
@@ -184,4 +184,32 @@
   --tfl-z-200: 200;
   --tfl-z-100: 100;
   --tfl-z-bottom: -100;
+  --tfl-text-case-uppercase: uppercase;
+  --tfl-text-case-regular: none;
+  --tfl-letter-spacing-wide: 12%;
+  --tfl-text-decoration-underline: underline;
+  --tfl-line-height-body-2xl: 28;
+  --tfl-line-height-body-xl: 28;
+  --tfl-line-height-body-lg: 24;
+  --tfl-line-height-body-md: 20;
+  --tfl-line-height-body-sm: 18;
+  --tfl-line-height-body-xs: 16;
+  --tfl-line-height-body-2xs: 12;
+  --tfl-line-height-heading-2xl: 76;
+  --tfl-line-height-heading-xl: 58;
+  --tfl-line-height-heading-lg: 44;
+  --tfl-line-height-heading-md: 34;
+  --tfl-line-height-heading-sm: 28;
+  --tfl-line-height-heading-xs: 24;
+  --tfl-line-height-heading-2xs: 20;
+  --tfl-size-3xs: 16;
+  --tfl-size-2xs: 20;
+  --tfl-size-xs: 24;
+  --tfl-size-sm: 28;
+  --tfl-size-md: 32;
+  --tfl-size-lg: 40;
+  --tfl-size-xl: 48;
+  --tfl-size-2xl: 64;
+  --tfl-size-3xl: 96;
+  --tfl-size-4xl: 124;
 }
