@@ -1,39 +1,38 @@
 export default {
   name: '@truffle/viewer-polls',
-  version: '0.1.2',
+  version: '0.1.6',
   apiUrl: 'https://mycelium.staging.bio/graphql',
 
-  // This is used to specify the required permissions that the package
+  // This is used to specify the required permissions that the package has access to
   requestedPermissions: [
     // permission to update a collectible
     {
       filters: { collectible: { isAll: true, rank: 0 } },
-      action: 'update',
-      value: true
+      action: "update",
+      value: true,
     },
     // permission to update an event subscription
     {
       filters: { eventSubscription: { isAll: true, rank: 0 } },
-      action: 'update',
-      value: true
+      action: "update",
+      value: true,
     },
-    // permission to create an event topic
     {
       filters: { eventTopic: { isAll: true, rank: 0 } },
-      action: 'create',
-      value: true
+      action: "update",
+      value: true,
     },
     // permission to update a poll
     {
       filters: { poll: { isAll: true, rank: 0 } },
-      action: 'update',
-      value: true
+      action: "update",
+      value: true,
     },
     // permission to create a poll
     {
       filters: { poll: { isAll: true, rank: 0 } },
-      action: 'create',
-      value: true
+      action: "create",
+      value: true,
     },
   ],
   // installActionRel specifies a workflow action that will run upon installation 
@@ -47,11 +46,11 @@ export default {
         // that will be broadcast when the collectible is redeemed. This is
         // used to forward an event to 3rd party services and packages
         {
-          actionPath: '@truffle/core@latest/_Action/graphql',
+          actionPath: "@truffle/core@latest/_Action/graphql",
           runtimeData: {
             query: `
-              mutation EventTopicCreate ($input: EventTopicCreateInput!) {
-                eventTopicCreate(input: $input) {
+              mutation EventTopicUpsert ($input: EventTopicUpsertInput!) {
+                eventTopicUpsert(input: $input) {
                   eventTopic {
                     id
                     orgId
@@ -62,15 +61,15 @@ export default {
               }`,
             variables: {
               input: {
-                slug: 'viewer-create-poll'
-              }
-            }
-          }
+                slug: "viewer-polls-topic",
+              },
+            },
+          },
         },
         // This action will create a collectible that users can redeem and will broadcast the custom
         // 'viewer-create-poll' event topic
         {
-          actionPath: '@truffle/core@latest/_Action/graphql',
+          actionPath: "@truffle/core@latest/_Action/graphql",
           runtimeData: {
             query: `
               mutation CollectibleUpsert ($input: CollectibleUpsertInput!) {
@@ -84,19 +83,19 @@ export default {
               }`,
             variables: {
               input: {
-                name: 'Create a poll',
-                slug: 'viewer-create-poll',
-                type: 'redeemable',
+                name: "Create a poll",
+                slug: "viewer-poll",
+                type: "redeemable",
                 data: {
-                  redeemType: 'event',
-                  redeemButtonText: 'Redeem',
+                  redeemType: "event",
+                  redeemButtonText: "Redeem",
                   redeemData: {
-                    eventTopicPath: '@truffle/viewer-polls@latest/_EventTopic/viewer-create-poll'
-                  }
-                }
-              }
-            }
-          }
+                    eventTopicSlug: "viewer-polls-topic",
+                  },
+                },
+              },
+            },
+          },
         },
         // This action will create an event subscription for a webhook to a 3rd party service
         {
@@ -111,7 +110,7 @@ export default {
             variables: {
               input: {
                 // The event topic the subscription exists for
-                eventTopicPath: '@truffle/viewer-polls@latest/_EventTopic/viewer-create-poll',
+                eventTopicSlug: "viewer-polls-topic",
                 actionRel: {
                   actionPath: '@truffle/core@1.0.0/_Action/webhook',
                   runtimeData: {
