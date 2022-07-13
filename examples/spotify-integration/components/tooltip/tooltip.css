@@ -1,0 +1,83 @@
+.tooltip:before {
+  content: "";
+  -webkit-transition: -webkit-transform 0.25s, -webkit-filter 0.25s;
+  transition: -webkit-transform 0.25s, -webkit-filter 0.25s;
+  transition: transform 0.25s, filter 0.25s;
+  transition: transform 0.25s, filter 0.25s, -webkit-transform 0.25s, -webkit-filter 0.25s;
+  -webkit-transform: translateY(-15px) translateX(-5px);
+          transform: translateY(-15px) translateX(-5px);
+  -webkit-filter: opacity(0);
+          filter: opacity(0);
+}
+
+.tooltip:after {
+  content: "";
+  -webkit-transition: -webkit-transform 0.25s, -webkit-filter 0.25s;
+  transition: -webkit-transform 0.25s, -webkit-filter 0.25s;
+  transition: transform 0.25s, filter 0.25s;
+  transition: transform 0.25s, filter 0.25s, -webkit-transform 0.25s, -webkit-filter 0.25s;
+  -webkit-transform: translateY(-67px) translateX(-86.6%);
+          transform: translateY(-67px) translateX(-86.6%);
+  -webkit-filter: opacity(0);
+          filter: opacity(0);
+}
+
+@-moz-document url-prefix() {
+  .tooltip:after {
+    transform: translateY(-65px) translateX(-86.6%);
+  }
+}
+
+.tooltip:hover:before {
+  content: "";
+  margin: none;
+  display: block;
+  position: absolute;
+  -webkit-transform: translateY(-11px) translateX(-6px);
+          transform: translateY(-11px) translateX(-6px);
+  z-index: 99;
+  -webkit-filter: opacity(1);
+          filter: opacity(1);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--background-tooltip);
+}
+
+.tooltip:hover:after {
+  font-size: 14px;
+  margin: none;
+  display: block;
+  content: attr(data-hover-text);
+  -webkit-filter: opacity(1);
+          filter: opacity(1);
+  background: var(--background-tooltip);
+  position: absolute;
+  padding: 4px;
+  border-radius: 4px;
+  padding: 9.5px 10px 9.5px 10px;
+}
+
+.tooltip.help:hover:after {
+  -webkit-transform: translateY(-63px) translateX(-86.6%);
+          transform: translateY(-63px) translateX(-86.6%);
+}
+
+@-moz-document url-prefix() {
+  .tooltip.help:hover:after {
+    transform: translateY(-60px) translateX(-86.6%);
+  }
+}
+
+.tooltip.minimize:hover:after {
+  -webkit-transform: translateY(-63px) translateX(-90%);
+          transform: translateY(-63px) translateX(-90%);
+}
+
+@-moz-document url-prefix() {
+  .tooltip.minimize:hover:after {
+    transform: translateY(-60px) translateX(-90%);
+  }
+}
+/*# sourceMappingURL=tooltip.css.map */
