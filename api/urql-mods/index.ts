@@ -1,3 +1,3 @@
-export * from "./useMutation.js";
-export * from "./useQuery.js";
-export * from "./useSubscription.js";
+export * from "./useMutation.ts";
+export * from "./useQuery.ts";
+export * from "./useSubscription.ts";

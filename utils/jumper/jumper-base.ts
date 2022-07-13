@@ -9,7 +9,7 @@ import RPCClient, {
   isRPCEntity,
   isRPCRequest,
   isRPCResponse,
-} from "./rpc_client.js";
+} from "./rpc_client.ts";
 
 const DEFAULT_HANDSHAKE_TIMEOUT_MS = 10000; // 10 seconds
 const SW_CONNECT_TIMEOUT_MS = 5000; // 5s

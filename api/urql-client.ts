@@ -5,7 +5,7 @@ import {
 } from "https://tfl.dev/@truffle/global-context@^1.0.0/package-context.ts";
 import config from "https://tfl.dev/@truffle/config@^1.0.0/index.ts";
 
-import { getAuthExchange } from "./auth-exchange.js";
+import { getAuthExchange } from "./auth-exchange.ts";
 
 export function getClient() {
   const context = getPackageContext("@truffle/api@0");

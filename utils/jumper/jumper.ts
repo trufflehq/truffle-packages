@@ -1,4 +1,4 @@
-import Jumper from "./jumper-base.js";
+import Jumper from "./jumper-base.ts";
 import PushService from "../push/push.js";
 import isSsr from "../ssr/is-ssr.ts";
 

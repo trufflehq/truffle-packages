@@ -5,7 +5,7 @@ import React, {
   useMemo,
 } from "https://npm.tfl.dev/react";
 
-import TruffleComponentInstancesContext from "./component-instances-context.js";
+import TruffleComponentInstancesContext from "./component-instances-context.ts";
 
 export default function ComponentInstance({ componentInstance, ...props }) {
   const { componentInstances } = useContext(TruffleComponentInstancesContext) ||

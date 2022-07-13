@@ -5,6 +5,6 @@
 // (zygote module mutation + compilation-api
 
 import React from "https://npm.tfl.dev/react";
-import { createElement as modifiedCreateElement } from "./modified-create-element.js";
+import { createElement as modifiedCreateElement } from "./modified-create-element.ts";
 
 React.createElement = modifiedCreateElement;

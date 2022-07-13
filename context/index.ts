@@ -29,7 +29,7 @@
 
 // TODO: client should probably importmap this to nothing
 // or could try dynamic import
-import DenoAsyncLocalStorage from "./deno-async-local-storage.js";
+import DenoAsyncLocalStorage from "./deno-async-local-storage.ts";
 // import { AsyncLocalStorage } from 'node:async_hooks'
 
 class BrowserAsyncLocalStorage {
