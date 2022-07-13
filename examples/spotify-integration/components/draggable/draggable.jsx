@@ -11,6 +11,8 @@ function createIframeStyle(dimensions, globalMouse) {
 					calc(100% - ${position.y + base.y + bottom}px) 
 					${position.x - left}px)`
 	}
+	//creates an element that spans the entire screen
+	//a clip path is used to crop to only the actual component
 	const style = {
 		width: "100vw",
 		height: "100vh",
@@ -21,7 +23,6 @@ function createIframeStyle(dimensions, globalMouse) {
 		top: `0`,
 		left: `0`,
 		"z-index": "999",
-		// overflow: "hidden"
 	}
 	//remove clip path if mouse is pressed so we get mouse events across the entire page
 	if (globalMouse.pressed) style["clip-path"] = "none"
@@ -71,6 +72,7 @@ export default function Draggable({ children, dimensions, defaultPosition }) {
 		}
 		setStyles()
 	}, [dimensions, globalMouse])
+
 	function positionStyle(x, y) {
 		return {
 			position: "absolute",
@@ -80,7 +82,9 @@ export default function Draggable({ children, dimensions, defaultPosition }) {
 			"user-select": globalMouse.pressed ? "none" : "inherit",
 		}
 	}
+
 	return (
+		//outer div is the full screen div that is cropped with clip path
 		<div className='draggable'
 			draggable={true}
 			style={{
