@@ -2,8 +2,7 @@ import {
   useLayoutEffect,
   useMemo,
   useState,
-} from "https://npm.tfl.dev/haunted@5/core";
-
+} from "https://tfl.dev/@truffle/distribute@^1.0.0/pinned-libs/haunted.ts";
 import useObservablesBase from "./use-observables-base.ts";
 
 export default (cb) =>

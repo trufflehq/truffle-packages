@@ -1,4 +1,4 @@
-import { useMemo } from "https://npm.tfl.dev/haunted@5/core";
+import { useMemo } from "https://tfl.dev/@truffle/distribute@^1.0.0/pinned-libs/haunted.ts";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
 
 import { toDist } from "https://tfl.dev/@truffle/distribute@^1.0.0/format/wc/index.ts";
@@ -10,6 +10,7 @@ import {
   mutation,
 } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
 import { setCookie } from "https://tfl.dev/@truffle/utils@~0.0.2/cookie/cookie.ts";
+
 // unsafeStatic was solution to https://stackoverflow.com/a/59833334
 // TODO: switch back to npm.tfl.dev when circular dependency error is fixed
 import { html, unsafeStatic } from "https://cdn.skypack.dev/lit-html@2/static";
@@ -171,7 +172,7 @@ function Content({ mode, fields }) {
   }`;
 }
 
-const InputWrapper = function InputWrapper({ type = "text", label, field }) {
+function InputWrapper({ type = "text", label, field }) {
   const { value, error } = useObservables(() => ({
     value: field.valueSubject.obs,
     error: field.errorSubject.obs,
@@ -187,7 +188,7 @@ const InputWrapper = function InputWrapper({ type = "text", label, field }) {
     </${unsafeStatic(TextField)}>
     ${error && html`<div class="error">${error}</div>`}
   </div>`;
-};
+}
 
 function Header({ modeSubject, actionText }) {
   const { mode } = useObservables(() => ({
