@@ -1,4 +1,7 @@
-import { useMemo } from "https://tfl.dev/@truffle/distribute@^1.0.0/pinned-libs/haunted.ts";
+import {
+  useMemo,
+  virtual,
+} from "https://tfl.dev/@truffle/distribute@^1.0.0/pinned-libs/haunted.ts";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
 
 import { toDist } from "https://tfl.dev/@truffle/distribute@^1.0.0/format/wc/index.ts";
@@ -155,7 +158,7 @@ AuthDialog.propTypes = {
   abc: PropTypes.string,
 };
 
-function Content({ mode, fields }) {
+const Content = virtual(({ mode, fields }) => {
   return html`
   ${
     mode === "join"
@@ -170,9 +173,9 @@ function Content({ mode, fields }) {
       field: fields.password,
     })
   }`;
-}
+});
 
-function InputWrapper({ type = "text", label, field }) {
+const InputWrapper = virtual(({ type = "text", label, field }) => {
   const { value, error } = useObservables(() => ({
     value: field.valueSubject.obs,
     error: field.errorSubject.obs,
@@ -188,9 +191,9 @@ function InputWrapper({ type = "text", label, field }) {
     </${unsafeStatic(TextField)}>
     ${error && html`<div class="error">${error}</div>`}
   </div>`;
-}
+});
 
-function Header({ modeSubject, actionText }) {
+const Header = virtual(({ modeSubject, actionText }) => {
   const { mode } = useObservables(() => ({
     mode: modeSubject.obs,
   }));
@@ -208,9 +211,9 @@ function Header({ modeSubject, actionText }) {
       </span>
     </div>
   </div>`;
-}
+});
 
-function Footer({ actionText, isLoading }) {
+const Footer = virtual(({ actionText, isLoading }) => {
   return html`<div class="footer">
     <${
     unsafeStatic(Button)
@@ -218,7 +221,7 @@ function Footer({ actionText, isLoading }) {
       ${actionText}
     </${unsafeStatic(Button)}>
   </div>`;
-}
+});
 
 function parseEmailPhone(emailPhone) {
   const isPhone = emailPhone?.match(
