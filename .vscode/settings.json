@@ -7,8 +7,6 @@
     "https://npm.tfl.dev": true
   },
   "deno.config": "./tsconfig.json",
-  "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno",
-    "editor.formatOnSave": true
-  }
+  "editor.defaultFormatter": "denoland.vscode-deno",
+  "editor.formatOnSave": true
 }
