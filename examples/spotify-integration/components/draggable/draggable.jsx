@@ -89,7 +89,7 @@ export default function Draggable({ children, dimensions, defaultPosition }) {
 				left: "0px"
 			}}
 			onMouseDown={(e) => {
-				console.log(e.target.className + "   mouse down tag name lol")
+				//prevent dragging by links and any class that has the prevent-drag class
 				if (e.target.tagName === "A" || e.target.className.includes("prevent-drag")) {
 					setGlobalMouse((old) => ({ ...old, draggable: false }))
 				}
