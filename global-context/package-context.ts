@@ -7,7 +7,11 @@ export function getPackageContext(packagePath) {
     return;
   }
   const context = globalContext.getStore();
-  return context.packages?.[packagePath];
+  // important that this creates the object if it doesn't exist when read.
+  // so setPackageContext can modify the correct object in-place
+  context.packages = context.packages || {};
+  context.packages[packagePath] = context.packages[packagePath] || {};
+  return context.packages[packagePath];
 }
 
 export function setPackageContext(packagePath, diff) {
@@ -15,9 +19,7 @@ export function setPackageContext(packagePath, diff) {
     console.error("Must specify package");
     return;
   }
-  const context = globalContext.getStore();
-  context.packages = context.packages || {};
-  context.packages[packagePath] = context.packages[packagePath] || {};
-  Object.assign(context.packages[packagePath], diff);
-  return context.packages[packagePath];
+  const packageContext = getPackageContext(packagePath);
+  Object.assign(packageContext, diff);
+  return packageContext;
 }
