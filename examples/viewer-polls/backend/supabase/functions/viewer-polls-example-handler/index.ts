@@ -11,7 +11,9 @@ import {
 } from "./api/truffle/index.ts";
 import { getPollQuestionWithAuthorName } from "./utils/polls.ts";
 
-const VIEWER_CREATED_POLL_EVENT_SLUG = "viewer-create-poll";
+const VIEWER_CREATED_POLL_EVENT_TOPIC_SLUG = Deno.env.get(
+  "VIEWER_CREATED_POLL_EVENT_TOPIC_SLUG",
+);
 
 // You can define types for the custom payload of your event
 // that you can use to add type safety for your event inside of `handleTruffleWebhookEventSupabase`
@@ -28,34 +30,44 @@ const handler = (request: Request) =>
       const rawResult = await request.json();
 
       if (!eventData) {
+        console.log("Missing eventData");
+
         return new Response(
           JSON.stringify(`Pong! ${JSON.stringify(rawResult)}`),
           { headers: { "Content-Type": "application/json" } },
         );
       }
 
-      if (eventTopicParts) {
+      if (eventTopicParts && VIEWER_CREATED_POLL_EVENT_TOPIC_SLUG) {
         const isViewerCreatedPollEvent = isTargetEventTopicByParts(
           eventTopicParts,
-          VIEWER_CREATED_POLL_EVENT_SLUG,
+          VIEWER_CREATED_POLL_EVENT_TOPIC_SLUG,
         );
 
         if (isViewerCreatedPollEvent) {
           const question = eventData.data.additionalData.question;
           const pollOptions = eventData.data.additionalData.options;
-          const userId = eventData.data.userId;
+          const userId = eventData.data?.userId;
+          const orgId = eventData.data?.orgId;
+
+          console.log("event metadata", { userId, orgId });
 
           if (userId) {
             const truffleUser = await getUserById(userId);
+
+            console.log("truffleUser", truffleUser);
+
             const authoredQuestion = getPollQuestionWithAuthorName(
               question,
               truffleUser?.name,
             );
 
-            const poll = await createPoll(authoredQuestion, pollOptions);
+            const poll = await createPoll(authoredQuestion, pollOptions, orgId);
 
             console.log("poll created", JSON.stringify(poll));
           }
+        } else {
+          console.log("Not a viewer created poll event");
         }
       }
 
@@ -69,7 +81,4 @@ const handler = (request: Request) =>
 serve(handler);
 
 // To invoke:
-// curl -i --location --request POST 'http://localhost:54321/functions/v1/' \
-//   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24ifQ.625_WdcF3KHqz5amU0x2X5WWHP-OEs_4qj0ssLNHzTs' \
-//   --header 'Content-Type: application/json' \
-//   --data '{"name":"Functions"}'
+// curl -L -X POST '<supabase function url>' --data '{"name":"Functions"}'

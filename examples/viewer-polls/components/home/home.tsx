@@ -3,9 +3,9 @@ import jumper from "https://tfl.dev/@truffle/utils@~0.0.2/jumper/jumper.ts";
 import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.ts";
 
 // import Counter from "../counter/counter.tsx";
-import ActivePoll from '../active-poll/active-poll.tsx'
+import ActivePoll from "../active-poll/active-poll.tsx";
 import UserInfo from "../user-info/user-info.tsx";
-import Link from "https://tfl.dev/@truffle/router@^1.0.0/components/link/link.tag.ts"
+import Link from "https://tfl.dev/@truffle/router@^1.0.0/components/link/link.tag.ts";
 
 function ExtensionMapping() {
   useEffect(() => {
@@ -29,12 +29,11 @@ function ExtensionMapping() {
   return (
     <>
       <Stylesheet url={new URL("./home.css", import.meta.url)} />
-      Hello world!
-      {/* <ActivePoll initialCount={2} /> */}
+      <ActivePoll initialCount={2} />
       <UserInfo />
       <Link href="/abc">My link</Link>
     </>
   );
 }
 
-export default ExtensionMapping
+export default ExtensionMapping;
