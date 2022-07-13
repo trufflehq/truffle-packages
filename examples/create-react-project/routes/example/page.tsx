@@ -5,4 +5,4 @@ function ExamplePage() {
   return "This is an example top-level route (/example)";
 }
 
-export default toDist('react', ExamplePage, import.meta.url);
+export default toDist("react", ExamplePage, import.meta.url);

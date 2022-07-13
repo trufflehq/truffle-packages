@@ -9,4 +9,4 @@ function ChildPage() {
   );
 }
 
-export default toDist('react', ChildPage, import.meta.url)
+export default toDist("react", ChildPage, import.meta.url);

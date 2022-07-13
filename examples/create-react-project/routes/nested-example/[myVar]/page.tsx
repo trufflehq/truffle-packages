@@ -12,4 +12,4 @@ function MyVarPage() {
   );
 }
 
-export default toDist('react', MyVarPage, import.meta.url)
+export default toDist("react", MyVarPage, import.meta.url);

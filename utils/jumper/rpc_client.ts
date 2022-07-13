@@ -20,44 +20,44 @@
  * with RPCCallback which should be used to emit callback responses
  */
 
-import uuid from 'https://npm.tfl.dev/uuid@3'
+import uuid from "https://npm.tfl.dev/uuid@3";
 
 export const ERROR_CODES = {
   METHOD_NOT_FOUND: -32601,
   INVALID_ORIGIN: 100,
-  DEFAULT: -1
-}
+  DEFAULT: -1,
+};
 
-const ERROR_MESSAGES = {}
-ERROR_MESSAGES[ERROR_CODES.METHOD_NOT_FOUND] = 'Method not found'
-ERROR_MESSAGES[ERROR_CODES.INVALID_ORIGIN] = 'Invalid origin'
-ERROR_MESSAGES[ERROR_CODES.DEFAULT] = 'Error'
+const ERROR_MESSAGES = {};
+ERROR_MESSAGES[ERROR_CODES.METHOD_NOT_FOUND] = "Method not found";
+ERROR_MESSAGES[ERROR_CODES.INVALID_ORIGIN] = "Invalid origin";
+ERROR_MESSAGES[ERROR_CODES.DEFAULT] = "Error";
 
-const DEFAULT_REQUEST_TIMEOUT_MS = 3000
+const DEFAULT_REQUEST_TIMEOUT_MS = 3000;
 
 const deferredFactory = function () {
-  let resolve = null
-  let reject = null
+  let resolve = null;
+  let reject = null;
   const promise = new Promise((_resolve, _reject) => {
-    resolve = _resolve
-    reject = _reject
-    return reject
-  })
-  promise.resolve = resolve
-  promise.reject = reject
+    resolve = _resolve;
+    reject = _reject;
+    return reject;
+  });
+  promise.resolve = resolve;
+  promise.reject = reject;
 
-  return promise
-}
+  return promise;
+};
 
 export default class RPCClient {
-  constructor ({ postMessage, timeout = DEFAULT_REQUEST_TIMEOUT_MS } = {}) {
-    this.postMessage = postMessage
-    this.timeout = timeout
-    this.pendingRequests = {}
-    this.callbackFunctions = {}
-    this.call = this.call.bind(this)
-    this.resolve = this.resolve.bind(this)
-    this.resolveRPCResponse = this.resolveRPCResponse.bind(this)
+  constructor({ postMessage, timeout = DEFAULT_REQUEST_TIMEOUT_MS } = {}) {
+    this.postMessage = postMessage;
+    this.timeout = timeout;
+    this.pendingRequests = {};
+    this.callbackFunctions = {};
+    this.call = this.call.bind(this);
+    this.resolve = this.resolve.bind(this);
+    this.resolveRPCResponse = this.resolveRPCResponse.bind(this);
   }
 
   /*
@@ -65,108 +65,108 @@ export default class RPCClient {
   @param {Array<*>} [params]
   @returns {Promise}
   */
-  call (method, reqParams, options = {}) {
-    const { timeout = this.timeout } = options
-    const deferred = deferredFactory()
-    const params = []
+  call(method, reqParams, options = {}) {
+    const { timeout = this.timeout } = options;
+    const deferred = deferredFactory();
+    const params = [];
 
     // replace callback params
     for (const param of Array.from(reqParams || [])) {
-      if (typeof param === 'function') {
-        const callback = createRPCCallback(param)
-        this.callbackFunctions[callback.callbackId] = param
-        params.push(callback)
+      if (typeof param === "function") {
+        const callback = createRPCCallback(param);
+        this.callbackFunctions[callback.callbackId] = param;
+        params.push(callback);
       } else {
-        params.push(param)
+        params.push(param);
       }
     }
 
-    const request = createRPCRequest({ method, params })
+    const request = createRPCRequest({ method, params });
 
     this.pendingRequests[request.id] = {
       reject: deferred.reject,
       resolve: deferred.resolve,
-      isAcknowledged: false
-    }
+      isAcknowledged: false,
+    };
 
     try {
-      this.postMessage(JSON.stringify(request), '*')
+      this.postMessage(JSON.stringify(request), "*");
     } catch (err) {
-      deferred.reject(err)
-      return deferred
+      deferred.reject(err);
+      return deferred;
     }
 
     setTimeout(() => {
       if (!this.pendingRequests[request.id].isAcknowledged) {
-        return deferred.reject(new Error('Message Timeout'))
+        return deferred.reject(new Error("Message Timeout"));
       }
-    }, timeout)
+    }, timeout);
 
-    return deferred
+    return deferred;
   }
 
   /*
   @param {RPCResponse|RPCRequestAcknowledgement|RPCCallbackResponse} response
   */
-  resolve (response) {
+  resolve(response) {
     switch (false) {
       case !isRPCRequestAcknowledgement(response):
-        return this.resolveRPCRequestAcknowledgement(response)
+        return this.resolveRPCRequestAcknowledgement(response);
       case !isRPCResponse(response):
-        return this.resolveRPCResponse(response)
+        return this.resolveRPCResponse(response);
       case !isRPCCallbackResponse(response):
-        return this.resolveRPCCallbackResponse(response)
+        return this.resolveRPCCallbackResponse(response);
       default:
-        throw new Error('Unknown response type')
+        throw new Error("Unknown response type");
     }
   }
 
   /*
   @param {RPCResponse} rPCResponse
   */
-  resolveRPCResponse (rPCResponse) {
-    const request = this.pendingRequests[rPCResponse.id]
+  resolveRPCResponse(rPCResponse) {
+    const request = this.pendingRequests[rPCResponse.id];
     if (request == null) {
-      throw new Error('Request not found')
+      throw new Error("Request not found");
     }
 
-    request.isAcknowledged = true
+    request.isAcknowledged = true;
 
-    const { result, error } = rPCResponse
+    const { result, error } = rPCResponse;
     if (error) {
-      request.reject(error.data || new Error(error.message))
+      request.reject(error.data || new Error(error.message));
     } else if (result != null) {
-      request.resolve(result)
+      request.resolve(result);
     } else {
-      request.resolve(null)
+      request.resolve(null);
     }
-    return null
+    return null;
   }
 
   /*
   @param {RPCRequestAcknowledgement} rPCRequestAcknowledgement
   */
-  resolveRPCRequestAcknowledgement (rPCRequestAcknowledgement) {
-    const request = this.pendingRequests[rPCRequestAcknowledgement.id]
+  resolveRPCRequestAcknowledgement(rPCRequestAcknowledgement) {
+    const request = this.pendingRequests[rPCRequestAcknowledgement.id];
     if (request == null) {
-      throw new Error('Request not found')
+      throw new Error("Request not found");
     }
 
-    request.isAcknowledged = true
-    return null
+    request.isAcknowledged = true;
+    return null;
   }
 
   /*
   @param {RPCCallbackResponse} rPCCallbackResponse
   */
-  resolveRPCCallbackResponse (rPCCallbackResponse) {
-    const callbackFn = this.callbackFunctions[rPCCallbackResponse.callbackId]
+  resolveRPCCallbackResponse(rPCCallbackResponse) {
+    const callbackFn = this.callbackFunctions[rPCCallbackResponse.callbackId];
     if (callbackFn == null) {
-      throw new Error('Callback not found')
+      throw new Error("Callback not found");
     }
 
-    callbackFn.apply(null, rPCCallbackResponse.params)
-    return null
+    callbackFn.apply(null, rPCCallbackResponse.params);
+    return null;
   }
 }
 
@@ -181,8 +181,8 @@ export default class RPCClient {
   @param {String} props.callbackId
   @returns RPCCallbackResponse
   */
-export function createRPCCallbackResponse ({ params, callbackId }) {
-  return { _browserComms: true, callbackId, params }
+export function createRPCCallbackResponse({ params, callbackId }) {
+  return { _browserComms: true, callbackId, params };
 }
 
 /*
@@ -195,8 +195,8 @@ export function createRPCCallbackResponse ({ params, callbackId }) {
   @param {String} props.responseId
   @returns RPCRequestAcknowledgement
   */
-export function createRPCRequestAcknowledgement ({ requestId }) {
-  return { _browserComms: true, id: requestId, acknowledge: true }
+export function createRPCRequestAcknowledgement({ requestId }) {
+  return { _browserComms: true, id: requestId, acknowledge: true };
 }
 
 /*
@@ -212,8 +212,10 @@ export function createRPCRequestAcknowledgement ({ requestId }) {
   @param {RPCError|Null} [props.error]
   @returns RPCResponse
   */
-export function createRPCResponse ({ requestId, result = null, rPCError = null }) {
-  return { _browserComms: true, id: requestId, result, error: rPCError }
+export function createRPCResponse(
+  { requestId, result = null, rPCError = null },
+) {
+  return { _browserComms: true, id: requestId, result, error: rPCError };
 }
 
 /*
@@ -227,21 +229,23 @@ export function createRPCResponse ({ requestId, result = null, rPCError = null }
   @param {Errpr} [props.error]
   @returns RPCError
   */
-export function createRPCError ({ code, data = null }) {
-  const message = ERROR_MESSAGES[code]
-  return { _browserComms: true, code, message, data }
+export function createRPCError({ code, data = null }) {
+  const message = ERROR_MESSAGES[code];
+  return { _browserComms: true, code, message, data };
 }
 
-export function isRPCEntity (entity) { return entity?._browserComms }
-
-export function isRPCRequest (request) {
-  return request?.id != null && request.method != null
+export function isRPCEntity(entity) {
+  return entity?._browserComms;
 }
 
-export function isRPCResponse (response) {
+export function isRPCRequest(request) {
+  return request?.id != null && request.method != null;
+}
+
+export function isRPCResponse(response) {
   return response?.id && (
     response.result !== undefined || response.error !== undefined
-  )
+  );
 }
 
 /*
@@ -252,8 +256,12 @@ export function isRPCResponse (response) {
 
   @returns RPCCallback
   */
-export function createRPCCallback () {
-  return { _browserComms: true, _browserCommsGunCallback: true, callbackId: uuid.v4() }
+export function createRPCCallback() {
+  return {
+    _browserComms: true,
+    _browserCommsGunCallback: true,
+    callbackId: uuid.v4(),
+  };
 }
 
 /*
@@ -268,24 +276,28 @@ export function createRPCCallback () {
   @param {Array<*>} [props.params] - Functions are not allowed
   @returns RPCRequest
   */
-export function createRPCRequest ({ method, params }) {
+export function createRPCRequest({ method, params }) {
   if (params == null) {
-    throw new Error('Must provide params')
+    throw new Error("Must provide params");
   }
 
   for (const param of Array.from(params)) {
-    if (typeof param === 'function') {
-      throw new Error('Functions are not allowed. Use RPCCallback instead.')
+    if (typeof param === "function") {
+      throw new Error("Functions are not allowed. Use RPCCallback instead.");
     }
   }
 
-  return { _browserComms: true, id: uuid.v4(), method, params }
+  return { _browserComms: true, id: uuid.v4(), method, params };
 }
 
-export function isRPCRequestAcknowledgement (ack) { return ack?.acknowledge === true }
-
-export function isRPCCallbackResponse (response) {
-  return response?.callbackId && response.params != null
+export function isRPCRequestAcknowledgement(ack) {
+  return ack?.acknowledge === true;
 }
 
-export function isRPCCallback (callback) { return callback?._browserCommsGunCallback }
+export function isRPCCallbackResponse(response) {
+  return response?.callbackId && response.params != null;
+}
+
+export function isRPCCallback(callback) {
+  return callback?._browserCommsGunCallback;
+}

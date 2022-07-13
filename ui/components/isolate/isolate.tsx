@@ -22,7 +22,13 @@ const Isolate = React.forwardRef(
     // i tried react 19 experimental in june 2022, and it was still broken.
     // useEffect on the template rel doesn't have a shadowRoute property
 
-    if (typeof document === "undefined") return <isolate-wrapper><isolate>{children}</isolate></isolate-wrapper>;
+    if (typeof document === "undefined") {
+      return (
+        <isolate-wrapper>
+          <isolate>{children}</isolate>
+        </isolate-wrapper>
+      );
+    }
 
     const isolateRef = useRef();
 
@@ -36,7 +42,11 @@ const Isolate = React.forwardRef(
       isolateRef.current.appendChild(domEl);
     }, []);
 
-    return <isolate-wrapper ref={isolateRef}>{createPortal(children, root)}</isolate-wrapper>;
+    return (
+      <isolate-wrapper ref={isolateRef}>
+        {createPortal(children, root)}
+      </isolate-wrapper>
+    );
   },
 );
 

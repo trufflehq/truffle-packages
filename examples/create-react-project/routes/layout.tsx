@@ -3,8 +3,10 @@ import { toDist } from "https://tfl.dev/@truffle/distribute@1.0.0/format/wc/inde
 
 function Layout({ children }) {
   // initial theme styles
-  return <>
-    <style>{`
+  return (
+    <>
+      <style>
+        {`
       :host {
         background: var(--tfl-color-bg-fill);
         color: var(--tfl-color-on-bg-fill);
@@ -13,9 +15,11 @@ function Layout({ children }) {
         width: 100%;
         height: 100%;
       }
-    `}</style>
-    {children}
-  </>;
+    `}
+      </style>
+      {children}
+    </>
+  );
 }
 
-export default toDist('react', Layout, import.meta.url)
+export default toDist("react", Layout, import.meta.url);

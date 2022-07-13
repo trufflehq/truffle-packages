@@ -9,4 +9,4 @@ function Page() {
   );
 }
 
-export default toDist('react', Page, import.meta.url)
+export default toDist("react", Page, import.meta.url);

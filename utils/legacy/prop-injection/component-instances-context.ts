@@ -1,5 +1,5 @@
-import { createContext } from 'https://npm.tfl.dev/react'
+import { createContext } from "https://npm.tfl.dev/react";
 
-const TruffleComponentInstancesContext = createContext()
+const TruffleComponentInstancesContext = createContext();
 
-export default TruffleComponentInstancesContext
+export default TruffleComponentInstancesContext;

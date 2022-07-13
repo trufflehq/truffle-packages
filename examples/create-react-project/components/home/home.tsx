@@ -4,7 +4,7 @@ import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet
 
 import Counter from "../counter/counter.tsx";
 import UserInfo from "../user-info/user-info.tsx";
-import Link from "https://tfl.dev/@truffle/router@^1.0.0/components/link/link.tag.ts"
+import Link from "https://tfl.dev/@truffle/router@^1.0.0/components/link/link.tag.ts";
 
 function ExtensionMapping() {
   useEffect(() => {
@@ -36,4 +36,4 @@ function ExtensionMapping() {
   );
 }
 
-export default ExtensionMapping
+export default ExtensionMapping;

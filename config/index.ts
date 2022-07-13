@@ -5,14 +5,14 @@ const config = {
   IS_STAGING_ENV: false,
   IS_PROD_ENV: true,
   // TODO: prod
-  PUBLIC_API_URL: 'https://mycelium.staging.bio',
-  API_URL: 'https://mycelium.staging.bio',
-  HOST: 'dev.sporocarp.dev'
-}
+  PUBLIC_API_URL: "https://mycelium.staging.bio",
+  API_URL: "https://mycelium.staging.bio",
+  HOST: "dev.sporocarp.dev",
+};
 
-export default config
+export default config;
 
-export function setConfig (newConfig) {
+export function setConfig(newConfig) {
   // update in-place, so same default-exported object can be used
-  Object.assign(config, newConfig)
+  Object.assign(config, newConfig);
 }

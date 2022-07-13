@@ -8,7 +8,11 @@ import {
   Snowflake,
 } from "https://deno.land/x/discord_api_types@0.36.1/v10.ts";
 import { stripIndents } from "https://deno.land/x/deno_tags@1.8.0/tags/stripIndents.ts";
-import { getDiscordServerConnection, getOrg, getUserDiscordConnection } from "../util/truffle/index.ts";
+import {
+  getDiscordServerConnection,
+  getOrg,
+  getUserDiscordConnection,
+} from "../util/truffle/index.ts";
 import { createResponse } from "../util/respond.ts";
 import { fetchGuildMember } from "../util/discord/index.ts";
 import { SOCIAL_MEDIA_EMOJIS, SOCIAL_MEDIA_LINKS } from "../util/constants.ts";
@@ -23,7 +27,9 @@ function createGuildMemberAvatar(
   }
 
   const ext = avatarHash.startsWith("a_") ? ImageFormat.GIF : ImageFormat.PNG;
-  return `${RouteBases.cdn}${CDNRoutes.userAvatar(userId, avatarHash, ext)}?size=512`;
+  return `${RouteBases.cdn}${
+    CDNRoutes.userAvatar(userId, avatarHash, ext)
+  }?size=512`;
 }
 
 export async function userInfo(
@@ -72,7 +78,9 @@ export async function userInfo(
         [platform, username],
       ) => {
         const emoji = SOCIAL_MEDIA_EMOJIS[platform];
-        const link = platform !== "youtube" ? `[@${username}](${SOCIAL_MEDIA_LINKS[platform]}${username})` : `[Link](${username})`;
+        const link = platform !== "youtube"
+          ? `[@${username}](${SOCIAL_MEDIA_LINKS[platform]}${username})`
+          : `[Link](${username})`;
         return `${emoji} ${link}`;
       }).join(" • "),
     });
@@ -85,7 +93,9 @@ export async function userInfo(
       16,
     ),
     author: {
-      name: `${interaction.member?.user.username}#${interaction.member?.user.discriminator}'s ${org?.name} Profile`,
+      name: `${interaction.member?.user.username}#${
+        interaction.member?.user.discriminator
+      }'s ${org?.name} Profile`,
       icon_url: avatar,
     },
     description: stripIndents`

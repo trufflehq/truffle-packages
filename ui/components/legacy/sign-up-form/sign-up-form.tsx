@@ -1,10 +1,12 @@
-import React, { useContext, useMemo } from 'https://npm.tfl.dev/react'
+import React, { useContext, useMemo } from "https://npm.tfl.dev/react";
 // import { Component, Stream, useStream, Legacy, context } from '@spore/platform'
 
-export default function SignUpForm (props) {
-  return <div className="c-sign-up-form">
-    Sign up
-  </div>
+export default function SignUpForm(props) {
+  return (
+    <div className="c-sign-up-form">
+      Sign up
+    </div>
+  );
 }
 
 // this may not be worth fixing if we're adopting an oauth flow

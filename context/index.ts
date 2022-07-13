@@ -29,59 +29,65 @@
 
 // TODO: client should probably importmap this to nothing
 // or could try dynamic import
-import DenoAsyncLocalStorage from './deno-async-local-storage.js'
+import DenoAsyncLocalStorage from "./deno-async-local-storage.js";
 // import { AsyncLocalStorage } from 'node:async_hooks'
 
 class BrowserAsyncLocalStorage {
-  constructor () {
-    this.store = undefined
+  constructor() {
+    this.store = undefined;
   }
 
   // TODO: don't implement run until browsers have actual async context tracking
 
   setGlobalValue = (store) => {
-    this.store = store
-  }
+    this.store = store;
+  };
 
   getStore = () => {
-    return this.store
-  }
+    return this.store;
+  };
 }
 
 // THIS CLASS NEEDS TO BE 100% BACKWARDS COMPATIBLE ALWAYS
 // it's modeled after Node.js AsyncLocalStorage
 class FrozenAsyncLocalStorageAsContext {
-  constructor () {
-    const IsomorphicAsyncLocalStorage = globalThis?.Deno ? DenoAsyncLocalStorage : BrowserAsyncLocalStorage
+  constructor() {
+    const IsomorphicAsyncLocalStorage = globalThis?.Deno
+      ? DenoAsyncLocalStorage
+      : BrowserAsyncLocalStorage;
     // const IsomorphicAsyncLocalStorage = BrowserAsyncLocalStorage
-    this._instance = new IsomorphicAsyncLocalStorage()
+    this._instance = new IsomorphicAsyncLocalStorage();
   }
 
-  // NOTE: you *should* be able to remove this AsyncLocalStorage argument and not worry about 
+  // NOTE: you *should* be able to remove this AsyncLocalStorage argument and not worry about
   // backwards compatibility. All that uses it is Sporocarp SSR and local dev setups
   _PRIVATE_setInstance = (asyncLocalStorageInstance) => {
-    this._instance = asyncLocalStorageInstance
-  }
+    this._instance = asyncLocalStorageInstance;
+  };
 
   // sets the context to store and calls fn with the additional args that are passed in
   run = (store, fn, ...args) => {
     if (!this._instance.run) {
-      throw new Error('context.run is not implemented in this runtime, use context.setGlobalValue')
+      throw new Error(
+        "context.run is not implemented in this runtime, use context.setGlobalValue",
+      );
     }
-    return this._instance.run(store, fn, ...args)
-  }
+    return this._instance.run(store, fn, ...args);
+  };
 
   // returns context value
   getStore = () => {
-    return this._instance.getStore()
-  }
+    return this._instance.getStore();
+  };
 
   setGlobalValue = (store) => {
     if (!this._instance.setGlobalValue) {
-      throw new Error('context.setGlobalValue is not implemented in this runtime, use context.run')
+      throw new Error(
+        "context.setGlobalValue is not implemented in this runtime, use context.run",
+      );
     }
-    this._instance.setGlobalValue(store)
-  }
+    this._instance.setGlobalValue(store);
+  };
 }
 
-export default FrozenAsyncLocalStorageAsContext
+export default FrozenAsyncLocalStorageAsContext;

@@ -1,12 +1,12 @@
-import * as Rx from 'https://npm.tfl.dev/rxjs?bundle'
+import * as Rx from "https://npm.tfl.dev/rxjs?bundle";
 // TODO: figure out an alternative to this package. it's 10kb
 // and probably doesn't need to be (it pulls in from some packages that are
 // similar to lodash, but not lodash: http://bundlephobia.com/package/dot-wild)
-import * as dot from 'https://npm.tfl.dev/dot-wild?bundle'
+import * as dot from "https://npm.tfl.dev/dot-wild?bundle";
 
-const rx = Rx // operators, keeping separate namespace for now
+const rx = Rx; // operators, keeping separate namespace for now
 
-export const ajax = Rx.ajax
+export const ajax = Rx.ajax;
 
 // just to try to keep our implementation of rx simple, let's try
 // to limit to just these operators. that way when onboarding new
@@ -71,8 +71,8 @@ export const op = {
 
   // a convenience function to make polling easier
   poll: (interval) =>
-    (obs) => Rx.timer(0, interval).pipe(Rx.switchMap(() => obs))
-}
+    (obs) => Rx.timer(0, interval).pipe(Rx.switchMap(() => obs)),
+};
 
 // functions that return observables
 export const Obs = {
@@ -103,8 +103,8 @@ export const Obs = {
   // we use this in graphql_client for a websocket batch request
   AsyncSubject: Rx.AsyncSubject,
   // used in graphql_client as ssr alternative to replaysubject
-  BehaviorSubject: Rx.BehaviorSubject
-}
+  BehaviorSubject: Rx.BehaviorSubject,
+};
 
 // To simplify rxjs for our use-case, we always use this "Obs" object, rather
 // than BehaviorSubject, Observable, etc...
@@ -140,10 +140,11 @@ export const Obs = {
  * @param {function} [options.childStreamConfigs[].parentMergeFn] if shouldUpdateParentOnChange, you can optionally specify how to update the parent value using the child value (parent, child) => { // do stuff }
  * @param {function} [options.shouldPersist] if true, .next's will still work even if there are no current observers of this stream
  */
-export function createSubject (observableOrPrimative, options = {}) {
-  const { childStreamConfigs, distinctUntilChanged = true, shouldPersist } = options
+export function createSubject(observableOrPrimative, options = {}) {
+  const { childStreamConfigs, distinctUntilChanged = true, shouldPersist } =
+    options;
 
-  const isObservable = Boolean(observableOrPrimative?.subscribe)
+  const isObservable = Boolean(observableOrPrimative?.subscribe);
 
   // this might be more performant, for streams that don't need to use observable values
   // though we'd probably want to have an option for it instead of assuming
@@ -163,30 +164,30 @@ export function createSubject (observableOrPrimative, options = {}) {
 
   const observable = isObservable
     ? observableOrPrimative
-    : Rx.of(observableOrPrimative)
+    : Rx.of(observableOrPrimative);
 
-  let cachedObsResult, currentValue
+  let cachedObsResult, currentValue;
   if (!isObservable) {
-    currentValue = observableOrPrimative
+    currentValue = observableOrPrimative;
   }
 
-  const nextableReplaySubject = new Rx.ReplaySubject(0) // nextable w/ non-observables. using instead of behaviorsubject bc it starts w/o value
+  const nextableReplaySubject = new Rx.ReplaySubject(0); // nextable w/ non-observables. using instead of behaviorsubject bc it starts w/o value
   // we use this to prevent an infinite loop with createChildStreamFromConfig.
   // that function creates a child stream that pipes off of
   // observableWithNextedValues and then needs to .next the new value to the
   // parent (so child updates parent which updates child).
   // by having separate subject that child stream doesn't pipe off of,
   // we can prevent that
-  const internalNextableReplaySubject = new Rx.ReplaySubject(0) // using instead of behaviorsubject bc it starts w/o value
-  const observableReplaySubject = new Rx.ReplaySubject(0) // observables (modified with replaceObs)
+  const internalNextableReplaySubject = new Rx.ReplaySubject(0); // using instead of behaviorsubject bc it starts w/o value
+  const observableReplaySubject = new Rx.ReplaySubject(0); // observables (modified with replaceObs)
   // this will update any time a childConfigStream's stream is updated
-  const childStreamConfigsReplaySubject = new Rx.ReplaySubject(0)
-  observableReplaySubject.next(observable)
+  const childStreamConfigsReplaySubject = new Rx.ReplaySubject(0);
+  observableReplaySubject.next(observable);
 
-  const replaceObs = (observable) => observableReplaySubject.next(observable)
+  const replaceObs = (observable) => observableReplaySubject.next(observable);
 
-  const cachedChildStreamConfigs = {}
-  const next = nextableReplaySubject.next.bind(nextableReplaySubject)
+  const cachedChildStreamConfigs = {};
+  const next = nextableReplaySubject.next.bind(nextableReplaySubject);
   // this contains any child streams that have shouldUpdateParentOnChange
   const updateChildrenReplaySubject = () => {
     childStreamConfigsReplaySubject.next(
@@ -199,55 +200,64 @@ export function createSubject (observableOrPrimative, options = {}) {
             childStreamConfig.shouldUpdateParentOnChange && stream.obs.pipe(
               rx.map((value) => ({
                 value,
-                childStreamConfig
-              }))
+                childStreamConfig,
+              })),
             )
           )
-          .filter(Boolean)
-      )
-    )
-  }
+          .filter(Boolean),
+      ),
+    );
+  };
 
   const embedChildStreamInValue = (value, childStreamConfigs) => {
     // add any _streams we want to use to the result
     Object.values(childStreamConfigs || {}).map((childStreamConfig) => {
-      const { streamPath, objectPath } = childStreamConfig
+      const { streamPath, objectPath } = childStreamConfig;
 
-      const embedChildStreamAtStreamPath = (childObject, key, context, path) => {
-        const childStreamAtPathConfig = { ...childStreamConfig }
+      const embedChildStreamAtStreamPath = (
+        childObject,
+        key,
+        context,
+        path,
+      ) => {
+        const childStreamAtPathConfig = { ...childStreamConfig };
         // if no id was specified, use the object path
         if (!childStreamAtPathConfig.id && !childStreamAtPathConfig.idPath) {
-          childStreamAtPathConfig.id = `${childStreamAtPathConfig.streamPath}-${path}`
+          childStreamAtPathConfig.id =
+            `${childStreamAtPathConfig.streamPath}-${path}`;
         }
         // so we have the actual index when objectPath = *
-        childStreamAtPathConfig.objectPathValue = path
-        const stream = createChildStreamFromConfig(childStreamAtPathConfig, childObject)
+        childStreamAtPathConfig.objectPathValue = path;
+        const stream = createChildStreamFromConfig(
+          childStreamAtPathConfig,
+          childObject,
+        );
         value = (path || childObject !== value)
           ? dot.set(value, path, dot.set(childObject, streamPath, stream))
-          : dot.set(childObject, streamPath, stream)
-      }
+          : dot.set(childObject, streamPath, stream);
+      };
       // if objectPath is specified, we'll replace every streamPath within each child object
       // eg objectPath = nodes.* will create a stream from the valuePath in each
       // node and create a stream in each node at the streamPath
       if (objectPath) {
-        dot.forEach(value, objectPath, embedChildStreamAtStreamPath)
+        dot.forEach(value, objectPath, embedChildStreamAtStreamPath);
       } else {
         // if no objectPath is specified, we just apply valuePath and streamPath
         // to the root object for this stream
-        embedChildStreamAtStreamPath(value, null, null, '')
+        embedChildStreamAtStreamPath(value, null, null, "");
       }
-    })
+    });
     // subscribe to all child streams and update current value of main observable
     // when any change
-    updateChildrenReplaySubject()
-    return value
-  }
+    updateChildrenReplaySubject();
+    return value;
+  };
 
   const observableWithNextedValues = Rx.merge(
     nextableReplaySubject.pipe(
       rx.tap((value) => {
-        currentValue = value
-      })
+        currentValue = value;
+      }),
     ),
     observableReplaySubject.pipe(
       rx.switchAll(),
@@ -256,138 +266,174 @@ export function createSubject (observableOrPrimative, options = {}) {
       // (eg when editing something, cache gets invalidated when leaving /
       // returning to tab - don't want to reset the client changes)
       // if you want it to always reset, use distinctUntilChanged option
-      distinctUntilChanged ? rx.distinctUntilChanged(isEqualWithObservables) : rx.tap((val) => val),
+      distinctUntilChanged
+        ? rx.distinctUntilChanged(isEqualWithObservables)
+        : rx.tap((val) => val),
       rx.tap((result) => {
-        cachedObsResult = result
-        currentValue = result
-      })
-    )
-  )
+        cachedObsResult = result;
+        currentValue = result;
+      }),
+    ),
+  );
 
   const observableWithNextedAndInternalNextedValues = Rx.merge(
     observableWithNextedValues,
     internalNextableReplaySubject.pipe(
       rx.tap((value) => {
-        currentValue = value
-      })
-    )
+        currentValue = value;
+      }),
+    ),
   ).pipe(
     rx.map((value) => {
       if (Object.values(childStreamConfigs || {}).length === 0) {
-        return embedChildStreamInValue(value, childStreamConfigs)
+        return embedChildStreamInValue(value, childStreamConfigs);
       }
-      return value
-    })
-  )
+      return value;
+    }),
+  );
 
   // just want to have this subscribed to when stream.obs is subscribed to,
   // and unsubscribe when stream.obs no longer subscribed to by any components.
   // there's probably a better way to do this though
-  const observableWithNextedAndInternalNextedValuesAndChildListener = Rx.combineLatest(
-    observableWithNextedAndInternalNextedValues,
-    childStreamConfigsReplaySubject.pipe(
-      rx.switchAll(),
-      // only if any of child stream values have changed
-      rx.distinctUntilChanged(isEqualWithObservables),
-      rx.tap((childStreamConfigs) => {
-        try {
-          // update the nextable with the new value calculated from child stream changes
-          Object.values(childStreamConfigs || {}).forEach(({ childStreamConfig, value }) => {
-            if (childStreamConfig.parentMergeFn) {
-              currentValue = childStreamConfig.parentMergeFn(currentValue, value)
-            } else {
-              if (childStreamConfig.objectPathValue) {
-                const childObject = dot.get(currentValue, childStreamConfig.objectPathValue)
-                // FIXME: this seems to convert File({ obj ... }) into just { obj ... }
-                currentValue = dot.set(
-                  currentValue,
-                  childStreamConfig.objectPathValue,
-                  childStreamConfig.valuePath ? dot.set(childObject, childStreamConfig.valuePath, value) : value
-                )
-              } else {
-                currentValue = dot.set(currentValue || {}, childStreamConfig.valuePath, value)
-              }
-            }
-          })
-          // this is sort of an infinite loop. it updates parents, which child
-          // streams pipe from, so they get updated too, which updates parent
-          // again. if we were to use nextableReplaySubject,
-          // the only thing that stops it is the rx.distinctUntilChanged.
-          // so instead we use internalNextableReplaySubject,
-          // and have childStreamFromConfig pipe off of observableWithNextedValues
-          internalNextableReplaySubject.next(currentValue)
-        } catch (err) {
-          console.log('update from child config error', childStreamConfigs, err)
-        }
-      }),
-      rx.startWith('ignoreme')
-    )
-  ).pipe(
-    rx.map(([value, ignoreMe]) => value),
-    // this line very important. makes sure the ordering is consistent
-    // when new subscriptions occur (so the most recent of observable or subject)
-    // is chosen instead of always the observable first
-    rx.publishReplay(1), rx.refCount()
-  )
+  const observableWithNextedAndInternalNextedValuesAndChildListener = Rx
+    .combineLatest(
+      observableWithNextedAndInternalNextedValues,
+      childStreamConfigsReplaySubject.pipe(
+        rx.switchAll(),
+        // only if any of child stream values have changed
+        rx.distinctUntilChanged(isEqualWithObservables),
+        rx.tap((childStreamConfigs) => {
+          try {
+            // update the nextable with the new value calculated from child stream changes
+            Object.values(childStreamConfigs || {}).forEach(
+              ({ childStreamConfig, value }) => {
+                if (childStreamConfig.parentMergeFn) {
+                  currentValue = childStreamConfig.parentMergeFn(
+                    currentValue,
+                    value,
+                  );
+                } else {
+                  if (childStreamConfig.objectPathValue) {
+                    const childObject = dot.get(
+                      currentValue,
+                      childStreamConfig.objectPathValue,
+                    );
+                    // FIXME: this seems to convert File({ obj ... }) into just { obj ... }
+                    currentValue = dot.set(
+                      currentValue,
+                      childStreamConfig.objectPathValue,
+                      childStreamConfig.valuePath
+                        ? dot.set(
+                          childObject,
+                          childStreamConfig.valuePath,
+                          value,
+                        )
+                        : value,
+                    );
+                  } else {
+                    currentValue = dot.set(
+                      currentValue || {},
+                      childStreamConfig.valuePath,
+                      value,
+                    );
+                  }
+                }
+              },
+            );
+            // this is sort of an infinite loop. it updates parents, which child
+            // streams pipe from, so they get updated too, which updates parent
+            // again. if we were to use nextableReplaySubject,
+            // the only thing that stops it is the rx.distinctUntilChanged.
+            // so instead we use internalNextableReplaySubject,
+            // and have childStreamFromConfig pipe off of observableWithNextedValues
+            internalNextableReplaySubject.next(currentValue);
+          } catch (err) {
+            console.log(
+              "update from child config error",
+              childStreamConfigs,
+              err,
+            );
+          }
+        }),
+        rx.startWith("ignoreme"),
+      ),
+    ).pipe(
+      rx.map(([value, ignoreMe]) => value),
+      // this line very important. makes sure the ordering is consistent
+      // when new subscriptions occur (so the most recent of observable or subject)
+      // is chosen instead of always the observable first
+      rx.publishReplay(1),
+      rx.refCount(),
+    );
 
   const createChildStream = (observableOrPrimative, childStreamConfig, id) => {
     if (cachedChildStreamConfigs[id]) {
       // stream already exists. we want to keep using, but we can update the value
-      const isObservable = observableOrPrimative?.subscribe
-      const hasChanged = !isObservable && !isEqual(observableOrPrimative, cachedChildStreamConfigs[id].stream.getValue())
+      const isObservable = observableOrPrimative?.subscribe;
+      const hasChanged = !isObservable &&
+        !isEqual(
+          observableOrPrimative,
+          cachedChildStreamConfigs[id].stream.getValue(),
+        );
       // NOTE: we don't want to update the value if this child *caused* the update
       // TODO: there's probably a better way to do this. involving making sure the parent update happens before this is called
       if (hasChanged && !childStreamConfig.shouldUpdateParentOnChange) {
-        cachedChildStreamConfigs[id].stream.next(observableOrPrimative)
+        cachedChildStreamConfigs[id].stream.next(observableOrPrimative);
       }
     } else {
       cachedChildStreamConfigs[id] = {
         childStreamConfig,
-        stream: createSubject(observableOrPrimative)
-      }
+        stream: createSubject(observableOrPrimative),
+      };
     }
-    return cachedChildStreamConfigs[id]
-  }
+    return cachedChildStreamConfigs[id];
+  };
 
   // creates a child stream that we'll listen to changes on. any changes to
   // the child stream will update the parent stream (via childStreamConfigsReplaySubject subscription)
   const createChildStreamFromConfig = (childStreamConfig, value) => {
-    const { idPath, valuePath, objectPath, streamPath, transformFn = (val) => val } = childStreamConfig
-    let { id } = childStreamConfig
-    let child
-    const isParentObject = !objectPath // parentObject = this child is directly on this stream's value
+    const {
+      idPath,
+      valuePath,
+      objectPath,
+      streamPath,
+      transformFn = (val) => val,
+    } = childStreamConfig;
+    let { id } = childStreamConfig;
+    let child;
+    const isParentObject = !objectPath; // parentObject = this child is directly on this stream's value
     if (isParentObject) {
       // listen for any changes to parent, so child will get updated
       const observable = observableWithNextedValues.pipe(
         rx.map((value) => {
-          const baseChildValue = valuePath ? dot.get(value, valuePath) : value
-          return transformFn(baseChildValue, id)
-        })
-      )
+          const baseChildValue = valuePath ? dot.get(value, valuePath) : value;
+          return transformFn(baseChildValue, id);
+        }),
+      );
       // use currentValue of this stream to get id
-      id = id || `${streamPath}-${dot.get(currentValue, idPath)}`
-      child = createChildStream(observable, childStreamConfig, id)
+      id = id || `${streamPath}-${dot.get(currentValue, idPath)}`;
+      child = createChildStream(observable, childStreamConfig, id);
     } else {
-      id = id || `${streamPath}-${dot.get(value, idPath)}`
-      const baseChildValue = valuePath ? dot.get(value, valuePath) : value
-      const childValue = transformFn(baseChildValue, id)
-      child = createChildStream(childValue, childStreamConfig, id)
+      id = id || `${streamPath}-${dot.get(value, idPath)}`;
+      const baseChildValue = valuePath ? dot.get(value, valuePath) : value;
+      const childValue = transformFn(baseChildValue, id);
+      child = createChildStream(childValue, childStreamConfig, id);
     }
-    updateChildrenReplaySubject()
-    return child.stream
-  }
+    updateChildrenReplaySubject();
+    return child.stream;
+  };
 
   if (shouldPersist) {
     // make sure observable always has a subscriber
-    observableWithNextedAndInternalNextedValuesAndChildListener.subscribe()
+    observableWithNextedAndInternalNextedValuesAndChildListener.subscribe();
   }
 
   return {
     obs: observableWithNextedAndInternalNextedValuesAndChildListener,
     next,
     isChanged: () => {
-      const isEmpty = currentValue == null && cachedObsResult == null
-      return !isEmpty && !isEqual(currentValue, cachedObsResult)
+      const isEmpty = currentValue == null && cachedObsResult == null;
+      return !isEmpty && !isEqual(currentValue, cachedObsResult);
     },
     reset: () => nextableReplaySubject.next(cachedObsResult),
     replaceObs,
@@ -395,42 +441,44 @@ export function createSubject (observableOrPrimative, options = {}) {
     // should only use this in save functions where we need to get the current
     // value, but don't necessarily want to have the stream in useStream
     // (for performance reasons, eg not rerendering on every key change)
-    getValue: () => currentValue
-  }
+    getValue: () => currentValue,
+  };
 }
 
 // if we've embedded streams inside this stream value, we want to still
 // accurately compare them
-function isEqualWithObservables (prevProps, nextProps) {
+function isEqualWithObservables(prevProps, nextProps) {
   return isEqual(prevProps, nextProps, (val1, val2, key) => {
     if (!key) {
       // not sure why, but lodash tries comparing the entire props objects first
-      return undefined
+      return undefined;
     }
-    const val1IsStream = val1?.subscribe
-    const val2IsStream = val1?.subscribe
+    const val1IsStream = val1?.subscribe;
+    const val2IsStream = val1?.subscribe;
     if (val1IsStream || val2IsStream) {
-      return val1IsStream && val1IsStream
+      return val1IsStream && val1IsStream;
     }
-    if (typeof val1 === 'object' && typeof val2 === 'object') {
-      return isEqual(val1, val2)
+    if (typeof val1 === "object" && typeof val2 === "object") {
+      return isEqual(val1, val2);
     }
     // eslint-disable-next-line eqeqeq
-    return val1 == val2
-  })
+    return val1 == val2;
+  });
 }
 
 // untested
 function isEqual(obj1, obj2, predicate) {
-  predicate = predicate || ((a, b) => a !== b)
+  predicate = predicate || ((a, b) => a !== b);
   for (const key in obj2) {
-    if (predicate(obj1[key], obj2[key], key))
-      return false
+    if (predicate(obj1[key], obj2[key], key)) {
+      return false;
+    }
   }
   // check for missing keys
   for (const key in obj1) {
-    if (!(key in obj2))
-      return false
+    if (!(key in obj2)) {
+      return false;
+    }
   }
-  return true
+  return true;
 }

@@ -4,7 +4,7 @@
 // right now we only use React.createElement when creating truffle elements, and we control this
 // (zygote module mutation + compilation-api
 
-import React from 'https://npm.tfl.dev/react'
-import { createElement as modifiedCreateElement } from './modified-create-element.js'
+import React from "https://npm.tfl.dev/react";
+import { createElement as modifiedCreateElement } from "./modified-create-element.js";
 
-React.createElement = modifiedCreateElement
+React.createElement = modifiedCreateElement;

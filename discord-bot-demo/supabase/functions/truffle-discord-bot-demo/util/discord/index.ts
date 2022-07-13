@@ -1,4 +1,8 @@
-import { RESTGetAPIGuildMemberResult, RouteBases, Routes } from "https://deno.land/x/discord_api_types@0.36.1/v10.ts";
+import {
+  RESTGetAPIGuildMemberResult,
+  RouteBases,
+  Routes,
+} from "https://deno.land/x/discord_api_types@0.36.1/v10.ts";
 
 const DISCORD_TOKEN = Deno.env.get("DISCORD_TOKEN");
 

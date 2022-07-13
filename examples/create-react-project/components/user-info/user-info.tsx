@@ -7,13 +7,13 @@ import { gql, useQuery } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
 
 const USER_GET_ME_QUERY = gql`
   query { me { id, name } }
-`
+`;
 
 export default function UserInfo() {
   const [meResult] = useQuery({ query: USER_GET_ME_QUERY });
   const [isAuthDialogHidden, setIsAuthDialogHidden] = useState(true);
 
-  const { name, id } = meResult.data?.me || {}
+  const { name, id } = meResult.data?.me || {};
 
   return (
     <>
@@ -21,11 +21,17 @@ export default function UserInfo() {
       <h3>User info</h3>
       <div>ID: {id}</div>
       <div>Name: {name}</div>
-      {!name && <Button onClick={() => setIsAuthDialogHidden(false)}>Login</Button>}
-      {!isAuthDialogHidden && <AuthDialog
-        hidden={isAuthDialogHidden}
-        onclose={() => { setIsAuthDialogHidden(true) }}
-      />}
+      {!name && (
+        <Button onClick={() => setIsAuthDialogHidden(false)}>Login</Button>
+      )}
+      {!isAuthDialogHidden && (
+        <AuthDialog
+          hidden={isAuthDialogHidden}
+          onclose={() => {
+            setIsAuthDialogHidden(true);
+          }}
+        />
+      )}
     </>
   );
 }

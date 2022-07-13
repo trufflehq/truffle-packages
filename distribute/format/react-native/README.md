@@ -1,4 +1,5 @@
-We could support React Native with this. Where we'd probably want to have .dist.js exports use:
+We could support React Native with this. Where we'd probably want to have
+.dist.js exports use:
 
 ```
 {
