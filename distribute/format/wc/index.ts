@@ -2,6 +2,7 @@ import { defineAndGetWebComponent as fastDefineAndGetWebComponent } from "./lib/
 import { defineAndGetWebComponent as fastFoundationDefineAndGetWebComponent } from "./lib/fast-foundation/index.ts";
 import { defineAndGetWebComponent as hauntedDefineAndGetWebComponent } from "./lib/haunted/index.ts";
 import { defineAndGetWebComponent as reactDefineAndGetWebComponent } from "./lib/react/index.ts";
+import { defineAndGetWebComponent as vueDefineAndGetWebComponent } from "./lib/vue/index.ts";
 
 function kebabCase(str) {
   return str
@@ -19,6 +20,7 @@ const defineAndGetWebComponentFns = {
   "fast-foundation": fastFoundationDefineAndGetWebComponent,
   "haunted": hauntedDefineAndGetWebComponent,
   "react": reactDefineAndGetWebComponent,
+  "vue": vueDefineAndGetWebComponent,
 };
 
 export function toDist(from, component, url) {
