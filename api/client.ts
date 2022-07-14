@@ -43,6 +43,10 @@ export function pollingQueryObservable(interval, query, variables) {
   return obs.pipe(op.poll(interval));
 }
 
+export function query(query, variables) {
+  return getClient().query(query, variables).toPromise();
+}
+
 export function mutation(query, variables) {
   return getClient().mutation(query, variables).toPromise();
 }
