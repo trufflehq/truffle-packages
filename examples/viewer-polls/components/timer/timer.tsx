@@ -1,45 +1,59 @@
 import React, { useEffect, useRef, useState } from "https://npm.tfl.dev/react";
 import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.ts";
 
-const STATUS = {
-  STARTED: "Started",
-  STOPPED: "Stopped",
-};
+// const STATUS = {
+//   STARTED: "Started",
+//   STOPPED: "Stopped",
+// };
 
-export default function Timer({ initialSeconds }) {
-  const [secondsRemaining, setSecondsRemaining] = useState(initialSeconds);
-  const [status, setStatus] = useState(STATUS.STOPPED);
+enum Status {
+  STARTED = "Started",
+  STOPPED = "Stopped",
+}
+
+export default function CountdownTimer({ endTime }) {
+  const [secondsRemaining, setSecondsRemaining] = useState();
+  const [status, setStatus] = useState(Status.STOPPED);
+  const [delay, setDelay] = useState(1000);
 
   const secondsToDisplay = Math.round(secondsRemaining % 60);
   const minutesRemaining = (secondsRemaining - secondsToDisplay) / 60;
   const minutesToDisplay = Math.round(minutesRemaining % 60);
-  const hoursToDisplay = Math.round((minutesRemaining - minutesToDisplay) / 60);
-
   useEffect(() => {
-    setStatus(STATUS.STARTED);
-  }, []);
+    setStatus(Status.STARTED);
+    setDelay(1000);
+    const start = new Date().getTime();
+    const end = new Date(endTime).getTime();
+    const timeRemaining = (end - start) / 1000;
+    setSecondsRemaining(timeRemaining);
+  }, [endTime]);
 
   useInterval(
     () => {
+      const start = new Date().getTime();
+      const end = new Date(endTime).getTime();
+      const timeRemaining = (end - start) / 1000;
+
       if (secondsRemaining > 0) {
-        setSecondsRemaining(secondsRemaining - 1);
+        setSecondsRemaining(timeRemaining);
       } else {
-        setStatus(STATUS.STOPPED);
+        setStatus(Status.STOPPED);
       }
     },
-    status === STATUS.STARTED ? 1000 : null,
+    status === Status.STARTED ? delay : null,
     // passing null stops the interval
   );
 
-  const hasEnded = secondsRemaining < 0;
+  const hasEnded = secondsRemaining < 0 || isNaN(secondsRemaining);
   return (
     <div className="timer">
       <Stylesheet url={new URL("./timer.css", import.meta.url)} />
       <>
         {hasEnded
-          ? `Poll has ended`
-          : `${twoDigits(hoursToDisplay)}:${twoDigits(minutesToDisplay)}:
-          ${twoDigits(secondsToDisplay)}`}
+          ? `Submissions closed`
+          : `Submissions closing in ${twoDigits(minutesToDisplay)}:${
+            twoDigits(secondsToDisplay)
+          }`}
       </>
     </div>
   );

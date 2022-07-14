@@ -19,7 +19,7 @@ export const ME_QUERY = gql`
   }
 `;
 
-export const PACKAGE_POLL_QUERY = gql`
+export const PACKAGE_CONNECTION_QUERY = gql`
   query PollConnectionQuery ($input: PollConnectionInput, $first: Int, $after: String, $last: Int, $before: String) {
     pollConnection(input: $input, first: $first, after: $after, last: $last, before: $before) {
         pageInfo {
@@ -39,13 +39,34 @@ export const PACKAGE_POLL_QUERY = gql`
                 unique
             }
             myVote {
-              id
               optionIndex
               count
             }
             endTime
             time
         }
+    }
+}
+`;
+
+export const POLL_QUERY = gql`
+  query PollQuery ($input: PollInput) {
+    poll(input: $input) {
+            id
+            orgId
+            question
+            options {
+                text
+                index
+                count
+                unique
+            }
+            myVote {
+              optionIndex
+              count
+            }
+            endTime
+            time
     }
 }
 `;
@@ -58,4 +79,35 @@ export const POLL_VOTE_MUTATION = gql`
       hasVoted
     }
   }
+`;
+
+export const COLLECTIBLE_BY_SLUG_QUERY = gql`
+query CollectibleQuery ($input: CollectibleInput!) {
+    collectible(input: $input) {
+       id
+       orgId
+       slug
+       name
+       type
+       targetType
+       data {
+           category
+           redeemType
+           description
+           redeemData
+       }
+       ownedCollectible {
+        count
+       }
+    }
+}
+`;
+
+export const OWNED_COLLECTIBLE_REDEEMED_MUTATION = gql`
+mutation OwnedCollectibleRedeem ($input: OwnedCollectibleRedeemInput) {
+    ownedCollectibleRedeem(input: $input) {
+        redeemResponse
+        redeemError
+    }
+}
 `;

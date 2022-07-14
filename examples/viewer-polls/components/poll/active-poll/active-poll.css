@@ -1,0 +1,50 @@
+.c-active-poll {
+  background: var(--tfl-color-bg-fill);
+  color: var(--tfl-color-on-bg-fill);
+
+  --tfl-color-secondary-bg-border: rgba(22, 31, 44, 1);
+  --tfl-color-secondary-bg-fill: rgba(22, 31, 44, 1);
+  --tfl-color-secondary-bg-fill-hovered: rgb(50, 70, 99);
+  --tfl-color-tertiary-bg-fill: rgba(45, 57, 74, 1);
+}
+
+.c-active-poll>.count {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 8px;
+}
+
+.c-active-poll>.button {
+  background: rgba(255, 0, 0, 0.2);
+  border: none;
+  padding: 8px;
+  margin-top: 4px;
+  cursor: pointer;
+}
+
+.c-active-poll  {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  padding: 0 var(--tfl-spacing-layout-lg);
+}
+
+.c-active-poll .primary-button {
+  display: flex;
+  justify-content: center;
+  height: 40px;
+  font-weight: var(--tfl-font-weight-body-semibold);
+  --tfl-color-surface-fill: var(--tfl-color-secondary-fill);
+}
+
+.c-active-poll .primary-button:hover {
+  --tfl-color-surface-fill-hovered: var(--tfl-color-secondary-fill-hovered);
+}
+
+.c-active-poll .primary-button:active {
+  --tfl-color-surface-fill-pressed: var(--tfl-color-secondary-fill-pressed);
+}
+
+.c-active-poll>footer {
+  margin-top: var(--tfl-spacing-layout-xs);
+}

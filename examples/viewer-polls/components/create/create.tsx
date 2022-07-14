@@ -1,7 +1,7 @@
 import React, { useEffect } from "https://npm.tfl.dev/react";
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.2/jumper/jumper.ts";
 import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.ts";
-import ActivePoll from "../poll/active-poll/active-poll.tsx";
+import CreatePoll from "../poll/create-poll/create-poll.tsx";
 
 function ExtensionMapping() {
   useEffect(() => {
@@ -11,8 +11,10 @@ function ExtensionMapping() {
       background: "#fff",
       position: "fixed",
       bottom: 0,
+      left: "400px",
       "z-index": "999",
     };
+
     // set styles for this iframe within YouTube's site
     jumper.call("layout.applyLayoutConfigSteps", {
       layoutConfigSteps: [
@@ -24,8 +26,8 @@ function ExtensionMapping() {
 
   return (
     <>
-      <Stylesheet url={new URL("./home.css", import.meta.url)} />
-      <ActivePoll />
+      <Stylesheet url={new URL("./create.css", import.meta.url)} />
+      <CreatePoll onCancel={() => console.log("handle cancel")} />
     </>
   );
 }
