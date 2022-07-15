@@ -1,3 +1,6 @@
+import css from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
+
+export default css`
 .root {
   display: flex;
   flex-direction: row;
@@ -31,4 +34,4 @@
 .end {
   display: flex;
   margin-inline-end: var(--tfl-spacing-sm);
-}
+}`;

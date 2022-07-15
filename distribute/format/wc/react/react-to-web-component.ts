@@ -174,8 +174,12 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
 
       let element = React.createElement(ReactComponent, data, children);
 
-      if (options.reactContainerContext) {
-        React.createElement(options.reactContainerContext.provider, element);
+      if (options.wcContainerContext) {
+        element = React.createElement(
+          options.wcContainerContext.Provider,
+          { value: { container } },
+          element,
+        );
       }
 
       // Use react to render element in container

@@ -3,10 +3,13 @@
 // it's an esm.sh issue, but using skypack this fixes for now
 import { component as toComponent } from "../../../../pinned-libs/haunted.ts";
 
-import { addFormat, urlToTagName } from "../../shared.ts";
+import { addFormat, urlToTagName } from "../shared.ts";
 
 export function defineAndGetWebComponent(component, tagName) {
+  // in theory we should be able to extend this lit class to set static styles
+  // but first experimentation with it didn't work
   const webComponent = toComponent(component);
+
   customElements.define(tagName, webComponent);
   return {
     webComponent,
@@ -18,5 +21,5 @@ export function defineAndGetWebComponent(component, tagName) {
 export function toDist(component, url) {
   const tagName = urlToTagName(url);
   const base = defineAndGetWebComponent(component, tagName);
-  return addFormat(base);
+  return addFormat({ ...base, tagName });
 }

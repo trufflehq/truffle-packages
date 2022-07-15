@@ -1,3 +1,6 @@
+import css from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
+
+export default css`
 .header>.title {
   font-family: var(--truffle-font-family);
   font-weight: 600;
@@ -36,4 +39,4 @@
   top: 0;
   right: 0;
   color: var(--tfl-color-critical-text);
-}
+}`;

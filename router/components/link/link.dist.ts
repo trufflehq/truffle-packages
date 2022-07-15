@@ -4,7 +4,7 @@ import {
   observable,
   slotted,
 } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
-import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/index.ts";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/fast/index.ts";
 import { push } from "https://tfl.dev/@truffle/router@^1.0.0/history.ts";
 
 const onClick = (x, c) => {
@@ -24,13 +24,9 @@ class Link extends FASTElement {
   public defaultSlottedContent: HTMLElement[];
 }
 
-export default toDist(
-  "fast",
-  {
-    decoratorObj: {
-      template,
-    },
-    Class: Link,
+export default toDist({
+  decoratorObj: {
+    template,
   },
-  import.meta.url,
-);
+  Class: Link,
+}, import.meta.url);

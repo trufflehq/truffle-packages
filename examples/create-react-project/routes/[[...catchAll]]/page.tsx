@@ -1,5 +1,5 @@
 import React from "https://npm.tfl.dev/react";
-import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/index.ts";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
 
 function Page() {
   return (
@@ -9,4 +9,4 @@ function Page() {
   );
 }
 
-export default toDist("react", Page, import.meta.url);
+export default toDist(Page, import.meta.url);

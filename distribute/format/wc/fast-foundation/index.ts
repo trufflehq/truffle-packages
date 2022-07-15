@@ -1,6 +1,6 @@
 import { DesignSystem } from "https://npm.tfl.dev/@microsoft/fast-foundation@alpha";
 
-import { addFormat, urlToTagName } from "../../shared.ts";
+import { addFormat, urlToTagName } from "../shared.ts";
 
 export function defineAndGetWebComponent(definition, tagName) {
   const [prefix, ...rest] = tagName.split("-");
@@ -17,5 +17,5 @@ export function defineAndGetWebComponent(definition, tagName) {
 export function toDist(definition, url) {
   const tagName = urlToTagName(url);
   const base = defineAndGetWebComponent(definition, tagName);
-  return addFormat(base);
+  return addFormat({ ...base, tagName });
 }
