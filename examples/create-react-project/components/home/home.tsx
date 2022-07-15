@@ -29,12 +29,12 @@ function ExtensionMapping() {
   }, []);
 
   return (
-    <>
+    <div className="c-home">
       Hello world!
       <Counter initialCount={2} />
       <UserInfo />
       <Link href="/abc">My link</Link>
-    </>
+    </div>
   );
 }
 

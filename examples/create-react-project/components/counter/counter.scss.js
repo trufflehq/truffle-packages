@@ -1,7 +1,8 @@
 import scss from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
 
+// sass example (make sure file is named ___.scss.js or ___.sass.js)
 export default scss`
-:host {
+.c-counter {
   > .count {
     background: rgba(0, 0, 0, 0.1);
     padding: 8px;

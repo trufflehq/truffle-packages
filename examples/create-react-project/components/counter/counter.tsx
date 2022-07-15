@@ -11,12 +11,12 @@ export default function Counter({ initialCount = 0 }) {
   const [count, setCount] = useState(initialCount);
 
   return (
-    <>
+    <div className="c-counter">
       <div className="count">Count: {count}</div>
       <Button className="button" onClick={() => setCount(count + 1)}>
         Increment
       </Button>
-    </>
+    </div>
   );
 }
 
