@@ -1,15 +1,7 @@
 import css from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
 
 export default css`
-:host>.count {
-  background: rgba(0, 0, 0, 0.1);
-  padding: 8px;
+.c-user-info {
+  border: 2px solid rgba(0, 0, 255, 0.2);
 }
-
-:host>.button {
-  background: rgba(255, 0, 0, 0.2);
-  border: none;
-  padding: 8px;
-  margin-top: 4px;
-  cursor: pointer;
-}`;
+`;

@@ -3,6 +3,7 @@ import AuthDialog from "https://tfl.dev/@truffle/ui@~0.1.0/components/auth-dialo
 import Button from "https://tfl.dev/@truffle/ui@~0.1.0/components/button/button.tag.ts";
 import { gql, useQuery } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+
 import styleSheet from "./user-info.css.js";
 
 const USER_GET_ME_QUERY = gql`
@@ -17,7 +18,7 @@ export default function UserInfo() {
   const { name, id } = meResult.data?.me || {};
 
   return (
-    <>
+    <div className="c-user-info">
       <h3>User info</h3>
       <div>ID: {id}</div>
       <div>Name: {name}</div>
@@ -32,6 +33,6 @@ export default function UserInfo() {
           }}
         />
       )}
-    </>
+    </div>
   );
 }

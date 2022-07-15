@@ -30,7 +30,6 @@ function ExtensionMapping() {
 
   return (
     <>
-      {/* <Stylesheet url={new URL("./home.css", import.meta.url)} /> */}
       Hello world!
       <Counter initialCount={2} />
       <UserInfo />
