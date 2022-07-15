@@ -1,11 +1,6 @@
 import React, { useEffect, useRef, useState } from "https://npm.tfl.dev/react";
 import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.ts";
 
-// const STATUS = {
-//   STARTED: "Started",
-//   STOPPED: "Stopped",
-// };
-
 enum Status {
   STARTED = "Started",
   STOPPED = "Stopped",

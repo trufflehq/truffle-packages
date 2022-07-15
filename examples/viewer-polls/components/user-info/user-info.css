@@ -1,9 +1,9 @@
-:host>.count {
+:host > .count {
   background: rgba(0, 0, 0, 0.1);
   padding: 8px;
 }
 
-:host>.button {
+:host > .button {
   background: rgba(255, 0, 0, 0.2);
   border: none;
   padding: 8px;

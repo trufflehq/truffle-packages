@@ -4,7 +4,7 @@ import PollOverlay from "../../components/poll/poll-overlay/poll-overlay.tsx";
 function PollOverlayPage() {
   return (
     <div className="p-poll-overlay-page">
-      <PollOverlay pollId={""} />
+      <PollOverlay />
     </div>
   );
 }

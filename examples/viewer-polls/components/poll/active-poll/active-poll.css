@@ -8,12 +8,12 @@
   --tfl-color-tertiary-bg-fill: rgba(45, 57, 74, 1);
 }
 
-.c-active-poll>.count {
+.c-active-poll > .count {
   background: rgba(0, 0, 0, 0.1);
   padding: 8px;
 }
 
-.c-active-poll>.button {
+.c-active-poll > .button {
   background: rgba(255, 0, 0, 0.2);
   border: none;
   padding: 8px;
@@ -45,6 +45,6 @@
   --tfl-color-surface-fill-pressed: var(--tfl-color-secondary-fill-pressed);
 }
 
-.c-active-poll>footer {
+.c-active-poll > footer {
   margin-top: var(--tfl-spacing-layout-xs);
 }
