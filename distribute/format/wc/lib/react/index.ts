@@ -2,8 +2,12 @@ import React from "https://npm.tfl.dev/react";
 import isSsr from "https://tfl.dev/@truffle/utils@~0.0.2/ssr/is-ssr.ts";
 
 import reactToWebComponent from "./react-to-web-component.ts";
+import wcContainerContext from "./wc-container-context.ts";
+
+import { addFormat, urlToTagName } from "../../shared.ts";
 
 let ReactDOM;
+const wcContainerContext = React.createContext();
 
 async function getReactDOM() {
   ReactDOM = ReactDOM ||
@@ -27,6 +31,7 @@ export function defineAndGetWebComponent(
       {
         shadow: isShadowDom,
         dashStyleAttributes: true,
+        wcContainerContext,
       },
     );
     customElements.define(tagName, webComponent);
@@ -37,4 +42,17 @@ export function defineAndGetWebComponent(
     libSemver: "1",
     webComponent,
   };
+}
+
+export function useStylesheet(styleSheet) {
+  React.useEffect(() => {
+    const { context } = React.useContext(wcContainerContext);
+    console.log("context", context, styleSheet);
+  }, []);
+}
+
+export function toDist(component, url) {
+  const tagName = urlToTagName(url);
+  const base = defineAndGetWebComponent(component, tagName);
+  return addFormat(base);
 }

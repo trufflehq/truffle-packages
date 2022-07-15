@@ -3,7 +3,7 @@ import {
   html,
   observable,
 } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
-import { toDist } from "https://tfl.dev/@truffle/distribute@^1.0.0/format/wc/index.ts";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/index.ts";
 
 // initial-state is a property only we should be using atm
 // eventually we could document, but need to see how we like it first.

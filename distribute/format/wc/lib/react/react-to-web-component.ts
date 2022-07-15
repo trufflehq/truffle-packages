@@ -75,6 +75,7 @@ function mapChildren(React, node) {
  * @param {Object} options - Optional parameters
  * @param {String?} options.shadow - Use shadow DOM rather than light DOM.
  * @param {String?} options.dashStyleAttributes - Use dashed style of attributes to reflect camelCase properties
+ * @param {String?} options.reactContainerContext - context for getting root element shadowRoot
  */
 export default function (ReactComponent, React, ReactDOM, options = {}) {
   const renderAddedProperties = {
@@ -171,7 +172,11 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
       // });
       const children = flattenIfOne(mapChildren(React, this));
 
-      const element = React.createElement(ReactComponent, data, children);
+      let element = React.createElement(ReactComponent, data, children);
+
+      if (options.reactContainerContext) {
+        React.createElement(options.reactContainerContext.provider, element);
+      }
 
       // Use react to render element in container
       if (typeof ReactDOM.createRoot === "function") {

@@ -3,6 +3,8 @@
 // it's an esm.sh issue, but using skypack this fixes for now
 import { component as toComponent } from "../../../../pinned-libs/haunted.ts";
 
+import { addFormat, urlToTagName } from "../../shared.ts";
+
 export function defineAndGetWebComponent(component, tagName) {
   const webComponent = toComponent(component);
   customElements.define(tagName, webComponent);
@@ -11,4 +13,10 @@ export function defineAndGetWebComponent(component, tagName) {
     libSlug: "haunted-lit",
     libSemver: "5",
   };
+}
+
+export function toDist(component, url) {
+  const tagName = urlToTagName(url);
+  const base = defineAndGetWebComponent(component, tagName);
+  return addFormat(base);
 }
