@@ -1,5 +1,6 @@
+import scss from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
+export default scss`
 @import url('https://fonts.googleapis.com/css2?family=Inter&family=Poppins:wght@400;500;600&display=swap');
-
 
 .spotify-component {
   // all of these colors will eventually be controlled by the --tfl css var stuff so creators can customize the way they want
@@ -190,3 +191,4 @@
     }
   }
 }
+`;
