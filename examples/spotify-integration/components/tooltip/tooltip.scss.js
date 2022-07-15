@@ -1,3 +1,5 @@
+import scss from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
+export default scss`
 .tooltip {
 
 	//triangle pre hover
@@ -67,10 +69,9 @@
 
 	&.minimize:hover:after {
 		transform: translateY(-63px) translateX(-90%);
-
 		//fixes firefox bug?
 		@-moz-document url-prefix() {
 			transform: translateY(-60px) translateX(-90%);
 		}
 	}
-}
+}`;
