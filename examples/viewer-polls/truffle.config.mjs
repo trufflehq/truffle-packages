@@ -1,6 +1,6 @@
 export default {
   name: '@truffle/viewer-polls',
-  version: '0.2.1',
+  version: '0.2.2',
   apiUrl: 'https://mycelium.staging.bio/graphql',
 
   // This is used to specify the required permissions that the package has access to
