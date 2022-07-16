@@ -1,6 +1,8 @@
 import React from "https://npm.tfl.dev/react";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+
+import styleSheet from "./poll-body.scss.js";
 import CountdownTimer from "../../timer/timer.tsx";
-import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.ts";
 
 type PollBodyProps = {
   pollTitle: string;
@@ -11,9 +13,10 @@ type PollBodyProps = {
 export default function PollBody(
   { pollTitle, pollEndTime, children }: PollBodyProps,
 ) {
+  useStyleSheet(styleSheet);
+
   return (
     <div className="c-poll-body">
-      <Stylesheet url={new URL("./poll-body.css", import.meta.url)} />
       <header>
         <div className="title">
           {pollTitle}
