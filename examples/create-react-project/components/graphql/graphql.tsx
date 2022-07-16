@@ -6,6 +6,9 @@ import {
   useQuery,
 } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+import Highlight, {
+  defaultProps,
+} from "https://npm.tfl.dev/prism-react-renderer@1.3.5";
 
 import examples from "./examples.ts";
 import styleSheet from "./graphql.scss.js";
@@ -41,21 +44,39 @@ function Example({ example }) {
     <div className="c-graphql_example">
       <h2>Resolver</h2>
       <div className="subtitle">Query</div>
-      <div className="query">{getGqlString(example.resolver.query)}</div>
+      <div className="query">
+        <CodeHighlight
+          language="graphql"
+          code={getGqlString(example.resolver.query)}
+        />
+      </div>
       <div className="subtitle">Variables</div>
       <div className="variables">
-        {JSON.stringify(example.resolver.variables)}
+        <CodeHighlight
+          language="json"
+          code={JSON.stringify(example.resolver.variables)}
+        />
       </div>
       <div className="subtitle">Result</div>
       {queryResult.error && `Error: ${queryResult.error}`}
       <div className="result">
         {queryResult.fetching && "Loading..."}
-        {!queryResult.fetching && JSON.stringify(queryResult.data)}
+        {!queryResult.fetching && (
+          <CodeHighlight
+            language="json"
+            code={JSON.stringify(queryResult.data, null, 2)}
+          />
+        )}
       </div>
 
       <h2>Mutation</h2>
       <div className="subtitle">Query</div>
-      <div className="query">{getGqlString(example.mutation.query)}</div>
+      <div className="query">
+        <CodeHighlight
+          language="graphql"
+          code={getGqlString(example.mutation.query)}
+        />
+      </div>
       <div className="subtitle">Variables</div>
       <div className="variables">
         <textarea onInput={(e) => setMutationVariablesStr(e.target.value)}>
@@ -65,7 +86,12 @@ function Example({ example }) {
       {mutationResult.error && `Error: ${mutationResult.error}`}
       <div className="result">
         {mutationResult.fetching && "Loading..."}
-        {!mutationResult.fetching && JSON.stringify(mutationResult.data)}
+        {mutationResult.data && !mutationResult.fetching && (
+          <CodeHighlight
+            language="json"
+            code={JSON.stringify(mutationResult.data, null, 2)}
+          />
+        )}
       </div>
       <Button onClick={() => mutationExecute(JSON.parse(mutationVariablesStr))}>
         Execute
@@ -76,4 +102,26 @@ function Example({ example }) {
 
 function getGqlString(doc) {
   return doc.loc && doc.loc.source.body;
+}
+
+function CodeHighlight({ code, language }) {
+  return (
+    <Highlight
+      {...defaultProps}
+      language={language}
+      code={code}
+    >
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <pre className={className} style={style}>
+          {tokens.map((line, i) => (
+            <div {...getLineProps({ line, key: i })}>
+              {line.map((token, key) => (
+                <span {...getTokenProps({ token, key })} />
+              ))}
+            </div>
+          ))}
+        </pre>
+      )}
+    </Highlight>
+  );
 }
