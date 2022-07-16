@@ -1,4 +1,5 @@
 import {
+  css,
   FASTElement,
   html,
   observable,
@@ -19,6 +20,11 @@ const template = html`
     <slot ${slotted("defaultSlottedContent")}></slot>
   </a>`;
 
+const styles = css`
+  :host a {
+    color: inherit;
+  }`;
+
 class Link extends FASTElement {
   @observable
   public defaultSlottedContent: HTMLElement[];
@@ -27,6 +33,7 @@ class Link extends FASTElement {
 export default toDist({
   decoratorObj: {
     template,
+    styles,
   },
   Class: Link,
 }, import.meta.url);

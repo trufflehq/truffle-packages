@@ -30,10 +30,12 @@ function ExtensionMapping() {
 
   return (
     <div className="c-home">
+      <div className="links">
+        <Link href="/graphql/me">GraphQL examples</Link>
+      </div>
       Hello world!
       <Counter initialCount={2} />
       <UserInfo />
-      <Link href="/abc">My link</Link>
     </div>
   );
 }
