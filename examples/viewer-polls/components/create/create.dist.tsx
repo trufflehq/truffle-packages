@@ -1,7 +1,7 @@
 import React, { useEffect } from "https://npm.tfl.dev/react";
 import jumper from "https://tfl.dev/@truffle/utils@0.0.1/jumper/jumper.ts";
 import Stylesheet from "https://tfl.dev/@truffle/ui@0.0.3/components/stylesheet/stylesheet.ts";
-import { toDist } from "https://tfl.dev/@truffle/distribute@^1.0.0/format/wc/index.ts";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
 import CreatePoll from "../poll/create-poll/create-poll.tsx";
 
 function ExtensionMapping() {
@@ -31,4 +31,4 @@ function ExtensionMapping() {
   );
 }
 
-export default toDist("react", ExtensionMapping, import.meta.url);
+export default toDist(ExtensionMapping, import.meta.url);
