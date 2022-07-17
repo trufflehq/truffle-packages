@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "https://npm.tfl.dev/react";
 import PropTypes from "https://npm.tfl.dev/prop-types@15.8.1";
-import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.ts";
 import Button from "https://tfl.dev/@truffle/ui@~0.0.3/components/button/button.tag.ts";
 import { POLL_VOTE_MUTATION } from "../gql.ts";
 import { getPollTimeRemaining } from "../utils.ts";
 import PollOptions from "../poll-options/poll-options.tsx";
 import PollBody from "../poll-body/poll-body.tsx";
 import { useMutation } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+import styleSheet from "./active-poll.scss.js";
 
 import { useFetchPoll } from "../hooks.ts";
 type ActivePollProps = {
@@ -20,6 +21,7 @@ export default function ActivePoll({ pollId }: ActivePollProps) {
   const [pollVoteResult, executeVoteMutation] = useMutation(
     POLL_VOTE_MUTATION,
   );
+  useStyleSheet(styleSheet);
 
   const latestPoll = useFetchPoll({ pollId });
 
@@ -41,11 +43,8 @@ export default function ActivePoll({ pollId }: ActivePollProps) {
   }, [latestPoll]);
 
   const handleOptionSelection = (index) => {
-    console.log("handle option select");
     setSelectedIndex(index);
   };
-
-  console.log(selectedIndex);
 
   const handleVote = async () => {
     const variables = {
@@ -67,7 +66,6 @@ export default function ActivePoll({ pollId }: ActivePollProps) {
 
   return (
     <div className="c-active-poll">
-      <Stylesheet url={new URL("./active-poll.css", import.meta.url)} />
       <PollBody pollTitle={pollTitle} pollEndTime={pollEndTime}>
         <PollOptions
           pollOptions={pollOptions}

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "https://npm.tfl.dev/react";
-import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.ts";
 import Button from "https://tfl.dev/@truffle/ui@~0.0.3/components/button/button.tag.ts";
 import TextField from "https://tfl.dev/@truffle/ui@~0.0.3/components/text-field/text-field.tag.ts";
 import {
@@ -12,6 +11,8 @@ import {
   useQuery,
 } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
 import UserInfo from "../../user-info/user-info.tsx";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+import styleSheet from "./create-poll.scss.js";
 const MAX_POLL_QUESTIONS = 5;
 
 export default function CreatePoll({ onCancel }) {
@@ -24,6 +25,7 @@ export default function CreatePoll({ onCancel }) {
       },
     },
   });
+  useStyleSheet(styleSheet);
 
   const collectible = (collectibleData as CollectibleResponse)?.collectible;
 
@@ -41,7 +43,6 @@ export default function CreatePoll({ onCancel }) {
 
   return (
     <div className="c-create-poll">
-      <Stylesheet url={new URL("./create-poll.css", import.meta.url)} />
       <h2>
         Create a poll
       </h2>

@@ -1,8 +1,8 @@
 import React, { useEffect } from "https://npm.tfl.dev/react";
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.2/jumper/jumper.ts";
-import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.ts";
 import CreatePoll from "../poll/create-poll/create-poll.tsx";
-
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+import styleSheet from "./create.scss.js";
 function ExtensionMapping() {
   useEffect(() => {
     const style = {
@@ -23,10 +23,10 @@ function ExtensionMapping() {
       ],
     });
   }, []);
+  useStyleSheet(styleSheet);
 
   return (
     <>
-      <Stylesheet url={new URL("./create.css", import.meta.url)} />
       <CreatePoll onCancel={() => console.log("handle cancel")} />
     </>
   );

@@ -12,6 +12,7 @@ On the front-end there are currently 3 routes:
 * `/`: The root will be the base extension mapping that viewers use to vote and view the results of the polls
 * `/create`: This is the extension mapping that can be used to create the poll
 * `/poll-overlay`: This is a page the streamer can use to pull the viewer generated polls into a Brower Source overlay in OBS
+* `/poll/:id`: This page contains scaffolding you could use to redirect to a page where you could manage a specific poll
 
 
 ## Future Work

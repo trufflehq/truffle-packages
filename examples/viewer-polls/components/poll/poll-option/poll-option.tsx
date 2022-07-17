@@ -1,7 +1,8 @@
 import React from "https://npm.tfl.dev/react";
 import classKebab from "https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js";
-import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.ts";
 import { PollOption as PollOptionType } from "../types.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+import styleSheet from "./poll-option.scss.js";
 
 type PollOptionProps = {
   option: PollOptionType;
@@ -24,6 +25,8 @@ export default function PollOption(
     roundedVotePercentages,
   }: PollOptionProps,
 ) {
+  useStyleSheet(styleSheet);
+
   return (
     <div
       className={`c-option ${
@@ -35,7 +38,6 @@ export default function PollOption(
       }`}
       onClick={() => handleSelect(option.index)}
     >
-      <Stylesheet url={new URL("./poll-option.css", import.meta.url)} />
       <div
         className="progress"
         style={{

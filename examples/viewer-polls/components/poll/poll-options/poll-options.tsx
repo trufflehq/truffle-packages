@@ -2,8 +2,8 @@ import React from "https://npm.tfl.dev/react";
 import { PollOption as PollOptionType } from "../types.ts";
 import { largestRemainderRound } from "../utils.ts";
 import PollOption from "../poll-option/poll-option.tsx";
-import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.ts";
-
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+import styleSheet from "./poll-options.scss.js";
 type PollOptionsProps = {
   pollOptions: PollOptionType[];
   isTransparent?: boolean;
@@ -21,6 +21,7 @@ export default function PollOptions(
     handleOptionSelection,
   }: PollOptionsProps,
 ) {
+  useStyleSheet(styleSheet);
   const totalVotes = pollOptions?.reduce((acc: number, curr) => {
     acc = acc + curr.count;
     return acc;
@@ -32,7 +33,6 @@ export default function PollOptions(
 
   return (
     <div className="c-poll-options">
-      <Stylesheet url={new URL("./poll-options.css", import.meta.url)} />
       {pollOptions &&
         pollOptions.map((option, i) => {
           return (

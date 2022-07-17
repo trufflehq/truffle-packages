@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "https://npm.tfl.dev/react";
-import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.ts";
-
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+import styleSheet from "./timer.scss.js";
 enum Status {
   STARTED = "Started",
   STOPPED = "Stopped",
@@ -10,6 +10,7 @@ export default function CountdownTimer({ endTime }) {
   const [secondsRemaining, setSecondsRemaining] = useState();
   const [status, setStatus] = useState(Status.STOPPED);
   const [delay, setDelay] = useState(1000);
+  useStyleSheet(styleSheet);
 
   const secondsToDisplay = Math.round(secondsRemaining % 60);
   const minutesRemaining = (secondsRemaining - secondsToDisplay) / 60;
@@ -42,7 +43,6 @@ export default function CountdownTimer({ endTime }) {
   const hasEnded = secondsRemaining < 0 || isNaN(secondsRemaining);
   return (
     <div className="timer">
-      <Stylesheet url={new URL("./timer.css", import.meta.url)} />
       <>
         {hasEnded
           ? `Submissions closed`

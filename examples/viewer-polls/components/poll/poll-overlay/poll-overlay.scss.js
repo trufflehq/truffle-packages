@@ -1,3 +1,6 @@
+import scss from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
+
+export default scss`
 :host {
   display: flex;
   flex-direction: column;
@@ -21,3 +24,4 @@
   --tfl-color-secondary-bg-fill-hovered: rgb(50, 70, 99);
   --tfl-color-tertiary-bg-fill: rgba(45, 57, 74, 1);
 }
+`
