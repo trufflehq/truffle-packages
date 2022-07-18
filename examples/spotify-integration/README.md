@@ -21,11 +21,6 @@ localhost and when deployed and loaded into the truffle.tv extension
 
 ![image](https://user-images.githubusercontent.com/70922464/178805666-c9fa7344-1f6b-443d-a1e7-7b7165052d22.png)
 
-To modify the SCSS, you need to have a CSS compiler because truffle-cli
-currently doesn't support SCSS natively. Live Sass Compiler by Ritwick Dey is a
-Visual Studio Code extension that will automatically compile to CSS if you use
-that as your IDE.
-
 You should be able to reuse the draggable component in any project that you want
 users to be able to move around if imported as an extension mapping through the
 truffle.tv extension.
