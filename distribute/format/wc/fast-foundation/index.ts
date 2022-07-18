@@ -1,4 +1,4 @@
-import { DesignSystem } from "https://npm.tfl.dev/@microsoft/fast-foundation@alpha";
+import { DesignSystem } from "https://npm.tfl.dev/@microsoft/fast-foundation@3.0.0-alpha.4";
 
 import { addFormat, urlToTagName } from "../shared.ts";
 

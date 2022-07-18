@@ -1,4 +1,4 @@
-import { customElement } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
+import { customElement } from "https://npm.tfl.dev/@microsoft/fast-element@2.0.0-beta.3";
 
 import { addFormat, urlToTagName } from "../shared.ts";
 

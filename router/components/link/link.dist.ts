@@ -4,7 +4,7 @@ import {
   html,
   observable,
   slotted,
-} from "https://npm.tfl.dev/@microsoft/fast-element@beta";
+} from "https://npm.tfl.dev/@microsoft/fast-element@2.0.0-beta.3";
 import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/fast/index.ts";
 import { push } from "https://tfl.dev/@truffle/router@^1.0.0/history.ts";
 

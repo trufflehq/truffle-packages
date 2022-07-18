@@ -1,7 +1,5 @@
-import { html } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
-
 // only want to reset styles so first (theme/page) component can style however they want
-export default html`
+export default `
   <link rel="stylesheet" href=${new URL("./variables.css", import.meta.url)} />
   <style>
     html, body, #root {

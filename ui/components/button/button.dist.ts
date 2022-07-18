@@ -2,8 +2,11 @@
 import {
   Button as FoundationButton,
   buttonTemplate,
-} from "https://npm.tfl.dev/@microsoft/fast-foundation@alpha";
-import { css, html } from "https://npm.tfl.dev/@microsoft/fast-element@beta";
+} from "https://npm.tfl.dev/@microsoft/fast-foundation@3.0.0-alpha.4";
+import {
+  css,
+  html,
+} from "https://npm.tfl.dev/@microsoft/fast-element@2.0.0-beta.3";
 import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/fast-foundation/index.ts";
 
 import Stylesheet from "../stylesheet/stylesheet.tag.ts";
