@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "https://npm.tfl.dev/react";
 import PropTypes from "https://npm.tfl.dev/prop-types@15.8.1";
-import Button from "https://tfl.dev/@truffle/ui@~0.0.3/components/button/button.tag.ts";
+import Button from "https://tfl.dev/@truffle/ui@~0.1.0/components/button/button.tag.ts";
 import { POLL_VOTE_MUTATION } from "../gql.ts";
 import { getPollTimeRemaining } from "../utils.ts";
 import PollOptions from "../poll-options/poll-options.tsx";

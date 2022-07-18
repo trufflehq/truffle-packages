@@ -1,5 +1,5 @@
 import React from "https://npm.tfl.dev/react";
-import Stylesheet from "https://tfl.dev/@truffle/ui@~0.0.3/components/stylesheet/stylesheet.tag.ts";
+import Stylesheet from "https://tfl.dev/@truffle/ui@~0.1.0/components/stylesheet/stylesheet.tag.ts";
 import PollOptions from "../poll-options/poll-options.tsx";
 import PollBody from "../poll-body/poll-body.tsx";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";

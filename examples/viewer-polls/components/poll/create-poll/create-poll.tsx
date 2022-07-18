@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "https://npm.tfl.dev/react";
-import Button from "https://tfl.dev/@truffle/ui@~0.0.3/components/button/button.tag.ts";
-import TextField from "https://tfl.dev/@truffle/ui@~0.0.3/components/text-field/text-field.tag.ts";
+import Button from "https://tfl.dev/@truffle/ui@~0.1.0/components/button/button.tag.ts";
+import TextField from "https://tfl.dev/@truffle/ui@~0.1.0/components/text-field/text-field.tag.ts";
 import {
   COLLECTIBLE_BY_SLUG_QUERY,
   OWNED_COLLECTIBLE_REDEEMED_MUTATION,
