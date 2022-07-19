@@ -68,16 +68,20 @@ Truffle Graphql API to create a poll.
   during package installation.
 - Update the `endpoint` attribute of the EventSubscription installation step to
   the public url of your edge function.
-- Deploy the package version. `truffle-cli deploy`
+- **Deploy the package version. `truffle-cli deploy`**
   - _The package install flow (permissions & installAction) uses the deployed
     version of your package_
 - Install the package into the front-end package you've already setup with
-  `truffle-cli install @truffle/events-demo-backend@latest`.
+  `truffle-cli install @your-org/your-package@latest`.
   - Where `@truffle/events-demo-backend@latest` corresponds to your package path
     `@orgSlug/<package name>@<packageVersion semver>`.
   - You can also just install the lastest version of your package by grabbing
     the package name from `truffle.config.mjs` and appending `@latest` like in
     the example above.
+  - *If you don't have a separate frontend package, you'll still need to run the
+    truffle-cli install command in one of your other packages (you can also
+    create a dummy test package). This will create a custom role and bot user
+    that gives your package the requested permissions inside of your org.
 - To test out the package's backend functionality grab the created collectible.
   Here's a Graphql query you can use to fetch all of the org's redeemable
   collectibles (**Note: Make sure you've set the Supabase secrets before testing
