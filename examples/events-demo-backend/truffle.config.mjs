@@ -1,6 +1,7 @@
 export default {
   name: "@truffle/events-demo-backend",
   version: "0.0.12",
+  // apiUrl: "https://mycelium.truffle.vip/graphql",
   apiUrl: "https://mycelium.staging.bio/graphql",
 
   // This is used to specify the required permissions that the package has access to

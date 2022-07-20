@@ -1,7 +1,8 @@
 export default {
-  name: '@truffle/viewer-polls',
-  version: '0.2.4',
-  apiUrl: 'https://mycelium.staging.bio/graphql',
+  name: "@truffle/viewer-polls",
+  version: "0.2.4",
+  // apiUrl: "https://mycelium.truffle.vip/graphql",
+  apiUrl: "https://mycelium.staging.bio/graphql",
 
   // This is used to specify the required permissions that the package has access to
   requestedPermissions: [
@@ -35,12 +36,12 @@ export default {
       value: true,
     },
   ],
-  // installActionRel specifies a workflow action that will run upon installation 
+  // installActionRel specifies a workflow action that will run upon installation
   installActionRel: {
     // a workflow run a list of actions
-    actionPath: '@truffle/core@latest/_Action/workflow',
+    actionPath: "@truffle/core@latest/_Action/workflow",
     runtimeData: {
-      mode: 'sequential', // sequential | parallel
+      mode: "sequential", // sequential | parallel
       stepActionRels: [
         // This action will create a custom event topic 'viewer-create-poll'
         // that will be broadcast when the collectible is redeemed. This is
@@ -99,7 +100,7 @@ export default {
         },
         // This action will create an event subscription for a webhook to a 3rd party service
         {
-          actionPath: '@truffle/core@latest/_Action/graphql',
+          actionPath: "@truffle/core@latest/_Action/graphql",
           runtimeData: {
             query: `
             mutation EventSubscriptionUpsert ($input: EventSubscriptionUpsertInput!) {
@@ -112,17 +113,18 @@ export default {
                 // The event topic the subscription exists for
                 eventTopicSlug: "viewer-polls-topic",
                 actionRel: {
-                  actionPath: '@truffle/core@1.0.0/_Action/webhook',
+                  actionPath: "@truffle/core@1.0.0/_Action/webhook",
                   runtimeData: {
                     // The endpoint for the supabase edge function
-                    endpoint: 'https://qvxhlnszjqwditgwritg.functions.supabase.co/viewer-polls-example-handler'
-                  }
-                }
-              }
-            }
-          }
-        }
-      ]
-    }
-  }
-}
+                    endpoint:
+                      "https://qvxhlnszjqwditgwritg.functions.supabase.co/viewer-polls-example-handler",
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+  },
+};
