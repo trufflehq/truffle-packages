@@ -62,7 +62,7 @@ export function usePollingQuery(interval, queryInput) {
     return () => {
       clearInterval(intId);
     };
-  }, []);
+  }, [JSON.stringify(queryInput)]);
 
   return result;
 }
