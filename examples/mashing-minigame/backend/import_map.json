@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "$std/": "https://deno.land/std@0.148.0/",
+    "$x/": "https://deno.land/x/",
+    "alosaur/": "https://deno.land/x/alosaur@v0.37.0/"
+  }
+}

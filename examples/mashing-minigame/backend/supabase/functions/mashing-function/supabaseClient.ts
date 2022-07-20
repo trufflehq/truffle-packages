@@ -1,0 +1,15 @@
+import { createClient, SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@^1.33.2'
+
+export class DatabaseService {
+  client: SupabaseClient;
+  constructor() {
+    this.client = createClient(
+      // Supabase API URL - env var exported by default when deployed.
+      Deno.env.get('SUPABASE_URL') ?? '',
+      // Supabase API ANON KEY - env var exported by default when deployed.
+      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+    )
+  }
+}
+
+export default new DatabaseService()
