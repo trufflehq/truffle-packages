@@ -1,16 +1,22 @@
 import { MASHING_LEADERBOARD_QUERY } from "../../api/gql.ts";
+import React, { useMemo } from "https://npm.tfl.dev/react";
 import { usePollingQuery } from "https://tfl.dev/@truffle/api@~0.1.1/client.ts";
 
-type OrgUserCounterType = {
+export type User = {
+  name?: string
+}
+export type OrgUserCounterType = {
   userId: string
   count: number
+  user: User
 }
 
-type OrgUserCounterTypeConnection = {
+export type OrgUserCounterTypeConnection = {
   nodes: OrgUserCounterType[]
 }
 
 export function useIntervalFetchMashingLeaderboard(orgUserCounterTypeId: string) {
+
   const queryInput = {
       query: MASHING_LEADERBOARD_QUERY,
       variables: {
@@ -21,5 +27,13 @@ export function useIntervalFetchMashingLeaderboard(orgUserCounterTypeId: string)
     };
   const result = usePollingQuery(1000, queryInput);
   const orgUserCounterTypeConnection = result?.data?.orgUserCounterType?.orgUserCounterConnection;
-  return orgUserCounterTypeConnection as OrgUserCounterTypeConnection
+
+  const memoizedOrgUserCounterTypeConnection = useMemo(() => {
+
+    const connection = orgUserCounterTypeConnection
+
+    return connection
+  }, [JSON.stringify(orgUserCounterTypeConnection)])
+
+  return memoizedOrgUserCounterTypeConnection as OrgUserCounterTypeConnection
 }

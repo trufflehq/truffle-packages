@@ -1,6 +1,7 @@
 export default {
   name: '@truffle/mashing-minigame',
   version: '0.2.7',
+  // apiUrl: 'http://10.0.0.120:50420',
   apiUrl: 'https://mycelium.staging.bio/graphql',
 
   // This is used to specify the required permissions that the package has access to
@@ -17,7 +18,7 @@ export default {
       action: "update",
       value: true,
     },
-    // permission to update an orgUserCounterType
+    // permission to update an orgUserCounter
     {
       filters: { orgUserCounter: { isAll: true, rank: 0 } },
       action: "update",

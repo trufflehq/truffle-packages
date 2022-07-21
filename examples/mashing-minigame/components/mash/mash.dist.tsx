@@ -1,6 +1,5 @@
 import React, { useEffect } from "https://npm.tfl.dev/react";
 import jumper from "https://tfl.dev/@truffle/utils@0.0.1/jumper/jumper.ts";
-import Stylesheet from "https://tfl.dev/@truffle/ui@~0.1.0/components/stylesheet/stylesheet.ts";
 import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
 import ActivePoll from "../active-poll/active-poll.tsx";
 
@@ -25,7 +24,6 @@ function ExtensionMapping() {
 
   return (
     <>
-      <Stylesheet url={new URL("./home.css", import.meta.url)} />
       <ActivePoll initialCount={2} />
     </>
   );

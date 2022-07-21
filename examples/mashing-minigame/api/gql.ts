@@ -1,5 +1,5 @@
 
-import { gql } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+import { gql } from "https://tfl.dev/@truffle/api@~0.1.1/client.ts";
 
 const MASHING_CONFIG_KEY = "mashingConfig";
 const MASHING_PACKAGE_ID = "208bee01-048b-11ed-b214-24c4e95f5b37"
@@ -37,6 +37,9 @@ export const MASHING_LEADERBOARD_QUERY = gql`
       orgUserCounterConnection {
         nodes {
           userId
+          user {
+            name
+          }
           count
         }
       }

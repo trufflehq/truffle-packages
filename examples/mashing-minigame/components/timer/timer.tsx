@@ -9,9 +9,11 @@ enum Status {
 type CountdownTimerProps = {
   className?: string
   endTime: Date
+  onEnd?: () => void
+  empyStateText?: string
 }
 
-export default function CountdownTimer({ className, endTime }: CountdownTimerProps) {
+export default function CountdownTimer({ className, endTime, onEnd, empyStateText = 'Start a new round' }: CountdownTimerProps) {
   const [millisecondsRemaining, setmilliSecondsRemaining] = useState();
   const [status, setStatus] = useState(Status.STOPPED);
   const [delay, setDelay] = useState(1);
@@ -46,16 +48,27 @@ export default function CountdownTimer({ className, endTime }: CountdownTimerPro
     // passing null stops the interval
   );
 
-  const hasEnded = millisecondsRemaining < 0 || isNaN(millisecondsRemaining);
+  const hasEnded = millisecondsRemaining < 0
+  
+  useEffect(() => {
+    if(hasEnded) {
+      onEnd?.()
+    }
+  }, [hasEnded])
+
   return (
     <div className={`timer ${className || ''}`}>
       <>
-        {hasEnded
-          ?<div className='finish'>
+        { hasEnded
+          ? <div className='finish'>
+            {
+              empyStateText
+            }
           </div> 
-          : `${staticDigits(minutesToDisplay)}:${
+          : !isNaN(millisecondsRemaining) ? `${staticDigits(minutesToDisplay)}:${
             staticDigits(secondsToDisplay)
-          }:${staticDigits(millisecondsToDisplay, 3)}`}
+          }:${staticDigits(millisecondsToDisplay, 3)}`
+        : null}
       </>
     </div>
   );

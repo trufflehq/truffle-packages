@@ -5,10 +5,9 @@ export default scss `
   display: flex;
   justify-content: center;
 
-  font-family: var(--tfl-font-family-body-sans);
-  // line-height: var(--tfl-line-height-body-md);
-  font-size: var(--tfl-font-size-heading-lg);
+  font-family: var(--tfl-font-family-body-mono);
   font-weight: var(--tfl-font-weight-heading-semibold);
-  color: rgba(255, 255, 255, 0.76);
+  color: var(--tfl-color-on-bg-fill);
+  font-size: var(--tfl-font-size-heading-2xl);
 }
 `

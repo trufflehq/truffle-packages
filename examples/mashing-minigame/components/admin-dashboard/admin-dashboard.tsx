@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "https://npm.tfl.dev/react";
-import { useMutation, useQuery } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+import { useMutation, useQuery } from "https://tfl.dev/@truffle/api@~0.1.1/client.ts";
 import {
   ACTION_EXECUTE_MUTATION,
   getUpdateRemoteConfigInput,
@@ -16,6 +16,7 @@ import Timer from "../timer/timer.tsx";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
 import styleSheet from "./admin-dashboard.scss.js";
+import { getMashTimeRemaining } from "../mash-controls/utils.ts";
 
 type KeyValue = {
   key: string;
@@ -29,6 +30,8 @@ function parseKeyValue(keyValue: KeyValue) {
 export default function AdminDashboard() {
   const [activeUser, setActiveUser] = useState();
   const [config, setConfig] = useState();
+  const [isCreatingConfig, setIsCreatingConfig] = useState(false)
+  const [isEndEnabled, setIsEndEnabled] = useState(false)
   useStyleSheet(styleSheet);
   const [{ data: mashingConfig }] = useQuery({
     query: MASHING_CONFIG_QUERY,
@@ -39,6 +42,7 @@ export default function AdminDashboard() {
     },
   });
 
+  console.log('activeUser',activeUser)
   const context = globalContext.getStore();
 
   const [_m, executeMashingConfigMutation] = useMutation(
@@ -66,7 +70,7 @@ export default function AdminDashboard() {
     });
 
     if (errors) {
-      alert(JSON.stringify(errors));
+      console.error(JSON.stringify(errors));
     }
 
     const updatedConfig = data?.keyValueUpsert?.keyValue;
@@ -76,14 +80,17 @@ export default function AdminDashboard() {
   };
 
   const createOrgUserCounterType = async () => {
+    console.log('context.orgId', context.orgId)
     const input = getCreateOrgUserCounterTypeInput(context.orgId);
     const { data, error } = await executeOrgUserCounterTypeUpsertMutation(input, {
       additionalTypenames: ["OrgUserCounterType"],
     });
 
+    console.log('data', data)
     // FIXME
     if (error) {
-      alert(error);
+      // alert(error);
+      console.error('error', error)
     }
 
     return data?.orgUserCounterTypeUpsert?.orgUserCounterType;
@@ -107,50 +114,63 @@ export default function AdminDashboard() {
   };
 
   const onStart = async () => {
+    setIsCreatingConfig(true)
     // create the ouct
     const orgUserCounterType = await createOrgUserCounterType();
+    console.log('orgUserCounterType', orgUserCounterType)
 
     // update the truffle kv
-    const updatedConfigKeyValue = await updateMashingConfig(orgUserCounterType.id, new Date(Date.now() + 1000 * 90));
+    const updatedConfigKeyValue = await updateMashingConfig(orgUserCounterType.id, new Date(Date.now() + 1000 * 10));
+    console.log('updatedConfigKeyValue', updatedConfigKeyValue)
 
     // update the admin config via webhook
     updateRemoteConfig(updatedConfigKeyValue);
+    
+    setIsCreatingConfig(false)
+    setIsEndEnabled(true)
   };
+
+  const timeRemaining = getMashTimeRemaining(parsedMashingConfig?.endTime);
+  const hasRoundEnded = timeRemaining < 0;
+
+  const onEndTimer = () => {
+    setIsEndEnabled(false)
+  }
+  const isStartEnabled = parsedMashingConfig?.endTime && hasRoundEnded && !isCreatingConfig
 
   return (
     <div className="c-admin-dashboard">
-      <h2 className="title">
-        Mashing Minigame Admin
-      </h2>
+      <div className="title" />
       <main>
-        {!activeUser && (
+        {!activeUser?.name && (
           <div className="auth">
             <UserInfo setActiveUser={setActiveUser} />
           </div>
         )}
-        {parsedMashingConfig?.endTime && (
-          <div className="status">
-            <Timer endTime={parsedMashingConfig?.endTime} />
+        {
+          activeUser?.name && <>
+           <div className="status">
+              <Timer endTime={parsedMashingConfig?.endTime} onEnd={onEndTimer} />
+            </div>
+          <div className="controls">
+            <Button
+              className="button end"
+              disabled={!isEndEnabled}
+              onClick={onEnd}
+            >
+            </Button>
+            <Button
+              className="button start"
+              disabled={!isStartEnabled}
+              onClick={onStart}
+            >
+            </Button>
           </div>
-        )}
-        <div className="controls">
-          <Button
-            className="secondary-button"
-            onClick={onEnd}
-          >
-            End
-          </Button>
-          <Button
-            className="primary-button"
-            onClick={onStart}
-          >
-            Start
-          </Button>
-        </div>
-
-        <div className="leaderboard">
-          <MashingLeaderboard orgUserCounterTypeId={config?.orgUserCounterTypeId} />
-        </div>
+          <div className="leaderboard">
+            <MashingLeaderboard endTime={parsedMashingConfig?.endTime} orgUserCounterTypeId={config?.orgUserCounterTypeId} />
+          </div>
+          </>
+        }
       </main>
     </div>
   );

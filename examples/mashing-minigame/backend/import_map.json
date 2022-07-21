@@ -2,6 +2,8 @@
   "imports": {
     "$std/": "https://deno.land/std@0.148.0/",
     "$x/": "https://deno.land/x/",
-    "alosaur/": "https://deno.land/x/alosaur@v0.37.0/"
+    "alosaur/": "https://deno.land/x/alosaur@v0.37.0/",
+    "class-transformer": "https://npm.tfl.dev/class-transformer",
+    "@supabase/": "https://npm.tfl.dev/@supabase/"
   }
 }

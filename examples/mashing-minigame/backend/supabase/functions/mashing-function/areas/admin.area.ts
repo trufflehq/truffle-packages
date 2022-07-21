@@ -1,6 +1,6 @@
-import { Area } from "https://deno.land/x/alosaur@v0.33.0/mod.ts";
+import { Area } from "alosaur/mod.ts";
 
-import { AdminController } from '../controllers/admin.controller.ts'
+import { AdminController } from "../controllers/admin.controller.ts";
 
 @Area({
   baseRoute: "/mashing-function",

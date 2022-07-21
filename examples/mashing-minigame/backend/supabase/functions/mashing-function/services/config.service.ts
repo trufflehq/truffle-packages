@@ -1,33 +1,16 @@
-import Database, { DatabaseService } from "../supabaseClient.ts";
-import { AutoInjectable } from "https://deno.land/x/alosaur@v0.33.0/mod.ts";
+import { ConfigRepository, MashingConfig } from "../repositories/config.repository.ts";
 
-export type MashingConfig = {
-  orgUserCounterTypeId?: string
-  endTime?: Date
-};
-
-export interface Config {
-  orgId: string;
-  config: MashingConfig
-}
-
-@AutoInjectable()
 export class ConfigService {
-  private db: DatabaseService
+  private configRepository: ConfigRepository;
   constructor() {
-    this.db = Database
+    this.configRepository = new ConfigRepository();
   }
 
-  async getConfig(orgId: string): Promise<Config | undefined> {
-    const { data, error } = await this.db.client.from<Config>('config').select().filter('orgId', 'eq', orgId);
-
-    return data?.[0];
+  getConfig(orgId: string) {
+    return this.configRepository.getConfigByOrgId(orgId);
   }
 
-  async upsertConfig(orgId: string, config: MashingConfig): Promise<Config | undefined> {
-    const { data, error } = await this.db.client.from<Config>('config').upsert({ orgId, config })
-
-    console.log(data, error)
-    return data?.[0]
+  upsertConfig(orgId: string, config: MashingConfig) {
+    return this.configRepository.upsertConfigByOrgId(orgId, config);
   }
 }

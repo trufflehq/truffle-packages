@@ -1,18 +1,8 @@
-import { BadRequestError, Body, Controller, Post } from "https://deno.land/x/alosaur@v0.33.0/mod.ts";
-import { validateDTO } from "../utils/validation.ts";
+import { BadRequestError, Body, Controller, ForbiddenError, Post } from "alosaur/mod.ts";
 import { IncrementModelDTO } from "../models/mod.ts";
 import { ConfigService } from "../services/config.service.ts";
 import { OrgUserCounterService } from "../services/orgUserCounter.service.ts";
-
-export function getMashTimeRemaining(pollEndTime: Date) {
-  const start = new Date().getTime();
-  const end = new Date(pollEndTime).getTime();
-  const timeRemaining = (end - start) / 1000;
-
-  console.log("timeRemaining", timeRemaining);
-
-  return timeRemaining ?? 0;
-}
+import { getMashTimeRemaining, hasPermission, validateDTO } from "../utils/mod.ts";
 
 @Controller("/game")
 export class GameController {
@@ -25,30 +15,31 @@ export class GameController {
 
   @Post("/increment")
   async start(@Body(IncrementModelDTO) dto: IncrementModelDTO) {
-    console.log("incrementing user", dto.data?.orgUser?.roleConnection);
     await validateDTO(dto);
+    const canIncrement = hasPermission(dto.data?.orgUser, "everyone");
+
+    if (!canIncrement) {
+      throw new ForbiddenError("Insufficient permissions");
+    }
 
     const orgId = dto.data?.orgId;
     const userId = dto.data?.userId;
-    // get the mashing config
+
     if (orgId && userId) {
       const orgConfig = await this.configService.getConfig(orgId);
       const orgUserCounterTypeId = orgConfig?.config.orgUserCounterTypeId;
-      console.log("orgConfig", orgConfig);
 
       const isActiveRound = orgConfig?.config?.endTime && getMashTimeRemaining(orgConfig.config.endTime) > 0;
       if (isActiveRound && orgUserCounterTypeId) {
-        console.log("increment the thing");
-
-        const increment = await this.orgUserCounterService.increment(orgConfig.orgId, orgUserCounterTypeId, userId);
-
-        console.log("increment", increment);
+        try {
+          await this.orgUserCounterService.increment(orgConfig.orgId, orgUserCounterTypeId, userId);
+        } catch (err) {
+          console.error("error incrementing", err.message);
+        }
       } else {
         throw new BadRequestError("Round expired");
       }
     }
-
-    // call
 
     return {
       data: `${JSON.stringify(dto)}`,

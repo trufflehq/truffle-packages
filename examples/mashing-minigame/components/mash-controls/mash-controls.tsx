@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "https://npm.tfl.dev/react";
-import { useMutation } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
-import { ACTION_EXECUTE_MUTATION, getRemoteIncrementInput } from '../../api/gql.ts'
+import { useMutation, useQuery } from "https://tfl.dev/@truffle/api@~0.1.1/client.ts";
+import { ACTION_EXECUTE_MUTATION, MASHING_RANK_QUERY, getRemoteIncrementInput } from '../../api/gql.ts'
 import Timer from "../timer/timer.tsx";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
 import styleSheet from "./mash-controls.scss.js";
@@ -8,16 +8,27 @@ import Button from "https://tfl.dev/@truffle/ui@~0.1.0/components/button/button.
 import { getMashTimeRemaining } from "./utils.ts";
 import { useIntervalFetchMashingConfig, useIntervalFetchOrgUserCounter } from "./hooks.ts";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
+import UserInfo from "../user-info/user-info.tsx";
 
 export default function MashControls() {
+  const [activeUser, setActiveUser] = useState();
   const [mashCount, setMashCount] = useState(0);
   const [_a, executeActionMutation] = useMutation(
     ACTION_EXECUTE_MUTATION,
   );
+  const roundConfig = useIntervalFetchMashingConfig();
+
+  const [{ data: userRank }, executeQuery] = useQuery({
+    query: MASHING_RANK_QUERY,
+    variables: {
+      input: {
+        id: roundConfig.orgUserCounterTypeId
+      },
+    },
+  });
   const context = globalContext.getStore();
   useStyleSheet(styleSheet);
 
-  const roundConfig = useIntervalFetchMashingConfig();
 
 
   const ouc = useIntervalFetchOrgUserCounter(roundConfig.orgUserCounterTypeId)
@@ -38,13 +49,11 @@ export default function MashControls() {
   const incrementRemote = async () => {
     const input = getRemoteIncrementInput(context.orgId)
     const { data, error } = await executeActionMutation(input);
-    // FIXME
     if (error) {
-      alert(error);
+      console.error(error)
     }
-
   };
-  const timeRemaining = getMashTimeRemaining(roundConfig?.endTime);
+  const timeRemaining = getMashTimeRemaining(endTime);
   const hasRoundEnded = timeRemaining < 0;
 
 
@@ -55,14 +64,30 @@ export default function MashControls() {
     }
   };
 
+  useEffect(() => {
+    if(hasRoundEnded) {
+      const ouc = userRank?.orgUserCounterType?.orgUserCounter
+      const count = parseInt(ouc?.count)
+      if(count) {
+        setMashCount(count)
+      }
+    }
+  }, [JSON.stringify(userRank), hasRoundEnded])
+
+  const onEnd = async () => {
+    // fetch final count
+    await executeQuery({ requestPolicy: "network-only" })
+  }
+
+  console.log('activeUser', activeUser)
   return (
     <div className="c-mash-controls">
       <div className="status">
-        {!hasRoundEnded && <Timer className="info" endTime={roundConfig?.endTime} />}
+        {<Timer className="info clock" endTime={endTime} onEnd={onEnd} empyStateText={'Round over'} />}
         <div className="stats">
-          <div className="info">
+          {hasRoundEnded && <div className="info">
             {`Count: ${mashCount}`}
-          </div>
+          </div>}
           {!isNaN(rank) && <div className="info">
             {`Rank: ${rank}`}
           </div>}
@@ -70,8 +95,10 @@ export default function MashControls() {
       </div>
       <div className='button-wrapper'>
         <Button className="mash-button" disabled={hasRoundEnded} onMouseUp={handleMash}>
-          MASH
         </Button>
+        {
+          !activeUser?.name && <UserInfo setActiveUser={setActiveUser} />
+        }
       </div>
     </div>
   );
