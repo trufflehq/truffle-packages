@@ -24,7 +24,7 @@ class MoveExecutor {
       // use the first option (the option with most votes) as the winning option
       const winningOption = options[0];
       console.log("making move", winningOption.text, poll.id);
-      await matchBot.makeMove(winningOption.text)
+      await matchBot.makeMove(winningOption.text);
     }, millisUntilMove);
   }
 }
@@ -98,7 +98,7 @@ export class ChessGameManager {
       }
       const eventObs = new NDJSONObservable(resp.body.getReader());
       eventObs.subscribe(this._streamEventHandler.bind(this));
-      console.log('Listening for lichess events...')
+      console.log("Listening for lichess events...");
     });
   }
 
@@ -174,8 +174,8 @@ class ChessMatchBot {
   public truffleOrgId?: string;
 
   constructor(private _apiToken: string, private _game: LichessGame) {
-    this._isWaitingToCreatePoll = this._game.isMyTurn
-    this._isWhite = this._game.color === 'white'
+    this._isWaitingToCreatePoll = this._game.isMyTurn;
+    this._isWhite = this._game.color === "white";
     this._createEventStream().then((resp) => {
       if (!resp.body) {
         console.error(
@@ -210,11 +210,11 @@ class ChessMatchBot {
   private async _streamEventHandler(event: LichessBotGameStreamEvent) {
     switch (event.type) {
       case "gameFull": {
-        console.log(event.type, event)
-        const moves = generateMovesArr(event.state.moves)
+        console.log(event.type, event);
+        const moves = generateMovesArr(event.state.moves);
         const isMyTurn = this._isWhite
           ? moves.length % 2 === 0
-          : moves.length % 2 === 1
+          : moves.length % 2 === 1;
 
         if (isMyTurn) {
           await this.tryCreatePoll();
@@ -222,13 +222,12 @@ class ChessMatchBot {
         break;
       }
 
-
       case "gameState": {
-        console.log(event.type, event)
-        const moves = generateMovesArr(event.moves)
+        console.log(event.type, event);
+        const moves = generateMovesArr(event.moves);
         const isMyTurn = this._isWhite
           ? moves.length % 2 === 0
-          : moves.length % 2 === 1
+          : moves.length % 2 === 1;
 
         if (isMyTurn) {
           await this.tryCreatePoll();
@@ -246,7 +245,6 @@ class ChessMatchBot {
         if (event.text === ":resign") {
           await this.sendChat("Ok, I'll resign.");
           await this.resign();
-
         } else if (setOrgRegex.test(event.text)) {
           const match = event.text.match(setOrgRegex);
           const orgId = match?.groups?.orgId;
@@ -256,10 +254,10 @@ class ChessMatchBot {
           await this.sendChat(`Thanks! I set your Truffle Org ID to ${orgId}`);
 
           if (this._isWaitingToCreatePoll) {
-            await createPoll(this.truffleOrgId!)
+            await createPoll(this.truffleOrgId!);
             this._isWaitingToCreatePoll = false;
           }
-        } else if (event.text === ':create-poll') {
+        } else if (event.text === ":create-poll") {
           await this.tryCreatePoll();
         }
         break;
@@ -303,9 +301,11 @@ class ChessMatchBot {
   async tryCreatePoll() {
     if (!this.truffleOrgId) {
       this._isWaitingToCreatePoll = true;
-      await this.sendChat("I need you to tell me your Truffle Org ID with ':set-org:<ORG_ID>' in the chat.")
+      await this.sendChat(
+        "I need you to tell me your Truffle Org ID with ':set-org:<ORG_ID>' in the chat."
+      );
     } else {
-      await createPoll(this.truffleOrgId)
+      await createPoll(this.truffleOrgId);
     }
   }
 
@@ -316,15 +316,14 @@ class ChessMatchBot {
       method: "POST",
     }).then((resp) => resp.json());
 
-    // todo: should probably do some more intelligent handling of bad moves
     if (!respBody?.ok) {
       console.error(
         `Error while making a move for game ${this._game.id}: ${JSON.stringify(
           respBody
         )}`
       );
-      console.error('gonna try to create another Truffle poll')
-      await this.tryCreatePoll()
+      console.error("gonna try to create another Truffle poll");
+      await this.tryCreatePoll();
     }
   }
 }
@@ -335,4 +334,5 @@ const encodeFormData = (data: Record<string, any>) => {
     .join("&");
 };
 
-const generateMovesArr = (moves: string) => moves.split(' ').filter(move => move.length === 4)
+const generateMovesArr = (moves: string) =>
+  moves.split(" ").filter((move) => move.length === 4);
