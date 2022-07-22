@@ -1,7 +1,10 @@
 import React from "https://npm.tfl.dev/react";
 import { JSX } from "https://npm.tfl.dev/react";
 import Stylesheet from "https://tfl.dev/@truffle/ui@0.0.1/components/stylesheet/stylesheet.js";
-import { Artist, SpotifyData } from "../spotify-component/spotify-component";
+import {
+  Artist,
+  SpotifyData,
+} from "../spotify-component/spotify-component.tsx";
 
 function pad(n: number): string {
   //pads 1 digit numbers to have a leading zero
