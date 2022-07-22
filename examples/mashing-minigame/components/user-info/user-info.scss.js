@@ -58,9 +58,9 @@ export default scss `:host > .count {
       outline: var(--tfl-color-surface-fill-disabled) solid 1px;
     }
   }
-  
+
   .login {
-    background-image: url("https://cdn.bio/assets/images/dev_plat_examples/mash/login.svg");
+    background-image: url("https://cdn.bio/assets/images/dev_plat_examples/mash/login.svg") !important;
   }
 }
 `
