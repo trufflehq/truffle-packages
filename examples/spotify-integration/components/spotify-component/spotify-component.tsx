@@ -5,14 +5,14 @@
 // import Shrink from './images/down-left-and-up-right-to-center-solid.svg'
 import React from "https://npm.tfl.dev/react";
 import Draggable from "../draggable/draggable.tsx";
-import SongInfo from "../song-info/song-info.jsx";
-import ToolTip from "../tooltip/tooltip.jsx";
+import SongInfo from "../song-info/song-info.tsx";
+import ToolTip from "../tooltip/tooltip.tsx";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
 import styleSheet from "./spotify-component.scss.js";
 import jumper from "https://tfl.dev/@truffle/utils@0.0.1/jumper/jumper.js";
 import { useEffect, useState } from "https://npm.tfl.dev/react";
 
-import { Dimensions, Modifiers, Vector } from "../draggable/draggable";
+import { Dimensions, Modifiers, Vector } from "../draggable/draggabl.tsx";
 
 interface Image {
   height: number;
