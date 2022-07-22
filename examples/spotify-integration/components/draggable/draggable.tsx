@@ -42,8 +42,8 @@ function createIframeStyle(dimensions: Dimensions, dragInfo: DragInfo) {
   //creates an element that spans the entire screen
   //a clip path is used to crop to only the actual component
   const style = {
-    width: "100vw",
-    height: "100vh",
+    width: "100%",
+    height: "100%",
     "clip-path": createClipPath(
       dragInfo.current,
       dimensions.base,
@@ -56,17 +56,21 @@ function createIframeStyle(dimensions: Dimensions, dragInfo: DragInfo) {
     left: "0",
     "z-index": "999",
   };
-  //remove clip path if mouse is pressed so we get mouse events across the entire page
-  if (dragInfo.pressed) style["clip-path"] = "none";
+  //remove clip path if mouse is pressed or if the user is currently moused down on a non draggable item
+  // this gives us mouse events across the entire page so we don't lose a mouse up event
+  if (dragInfo.pressed || !dragInfo.draggable) style["clip-path"] = "none";
   return style;
 }
 
 export default function Draggable(
-  { children, dimensions, defaultPosition }: {
-    children: JSX.ReactNode;
-    dimensions: Dimensions;
-    defaultPosition: Vector;
-  },
+  { children, dimensions, defaultPosition, requiredClassName, ignoreClassName }:
+    {
+      children: JSX.ReactNode;
+      dimensions: Dimensions;
+      defaultPosition: Vector;
+      requiredClassName?: string;
+      ignoreClassName?: string;
+    },
 ) {
   const [dragInfo, setDragInfo] = useState<DragInfo>(
     {
@@ -116,16 +120,21 @@ export default function Draggable(
     <div
       className="draggable"
       draggable={true}
-      style={{
-        position: "absolute",
-        top: "0px",
-        left: "0px",
-      }}
-      onMouseDown={(e) => {
+      style={createIframeStyle(dimensions, dragInfo)}
+      onMouseDown={(e: { target: Element }) => {
         const target = e.target as Element;
+        const classes: string = target.className;
         //prevent dragging by links and any class that has the prevent-drag class
+        console.log(classes);
+        //multiple events are fired for some reason, this ignores all events triggered by a certain classname
+        if (classes.includes(ignoreClassName)) return;
         if (
-          target.tagName === "A" || target.className.includes("prevent-drag")
+          requiredClassName && !classes.includes(requiredClassName)
+        ) {
+          setDragInfo((old: DragInfo) => ({ ...old, draggable: false }));
+        }
+        if (
+          target.tagName === "A" || classes.includes("prevent-drag")
         ) {
           setDragInfo((old: DragInfo) => ({ ...old, draggable: false }));
         }
@@ -143,7 +152,7 @@ export default function Draggable(
           }));
         }
       }}
-      onMouseUp={() => {
+      onMouseUp={(e) => {
         setDragInfo((old: DragInfo) => ({
           ...old,
           pressed: false,
@@ -154,6 +163,7 @@ export default function Draggable(
       <div
         style={{
           //set position of child container
+          width: "fit-content",
           position: "absolute",
           top: dragInfo.current.y + "px",
           left: dragInfo.current.x + "px",
