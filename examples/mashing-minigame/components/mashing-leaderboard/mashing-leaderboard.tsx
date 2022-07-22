@@ -86,8 +86,9 @@ const MemoizedRow = memo(({ row, i }: MemoizedRowProps) => {
 }, (prev: MemoizedRowProps, next: MemoizedRowProps) => {
   const isSameUserId = prev.row.userId === next.row.userId
   const isSameCount = prev.row.count === next.row.count
+  const isSameIndex = prev.i === next.i
 
-  if(isSameCount && isSameUserId) {
+  if(isSameCount && isSameUserId && isSameIndex) {
     return true
   }
 
