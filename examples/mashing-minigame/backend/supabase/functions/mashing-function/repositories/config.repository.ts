@@ -1,4 +1,4 @@
-import Database, { DatabaseService } from "../supabaseClient.ts";
+import Database, { DatabaseService } from "../services/database.ts";
 
 export type MashingConfig = {
   orgUserCounterTypeId?: string;

@@ -5,8 +5,6 @@ import { AdminArea } from "./areas/admin.area.ts";
 import { GameArea } from "./areas/game.area.ts";
 import { RootArea } from "./areas/root.area.ts";
 
-// container.resolve(ConfigService)
-// container.resolve(AdminController)
 const app = new App({
   areas: [RootArea, AdminArea, GameArea],
   logging: true,

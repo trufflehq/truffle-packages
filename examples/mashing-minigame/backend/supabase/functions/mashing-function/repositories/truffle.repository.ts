@@ -1,6 +1,6 @@
 const TRUFFLE_API_URL = "https://mycelium.staging.bio/graphql";
 
-export class TruffleService {
+export class TruffleRepository {
   private endpoint: string;
 
   constructor() {

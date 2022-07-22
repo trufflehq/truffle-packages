@@ -9,7 +9,6 @@ export default scss`
     background: var(--tfl-color-bg-fill);
     color: var(--tfl-color-on-bg-fill);
     font-family: var(--tfl-font-family-heading-sans);
-    // line-height: var(--tfl-line-height-heading-md);
   
     --tfl-color-secondary-bg-border: rgba(22, 31, 44, 1);
     --tfl-color-secondary-bg-fill: rgba(22, 31, 44, 1);

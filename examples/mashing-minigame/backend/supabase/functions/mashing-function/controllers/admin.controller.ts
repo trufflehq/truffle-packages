@@ -1,14 +1,14 @@
-import { BadRequestError, Body, Controller, ForbiddenError, Post } from "alosaur/mod.ts";
+import { Body, Controller, ForbiddenError, Post } from "alosaur/mod.ts";
 import { MashingConfigModelDTO } from "../models/mod.ts";
-import { ConfigService } from "../services/config.service.ts";
+import { AdminService } from "../services/admin.service.ts";
 import { hasPermission, validateDTO } from "../utils/mod.ts";
 
 @Controller("/admin")
 export class AdminController {
-  private configService: ConfigService;
+  private adminService: AdminService;
 
   constructor() {
-    this.configService = new ConfigService();
+    this.adminService = new AdminService();
   }
   // TODO - switch this over to DI once this is working w/ Supabase or Deno Deploy
   // constructor(private configService: ConfigService) {}
@@ -22,20 +22,6 @@ export class AdminController {
       throw new ForbiddenError("Insufficient permissions");
     }
 
-    const orgId = dto.data?.orgId;
-    const config = {
-      orgUserCounterTypeId: dto.data?.orgUserCounterTypeId,
-      endTime: dto.data?.endTime,
-    };
-
-    if (orgId && config) {
-      const upsertedConfig = await this.configService.upsertConfig(orgId, config);
-
-      return {
-        data: upsertedConfig,
-      };
-    } else {
-      throw new BadRequestError("Missing config options");
-    }
+    return this.adminService.startRound(dto);
   }
 }

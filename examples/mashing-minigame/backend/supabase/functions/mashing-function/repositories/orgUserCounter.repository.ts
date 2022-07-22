@@ -1,10 +1,10 @@
-import { TruffleService } from "./truffle.service.ts";
+import { TruffleRepository } from "./truffle.repository.ts";
 
-export class OrgUserCounterService {
-  private truffleService: TruffleService;
+export class OrgUserCounterRepository {
+  private truffleRepository: TruffleRepository;
 
   constructor() {
-    this.truffleService = new TruffleService();
+    this.truffleRepository = new TruffleRepository();
   }
 
   async increment(orgId: string, orgUserCounterTypeId: string, userId: string) {
@@ -23,7 +23,7 @@ export class OrgUserCounterService {
       },
     };
 
-    const response = await this.truffleService.fetch(query, input, orgId);
+    const response = await this.truffleRepository.fetch(query, input, orgId);
 
     const data = await response.json();
 
