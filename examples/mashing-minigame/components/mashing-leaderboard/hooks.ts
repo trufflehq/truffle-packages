@@ -1,5 +1,5 @@
+import { useMemo } from "https://npm.tfl.dev/react";
 import { MASHING_LEADERBOARD_QUERY } from "../../api/gql.ts";
-import React, { useMemo } from "https://npm.tfl.dev/react";
 import { usePollingQuery } from "https://tfl.dev/@truffle/api@~0.1.1/client.ts";
 
 export type User = {

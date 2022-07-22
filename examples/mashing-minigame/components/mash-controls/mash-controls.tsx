@@ -79,7 +79,6 @@ export default function MashControls() {
     await executeQuery({ requestPolicy: "network-only" })
   }
 
-  console.log('activeUser', activeUser)
   return (
     <div className="c-mash-controls">
       <div className="status">

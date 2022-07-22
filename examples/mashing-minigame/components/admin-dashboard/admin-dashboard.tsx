@@ -42,7 +42,6 @@ export default function AdminDashboard() {
     },
   });
 
-  console.log('activeUser',activeUser)
   const context = globalContext.getStore();
 
   const [_m, executeMashingConfigMutation] = useMutation(
@@ -80,16 +79,12 @@ export default function AdminDashboard() {
   };
 
   const createOrgUserCounterType = async () => {
-    console.log('context.orgId', context.orgId)
     const input = getCreateOrgUserCounterTypeInput(context.orgId);
     const { data, error } = await executeOrgUserCounterTypeUpsertMutation(input, {
       additionalTypenames: ["OrgUserCounterType"],
     });
 
-    console.log('data', data)
-    // FIXME
     if (error) {
-      // alert(error);
       console.error('error', error)
     }
 
@@ -101,9 +96,8 @@ export default function AdminDashboard() {
     const input = getUpdateRemoteConfigInput(parsedUpdatedConfig.orgUserCounterTypeId, context.orgId, parsedUpdatedConfig.endTime);
     const { data, error } = await executeActionMutation(input);
 
-    // FIXME
     if (error) {
-      alert(error);
+      console.error(error);
     }
 
     return data?.orgUserCounterTypeUpsert?.orgUserCounterType;
@@ -117,11 +111,9 @@ export default function AdminDashboard() {
     setIsCreatingConfig(true)
     // create the ouct
     const orgUserCounterType = await createOrgUserCounterType();
-    console.log('orgUserCounterType', orgUserCounterType)
 
     // update the truffle kv
     const updatedConfigKeyValue = await updateMashingConfig(orgUserCounterType.id, new Date(Date.now() + 1000 * 10));
-    console.log('updatedConfigKeyValue', updatedConfigKeyValue)
 
     // update the admin config via webhook
     updateRemoteConfig(updatedConfigKeyValue);

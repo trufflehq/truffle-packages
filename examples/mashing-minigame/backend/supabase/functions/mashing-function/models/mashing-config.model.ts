@@ -1,5 +1,5 @@
 import { IsDate, IsString, ValidateNested } from "https://deno.land/x/deno_class_validator@v1.0.0/mod.ts";
-import { Type } from "https://esm.sh/class-transformer";
+import { Type } from "class-transformer";
 import { DTO } from "./mod.ts";
 import { OrgUserModel } from "./org-user.model.ts";
 export class MashingConfigModel {

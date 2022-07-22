@@ -1,4 +1,3 @@
-
 import { gql } from "https://tfl.dev/@truffle/api@~0.1.1/client.ts";
 
 const MASHING_CONFIG_KEY = "mashingConfig";
