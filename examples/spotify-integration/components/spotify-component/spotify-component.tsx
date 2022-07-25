@@ -12,7 +12,7 @@ import styleSheet from "./spotify-component.scss.js";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 import { useEffect, useState } from "https://npm.tfl.dev/react";
 
-import { Dimensions, Modifiers, Vector } from "../draggable/draggabl.tsx";
+import { Dimensions, Modifiers, Vector } from "../draggable/draggable.tsx";
 
 interface Image {
   height: number;
@@ -42,7 +42,7 @@ export interface SpotifyData {
 
 function SpotifyComponent() {
   useStyleSheet(styleSheet);
-  //set base dimensions
+  //set base dimensions & modifiers
   const defaultModifier: Modifiers = {
     top: -43,
     right: 0,
@@ -140,10 +140,11 @@ function SpotifyComponent() {
       >
         <div
           className={"spotify-component" + collapsedTag}
+          //only expand on click if the window is already collapsed
           onClick={() => collapsed && setCollapsed((oldState) => !oldState)}
         >
           <img
-            className={"album-art " + collapsedTag}
+            className="album-art"
             src={spotifyData.images[0].url}
             alt="album cover"
           />
