@@ -1,10 +1,11 @@
 import {
+  css,
   FASTElement,
   html,
   observable,
   slotted,
-} from "https://npm.tfl.dev/@microsoft/fast-element@beta";
-import { toDist } from "https://tfl.dev/@truffle/distribute@^1.0.0/format/wc/index.ts";
+} from "https://npm.tfl.dev/@microsoft/fast-element@2.0.0-beta.3";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/fast/index.ts";
 import { push } from "https://tfl.dev/@truffle/router@^1.0.0/history.ts";
 
 const onClick = (x, c) => {
@@ -19,18 +20,20 @@ const template = html`
     <slot ${slotted("defaultSlottedContent")}></slot>
   </a>`;
 
+const styles = css`
+  :host a {
+    color: inherit;
+  }`;
+
 class Link extends FASTElement {
   @observable
   public defaultSlottedContent: HTMLElement[];
 }
 
-export default toDist(
-  "fast",
-  {
-    decoratorObj: {
-      template,
-    },
-    Class: Link,
+export default toDist({
+  decoratorObj: {
+    template,
+    styles,
   },
-  import.meta.url,
-);
+  Class: Link,
+}, import.meta.url);

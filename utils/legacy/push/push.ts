@@ -3,8 +3,8 @@ import {
   isAndroid,
   isIos,
   isNativeApp,
-} from "../environment/environment.js";
-import { getCookie, setCookie } from "../cookie/cookie.js";
+} from "../environment/environment.ts";
+import { getCookie, setCookie } from "../../cookie/cookie.ts";
 
 const ONE_DAY_MS = 3600 * 24 * 1000;
 

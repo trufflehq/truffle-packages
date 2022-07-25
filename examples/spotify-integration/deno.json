@@ -1,13 +1,11 @@
 {
-  "tasks": {
-    "dev": "DENO_FUTURE_CHECK=1 mode=development ULTRA_MODE=development deno run -A --unstable https://tfl.dev/@truffle/ultra-server@0.3.0/index.ts"
+  "importMap": "./import_map.json",
+  "fmt": {
+    "options": {
+      "lineWidth": 140
+    }
   },
   "compilerOptions": {
-    "jsx": "react-jsxdev",
-    "jsxImportSource": "https://npm.tfl.dev/react",
-    "lib": [
-      "deno.ns",
-      "dom"
-    ]
+    "emitDecoratorMetadata": true
   }
 }

@@ -1,5 +1,5 @@
 import Jumper from "./jumper-base.ts";
-import PushService from "../push/push.js";
+import PushService from "../legacy/push/push.ts";
 import isSsr from "../ssr/is-ssr.ts";
 
 const LOCAL_STORAGE_PREFIX = "truffle";

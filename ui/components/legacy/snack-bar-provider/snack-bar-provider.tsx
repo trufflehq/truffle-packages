@@ -10,7 +10,7 @@ import {
   createSubject,
   op,
 } from "https://tfl.dev/@truffle/utils@~0.0.2/obs/subject.ts";
-import useObservables from "https://tfl.dev/@truffle/utils@~0.0.2/obs/use-observables.ts";
+import useObservables from "https://tfl.dev/@truffle/utils@~0.0.2/obs/use-observables-react.ts";
 
 class SnackBarSerivce {
   _queueSubject;

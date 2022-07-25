@@ -1,5 +1,4 @@
 import React from "https://npm.tfl.dev/react";
-import toDist from "https://tfl.dev/@truffle/utils@~0.0.2/web-component/to-web-component.ts";
 
 // import cssVars from '../../util/css-vars.js'
 
@@ -8,7 +7,7 @@ import toDist from "https://tfl.dev/@truffle/utils@~0.0.2/web-component/to-web-c
 
 const DEFAULT_SIZE = 50;
 
-export default toDist(function Spinner({ size = DEFAULT_SIZE }) {
+export default function Spinner({ size = DEFAULT_SIZE }) {
   return (
     <div
       className="c-spinner"
@@ -26,4 +25,4 @@ export default toDist(function Spinner({ size = DEFAULT_SIZE }) {
       ))}
     </div>
   );
-});
+}

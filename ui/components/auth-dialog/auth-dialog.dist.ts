@@ -1,7 +1,12 @@
-import { useMemo } from "https://npm.tfl.dev/haunted@5/core";
+// TODO: create a different package for this to live in
+// @truffle/ui should just be for core foundation components
+import {
+  useMemo,
+  virtual,
+} from "https://tfl.dev/@truffle/distribute@^2.0.0/pinned-libs/haunted.ts";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
 
-import { toDist } from "https://tfl.dev/@truffle/distribute@^1.0.0/format/wc/index.ts";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/haunted/index.ts";
 import { createSubject } from "https://tfl.dev/@truffle/utils@~0.0.2/obs/subject.ts";
 import useObservables from "https://tfl.dev/@truffle/utils@~0.0.2/obs/use-observables-haunted.ts";
 import {
@@ -10,6 +15,7 @@ import {
   mutation,
 } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
 import { setCookie } from "https://tfl.dev/@truffle/utils@~0.0.2/cookie/cookie.ts";
+
 // unsafeStatic was solution to https://stackoverflow.com/a/59833334
 // TODO: switch back to npm.tfl.dev when circular dependency error is fixed
 import { html, unsafeStatic } from "https://cdn.skypack.dev/lit-html@2/static";
@@ -86,12 +92,15 @@ function AuthDialog({ hidden }) {
           password: fields.password.valueSubject.getValue(),
         },
       });
+      setAccessToken(mutationRes?.data?.userLoginEmailPhone?.accessToken);
+      isLoadingSubject.next(false);
     } else if (mode === "reset") {
       mutationRes = await mutation(RESET_PASSWORD_MUTATION, {
         input: {
           ...parseEmailPhone(fields.emailPhone.valueSubject.getValue()),
         },
       });
+      // FIXME: implement reset
     } else {
       mutationRes = await mutation(JOIN_MUTATION, {
         input: {
@@ -100,12 +109,7 @@ function AuthDialog({ hidden }) {
           password: fields.password.valueSubject.getValue(),
         },
       });
-      // TODO: cleanup and handle login/reset
-      const accessToken = mutationRes?.data?.userJoin?.accessToken;
-      if (accessToken) {
-        setCookie("accessToken", accessToken);
-        _clearCache();
-      }
+      setAccessToken(mutationRes?.data?.userJoin?.accessToken);
       isLoadingSubject.next(false);
     }
 
@@ -156,7 +160,7 @@ AuthDialog.propTypes = {
   abc: PropTypes.string,
 };
 
-function Content({ mode, fields }) {
+const Content = virtual(({ mode, fields }) => {
   return html`
   ${
     mode === "join"
@@ -171,9 +175,9 @@ function Content({ mode, fields }) {
       field: fields.password,
     })
   }`;
-}
+});
 
-const InputWrapper = function InputWrapper({ type = "text", label, field }) {
+const InputWrapper = virtual(({ type = "text", label, field }) => {
   const { value, error } = useObservables(() => ({
     value: field.valueSubject.obs,
     error: field.errorSubject.obs,
@@ -189,9 +193,9 @@ const InputWrapper = function InputWrapper({ type = "text", label, field }) {
     </${unsafeStatic(TextField)}>
     ${error && html`<div class="error">${error}</div>`}
   </div>`;
-};
+});
 
-function Header({ modeSubject, actionText }) {
+const Header = virtual(({ modeSubject, actionText }) => {
   const { mode } = useObservables(() => ({
     mode: modeSubject.obs,
   }));
@@ -209,9 +213,9 @@ function Header({ modeSubject, actionText }) {
       </span>
     </div>
   </div>`;
-}
+});
 
-function Footer({ actionText, isLoading }) {
+const Footer = virtual(({ actionText, isLoading }) => {
   return html`<div class="footer">
     <${
     unsafeStatic(Button)
@@ -219,7 +223,7 @@ function Footer({ actionText, isLoading }) {
       ${actionText}
     </${unsafeStatic(Button)}>
   </div>`;
-}
+});
 
 function parseEmailPhone(emailPhone) {
   const isPhone = emailPhone?.match(
@@ -232,4 +236,11 @@ function parseEmailPhone(emailPhone) {
   }
 }
 
-export default toDist("haunted", AuthDialog, import.meta.url);
+function setAccessToken(accessToken) {
+  if (accessToken) {
+    setCookie("accessToken", accessToken);
+    _clearCache();
+  }
+}
+
+export default toDist(AuthDialog, import.meta.url);
