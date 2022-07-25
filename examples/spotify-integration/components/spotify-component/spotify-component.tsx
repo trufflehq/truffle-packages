@@ -9,7 +9,7 @@ import SongInfo from "../song-info/song-info.tsx";
 import ToolTip from "../tooltip/tooltip.tsx";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
 import styleSheet from "./spotify-component.scss.js";
-import jumper from "https://tfl.dev/@truffle/utils@0.0.1/jumper/jumper.js";
+import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 import { useEffect, useState } from "https://npm.tfl.dev/react";
 
 import { Dimensions, Modifiers, Vector } from "../draggable/draggabl.tsx";
@@ -68,8 +68,9 @@ function SpotifyComponent() {
   const [trackPosition, setTrackPosition] = useState<number>(0);
   //pull data from cloudflare worker
   const fetchRefreshMs = 10000;
-  const workerUrl = " https://spotify-song-info.deno.dev/spotify/song/info";
-  const orgID = "21beba7e-592b-4e35-9b54-aaaaaaaaaaaa";
+  const workerUrl = "https://spotify-song-info.deno.dev/spotify/song/info";
+  const context = globalContext.getStore();
+  const orgId = context.orgId;
 
   useEffect(() => {
     const overlayStates: Record<any, Modifiers> = {
@@ -93,7 +94,7 @@ function SpotifyComponent() {
 
   useEffect(() => {
     async function fetchData() {
-      const jsonResponse = await (await fetch(`${workerUrl}?orgId=${orgID}`))
+      const jsonResponse = await (await fetch(`${workerUrl}?orgId=${orgId}`))
         .json();
       //store fetch time to calculate song position
       jsonResponse.fetchTime = Date.now();
@@ -101,6 +102,7 @@ function SpotifyComponent() {
     }
     fetchData(); //fetch on page load
     //TODO: queue a fetch to go off at the end of every song
+    // (needs to be done in backend as well as frontend)
     //fetch at the specified refresh rate
     const fetchInterval = setInterval(
       () => (fetchData().catch(console.error)),
