@@ -1,8 +1,5 @@
 {
   "importMap": "./import_map.json",
-  "tasks": {
-    "deploy": "cd backend/ && supabase functions deploy viewer-polls-example-handler --no-verify-jwt"
-  },
   "fmt": {
     "options": {
       "lineWidth": 140
