@@ -1,6 +1,6 @@
 import { InternalServerError } from "alosaur/mod.ts";
 import Database, { DatabaseRepository } from "./database.repository.ts";
-import { SpotifyAuthRecord, SpotifyAuthToken } from './types.ts'
+import { SpotifyAuthRecord, SpotifyAuthToken } from "./types.ts";
 
 export class SpotifyAuthRepository {
   private db: DatabaseRepository;
@@ -10,7 +10,8 @@ export class SpotifyAuthRepository {
   }
 
   async getAuthByOrgId(orgId: string) {
-    const { data, error } = await this.db.client.from<SpotifyAuthRecord>("auth").select("orgId, access_token, refresh_token, expirationTime")
+    const { data, error } = await this.db.client.from<SpotifyAuthRecord>("auth")
+      .select("orgId, access_token, refresh_token, expirationTime")
       .filter("orgId", "eq", orgId);
 
     console.log("data", data);
@@ -21,7 +22,7 @@ export class SpotifyAuthRepository {
 
     const auth = data?.[0];
 
-    return auth
+    return auth;
   }
 
   async upsertAuth(orgId: string, authToken: SpotifyAuthToken) {
@@ -35,11 +36,12 @@ export class SpotifyAuthRepository {
       data: authToken,
     };
 
-    const { data, error } = await this.db.client.from<SpotifyAuthRecord>("auth").upsert(diff);
+    const { data, error } = await this.db.client.from<SpotifyAuthRecord>("auth")
+      .upsert(diff);
 
     if (error) {
       console.error("error upserting config", error);
-      throw new InternalServerError("Error updating auth token");
+      throw new InternalServerError("Error updating auth token" + error);
     }
     return data?.[0];
   }

@@ -68,7 +68,7 @@ function SpotifyComponent() {
   const [trackPosition, setTrackPosition] = useState<number>(0);
   //pull data from cloudflare worker
   const fetchRefreshMs = 10000;
-  const workerUrl = "https://spotify-status-updater.shanecranor.workers.dev/";
+  const workerUrl = " https://spotify-song-info.deno.dev/spotify/song/info";
   const orgID = "shane";
 
   useEffect(() => {
@@ -93,7 +93,7 @@ function SpotifyComponent() {
 
   useEffect(() => {
     async function fetchData() {
-      const jsonResponse = await (await fetch(`${workerUrl}?orgID=${orgID}`))
+      const jsonResponse = await (await fetch(`${workerUrl}?orgId=${orgID}`))
         .json();
       //store fetch time to calculate song position
       jsonResponse.fetchTime = Date.now();
