@@ -41,7 +41,7 @@ export class SpotifyAuthRepository {
 
     if (error) {
       console.error("error upserting config", error);
-      throw new InternalServerError("Error updating auth token" + error);
+      throw new InternalServerError("Error updating auth token");
     }
     return data?.[0];
   }

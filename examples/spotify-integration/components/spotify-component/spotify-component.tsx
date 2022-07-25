@@ -69,7 +69,7 @@ function SpotifyComponent() {
   //pull data from cloudflare worker
   const fetchRefreshMs = 10000;
   const workerUrl = " https://spotify-song-info.deno.dev/spotify/song/info";
-  const orgID = "shane";
+  const orgID = "21beba7e-592b-4e35-9b54-aaaaaaaaaaaa";
 
   useEffect(() => {
     const overlayStates: Record<any, Modifiers> = {
