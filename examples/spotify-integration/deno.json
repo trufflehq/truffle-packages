@@ -1,0 +1,11 @@
+{
+  "importMap": "./import_map.json",
+  "fmt": {
+    "options": {
+      "lineWidth": 140
+    }
+  },
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  }
+}
