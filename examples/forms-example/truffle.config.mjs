@@ -1,6 +1,6 @@
 export default {
   name: "@truffle/forms-example",
-  version: "0.6.18",
+  version: "0.6.19",
   apiUrl: "https://mycelium.staging.bio/graphql",
   requestedPermissions: [
     {
