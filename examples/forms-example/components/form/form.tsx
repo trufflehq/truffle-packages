@@ -8,10 +8,10 @@ import {
   useMutation,
   useQuery,
   useState,
-useStyleSheet,
+  useStyleSheet,
 } from "../../deps.ts";
 import { FormQuestion, Form, FormQuestionAnswer } from "../../utils/types.ts";
-import styleSheet from './form.css.ts'
+import styleSheet from "./form.css.ts";
 
 const FORM_QUERY = gql`
   query FormQuery($formSlug: String!) {
@@ -40,7 +40,7 @@ const SUBMIT_FORM_MUTATION = gql`
 `;
 
 export default function FormComponent() {
-  useStyleSheet(styleSheet)
+  useStyleSheet(styleSheet);
   const [{ data: formData, fetching: isFetching }] = useQuery({
     query: FORM_QUERY,
     variables: { formSlug: FORM_SLUG },
@@ -85,12 +85,22 @@ export default function FormComponent() {
   const [_submitResult, executeFormSubmitMutation] =
     useMutation(SUBMIT_FORM_MUTATION);
   const formSubmitHandler = async () => {
-    await executeFormSubmitMutation({
+    const resp = await executeFormSubmitMutation({
       input: {
         formId: form?.id,
         formQuestionAnswers: questionAnswers,
       },
     });
+
+    const errors = [...(resp?.error?.graphQLErrors ?? [])];
+
+    if (errors.length > 0) {
+      const errorMessages = errors
+        .map((error) => `${error?.message}: ${error?.extensions?.info}`)
+        .join("; ");
+      alert(errorMessages);
+      return;
+    }
 
     setHasSubmitted(true);
   };

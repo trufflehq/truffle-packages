@@ -146,6 +146,20 @@ export default function FormSetup() {
           ),
       ]);
 
+    const errors = [
+      ...(formSaveResp?.error?.graphQLErrors ?? []),
+      ...(questionsSaveResp?.error?.graphQLErrors ?? []),
+      ...(questionDeleteResp?.error?.graphQLErrors ?? []),
+    ];
+
+    if (errors.length > 0) {
+      const errorMessages = errors
+        .map((error) => `${error?.message}: ${error?.extensions?.info}`)
+        .join("; ");
+      alert(errorMessages);
+      return;
+    }
+
     // we need to make sure we get the ids of the newly created questions
     const savedQuestions =
       questionsSaveResp?.data?.formQuestionBatchUpsert?.formQuestions;
