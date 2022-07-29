@@ -8,8 +8,8 @@ import {
   Button,
   useState,
   useQuery,
-  useEffect,
   useMutation,
+  useEffect,
 } from "../../deps.ts";
 import { Form, FormQuestion } from "../../utils/types.ts";
 import EditFormQuestions from "../edit-form-questions/edit-form-questions.tsx";
@@ -93,6 +93,17 @@ export default function FormSetup() {
   const changeHandler = (setFn: Function) => (e: any) => setFn(e.target?.value);
   const propChange = (prop: string) =>
     changeHandler((value: any) => setFormProp(prop, value));
+
+  useEffect(() => {
+    if (form) {
+      setFormState({
+        id: form.id,
+        name: form.name,
+        description: form.description,
+        questions: form.formQuestionConnection.nodes ?? [],
+      });
+    }
+  }, [form]);
 
   // question deletion
   const [questionIdsToDelete, setQuestionIdsToDelete] = useState([]);

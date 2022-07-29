@@ -39,7 +39,7 @@ const SUBMIT_FORM_MUTATION = gql`
   }
 `;
 
-export default function Form() {
+export default function FormComponent() {
   useStyleSheet(styleSheet)
   const [{ data: formData, fetching: isFetching }] = useQuery({
     query: FORM_QUERY,

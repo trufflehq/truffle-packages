@@ -14,11 +14,8 @@ export default function EditFormQuestions({
     questions ?? []
   );
 
-  useEffect(() => {
-    setQuestions(questions ?? [])
-  }, [questions])
-
   const getQuestionTextChangeHandler = (questionIdx: number) => {
+
     return (questionText: string) => {
       setQuestions((prev: FormQuestion[]) => {
         const newArr = [...prev]
