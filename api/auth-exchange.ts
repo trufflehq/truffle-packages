@@ -73,6 +73,7 @@ export function getAuthExchange() {
       if (!accessToken) {
         const response = await mutate(LOGIN_ANON_MUTATION);
         accessToken = response?.data?.userLoginAnon?.accessToken;
+        setCookie(ACCESS_TOKEN_COOKIE, accessToken);
       }
       return { accessToken };
     },
