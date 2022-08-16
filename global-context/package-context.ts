@@ -1,5 +1,5 @@
 // leave as absolute url so we get same context instance
-import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.1/index.ts";
+import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 import { Client } from "https://npm.tfl.dev/urql@2";
 
 export function getPackageContext(

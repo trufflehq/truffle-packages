@@ -2,7 +2,7 @@
 
 // this version on @truffle/context can change, but the resulting context needs to be backwards compatible
 // DO NOT CHANGE THE MAJOR VERSION THIS PACKAGE
-import Context from "https://tfl.dev/@truffle/context@^1.0.1/index.ts";
+import Context from "https://tfl.dev/@truffle/context@^1.0.0/index.ts";
 
 // we need to be very mindful of what gets stored in global context, because if we do it wrong,
 // we're stuck with it forever.
