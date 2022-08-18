@@ -30,6 +30,11 @@
 // TODO: client should probably importmap this to nothing
 // or could try dynamic import
 import DenoAsyncLocalStorage from "./deno-async-local-storage.ts";
+import { GlobalStore } from "./types.ts";
+
+export type IsomorphicAsyncLocalStorage =
+  | DenoAsyncLocalStorage
+  | BrowserAsyncLocalStorage;
 // import { AsyncLocalStorage } from 'node:async_hooks'
 
 class BrowserAsyncLocalStorage {
@@ -37,9 +42,11 @@ class BrowserAsyncLocalStorage {
     this.store = undefined;
   }
 
+  private store?: GlobalStore;
+
   // TODO: don't implement run until browsers have actual async context tracking
 
-  setGlobalValue = (store) => {
+  setGlobalValue = (store: GlobalStore) => {
     this.store = store;
   };
 
@@ -59,20 +66,25 @@ class FrozenAsyncLocalStorageAsContext {
     this._instance = new IsomorphicAsyncLocalStorage();
   }
 
+  private _instance: IsomorphicAsyncLocalStorage;
+
   // NOTE: you *should* be able to remove this AsyncLocalStorage argument and not worry about
   // backwards compatibility. All that uses it is Sporocarp SSR and local dev setups
-  _PRIVATE_setInstance = (asyncLocalStorageInstance) => {
+  _PRIVATE_setInstance = (
+    asyncLocalStorageInstance: IsomorphicAsyncLocalStorage,
+  ) => {
     this._instance = asyncLocalStorageInstance;
   };
 
   // sets the context to store and calls fn with the additional args that are passed in
   run = (store, fn, ...args) => {
-    if (!this._instance.run) {
+    if ("run" in this._instance) {
+      return this._instance.run(store, fn, ...args);
+    } else {
       throw new Error(
         "context.run is not implemented in this runtime, use context.setGlobalValue",
       );
     }
-    return this._instance.run(store, fn, ...args);
   };
 
   // returns context value
@@ -80,13 +92,14 @@ class FrozenAsyncLocalStorageAsContext {
     return this._instance.getStore();
   };
 
-  setGlobalValue = (store) => {
-    if (!this._instance.setGlobalValue) {
+  setGlobalValue = (store: GlobalStore) => {
+    if ("setGlobalValue" in this._instance) {
+      this._instance.setGlobalValue(store);
+    } else {
       throw new Error(
         "context.setGlobalValue is not implemented in this runtime, use context.run",
       );
     }
-    this._instance.setGlobalValue(store);
   };
 }
 

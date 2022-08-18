@@ -1,7 +1,10 @@
 // leave as absolute url so we get same context instance
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
+import { Client } from "https://npm.tfl.dev/urql@2";
 
-export function getPackageContext(packagePath) {
+export function getPackageContext(
+  packagePath: string,
+): Record<string, unknown> | undefined {
   if (!packagePath) {
     console.error("Must specify package");
     return;
@@ -14,7 +17,14 @@ export function getPackageContext(packagePath) {
   return context.packages[packagePath];
 }
 
-export function setPackageContext(packagePath, diff) {
+export interface PackageContext extends Record<string, unknown> {
+  client: Client;
+}
+
+export function setPackageContext(
+  packagePath: string,
+  diff: PackageContext,
+) {
   if (!packagePath) {
     console.error("Must specify package");
     return;
