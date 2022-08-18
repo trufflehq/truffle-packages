@@ -1,7 +1,3 @@
-import {
-  RouteConnection,
-} from "https://tfl.dev/@truffle/api@^0.1.3/types/mod.ts";
-
 export interface ClientConfig {
   IS_DEV_ENV: boolean;
   IS_STAGING_ENV: boolean;
@@ -20,8 +16,25 @@ export interface ClientContext {
 export interface InitialClientData {
   clientConfig: ClientConfig;
   clientContext: ClientContext;
-  routes: RouteConnection;
+  routes: NestedRoute[];
 }
+
+export interface DBNestedRoute {
+  path: string;
+  type: string;
+  moduleUrl?: string;
+  children: DBNestedRoute[];
+}
+
+export interface FSNestedRoute {
+  fullPath: string;
+  path: string;
+  moduleUrl?: string;
+  depth: number;
+  children: FSNestedRoute[];
+}
+
+export type NestedRoute = DBNestedRoute | FSNestedRoute;
 
 export interface GlobalStore extends InitialClientData {
   [x: string]: unknown;
