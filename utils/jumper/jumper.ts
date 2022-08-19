@@ -8,7 +8,7 @@ const PLATFORMS = {
   WEB: "web",
 };
 
-class JumperInstance {
+export class JumperInstance {
   constructor() {
     if (!isSsr) {
       // TODO: setup service worker so it actually responds and doesn't timeout
@@ -27,13 +27,16 @@ class JumperInstance {
     }
   }
 
+  private jumper: Jumper | undefined;
+  private appResumeHandler: (() => void) | null | undefined;
+
   call = (...args) => {
     if (isSsr) {
       // throw new Error 'Comms called server-side'
       return console.log("Comms called server-side");
     }
 
-    return this.jumper.call(...args)
+    return this.jumper?.call(...args)
       .catch((err) => {
         // if we don't catch, zorium freaks out if a jumper call is in state
         // (infinite errors on page load/route)
@@ -52,7 +55,7 @@ class JumperInstance {
       return console.log("Comms called server-side");
     }
 
-    return this.jumper.call(...Array.from(args || []));
+    return this.jumper?.call(...Array.from(args || []));
   };
 
   listen = () => {
@@ -60,35 +63,35 @@ class JumperInstance {
       throw new Error("Comms called server-side");
     }
 
-    this.jumper.listen();
+    this.jumper?.listen();
 
-    this.jumper.on("auth.getStatus", this.authGetStatus);
-    this.jumper.on("env.getPlatform", this.getPlatform);
+    this.jumper?.on("auth.getStatus", this.authGetStatus);
+    this.jumper?.on("env.getPlatform", this.getPlatform);
 
     // fallbacks
-    this.jumper.on("app.onResume", this.appOnResume);
+    this.jumper?.on("app.onResume", this.appOnResume);
 
-    this.jumper.on("push.register", this.pushRegister);
+    this.jumper?.on("push.register", this.pushRegister);
 
-    this.jumper.on(
+    this.jumper?.on(
       "networkInformation.onOnline",
       this.networkInformationOnOnline,
     );
-    this.jumper.on(
+    this.jumper?.on(
       "networkInformation.onOffline",
       this.networkInformationOnOffline,
     );
-    this.jumper.on(
+    this.jumper?.on(
       "networkInformation.onOnline",
       this.networkInformationOnOnline,
     );
 
-    this.jumper.on("storage.get", this.storageGet);
-    this.jumper.on("storage.set", this.storageSet);
+    this.jumper?.on("storage.get", this.storageGet);
+    this.jumper?.on("storage.set", this.storageSet);
 
-    return this.jumper.on(
+    return this.jumper?.on(
       "browser.openWindow",
-      ({ url, target, options }) => window.open(url, target, options),
+      ({ url, target, options }) => window?.open(url, target, options),
     );
   };
 
@@ -142,23 +145,6 @@ class JumperInstance {
   pushRegister() {
     return PushService.registerWeb();
   }
-  // navigator.serviceWorker.ready.then (serviceWorkerRegistration) =>
-  //   serviceWorkerRegistration.pushManager.subscribe {
-  //     userVisibleOnly: true,
-  //     applicationServerKey: urlBase64ToUint8Array config.VAPID_PUBLIC_KEY
-  //   }
-  //   .then (subscription) ->
-  //     subscriptionToken = JSON.stringify subscription
-  //     {tokenStr: subscriptionToken, sourceType: 'web'}
-  //   .catch (err) =>
-  //     serviceWorkerRegistration.pushManager.getSubscription()
-  //     .then (subscription) ->
-  //       subscription.unsubscribe()
-  //     .then =>
-  //       unless isSecondAttempt
-  //         @pushRegister true
-  //     .catch (err) ->
-  //       console.log err
 
   networkInformationOnOnline(fn) {
     return window.addEventListener("online", fn);
