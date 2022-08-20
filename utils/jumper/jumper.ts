@@ -1,12 +1,15 @@
 import Jumper from "./jumper-base.ts";
 import PushService from "../legacy/push/push.ts";
-import isSsr from "../ssr/is-ssr.ts";
 
 const LOCAL_STORAGE_PREFIX = "truffle";
 const PLATFORMS = {
   APP: "app",
   WEB: "web",
 };
+
+const isSsr = typeof document === "undefined" ||
+  globalThis?.process?.release?.name === "node" ||
+  globalThis?.Deno;
 
 class JumperInstance {
   constructor() {
@@ -26,6 +29,9 @@ class JumperInstance {
       this.appResumeHandler = null;
     }
   }
+
+  private jumper: Jumper | undefined;
+  private appResumeHandler: (() => void) | null | undefined;
 
   call = (...args) => {
     if (isSsr) {
@@ -88,7 +94,7 @@ class JumperInstance {
 
     return this.jumper.on(
       "browser.openWindow",
-      ({ url, target, options }) => window.open(url, target, options),
+      ({ url, target, options }) => window?.open(url, target, options),
     );
   };
 
@@ -142,23 +148,6 @@ class JumperInstance {
   pushRegister() {
     return PushService.registerWeb();
   }
-  // navigator.serviceWorker.ready.then (serviceWorkerRegistration) =>
-  //   serviceWorkerRegistration.pushManager.subscribe {
-  //     userVisibleOnly: true,
-  //     applicationServerKey: urlBase64ToUint8Array config.VAPID_PUBLIC_KEY
-  //   }
-  //   .then (subscription) ->
-  //     subscriptionToken = JSON.stringify subscription
-  //     {tokenStr: subscriptionToken, sourceType: 'web'}
-  //   .catch (err) =>
-  //     serviceWorkerRegistration.pushManager.getSubscription()
-  //     .then (subscription) ->
-  //       subscription.unsubscribe()
-  //     .then =>
-  //       unless isSecondAttempt
-  //         @pushRegister true
-  //     .catch (err) ->
-  //       console.log err
 
   networkInformationOnOnline(fn) {
     return window.addEventListener("online", fn);
