@@ -1,6 +1,5 @@
 import Jumper from "./jumper-base.ts";
 import PushService from "../legacy/push/push.ts";
-import isSsr from "../ssr/is-ssr.ts";
 
 const LOCAL_STORAGE_PREFIX = "truffle";
 const PLATFORMS = {
@@ -8,7 +7,11 @@ const PLATFORMS = {
   WEB: "web",
 };
 
-export class JumperInstance {
+const isSsr = typeof document === "undefined" ||
+  globalThis?.process?.release?.name === "node" ||
+  globalThis?.Deno;
+
+class JumperInstance {
   constructor() {
     if (!isSsr) {
       // TODO: setup service worker so it actually responds and doesn't timeout
@@ -36,7 +39,7 @@ export class JumperInstance {
       return console.log("Comms called server-side");
     }
 
-    return this.jumper?.call(...args)
+    return this.jumper.call(...args)
       .catch((err) => {
         // if we don't catch, zorium freaks out if a jumper call is in state
         // (infinite errors on page load/route)
@@ -55,7 +58,7 @@ export class JumperInstance {
       return console.log("Comms called server-side");
     }
 
-    return this.jumper?.call(...Array.from(args || []));
+    return this.jumper.call(...Array.from(args || []));
   };
 
   listen = () => {
@@ -63,33 +66,33 @@ export class JumperInstance {
       throw new Error("Comms called server-side");
     }
 
-    this.jumper?.listen();
+    this.jumper.listen();
 
-    this.jumper?.on("auth.getStatus", this.authGetStatus);
-    this.jumper?.on("env.getPlatform", this.getPlatform);
+    this.jumper.on("auth.getStatus", this.authGetStatus);
+    this.jumper.on("env.getPlatform", this.getPlatform);
 
     // fallbacks
-    this.jumper?.on("app.onResume", this.appOnResume);
+    this.jumper.on("app.onResume", this.appOnResume);
 
-    this.jumper?.on("push.register", this.pushRegister);
+    this.jumper.on("push.register", this.pushRegister);
 
-    this.jumper?.on(
+    this.jumper.on(
       "networkInformation.onOnline",
       this.networkInformationOnOnline,
     );
-    this.jumper?.on(
+    this.jumper.on(
       "networkInformation.onOffline",
       this.networkInformationOnOffline,
     );
-    this.jumper?.on(
+    this.jumper.on(
       "networkInformation.onOnline",
       this.networkInformationOnOnline,
     );
 
-    this.jumper?.on("storage.get", this.storageGet);
-    this.jumper?.on("storage.set", this.storageSet);
+    this.jumper.on("storage.get", this.storageGet);
+    this.jumper.on("storage.set", this.storageSet);
 
-    return this.jumper?.on(
+    return this.jumper.on(
       "browser.openWindow",
       ({ url, target, options }) => window?.open(url, target, options),
     );

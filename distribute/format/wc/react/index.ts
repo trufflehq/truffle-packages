@@ -1,5 +1,5 @@
 import React from "https://npm.tfl.dev/react";
-import isSsr from "https://tfl.dev/@truffle/utils@~0.0.2/ssr/is-ssr.ts";
+import isSsr from "https://tfl.dev/@truffle/utils@0.0.2/ssr/is-ssr.ts";
 
 import reactToWebComponent from "./react-to-web-component.ts";
 
