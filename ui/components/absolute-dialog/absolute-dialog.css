@@ -1,0 +1,41 @@
+:host([hidden]) {
+  display: none;
+}
+
+:host {
+  --dialog-width: 480px;
+  --dialog-min-height: 200px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--tfl-color-bg-fill-backdrop);
+  touch-action: none;
+}
+
+.positioning-region {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+}
+
+.control {
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: calc(var(--tfl-border-radius-lg));
+  width: var(--dialog-width);
+  min-height: var(--dialog-min-height);
+  background: var(--tfl-color-dialog-fill);
+  color: var(--tfl-color-on-dialog-fill);
+  padding: var(--tfl-spacing-xl) var(--tfl-spacing-lg);
+  z-index: var(--tfl-z-300);
+}
