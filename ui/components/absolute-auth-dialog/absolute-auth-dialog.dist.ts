@@ -1,3 +1,6 @@
+// HACK: don't use this. we use for mogul-menu alpha
+// can remove whenever we do oauth flow
+
 // TODO: create a different package for this to live in
 // @truffle/ui should just be for core foundation components
 import {

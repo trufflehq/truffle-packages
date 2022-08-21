@@ -1,3 +1,6 @@
+// HACK: don't use this. we use for mogul-menu alpha
+// can remove whenever we do oauth flow
+
 // If you have problems with this and SSR, switch to skypack
 import {
   Dialog as FoundationDialog,
