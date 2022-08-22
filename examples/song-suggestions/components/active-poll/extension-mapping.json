@@ -1,0 +1,46 @@
+[
+  {
+    "id": "https://a5d7-2601-285-680-370-1907-a8d2-3778-e3a0.ngrok.io/",
+    "defaultLayoutConfigSteps": [
+      {
+        "action": "querySelector",
+        "value": "#chat"
+      },
+      {
+        "action": "setStyle",
+        "value": {
+          "position": "relative"
+        }
+      },
+      {
+        "action": "appendSubject"
+      }
+    ],
+    "domAction": "append",
+    "iframeUrl": "https://a5d7-2601-285-680-370-1907-a8d2-3778-e3a0.ngrok.io/",
+    "orgId": "8e35b570-6c2f-11ec-bade-b32a8d305590",
+    "slug": "https://a5d7-2601-285-680-370-1907-a8d2-3778-e3a0.ngrok.io/"
+  },
+  {
+    "id": "https://package-version-48568410-0be1-11ed-a78e-47c1567fa988.sporocarp.dev/",
+    "defaultLayoutConfigSteps": [
+      {
+        "action": "querySelector",
+        "value": "#chat"
+      },
+      {
+        "action": "setStyle",
+        "value": {
+          "position": "relative"
+        }
+      },
+      {
+        "action": "appendSubject"
+      }
+    ],
+    "domAction": "append",
+    "iframeUrl": "https://package-version-48568410-0be1-11ed-a78e-47c1567fa988.sporocarp.dev/",
+    "orgId": "8e35b570-6c2f-11ec-bade-b32a8d305590",
+    "slug": "https://package-version-48568410-0be1-11ed-a78e-47c1567fa988.sporocarp.dev/"
+  }
+]
