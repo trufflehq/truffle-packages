@@ -1,30 +1,6 @@
-# Song Suggestion Backend
+# Load Balanacer Backend
 
-The folder holds a Deno Deploy Isolate that we use to manage the state of submissions, process
-events from Truffle, and start polls for viewers to vote on.
-
-## Structure
-
-### `areas/`
-Areas are used to organize different domains of functionality. We really only use two to separate processing events and actions fired from the admin dashboard.
-
-### `controllers/`
-Traditional REST controllers that define endpoints and perform validation.
-
-### `models/` 
-DTOs that we use to validate requests and serialize data inside the controllers.
-
-### `services/`
-Controllers handle processing the requests and services handle the application logic.
-
-### `repositories/`
-Repositories are responsible for handling data access from our own database or remote APIs. 
-
-### `utils/`
-Helper functions
-
-### `types/`
-Types used throughout the backend that aren't tied directly to serialization (models).
+This directory holds the code to load balance submissions across multiple deployments of the `backend/` folder. During load testing we discovered that Deno Deploy has a 512MB cap/worker and got bogged down when simulating a high number of submissions. This isolate will distribute the submission request across a number of replica deployments
 
 ## Deploy
 ```
