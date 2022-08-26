@@ -18,7 +18,7 @@ export default function UserInfo() {
   useStyleSheet(styleSheet);
   const [meResult] = useQuery({ query: USER_GET_ME_QUERY });
   const [isAuthDialogHidden, setIsAuthDialogHidden] = useState(true);
-  const [subResult] = useSubscription({ query: USER_GET_ME_QUERY });
+  const [subResult] = useSubscription({ query: gql`subscription { time }` });
   console.log(subResult);
 
   const { name, id } = meResult.data?.me || {};
