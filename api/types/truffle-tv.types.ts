@@ -1,4 +1,4 @@
-export type ExtensionMappingSourceType =
+export type EmbedSourceType =
   | "youtube"
   | "youtubeLive"
   | "youtubeVideo"
@@ -6,7 +6,7 @@ export type ExtensionMappingSourceType =
   | "url";
 
 export type PageIdentifier = {
-  sourceType: ExtensionMappingSourceType;
+  sourceType: EmbedSourceType;
   sourceId: string;
 };
 
