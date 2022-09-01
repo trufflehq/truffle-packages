@@ -3,6 +3,7 @@
 const renderSymbol = Symbol.for("r2wc.reactRender");
 const shouldRenderSymbol = Symbol.for("r2wc.shouldRender");
 const rootSymbol = Symbol.for("r2wc.root");
+const isKilledSymbol = Symbol.for("r2wc.isKilled");
 
 function toDashedStyle(camelCase = "") {
   return camelCase.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
@@ -62,6 +63,18 @@ function mapChildren(React, node) {
         ? c.nodeName.toLowerCase()
         : c.nodeName;
       var children = flattenIfOne(mapChildren(React, c));
+
+      // VERY IMPORTANT!
+      // if the child is a web component that was created with this (react-to-web-component),
+      // it's going to get created again. so we want to prevent the child from actually creating itself
+      // in the lightdom, and only create itself in the shadowdom.
+      // otherwise we'll have multiple reacts going at once for the same thing.
+      // and multiple useEffects being called, with some not being cleaned up at all.
+      // so multiple window event listeners, etc... if useEffects do that.
+      // since mapChildren is called before the actual dom mounting, we can effectively stop it
+      // before it creates the react instance for the lightdom version by setting a flag
+      c[isKilledSymbol] = true;
+
       return React.createElement(nodeName, c.attributes, children);
     }),
   );
@@ -150,12 +163,16 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
   };
   targetPrototype.disconnectedCallback = function () {
     if (typeof ReactDOM.createRoot === "function") {
-      this[rootSymbol].unmount();
+      this[rootSymbol]?.unmount();
     } else {
       ReactDOM.unmountComponentAtNode(this);
     }
   };
   targetPrototype[renderSymbol] = function () {
+    if (this[isKilledSymbol]) {
+      return;
+    }
+
     if (this[shouldRenderSymbol] === true) {
       const data = {};
       Object.keys(this).forEach(function (key) {
