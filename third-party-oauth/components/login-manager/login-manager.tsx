@@ -7,7 +7,6 @@ import {
   verifyJWT,
 } from "../../shared/mod.ts";
 import stylesheet from "./login-manager.scss.js";
-import config from "../../truffle.config.mjs";
 
 export const ME_QUERY = gql`
   query {
@@ -30,7 +29,11 @@ const LOGIN_MUTATION = gql`
 `;
 
 async function getUser(truffleAccessToken: string, orgId: string) {
-  const res = await fetch(config?.apiUrl, {
+  // const apiUrl = window?._truffleInitialData?.clientConfig?.IS_PROD_ENV
+  //   ? "https://mycelium.truffle.vip/graphql"
+  //   : "http://localhost:50420/graphql";
+  const apiUrl = "https://mycelium.truffle.vip/graphql"
+  const res = await fetch(apiUrl, {
     method: "POST",
     headers: {
       "x-access-token": truffleAccessToken,
