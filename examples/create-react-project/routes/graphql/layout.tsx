@@ -2,7 +2,7 @@ import React from "https://npm.tfl.dev/react";
 import {
   toDist,
   useStyleSheet,
-} from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+} from "https://tfl.dev/@truffle/distribute@^2.0.4/format/wc/react/index.ts";
 import Link from "https://tfl.dev/@truffle/router@^1.0.0/components/link/link.tag.ts";
 
 import examples from "../../components/graphql/examples.ts";
@@ -20,7 +20,7 @@ function Layout({ children }) {
         ))}
       </div>
       <div className="example">
-        {children}
+        <slot name="children">{children}</slot>
       </div>
     </div>
   );

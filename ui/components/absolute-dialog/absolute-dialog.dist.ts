@@ -10,7 +10,7 @@ import {
   css,
   html,
 } from "https://npm.tfl.dev/@microsoft/fast-element@2.0.0-beta.3";
-import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/fast-foundation/index.ts";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.4/format/wc/fast-foundation/index.ts";
 
 import Stylesheet from "../stylesheet/stylesheet.tag.ts";
 

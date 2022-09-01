@@ -1,7 +1,7 @@
 import {
   toDist,
   useStyleSheet,
-} from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+} from "https://tfl.dev/@truffle/distribute@^2.0.4/format/wc/react/index.ts";
 
 import styleSheet from "./layout.css.js";
 

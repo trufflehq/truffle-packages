@@ -2,7 +2,7 @@ import React, { useState } from "https://npm.tfl.dev/react";
 import AuthDialog from "https://tfl.dev/@truffle/ui@~0.1.0/components/auth-dialog/auth-dialog.tag.ts";
 import Button from "https://tfl.dev/@truffle/ui@~0.1.0/components/button/button.tag.ts";
 import { gql, useQuery } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
-import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.4/format/wc/react/index.ts";
 
 import styleSheet from "./user-info.css.js";
 
