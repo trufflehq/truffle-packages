@@ -1,6 +1,16 @@
 import { scss } from '../../deps.ts'
 
 export default scss`
+:host {
+  color: var(--tfl-color-on-bg-fill);
+  background: var(--tfl-color-bg-fill);
+  font-family: var(--tfl-font-family-body-sans);
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
 .c-login-manager {
   color: var(--tfl-color-on-bg-fill);
   background: var(--tfl-color-bg-fill);

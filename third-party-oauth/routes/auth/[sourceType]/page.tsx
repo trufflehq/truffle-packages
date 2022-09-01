@@ -27,6 +27,12 @@ function AuthPage() {
     setAccessToken(accessToken);
   }, [accessToken]);
 
+  console.log({
+    sourceType,
+    accessToken,
+    orgId,
+  });
+
   return (
     <div className="c-auth-page">
       {hasSourceType(sourceType) && accessToken && orgId

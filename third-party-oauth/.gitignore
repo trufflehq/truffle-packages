@@ -1,1 +1,3 @@
 truffle.secret.*
+truffle.secret.prod.*
+truffle.secret.local.*

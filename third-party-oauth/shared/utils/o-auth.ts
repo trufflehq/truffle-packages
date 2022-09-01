@@ -1,6 +1,6 @@
 import { signJwt, OAuthSourceType } from '../mod.ts'
 
-const REDIRECT_URI = window?._truffleInitialData?.clientConfig?.IS_PROD_ENV ? "https://third-party-oauth.truffle.vip/auth/callback" : "http://localhost:50230/auth/callback";
+const REDIRECT_URI = window?._truffleInitialData?.clientConfig?.IS_PROD_ENV ? "https://third-party-oauth.truffle.vip/redirect/callback" : "http://localhost:50230/redirect/callback";
 const AUTHORIZE_URL = "https://accounts.google.com/o/oauth2/v2/auth";
 const SCOPES = ["https://www.googleapis.com/auth/youtube.readonly"];
 const GOOGLE_CLIENT_ID = "710684531554-58ngiqv3jreg88ns30s3vkptb401rja1.apps.googleusercontent.com";
