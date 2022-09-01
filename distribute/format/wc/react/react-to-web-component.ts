@@ -184,7 +184,8 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
 
       // Use react to render element in container
       if (typeof ReactDOM.createRoot === "function") {
-        if (!this[rootSymbol] || true) { // FIXME? w/o true, routing break
+        // FIXME? w/o true, routing breaks "Cannot update an unmounted root."
+        if (!this[rootSymbol] || true) {
           this[rootSymbol] = ReactDOM.createRoot(container);
         }
 
