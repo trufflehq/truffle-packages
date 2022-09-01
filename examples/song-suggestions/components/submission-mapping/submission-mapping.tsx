@@ -25,7 +25,7 @@ function ExtensionMapping() {
 
   return (
     <>
-      <Submission onCancel={() => console.log('oncancel')} />
+      <Submission onCancel={() => console.log("oncancel")} />
     </>
   );
 }

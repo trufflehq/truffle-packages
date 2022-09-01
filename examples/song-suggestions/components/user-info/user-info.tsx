@@ -37,23 +37,28 @@ export default function UserInfo({ setActiveUser, setActiveOrgUser }) {
   useStyleSheet(styleSheet);
   const { name } = meResult.data?.me || {};
 
-  console.log('meResult.data', meResult.data)
+  console.log("meResult.data", meResult.data);
   useEffect(() => {
     if (meResult.data?.me) {
       setActiveUser(meResult?.data?.me);
     }
 
-    if(setActiveOrgUser && meResult.data?.orgUser) {
-      setActiveOrgUser(meResult.data?.orgUser)
+    if (setActiveOrgUser && meResult.data?.orgUser) {
+      setActiveOrgUser(meResult.data?.orgUser);
     }
   }, [JSON.stringify(meResult?.data)]);
   return (
     <div className="c-user-info">
-      {!name && meResult?.data?.me ? (
-        <Button className="button" onClick={() => setIsAuthDialogHidden(false)}>Login</Button>
-      )
-      : null
-      }
+      {!name && meResult?.data?.me
+        ? (
+          <Button
+            className="button"
+            onClick={() => setIsAuthDialogHidden(false)}
+          >
+            Login
+          </Button>
+        )
+        : null}
       {!isAuthDialogHidden && (
         <AuthDialog
           hidden={isAuthDialogHidden}

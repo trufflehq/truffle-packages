@@ -7,21 +7,26 @@ enum Status {
 }
 
 type CountdownTimerProps = {
-  className?: string
-  endTime: Date
-  onEnd?: () => void
-  empyStateText?: string
-}
+  className?: string;
+  endTime: Date;
+  onEnd?: () => void;
+  empyStateText?: string;
+};
 
-export default function CountdownTimer({ className, endTime, onEnd, empyStateText = 'Start a new round' }: CountdownTimerProps) {
+export default function CountdownTimer(
+  { className, endTime, onEnd, empyStateText = "Start a new round" }:
+    CountdownTimerProps,
+) {
   const [millisecondsRemaining, setmilliSecondsRemaining] = useState();
   const [status, setStatus] = useState(Status.STOPPED);
   const [delay, setDelay] = useState(1);
   useStyleSheet(styleSheet);
 
-  const millisecondsToDisplay = Math.round((millisecondsRemaining % 1000) * 10) / 10;
+  const millisecondsToDisplay =
+    Math.round((millisecondsRemaining % 1000) * 10) / 10;
   const secondsToDisplay = Math.round((millisecondsRemaining / 1000) % 60);
-  const minutesRemaining = ((millisecondsRemaining / 1000) - secondsToDisplay) / 60;
+  const minutesRemaining = ((millisecondsRemaining / 1000) - secondsToDisplay) /
+    60;
   const minutesToDisplay = Math.round(minutesRemaining % 60);
   useEffect(() => {
     setStatus(Status.STARTED);
@@ -48,27 +53,28 @@ export default function CountdownTimer({ className, endTime, onEnd, empyStateTex
     // passing null stops the interval
   );
 
-  const hasEnded = millisecondsRemaining < 0
-  
+  const hasEnded = millisecondsRemaining < 0;
+
   useEffect(() => {
-    if(hasEnded) {
-      onEnd?.()
+    if (hasEnded) {
+      onEnd?.();
     }
-  }, [hasEnded])
+  }, [hasEnded]);
 
   return (
-    <div className={`timer ${className || ''}`}>
+    <div className={`timer ${className || ""}`}>
       <>
-        { hasEnded
-          ? <div className='finish'>
-            {
-              empyStateText
-            }
-          </div> 
-          : !isNaN(millisecondsRemaining) ? `${staticDigits(minutesToDisplay)}:${
+        {hasEnded
+          ? (
+            <div className="finish">
+              {empyStateText}
+            </div>
+          )
+          : !isNaN(millisecondsRemaining)
+          ? `${staticDigits(minutesToDisplay)}:${
             staticDigits(secondsToDisplay)
           }:${staticDigits(millisecondsToDisplay, 3)}`
-        : null}
+          : null}
       </>
     </div>
   );

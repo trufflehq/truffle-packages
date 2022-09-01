@@ -23,7 +23,11 @@ export default function UserInfo({ setActiveUser }) {
     <>
       {name && <div>Name: {name}</div>}
       {!name && meResult?.data?.me && (
-        <Button className="button login" onClick={() => setIsAuthDialogHidden(false)}></Button>
+        <Button
+          className="button login"
+          onClick={() => setIsAuthDialogHidden(false)}
+        >
+        </Button>
       )}
       {!isAuthDialogHidden && (
         <AuthDialog

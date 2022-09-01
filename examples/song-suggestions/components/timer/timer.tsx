@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "https://npm.tfl.dev/react";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
-import { useInterval } from '../../hooks/mod.ts'
+import { useInterval } from "../../hooks/mod.ts";
 import styleSheet from "./timer.scss.js";
 enum Status {
   STARTED = "Started",
@@ -54,8 +54,6 @@ export default function CountdownTimer({ endTime }) {
     </div>
   );
 }
-
-
 
 // https://stackoverflow.com/a/2998874/1673761
 const twoDigits = (num) => {
