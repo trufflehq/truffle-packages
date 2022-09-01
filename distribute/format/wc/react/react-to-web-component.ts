@@ -48,7 +48,7 @@ function flattenIfOne(arr) {
   return arr;
 }
 
-function mapChildren(React, node) {
+function mapChildren(React, node, options) {
   if (node.nodeType === Node.TEXT_NODE) {
     return node.textContent.toString();
   }
@@ -62,7 +62,9 @@ function mapChildren(React, node) {
       var nodeName = isAllCaps(c.nodeName)
         ? c.nodeName.toLowerCase()
         : c.nodeName;
-      var children = flattenIfOne(mapChildren(React, c));
+      var children = flattenIfOne(mapChildren(React, c, options));
+
+      let element = React.createElement(nodeName, c.attributes, children);
 
       // VERY IMPORTANT!
       // if the child is a web component that was created with this (react-to-web-component),
@@ -73,9 +75,21 @@ function mapChildren(React, node) {
       // so multiple window event listeners, etc... if useEffects do that.
       // since mapChildren is called before the actual dom mounting, we can effectively stop it
       // before it creates the react instance for the lightdom version by setting a flag
-      c[isKilledSymbol] = true;
+      if (c.disconnectedCallback) {
+        c[isKilledSymbol] = true;
 
-      return React.createElement(nodeName, c.attributes, children);
+        // we still need to make sure we set context so useStylsheet has access to the
+        // web component node to apply the styles to
+        if (options.wcContainerContext) {
+          element = React.createElement(
+            options.wcContainerContext.Provider,
+            { value: { container: c } },
+            element,
+          );
+        }
+      }
+
+      return element;
     }),
   );
 }
@@ -187,7 +201,7 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
       // Array.from(this.attributes).forEach(function (attr) {
       //   data[attr.name] = attr.nodeValue;
       // });
-      const children = flattenIfOne(mapChildren(React, this));
+      const children = flattenIfOne(mapChildren(React, this, options));
 
       let element = React.createElement(ReactComponent, data, children);
 
