@@ -7,7 +7,7 @@ import React from "https://npm.tfl.dev/react";
 import Draggable from "../draggable/draggable.tsx";
 import SongInfo from "../song-info/song-info.tsx";
 import ToolTip from "../tooltip/tooltip.tsx";
-import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.4/format/wc/react/index.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
 import styleSheet from "./spotify-component.scss.js";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 import { useEffect, useState } from "https://npm.tfl.dev/react";

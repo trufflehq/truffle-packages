@@ -5,7 +5,7 @@ import {
   OrgUserCounterTypeConnection,
   useIntervalFetchMashingLeaderboard,
 } from "./hooks.ts";
-import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.4/format/wc/react/index.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
 import styleSheet from "./mashing-leaderboard.scss.js";
 import { getMashTimeRemaining } from "../mash-controls/utils.ts";
 

@@ -3,10 +3,10 @@
 import {
   useMemo,
   virtual,
-} from "https://tfl.dev/@truffle/distribute@^2.0.4/pinned-libs/haunted.ts";
+} from "https://tfl.dev/@truffle/distribute@^2.0.5/pinned-libs/haunted.ts";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
 
-import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.4/format/wc/haunted/index.ts";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/haunted/index.ts";
 import { createSubject } from "https://tfl.dev/@truffle/utils@~0.0.2/obs/subject.ts";
 import useObservables from "https://tfl.dev/@truffle/utils@~0.0.2/obs/use-observables-haunted.ts";
 import {
