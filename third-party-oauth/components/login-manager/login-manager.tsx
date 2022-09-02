@@ -1,11 +1,15 @@
-import { gql, jose, React, useEffect, useMutation, useState, useStyleSheet } from "../../deps.ts";
 import {
-  MESSAGES,
-  OAuthSourceType,
+  gql,
+  mutation,
+  React,
   setAccessToken,
-  setGlobalStoreOrgId,
-  verifyJWT,
-} from "../../shared/mod.ts";
+  setOrgId,
+  useEffect,
+  useState,
+  useStyleSheet,
+} from "../../deps.ts";
+import { DecodedAuth, MESSAGES, verifyJWT } from "../../shared/mod.ts";
+
 import stylesheet from "./login-manager.scss.js";
 
 export const ME_QUERY = gql`
@@ -20,41 +24,12 @@ export const ME_QUERY = gql`
 `;
 
 const LOGIN_MUTATION = gql`
-  mutation LoginQuery ($sourceType: String, $accessToken: String) {
-    connectionLogin(input: { sourceType: $sourceType, accessToken: $accessToken}) {
+  mutation LoginQuery ($connectionSourceType: String, $connectionPrivateData: JSON) {
+    connectionLogin(input: { connectionSourceType: $connectionSourceType, connectionPrivateData: $connectionPrivateData}) {
       accessToken
-      userName
     }
   }
 `;
-
-async function getUser(truffleAccessToken: string, orgId: string) {
-  // const apiUrl = window?._truffleInitialData?.clientConfig?.IS_PROD_ENV
-  //   ? "https://mycelium.truffle.vip/graphql"
-  //   : "http://localhost:50420/graphql";
-  const apiUrl = "https://mycelium.truffle.vip/graphql";
-  const res = await fetch(apiUrl, {
-    method: "POST",
-    headers: {
-      "x-access-token": truffleAccessToken,
-      "x-org-id": orgId,
-    },
-    body: JSON.stringify({
-      query: `  query {
-        me {
-          id
-          name
-          email
-          phone
-        }
-      }`,
-    }),
-  });
-
-  const data = await res.json();
-
-  return data?.data?.me;
-}
 
 export default function LoginManager(
   { ytAccessToken, state }: {
@@ -63,74 +38,27 @@ export default function LoginManager(
   },
 ) {
   useStyleSheet(stylesheet);
-  const [connectionAccessToken, setConnectionAccessToken] = useState<string>();
-  const [loginResult, executeLogin] = useMutation(LOGIN_MUTATION);
-  const [user, setUser] = useState();
-  const [sourceType, setSourceType] = useState<OAuthSourceType>();
   const [error, setError] = useState<string>();
 
   useEffect(() => {
-    setConnectionAccessToken(ytAccessToken);
-  }, [ytAccessToken]);
-
-  useEffect(() => {
-    const getPayload = async () => {
-      const decodedState: DecodedAuth | null = state ? await verifyJWT(state) : null;
-      const decodedTruffleAccessToken = decodedState?.accessToken;
-      const decodedOrgId = decodedState?.orgId;
-      const decodedSourceType = decodedState?.sourceType;
-
-      if (decodedTruffleAccessToken && decodedOrgId && decodedSourceType && !user) {
-        setGlobalStoreOrgId(decodedOrgId);
-        setAccessToken(decodedTruffleAccessToken);
-        setSourceType(decodedSourceType);
-
-        const rawUser = await getUser(decodedTruffleAccessToken, decodedOrgId);
-        setUser(rawUser);
+    ytAccessToken && state && (async () => {
+      const accessToken = await login(ytAccessToken, state);
+      try {
+        sendTokenToOpener(accessToken);
+      } catch (err) {
+        setError("Error logging in");
       }
-    };
-    getPayload();
-  }, []);
-
-  useEffect(() => {
-    const login = async () => {
-      if (user && sourceType && connectionAccessToken) {
-        const result = await executeLogin({
-          sourceType,
-          accessToken: connectionAccessToken,
-        });
-
-        const truffleAccessToken = result?.data?.connectionLogin?.accessToken;
-        const userName = result?.data?.connectionLogin?.userName;
-        if (truffleAccessToken) {
-          const payload = {
-            type: MESSAGES.SET_ACCESS_TOKEN,
-            truffleAccessToken,
-            userName,
-          };
-
-          try {
-            window.opener?.postMessage(JSON.stringify(payload), "*");
-            const self = window.self;
-            self.opener = window.self;
-            self.close();
-          } catch (err) {
-            setError("Error logging in");
-          }
-        } else {
-          // show an error
-          setError("Error logging in");
-        }
-      }
-    };
-    login();
-  }, [JSON.stringify(user), sourceType]);
+    })();
+  }, [ytAccessToken, state]);
 
   return (
     <div className="c-login-manager">
       <div className="inner">
         <div className="snuffle">
-          <object data="https://cdn.bio/assets/images/landing/snuffle.svg?1" type="image/svg+xml">
+          <object
+            data="https://cdn.bio/assets/images/landing/snuffle.svg?1"
+            type="image/svg+xml"
+          >
             <img src="https://cdn.bio/assets/images/landing/snuffle.svg?1" />
           </object>
         </div>
@@ -141,4 +69,44 @@ export default function LoginManager(
       </div>
     </div>
   );
+}
+
+async function login(
+  ytAccessToken: string,
+  state: string,
+): Promise<string | null> {
+  const { orgId, accessToken: truffleAccessToken, sourceType } =
+    await decodeState(state) || {};
+
+  // login as this OrgUser
+  setAccessToken(truffleAccessToken);
+  setOrgId(orgId);
+
+  // attempt to login via connection
+  // - if a connection doesn't exist, it'll add the connection for existing OrgUser
+  //   and return same accessToken
+  // - if a connection does exist, it'll log the user in as the OrgUser the connection
+  //   exists for and return that user's accessToken
+  const result = await mutation(LOGIN_MUTATION, {
+    connectionSourceType: sourceType,
+    connectionPrivateData: { accessToken: ytAccessToken },
+  });
+
+  return result?.data?.userLoginConnection?.accessToken;
+}
+
+async function decodeState(state: string): Promise<DecodedAuth | null> {
+  return state ? await verifyJWT(state) : null;
+}
+
+function sendTokenToOpener(truffleAccessToken) {
+  const payload = {
+    type: MESSAGES.SET_ACCESS_TOKEN,
+    truffleAccessToken,
+  };
+
+  window.opener?.postMessage(JSON.stringify(payload), "*");
+  const self = window.self;
+  self.opener = window.self;
+  self.close();
 }
