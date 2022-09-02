@@ -32,7 +32,7 @@ async function getUser(truffleAccessToken: string, orgId: string) {
   // const apiUrl = window?._truffleInitialData?.clientConfig?.IS_PROD_ENV
   //   ? "https://mycelium.truffle.vip/graphql"
   //   : "http://localhost:50420/graphql";
-  const apiUrl = "https://mycelium.truffle.vip/graphql"
+  const apiUrl = "https://mycelium.truffle.vip/graphql";
   const res = await fetch(apiUrl, {
     method: "POST",
     headers: {
@@ -54,12 +54,6 @@ async function getUser(truffleAccessToken: string, orgId: string) {
   const data = await res.json();
 
   return data?.data?.me;
-}
-
-interface DecodedAuth extends jose.JWTPayload {
-  accessToken?: string;
-  orgId?: string;
-  sourceType?: OAuthSourceType;
 }
 
 export default function LoginManager(
