@@ -32,8 +32,8 @@ const LOGIN_MUTATION = gql`
 `;
 
 export default function LoginManager(
-  { ytAccessToken, state }: {
-    ytAccessToken?: string;
+  { oAuthAccessToken, state }: {
+    oAuthAccessToken?: string;
     state?: string;
   },
 ) {
@@ -41,15 +41,18 @@ export default function LoginManager(
   const [error, setError] = useState<string>();
 
   useEffect(() => {
-    ytAccessToken && state && (async () => {
-      const accessToken = await login(ytAccessToken, state);
+    oAuthAccessToken && state && (async () => {
+      const truffleAccessToken = await truffleConnectionLogin(
+        oAuthAccessToken,
+        state,
+      );
       try {
-        sendTokenToOpener(accessToken);
+        sendTruffleAccessTokenToOpener(truffleAccessToken);
       } catch (err) {
         setError("Error logging in");
       }
     })();
-  }, [ytAccessToken, state]);
+  }, [oAuthAccessToken, state]);
 
   return (
     <div className="c-login-manager">
@@ -71,8 +74,8 @@ export default function LoginManager(
   );
 }
 
-async function login(
-  ytAccessToken: string,
+async function truffleConnectionLogin(
+  oAuthAccessToken: string,
   state: string,
 ): Promise<string | null> {
   const { orgId, accessToken: truffleAccessToken, sourceType } =
@@ -89,7 +92,7 @@ async function login(
   //   exists for and return that user's accessToken
   const result = await mutation(LOGIN_MUTATION, {
     connectionSourceType: sourceType,
-    connectionPrivateData: { accessToken: ytAccessToken },
+    connectionPrivateData: { accessToken: oAuthAccessToken },
   });
 
   return result?.data?.userLoginConnection?.accessToken;
@@ -99,7 +102,7 @@ async function decodeState(state: string): Promise<DecodedAuth | null> {
   return state ? await verifyJWT(state) : null;
 }
 
-function sendTokenToOpener(truffleAccessToken) {
+function sendTruffleAccessTokenToOpener(truffleAccessToken) {
   const payload = {
     type: MESSAGES.SET_ACCESS_TOKEN,
     truffleAccessToken,

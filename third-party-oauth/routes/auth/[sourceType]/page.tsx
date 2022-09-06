@@ -1,4 +1,4 @@
-import { gql, React, useEffect, useQuery } from "../../../deps.ts";
+import { React, useEffect } from "../../../deps.ts";
 import { useParams } from "https://tfl.dev/@truffle/router@^1.0.0/index.ts";
 import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
 import { OAuthSourceType, setAccessToken } from "../../../shared/mod.ts";
@@ -16,9 +16,12 @@ function AuthPage() {
 
   const sourceType = params?.sourceType;
 
-  const urlParams: OAuthSourceTypeParams = new Proxy(new URLSearchParams(window.location.search), {
-    get: (searchParams, prop: string) => searchParams.get(prop),
-  });
+  const urlParams: OAuthSourceTypeParams = new Proxy(
+    new URLSearchParams(window.location.search),
+    {
+      get: (searchParams, prop: string) => searchParams.get(prop),
+    },
+  );
 
   const accessToken = urlParams?.accessToken;
   const orgId = urlParams?.orgId;

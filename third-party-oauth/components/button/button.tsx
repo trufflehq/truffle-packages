@@ -1,6 +1,8 @@
 import { React, useState, useStyleSheet } from "../../deps.ts";
 import styleSheet from "./button.scss.js";
 
+// HACK - we should consolidate the button component from MogulMenu and this library
+
 type Styles = Record<string, string>;
 
 const buttonStyles: Record<string, Styles> = {
