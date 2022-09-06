@@ -1,7 +1,7 @@
-import { React, useEffect } from "../../../deps.ts";
+import { React, setAccessToken, useEffect } from "../../../deps.ts";
 import { useParams } from "https://tfl.dev/@truffle/router@^1.0.0/index.ts";
 import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
-import { OAuthSourceType, setAccessToken } from "../../../shared/mod.ts";
+import { OAuthSourceType } from "../../../shared/mod.ts";
 import OAuthButton from "../../../components/oauth-button/oauth-button.tsx";
 
 interface OAuthSourceTypeParams extends URLSearchParams {
@@ -36,21 +36,19 @@ function AuthPage() {
     orgId,
   });
 
+  const hasParams = hasSourceType(sourceType) && accessToken && orgId;
+  if (!hasParams) {
+    console.error("missing params", { sourceType, accessToken, orgId });
+    return <></>;
+  }
+
   return (
     <div className="c-auth-page">
-      {hasSourceType(sourceType) && accessToken && orgId
-        ? (
-          <OAuthButton
-            sourceType={sourceType}
-            truffleAccessToken={accessToken}
-            orgId={orgId}
-          />
-        )
-        : (
-          <div>
-            Missing Params
-          </div>
-        )}
+      <OAuthButton
+        sourceType={sourceType}
+        truffleAccessToken={accessToken}
+        orgId={orgId}
+      />
     </div>
   );
 }

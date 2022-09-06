@@ -25,7 +25,7 @@ export const ME_QUERY = gql`
 
 const LOGIN_MUTATION = gql`
   mutation LoginQuery ($connectionSourceType: String, $connectionPrivateData: JSON) {
-    connectionLogin(input: { connectionSourceType: $connectionSourceType, connectionPrivateData: $connectionPrivateData}) {
+    userLoginConnection(input: { connectionSourceType: $connectionSourceType, connectionPrivateData: $connectionPrivateData}) {
       accessToken
     }
   }
@@ -83,7 +83,9 @@ async function truffleConnectionLogin(
 
   // login as this OrgUser
   setAccessToken(truffleAccessToken);
-  setOrgId(orgId);
+  if (orgId) {
+    setOrgId(orgId);
+  }
 
   // attempt to login via connection
   // - if a connection doesn't exist, it'll add the connection for existing OrgUser
