@@ -1,5 +1,12 @@
-import { ImageByAspectRatio, React, useEffect, useState, useStyleSheet } from "../../deps.ts";
-import { getOAuthUrl, OAuthSourceType, MESSAGES } from "../../shared/mod.ts";
+import {
+  ImageByAspectRatio,
+  React,
+  useEffect,
+  useState,
+  useStyleSheet,
+} from "../../deps.ts";
+import { getOAuthUrl, OAuthSourceType } from "../../shared/mod.ts";
+import { usePostTruffleAccessTokenToParent} from './hooks.ts'
 
 import NewWindow from "../new-window/new-window.tsx";
 import Button from "../button/button.tsx";
@@ -9,8 +16,12 @@ function getSourceTypeTitle(sourceType: OAuthSourceType) {
   return sourceType === "youtube" ? "YouTube" : "Twitch";
 }
 function getSourceTypeIcon(sourceType: OAuthSourceType) {
-  return sourceType === "youtube" ? "https://cdn.bio/assets/images/features/browser_extension/youtube.svg" : "";
+  return sourceType === "youtube"
+    ? "https://cdn.bio/assets/images/features/browser_extension/youtube.svg"
+    : "";
 }
+
+
 
 export default function OAuthButton(
   {
@@ -37,16 +48,7 @@ export default function OAuthButton(
     getUrl();
   }, [truffleAccessToken, orgId]);
 
-  useEffect(() => {
-    window.onmessage = function (e) {
-      try {
-        const parsedMessage = JSON.parse(e?.data ?? "{}");
-        if (parsedMessage?.type === MESSAGES.SET_ACCESS_TOKEN && e.source !== window) {
-          window.parent.postMessage(e?.data, "*");
-        }
-      } catch (err) {}
-    };
-  }, []);
+  usePostTruffleAccessTokenToParent();
 
   const onWindowClose = () => {
     setIsOpen(false);
@@ -54,7 +56,10 @@ export default function OAuthButton(
   };
 
   return (
-    <Button className={`${sourceType} oauth-button`} onClick={() => setIsOpen(true)}>
+    <Button
+      className={`${sourceType} oauth-button`}
+      onClick={() => setIsOpen(true)}
+    >
       <ImageByAspectRatio
         imageUrl={getSourceTypeIcon(sourceType)}
         widthPx={24}

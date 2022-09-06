@@ -17,7 +17,7 @@ const hashParams: AuthCallbackHashParams = new Proxy(
 );
 
 function AuthCallbackPage() {
-  const ytAccessToken = hashParams?.access_token;
+  const oAuthAccessToken = hashParams?.access_token;
   const state = hashParams?.state;
 
   console.log("auth callback page", state);
@@ -25,7 +25,7 @@ function AuthCallbackPage() {
   return (
     <>
       <ThemeComponent />
-      <LoginManager ytAccessToken={ytAccessToken} state={state} />;
+      <LoginManager oAuthAccessToken={oAuthAccessToken} state={state} />;
     </>
   );
 }
