@@ -1,8 +1,10 @@
+import jumper from "https://tfl.dev/@truffle/utils@0.0.3/jumper/jumper.ts";
 import { gql, makeOperation } from "https://npm.tfl.dev/urql@2";
 import { authExchange } from "https://npm.tfl.dev/@urql/exchange-auth@0";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 import { getAccessToken, setAccessToken } from "./auth.ts";
 
+export const TRUFFLE_ACCESS_TOKEN_KEY = "mogul-menu:accessToken";
 const LOGIN_ANON_MUTATION = gql
   `mutation LoginAnon { userLoginAnon { accessToken } }`;
 
@@ -64,7 +66,14 @@ export function getAuthExchange() {
     },
     getAuth: async ({ authState, mutate }) => {
       // try existing accessToken
-      let accessToken = getAccessToken();
+      let accessToken;
+      try {
+        accessToken = await jumper.call("storage.get", {
+          key: TRUFFLE_ACCESS_TOKEN_KEY,
+        });
+      } catch {}
+      accessToken = accessToken || getAccessToken();
+
       if (!accessToken) {
         const response = await mutate(LOGIN_ANON_MUTATION);
         accessToken = response?.data?.userLoginAnon?.accessToken;
