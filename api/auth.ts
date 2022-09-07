@@ -10,7 +10,7 @@ export function getAccessToken(): string {
   return getCookie(ACCESS_TOKEN_COOKIE);
 }
 
-export function setAccessToken(accessToken?: string): void {
+export function setAccessToken(accessToken?: string) {
   setCookie(ACCESS_TOKEN_COOKIE, accessToken, {});
 }
 
