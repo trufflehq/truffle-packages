@@ -1,6 +1,6 @@
 export default {
   name: "@truffle/utils",
-  version: "0.0.6",
+  version: "0.0.7",
   // apiUrl: "https://mycelium.truffle.vip/graphql",
   apiUrl: "https://mycelium.staging.bio/graphql",
   // apiUrl: 'http://localhost:50420/graphql'
