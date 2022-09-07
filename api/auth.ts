@@ -26,6 +26,6 @@ export function setOrgId(orgId: string) {
 
 // private method for now, potentially don't want to support this forever (see _clearCache)
 export function _setAccessTokenAndClear(accessToken?: string) {
-  _clearCache();
   setAccessToken(accessToken);
+  _clearCache();
 }
