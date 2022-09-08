@@ -80,3 +80,10 @@ export const CONNECTION_SOURCE_TYPES = ["youtube", "twitch"] as const;
 export type ConnectionSourceType =
   | typeof CONNECTION_SOURCE_TYPES[number]
   | undefined;
+
+export interface ExtensionInfo {
+  version: string;
+  pageInfo: PageIdentifier[];
+  isExperimentalEnabled: boolean;
+}
+  
