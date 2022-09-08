@@ -1,4 +1,4 @@
-import { _setAccessTokenAndClear } from "https://tfl.dev/@truffle/api@~0.1.7/mod.ts";
+import { _setAccessTokenAndClear } from './deps.ts'
 import { CONNECTION_SOURCE_TYPES, PageIdentifier } from "./types.ts";
 import { findFirst } from "../helpers/mod.ts";
 
