@@ -6,22 +6,17 @@ import {
   useStyleSheet,
 } from "../../deps.ts";
 import { getOAuthUrl, OAuthSourceType } from "../../shared/mod.ts";
-import { usePostTruffleAccessTokenToParent} from './hooks.ts'
+import { usePostTruffleAccessTokenToParent } from "./hooks.ts";
 
 import NewWindow from "../new-window/new-window.tsx";
 import Button from "../button/button.tsx";
 import stylesheet from "./oauth-button.scss.js";
 
-function getSourceTypeTitle(sourceType: OAuthSourceType) {
-  return sourceType === "youtube" ? "YouTube" : "Twitch";
-}
 function getSourceTypeIcon(sourceType: OAuthSourceType) {
   return sourceType === "youtube"
-    ? "https://cdn.bio/assets/images/features/browser_extension/youtube.svg"
+    ? "https://cdn.bio/assets/images/features/browser_extension/yt_logo_mono_dark.png"
     : "";
 }
-
-
 
 export default function OAuthButton(
   {
@@ -60,13 +55,20 @@ export default function OAuthButton(
       className={`${sourceType} oauth-button`}
       onClick={() => setIsOpen(true)}
     >
-      <ImageByAspectRatio
-        imageUrl={getSourceTypeIcon(sourceType)}
-        widthPx={24}
-        height={24}
-        aspectRatio={1}
-      />
-      {`Link your ${getSourceTypeTitle(sourceType)} account`}
+      <span>
+        {"Connect your"}
+      </span>
+      <div className="logo">
+        <ImageByAspectRatio
+          imageUrl={getSourceTypeIcon(sourceType)}
+          widthPx={104}
+          height={24}
+          aspectRatio={3}
+        />
+      </div>
+      <span>
+        {`account`}
+      </span>
       {isOpen && (
         <NewWindow
           onClose={onWindowClose}
