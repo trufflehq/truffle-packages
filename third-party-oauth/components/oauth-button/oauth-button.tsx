@@ -12,9 +12,12 @@ import NewWindow from "../new-window/new-window.tsx";
 import Button from "../button/button.tsx";
 import stylesheet from "./oauth-button.scss.js";
 
+function getSourceTypeTitle(sourceType: OAuthSourceType) {
+  return sourceType === "youtube" ? "YouTube" : "Twitch";
+}
 function getSourceTypeIcon(sourceType: OAuthSourceType) {
   return sourceType === "youtube"
-    ? "https://cdn.bio/assets/images/features/browser_extension/yt_logo_mono_dark.png"
+    ? "https://cdn.bio/assets/images/features/browser_extension/youtube.svg"
     : "";
 }
 
@@ -58,10 +61,11 @@ export default function OAuthButton(
       <div className="logo">
         <ImageByAspectRatio
           imageUrl={getSourceTypeIcon(sourceType)}
-          widthPx={104}
+          widthPx={24}
           height={24}
-          aspectRatio={3.5}
+          aspectRatio={1}
         />
+        {`Connect ${getSourceTypeTitle(sourceType)}`}
       </div>
       {isOpen && (
         <NewWindow
