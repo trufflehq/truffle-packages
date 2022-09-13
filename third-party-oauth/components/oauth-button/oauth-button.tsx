@@ -60,7 +60,7 @@ export default function OAuthButton(
           imageUrl={getSourceTypeIcon(sourceType)}
           widthPx={104}
           height={24}
-          aspectRatio={4}
+          aspectRatio={3.5}
         />
       </div>
       {isOpen && (
