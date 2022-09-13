@@ -55,20 +55,14 @@ export default function OAuthButton(
       className={`${sourceType} oauth-button`}
       onClick={() => setIsOpen(true)}
     >
-      <span>
-        {"Connect your"}
-      </span>
       <div className="logo">
         <ImageByAspectRatio
           imageUrl={getSourceTypeIcon(sourceType)}
           widthPx={104}
           height={24}
-          aspectRatio={3}
+          aspectRatio={4}
         />
       </div>
-      <span>
-        {`account`}
-      </span>
       {isOpen && (
         <NewWindow
           onClose={onWindowClose}

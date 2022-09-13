@@ -16,10 +16,6 @@ export default scss`
     }
   }
 
-  .logo {
-    margin-top: -2px;
-  }
-
   .youtube {
     background: rgba(235, 50, 25, 1) !important;
   }
