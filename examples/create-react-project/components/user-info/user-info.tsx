@@ -4,7 +4,7 @@ import Button from "https://tfl.dev/@truffle/ui@~0.1.0/components/button/button.
 import {
   gql,
   useQuery,
-  useSubscription,
+  // useSubscription,
 } from "https://tfl.dev/@truffle/api@~0.0.31/client.ts";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
 
@@ -18,10 +18,10 @@ export default function UserInfo() {
   useStyleSheet(styleSheet);
   const [meResult] = useQuery({ query: USER_GET_ME_QUERY });
   const [isAuthDialogHidden, setIsAuthDialogHidden] = useState(true);
-  const [subResult] = useSubscription({
-    query: gql`subscription { time }`,
-  });
-  console.log("subResult", subResult);
+  // const [subResult] = useSubscription({
+  //   query: gql`subscription { time }`,
+  // });
+  // console.log("subscription example", subResult);
 
   const { name, id } = meResult.data?.me || {};
 
