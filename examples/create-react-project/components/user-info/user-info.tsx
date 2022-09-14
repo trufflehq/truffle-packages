@@ -5,7 +5,7 @@ import {
   gql,
   useQuery,
   useSubscription,
-} from "https://tfl.dev/@truffle/api@~0.0.22/client.ts";
+} from "https://tfl.dev/@truffle/api@~0.0.31/client.ts";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
 
 import styleSheet from "./user-info.css.js";
@@ -18,8 +18,10 @@ export default function UserInfo() {
   useStyleSheet(styleSheet);
   const [meResult] = useQuery({ query: USER_GET_ME_QUERY });
   const [isAuthDialogHidden, setIsAuthDialogHidden] = useState(true);
-  const [subResult] = useSubscription({ query: gql`subscription { time }` });
-  console.log(subResult);
+  const [subResult] = useSubscription({
+    query: gql`subscription { time }`,
+  });
+  console.log("subResult", subResult);
 
   const { name, id } = meResult.data?.me || {};
 
