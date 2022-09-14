@@ -1,5 +1,5 @@
 import React from "https://npm.tfl.dev/react";
-import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
 
 import Create from "../../components/create/create.tsx";
 

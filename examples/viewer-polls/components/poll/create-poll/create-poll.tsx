@@ -11,7 +11,7 @@ import {
   useQuery,
 } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
 import UserInfo from "../../user-info/user-info.tsx";
-import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
 import styleSheet from "./create-poll.scss.js";
 const MAX_POLL_QUESTIONS = 5;
 

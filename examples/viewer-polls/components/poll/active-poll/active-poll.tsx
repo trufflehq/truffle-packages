@@ -6,7 +6,7 @@ import { getPollTimeRemaining } from "../utils.ts";
 import PollOptions from "../poll-options/poll-options.tsx";
 import PollBody from "../poll-body/poll-body.tsx";
 import { useMutation } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
-import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
 import styleSheet from "./active-poll.scss.js";
 
 import { useFetchPoll } from "../hooks.ts";

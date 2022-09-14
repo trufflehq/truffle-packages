@@ -1,3 +1,6 @@
+// HACK: don't use this. we use for mogul-menu alpha
+// can remove whenever we do oauth flow
+
 // If you have problems with this and SSR, switch to skypack
 import {
   Dialog as FoundationDialog,
@@ -7,7 +10,7 @@ import {
   css,
   html,
 } from "https://npm.tfl.dev/@microsoft/fast-element@2.0.0-beta.3";
-import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/fast-foundation/index.ts";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/fast-foundation/index.ts";
 
 import Stylesheet from "../stylesheet/stylesheet.tag.ts";
 

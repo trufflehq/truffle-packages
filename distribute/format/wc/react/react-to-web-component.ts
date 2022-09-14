@@ -3,6 +3,7 @@
 const renderSymbol = Symbol.for("r2wc.reactRender");
 const shouldRenderSymbol = Symbol.for("r2wc.shouldRender");
 const rootSymbol = Symbol.for("r2wc.root");
+const isKilledSymbol = Symbol.for("r2wc.isKilled");
 
 function toDashedStyle(camelCase = "") {
   return camelCase.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
@@ -47,7 +48,7 @@ function flattenIfOne(arr) {
   return arr;
 }
 
-function mapChildren(React, node) {
+function mapChildren(React, node, options) {
   if (node.nodeType === Node.TEXT_NODE) {
     return node.textContent.toString();
   }
@@ -61,8 +62,34 @@ function mapChildren(React, node) {
       var nodeName = isAllCaps(c.nodeName)
         ? c.nodeName.toLowerCase()
         : c.nodeName;
-      var children = flattenIfOne(mapChildren(React, c));
-      return React.createElement(nodeName, c.attributes, children);
+      var children = flattenIfOne(mapChildren(React, c, options));
+
+      let element = React.createElement(nodeName, c.attributes, children);
+
+      // VERY IMPORTANT!
+      // if the child is a web component that was created with this (react-to-web-component),
+      // it's going to get created again. so we want to prevent the child from actually creating itself
+      // in the lightdom, and only create itself in the shadowdom.
+      // otherwise we'll have multiple reacts going at once for the same thing.
+      // and multiple useEffects being called, with some not being cleaned up at all.
+      // so multiple window event listeners, etc... if useEffects do that.
+      // since mapChildren is called before the actual dom mounting, we can effectively stop it
+      // before it creates the react instance for the lightdom version by setting a flag
+      if (c.disconnectedCallback) {
+        c[isKilledSymbol] = true;
+
+        // we still need to make sure we set context so useStylsheet has access to the
+        // web component node to apply the styles to
+        if (options.wcContainerContext) {
+          element = React.createElement(
+            options.wcContainerContext.Provider,
+            { value: { container: c } },
+            element,
+          );
+        }
+      }
+
+      return element;
     }),
   );
 }
@@ -150,12 +177,16 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
   };
   targetPrototype.disconnectedCallback = function () {
     if (typeof ReactDOM.createRoot === "function") {
-      this[rootSymbol].unmount();
+      this[rootSymbol]?.unmount();
     } else {
       ReactDOM.unmountComponentAtNode(this);
     }
   };
   targetPrototype[renderSymbol] = function () {
+    if (this[isKilledSymbol]) {
+      return;
+    }
+
     if (this[shouldRenderSymbol] === true) {
       const data = {};
       Object.keys(this).forEach(function (key) {
@@ -170,7 +201,7 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
       // Array.from(this.attributes).forEach(function (attr) {
       //   data[attr.name] = attr.nodeValue;
       // });
-      const children = flattenIfOne(mapChildren(React, this));
+      const children = flattenIfOne(mapChildren(React, this, options));
 
       let element = React.createElement(ReactComponent, data, children);
 
@@ -184,7 +215,8 @@ export default function (ReactComponent, React, ReactDOM, options = {}) {
 
       // Use react to render element in container
       if (typeof ReactDOM.createRoot === "function") {
-        if (!this[rootSymbol] || true) { // FIXME? w/o true, routing break
+        // FIXME? w/o true, routing breaks "Cannot update an unmounted root."
+        if (!this[rootSymbol] || true) {
           this[rootSymbol] = ReactDOM.createRoot(container);
         }
 
