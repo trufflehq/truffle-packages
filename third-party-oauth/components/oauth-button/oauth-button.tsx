@@ -1,15 +1,21 @@
-import { ImageByAspectRatio, React, useEffect, useState, useStyleSheet } from "../../deps.ts";
-import { getOAuthUrl, OAuthSourceType, MESSAGES } from "../../shared/mod.ts";
+import {
+  ImageByAspectRatio,
+  React,
+  useEffect,
+  useState,
+  useStyleSheet,
+} from "../../deps.ts";
+import { getOAuthUrl, OAuthSourceType } from "../../shared/mod.ts";
+import { usePostTruffleAccessTokenToParent } from "./hooks.ts";
 
 import NewWindow from "../new-window/new-window.tsx";
 import Button from "../button/button.tsx";
 import stylesheet from "./oauth-button.scss.js";
 
-function getSourceTypeTitle(sourceType: OAuthSourceType) {
-  return sourceType === "youtube" ? "YouTube" : "Twitch";
-}
 function getSourceTypeIcon(sourceType: OAuthSourceType) {
-  return sourceType === "youtube" ? "https://cdn.bio/assets/images/features/browser_extension/youtube.svg" : "";
+  return sourceType === "youtube"
+    ? "https://cdn.bio/assets/images/features/browser_extension/yt_logo_mono_dark.png"
+    : "";
 }
 
 export default function OAuthButton(
@@ -37,16 +43,7 @@ export default function OAuthButton(
     getUrl();
   }, [truffleAccessToken, orgId]);
 
-  useEffect(() => {
-    window.onmessage = function (e) {
-      try {
-        const parsedMessage = JSON.parse(e?.data ?? "{}");
-        if (parsedMessage?.type === MESSAGES.SET_ACCESS_TOKEN && e.source !== window) {
-          window.parent.postMessage(e?.data, "*");
-        }
-      } catch (err) {}
-    };
-  }, []);
+  usePostTruffleAccessTokenToParent();
 
   const onWindowClose = () => {
     setIsOpen(false);
@@ -54,14 +51,18 @@ export default function OAuthButton(
   };
 
   return (
-    <Button className={`${sourceType} oauth-button`} onClick={() => setIsOpen(true)}>
-      <ImageByAspectRatio
-        imageUrl={getSourceTypeIcon(sourceType)}
-        widthPx={24}
-        height={24}
-        aspectRatio={1}
-      />
-      {`Link your ${getSourceTypeTitle(sourceType)} account`}
+    <Button
+      className={`${sourceType} oauth-button`}
+      onClick={() => setIsOpen(true)}
+    >
+      <div className="logo">
+        <ImageByAspectRatio
+          imageUrl={getSourceTypeIcon(sourceType)}
+          widthPx={104}
+          height={24}
+          aspectRatio={3.5}
+        />
+      </div>
       {isOpen && (
         <NewWindow
           onClose={onWindowClose}

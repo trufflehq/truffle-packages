@@ -1,15 +1,12 @@
+import jumper from "https://tfl.dev/@truffle/utils@0.0.3/jumper/jumper.ts";
 import { gql, makeOperation } from "https://npm.tfl.dev/urql@2";
 import { authExchange } from "https://npm.tfl.dev/@urql/exchange-auth@0";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
-import {
-  getCookie,
-  setCookie,
-} from "https://tfl.dev/@truffle/utils@~0.0.2/cookie/cookie.ts";
+import { getAccessToken, setAccessToken } from "./auth.ts";
 
+export const TRUFFLE_ACCESS_TOKEN_KEY = "mogul-menu:accessToken";
 const LOGIN_ANON_MUTATION = gql
   `mutation LoginAnon { userLoginAnon { accessToken } }`;
-
-const ACCESS_TOKEN_COOKIE = "accessToken";
 
 export function getAuthExchange() {
   return authExchange({
@@ -62,18 +59,25 @@ export function getAuthExchange() {
 
       if (hasAuthError) {
         console.log("Auth error, retrying");
-        setCookie(ACCESS_TOKEN_COOKIE, "");
+        setAccessToken("");
       }
 
       return hasAuthError;
     },
     getAuth: async ({ authState, mutate }) => {
       // try existing accessToken
-      let accessToken = getCookie(ACCESS_TOKEN_COOKIE);
+      let accessToken;
+      try {
+        accessToken = await jumper.call("storage.get", {
+          key: TRUFFLE_ACCESS_TOKEN_KEY,
+        });
+      } catch {}
+      accessToken = accessToken || getAccessToken();
+
       if (!accessToken) {
         const response = await mutate(LOGIN_ANON_MUTATION);
         accessToken = response?.data?.userLoginAnon?.accessToken;
-        setCookie(ACCESS_TOKEN_COOKIE, accessToken);
+        setAccessToken(accessToken);
       }
       return { accessToken };
     },

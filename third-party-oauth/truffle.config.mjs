@@ -1,8 +1,8 @@
 export default {
   name: "@truffle/third-party-oauth",
-  version: "0.0.13",
-  apiUrl: "https://mycelium.truffle.vip/graphql",
-  // apiUrl: 'http://172.16.100.130:50420/graphql',
+  version: "0.0.22",
+ apiUrl: "https://mycelium.truffle.vip/graphql",
+  // apiUrl: 'http://localhost:50420/graphql',
   requestedPermissions: [],
   installActionRel: {},
 }

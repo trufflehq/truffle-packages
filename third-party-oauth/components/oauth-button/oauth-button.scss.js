@@ -13,7 +13,6 @@ export default scss`
 
     &:active, &:focus {
       outline: none !important;
-      // outline-style: inset;
     }
   }
 
