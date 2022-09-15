@@ -9,6 +9,7 @@ import { Observable } from "https://npm.tfl.dev/rxjs?bundle";
 import {
   useMutation as _useMutation,
   useQuery as _useQuery,
+  useSubscription as _useSubscription,
 } from "./urql-mods/index.ts";
 import { getClient as _getClient, makeClient } from "./urql-client.ts";
 
@@ -17,6 +18,7 @@ export { createRequest, gql } from "https://npm.tfl.dev/urql@2";
 
 export const useMutation = _useMutation;
 export const useQuery = _useQuery;
+export const useSubscription = _useSubscription;
 export const getClient = _getClient;
 
 export function queryObservable(query, variables) {
