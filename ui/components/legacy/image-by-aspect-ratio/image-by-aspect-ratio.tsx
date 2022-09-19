@@ -14,13 +14,14 @@ export default function $imageByAspectRatio(props) {
     units = "px",
     isStretch,
     isCentered,
+    css = {},
     shouldContain = true,
   } = props;
 
   const hasWidth = width;
   const hasHeight = height;
 
-  let style;
+  let style = {};
   if (isStretch) {
     style = {
       maxWidth: height ? `${height * aspectRatio}${units}` : `${width}${units}`,
@@ -32,6 +33,11 @@ export default function $imageByAspectRatio(props) {
       height: width ? `${width / aspectRatio}${units}` : `${height}${units}`,
     };
   }
+
+  style = {
+    ...style,
+    ...css,
+  };
 
   return (
     <ScopedStylesheet
