@@ -34,11 +34,6 @@ export default function $imageByAspectRatio(props) {
     };
   }
 
-  style = {
-    ...style,
-    ...css,
-  };
-
   return (
     <ScopedStylesheet
       url={new URL("image-by-aspect-ratio.css", import.meta.url)}
@@ -63,6 +58,7 @@ export default function $imageByAspectRatio(props) {
               ? `${aspectRatio * 100}%`
               : undefined,
             backgroundImage: `url(${imageUrl})`,
+            ...css,
           }}
         />
       </div>
