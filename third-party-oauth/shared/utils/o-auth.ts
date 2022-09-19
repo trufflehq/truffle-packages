@@ -1,5 +1,6 @@
 import { OAuthSourceType, signJwt } from "../mod.ts";
 
+// TODO — figure out a better way to detect environments vs. using window._truffleInitialData
 const REDIRECT_URI = window?._truffleInitialData?.clientConfig?.IS_PROD_ENV
   ? "https://third-party-oauth.truffle.vip/redirect/callback"
   : window?._truffleInitialData?.clientConfig?.IS_STAGING_ENV
