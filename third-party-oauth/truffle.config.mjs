@@ -1,6 +1,6 @@
 export default {
   name: "@truffle/third-party-oauth",
-  version: "0.0.30",
+  version: "0.0.31",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   // staging
   // version: "0.0.30",
