@@ -15,6 +15,13 @@ import stylesheet from "./oauth-button.scss.js";
 function getSourceTypeTitle(sourceType: OAuthSourceType) {
   return sourceType === "youtube" ? "YouTube" : "Twitch";
 }
+
+type ButtonTextVariant = "signup" | "login";
+
+function getTextVariant(variant: ButtonTextVariant) {
+  return variant === "signup" ? "Connect" : "Login with";
+}
+
 function getSourceTypeIcon(sourceType: OAuthSourceType) {
   return sourceType === "youtube"
     ? "https://cdn.bio/assets/images/features/browser_extension/youtube.svg"
@@ -27,11 +34,13 @@ export default function OAuthButton(
     truffleAccessToken,
     orgId,
     onClose,
+    variant = "signup",
   }: {
     sourceType?: OAuthSourceType;
     truffleAccessToken: string;
     orgId: string;
     onClose?: () => void;
+    variant?: ButtonTextVariant;
   },
 ) {
   useStyleSheet(stylesheet);
@@ -65,7 +74,7 @@ export default function OAuthButton(
           height={24}
           aspectRatio={1}
         />
-        {`Connect ${getSourceTypeTitle(sourceType)}`}
+        {`${getTextVariant(variant)} ${getSourceTypeTitle(sourceType)}`}
       </div>
       {isOpen && (
         <NewWindow
