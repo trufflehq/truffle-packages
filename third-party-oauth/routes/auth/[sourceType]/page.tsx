@@ -2,11 +2,12 @@ import { React, setAccessToken, useEffect } from "../../../deps.ts";
 import { useParams } from "https://tfl.dev/@truffle/router@^1.0.0/index.ts";
 import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
 import { OAuthSourceType } from "../../../shared/mod.ts";
-import OAuthButton from "../../../components/oauth-button/oauth-button.tsx";
+import OAuthButton, { ButtonTextVariant } from "../../../components/oauth-button/oauth-button.tsx";
 
 interface OAuthSourceTypeParams extends URLSearchParams {
   accessToken?: string;
   orgId?: string;
+  variant?: ButtonTextVariant;
 }
 const hasSourceType = (sourceType?: OAuthSourceType) =>
   sourceType === "youtube" || sourceType === "twitch";
@@ -25,6 +26,7 @@ function AuthPage() {
 
   const accessToken = urlParams?.accessToken;
   const orgId = urlParams?.orgId;
+  const variant = urlParams?.variant;
 
   useEffect(() => {
     setAccessToken(accessToken);
@@ -34,6 +36,7 @@ function AuthPage() {
     sourceType,
     accessToken,
     orgId,
+    variant
   });
 
   const hasParams = hasSourceType(sourceType) && accessToken && orgId;
@@ -48,6 +51,7 @@ function AuthPage() {
         sourceType={sourceType}
         truffleAccessToken={accessToken}
         orgId={orgId}
+        variant={variant}
       />
     </div>
   );

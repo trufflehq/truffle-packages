@@ -16,7 +16,7 @@ function getSourceTypeTitle(sourceType: OAuthSourceType) {
   return sourceType === "youtube" ? "YouTube" : "Twitch";
 }
 
-type ButtonTextVariant = "signup" | "login";
+export type ButtonTextVariant = "signup" | "login";
 
 function getTextVariant(variant: ButtonTextVariant) {
   return variant === "signup" ? "Connect" : "Login with";
