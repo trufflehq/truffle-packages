@@ -19,7 +19,7 @@ function getSourceTypeTitle(sourceType: OAuthSourceType) {
 type ButtonTextVariant = "signup" | "login";
 
 function getTextVariant(variant: ButtonTextVariant) {
-  return variant === "signup" ? "Connect" : "Log in with";
+  return variant === "signup" ? "Connect" : "Login with";
 }
 
 function getSourceTypeIcon(sourceType: OAuthSourceType) {
