@@ -1,4 +1,8 @@
-import { createClient, defaultExchanges } from "https://npm.tfl.dev/urql@2";
+import {
+  Client,
+  createClient,
+  defaultExchanges,
+} from "https://npm.tfl.dev/urql@2";
 
 import {
   getPackageContext,
@@ -14,7 +18,7 @@ export function getClient() {
   setPackageContext("@truffle/api@0", {
     client: context.client || makeClient(),
   });
-  return context.client;
+  return context.client as Client;
 }
 
 export function makeClient() {
