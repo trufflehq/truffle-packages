@@ -47,8 +47,8 @@ function apiSignal<T extends unknown>(
 }
 
 /*
- * This hook creates a signal that subscribes to a graphql query. Can access the value of the response on the `value`
-  * property of the signal and any errors on the `error` property.
+ * This hook creates a signal that subscribes to a graphql query. Can access the value of the response from the `value`
+ * observable of the signal and any errors on the `error` observable.
 */
 export function useQuerySignal<T extends object>(
   query: TypedDocumentNode<T, any>,
@@ -62,6 +62,9 @@ export function useQuerySignal<T extends object>(
         signal$.set!({ value: res.data, error: undefined });
       }
 
+      // if there's an error in the response, set the `error` property of the signal
+      // but don't void the existing `value` observable since we don't want to lose the last good value
+      // and will handle errors separately w/ the error observable
       if (res?.error) {
         signal$.set!((prev) => ({ ...prev, error: res.error }));
       }
