@@ -13,6 +13,7 @@ export type {
 } from "https://npm.tfl.dev/@legendapp/state@~0.17.0";
 export { pipe, subscribe } from "https://npm.tfl.dev/wonka@4.0.15";
 export type {
+  CombinedError,
   TypedDocumentNode,
   UseQueryResponse,
   UseQueryState,
