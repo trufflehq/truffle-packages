@@ -62,9 +62,9 @@ export function useQuerySignal<T extends object>(
         signal$.set!({ value: res.data, error: undefined });
       }
 
-      // if there's an error in the response, set the `error` property of the signal
+      // if there's an error in the response, set the `error` observable of the signal
       // but don't void the existing `value` observable since we don't want to lose the last good value
-      // and will handle errors separately w/ the error observable
+      // and will handle errors separately through updates to the error observable
       if (res?.error) {
         signal$.set!((prev) => ({ ...prev, error: res.error }));
       }
