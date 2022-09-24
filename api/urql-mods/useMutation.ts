@@ -14,7 +14,7 @@ import {
   OperationContext,
   OperationResult,
   TypedDocumentNode,
-} from "https://npm.tfl.dev/@urql/core";
+} from "https://npm.tfl.dev/@urql/core@2";
 
 import { getClient } from "../urql-client.ts";
 import { initialState } from "./state.ts";
