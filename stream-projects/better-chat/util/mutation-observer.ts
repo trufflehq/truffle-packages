@@ -1,6 +1,8 @@
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
+import { LayoutConfigStep } from "https://tfl.dev/@truffle/utils@~0.0.17/embed/types.ts";
 
 import { getConnectionByYoutubeChannelId } from "./connection.ts";
+import { ActivePowerupConnection, Badge } from "./types.ts";
 
 const getIframeSteps = [
   { action: "querySelector", value: "#chatframe" },
@@ -36,9 +38,7 @@ function onEmit(matches) {
     // check if in cache
     const connection = await getConnectionByYoutubeChannelId(authorId);
 
-    console.log("ymo con", authorId, connection, data);
-
-    let layoutConfigSteps = [];
+    let layoutConfigSteps = <LayoutConfigStep[]> [];
 
     if (connection) {
       // if (connection?.orgUser?.ownedCollectibleConnection?.nodes.length > 0) {
@@ -48,14 +48,6 @@ function onEmit(matches) {
       // }
 
       if (connection?.orgUser?.activePowerupConnection?.nodes.length > 0) {
-        console.log(
-          "ymo steps",
-          getAddBadgesSteps(
-            elementId,
-            connection.orgUser.activePowerupConnection,
-          ),
-        );
-
         layoutConfigSteps = layoutConfigSteps.concat(
           getAddBadgesSteps(
             elementId,
@@ -74,26 +66,41 @@ function onEmit(matches) {
   });
 }
 
-const appendSubjectStep = { action: "appendSubject", value: null };
-
-const getMessageBodyQuerySelectorStep = (truffleElementId, selector) => {
+// FIXME: if two mut obs are listening to same element, we get multiple truffle-ids
+const getMessageBodyQuerySelectorStep = (
+  truffleElementId: string,
+  selector: string,
+): LayoutConfigStep => {
   return {
     action: "querySelector",
     value: `[data-truffle-id="${truffleElementId}"] ${selector}`,
   };
 };
 
-const getBadgeStep = (badge) => ({
-  action: "createImageSubject",
-  value: JSON.stringify({
-    src: badge.src,
-    width: 16,
-    height: 16,
-    "vertical-align": "sub",
-  }),
-});
+const getBadgeSteps = (badge: Badge): LayoutConfigStep[] => [
+  {
+    action: "createImageSubject",
+    value: JSON.stringify({
+      src: badge.src,
+      width: 16,
+      height: 16,
+    }),
+  },
+  { action: "prependSubject", value: null },
+  { action: "useSubject" },
+  {
+    action: "setStyle",
+    value: {
+      "vertical-align": "middle",
+      "margin-right": "4px",
+    },
+  },
+];
 
-const getAddBadgesSteps = (truffleElementId, activePowerupConnection) => {
+const getAddBadgesSteps = (
+  truffleElementId: string,
+  activePowerupConnection: ActivePowerupConnection,
+): LayoutConfigStep[] => {
   const badges = getBadges(activePowerupConnection);
 
   console.log("badges", badges);
@@ -101,15 +108,12 @@ const getAddBadgesSteps = (truffleElementId, activePowerupConnection) => {
   return [
     // useDocumentStep,
     ...getIframeSteps,
-    getMessageBodyQuerySelectorStep(truffleElementId, "#chat-badges"),
-    ...badges.map((badge) => [
-      getBadgeStep(badge),
-      appendSubjectStep,
-    ]).flat(),
+    getMessageBodyQuerySelectorStep(truffleElementId, "#author-name"),
+    ...badges.map((badge) => getBadgeSteps(badge)).flat(),
   ];
 };
 
-function getBadges(activePowerupConnection) {
+function getBadges(activePowerupConnection: ActivePowerupConnection): Badge[] {
   return activePowerupConnection.nodes
     .filter((activePowerup) =>
       activePowerup?.powerup?.componentRels?.[0]?.props?.imageSrc
