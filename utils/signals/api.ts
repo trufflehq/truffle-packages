@@ -2,6 +2,7 @@ import {
   CombinedError,
   getClient,
   observable,
+  ObservableObject,
   ObservableObjectOrArray,
   pipe,
   subscribe,
@@ -72,3 +73,8 @@ export function useQuerySignal<T extends object>(
   );
   return signal$;
 }
+
+export type TruffleQuerySignal<T> = ObservableObject<{
+  value: T;
+  error: CombinedError | undefined;
+}>;
