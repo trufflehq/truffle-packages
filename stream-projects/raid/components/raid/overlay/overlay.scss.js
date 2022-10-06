@@ -2,12 +2,15 @@ import { scss } from "../../../deps.ts";
 
 export default scss`
 .c-raid-overlay {
-  background-color: #000000;
+  background-color: #1f1f1f;
+  border-radius: 4px;
   z-index: 49;
   margin: auto;
   width: 80vw;
   display: flex;
   flex-direction: column;
+  color: #ffffff;
+  font-family: 'Poppins';
 
   > .iframe-container {
     height: 50vh;

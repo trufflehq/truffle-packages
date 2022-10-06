@@ -68,6 +68,7 @@ export function getTwitchParents() {
     "shylily.spore.build",
     // this is a temporary hack, we should dynamically resolve the org
     "ludwig.social",
+    "localhost",
   ];
   return domains.reduce(
     (acc, domain, idx) =>

@@ -20,6 +20,7 @@ export default scss`
   gap: 3px;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
 
   &:hover {
     filter: brightness(80%);

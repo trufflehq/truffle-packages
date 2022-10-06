@@ -8,6 +8,7 @@ const RAID_IFRAME_SHOWING_STYLES = {
   width: "100vw",
   height: "100vh",
   position: "fixed",
+  display: "block",
   "z-index": 999,
 };
 

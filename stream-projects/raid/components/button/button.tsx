@@ -38,6 +38,7 @@ export default function Button({
   border = false,
   isDisabled = false,
   onClick = () => null,
+  href,
   size = "normal",
 }: {
   className?: string;
@@ -47,6 +48,7 @@ export default function Button({
   border?: boolean;
   isDisabled?: boolean;
   onClick?: () => void;
+  href?: string;
   size?: keyof typeof sizeStyles;
 }) {
   useStyleSheet(styleSheet);
@@ -73,6 +75,23 @@ export default function Button({
   };
 
   if (border) styles["--border-color"] = "rgb(255, 255, 255, 0.16)";
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener"
+        tabIndex={_isDisabled ? -1 : 0}
+        className={`c-button ${className}`}
+        onChange={clickHandler}
+        onClick={clickHandler}
+        style={styles}
+      >
+        {isLoading ? "Loading" : children}
+      </a>
+    );
+  }
 
   return (
     <button

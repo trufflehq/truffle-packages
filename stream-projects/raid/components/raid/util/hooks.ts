@@ -1,6 +1,10 @@
-import { useEffect } from "../../../deps.ts";
+import { useEffect, usePollingQuery } from "../../../deps.ts";
+import { previewSrc as getPreviewSrc } from "../../../shared/util/stream-plat.ts";
+import { RAID_QUERY } from "../gql/raid.gql.ts";
 import { hideRaid, showRaid } from "./manager.ts";
 import { isPersistedRaidShowing } from "./persistence.ts";
+
+const RAID_DATA_POLL_INTERVAL = 5000;
 
 /**
  *  This function checks to see what the persistence state of a particular
@@ -9,9 +13,15 @@ import { isPersistedRaidShowing } from "./persistence.ts";
  */
 export function useRaidPersistence(id: string) {
   useEffect(() => {
+    // if we haven't loaded the id yet,
+    // then hide the raid
+    if (!id) {
+      hideRaid(id);
+      return;
+    }
+
     let idChanged = false;
     isPersistedRaidShowing(id).then((shouldBeShowing) => {
-      console.log("raid state", id, shouldBeShowing);
       if (!idChanged) {
         if (shouldBeShowing) {
           showRaid(id);
@@ -25,4 +35,22 @@ export function useRaidPersistence(id: string) {
       idChanged = true;
     };
   }, [id]);
+}
+
+/**
+ * This function interacts with mycelium to get the current raid info.
+ */
+export function useRaidData() {
+  const { data: raidAlertData } = usePollingQuery(RAID_DATA_POLL_INTERVAL, {
+    query: RAID_QUERY,
+  });
+  const raidAlert = raidAlertData?.alertConnection?.nodes?.[0];
+  const id = raidAlert?.id;
+  const raidData = raidAlert?.data;
+  const url = raidData?.url;
+  const previewSrc = getPreviewSrc(url);
+  const title = raidData?.title;
+  const description = raidData?.description;
+
+  return { url, previewSrc, title, description, id };
 }
