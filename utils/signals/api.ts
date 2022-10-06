@@ -1,9 +1,7 @@
 import {
   CombinedError,
   getClient,
-  observable,
   ObservableObject,
-  ObservableObjectOrArray,
   pipe,
   subscribe,
   TypedDocumentNode,
@@ -11,6 +9,7 @@ import {
   useQuery,
   UseQueryState,
 } from "./deps.ts";
+import { signal } from "./signal.ts";
 import { useSignal } from "./hooks.ts";
 
 /*
@@ -28,23 +27,16 @@ export function useUrqlQuerySignal<T extends object>(
   ]);
   const [result, reexecuteQuery] = source();
 
-  signal$.set!({ value: result });
+  signal$.set(result);
 
   return { signal$, reexecuteQuery };
 }
 
 /** @internal */
-function apiSignal<T extends unknown>(
+function apiSignal<T extends object & { error: CombinedError | undefined }>(
   initialValue: T | Promise<T>,
-): ObservableObjectOrArray<
-  { value: T; error: CombinedError | undefined }
-> {
-  return observable({
-    value: initialValue,
-    error: undefined,
-  }) as ObservableObjectOrArray<
-    { value: T; error: CombinedError | undefined }
-  >;
+) {
+  return signal<T>(initialValue) as ObservableObject<T>;
 }
 
 /*
@@ -55,26 +47,25 @@ export function useQuerySignal<T extends object>(
   query: TypedDocumentNode<T, any>,
   variables?: any,
 ) {
-  const signal$ = apiSignal<T>(undefined!);
+  const signal$ = apiSignal<T & { error: CombinedError | undefined }>(undefined!);
   pipe(
     getClient().query(query, variables),
     subscribe((res) => {
       if (res?.data) {
-        signal$.set!({ value: res.data, error: undefined });
+        signal$.set({ ...res.data, error: undefined });
       }
 
       // if there's an error in the response, set the `error` observable of the signal
       // but don't void the existing `value` observable since we don't want to lose the last good value
       // and will handle errors separately through updates to the error observable
       if (res?.error) {
-        signal$.set!((prev) => ({ ...prev, error: res.error }));
+        signal$.set((prev) => ({ ...prev, error: res.error }));
       }
     }),
   );
   return signal$;
 }
 
-export type TruffleQuerySignal<T> = ObservableObject<{
-  value: T;
-  error: CombinedError | undefined;
-}>;
+export type TruffleQuerySignal<T> = ObservableObject<
+  T & { error: CombinedError | undefined }
+>;
