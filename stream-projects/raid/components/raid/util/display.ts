@@ -5,9 +5,9 @@ const RAID_IRFRAME_HIDDEN_STYLES = {
 };
 
 const RAID_IFRAME_SHOWING_STYLES = {
-  width: "100vw",
-  height: "100vh",
-  position: "fixed",
+  width: "100%",
+  height: "100%",
+  position: "absolute",
   display: "block",
   "z-index": 999,
 };
