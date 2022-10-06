@@ -9,6 +9,7 @@
     // "strict": true,
     "noEmit": true,
     "moduleResolution": "node",
+    "lib": ["esnext", "dom"],
     "target": "ESNext",
     "module": "esnext",
     "resolveJsonModule": true,

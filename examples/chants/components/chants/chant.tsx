@@ -7,11 +7,12 @@ import {
   enableLegendStateReact,
   useObservable,
   useObserve,
+  useSelector,
 } from "https://npm.tfl.dev/@legendapp/state/react";
 
 enableLegendStateReact();
 
-import styleSheet from "./chant.scss.js";
+import styleSheet from "./chant.css.js";
 import { MatchedMessage, Run } from "./types.ts";
 
 const parseChant = (message: MatchedMessage): null | Required<Run> => {
@@ -90,24 +91,29 @@ export default function Chants({ initialCount }: { initialCount: number }) {
         {
           action: "addStyleSheet",
           value: {
-            css: stripIndent`
-            @keyframes rainbow { to {background-position:0 - 200%}}
+            id: "header_style",
+            css: `
             [data-truffle-id="${id}"] {
               background: ${state.pillBackground.get()};
               animation: 3s linear infinite rainbow;
               background-size: 400% 400%
             }`,
           },
-          // @keyframes rainbow { to { background-position: 0 - 200% } }
-          //
-          // [data-truffle-id="${id}"] {
-          // background: ${state.pillBackground.get()};
-          // background-size: 400% 400%;
-          // animation: rainbow 3s linear infinite;
-          // }
         },
       ],
       mutatedElementId: id,
+    });
+  });
+
+  useObserve(() => {
+    console.log({
+      emoji: state.emoji.get(),
+      emoji_src: state.emoji_src.get(),
+      count: state.count.get(),
+      show: state.show.get(),
+      animation: state.animation.get(),
+      pillBackground: state.pillBackground.get(),
+      header_id: state.header_id.get(),
     });
   });
 
@@ -115,11 +121,21 @@ export default function Chants({ initialCount }: { initialCount: number }) {
   const target = new EventTarget();
   useEffect(() => {
     console.log("setup target");
+    // log an object of the state
     target.addEventListener("message", (event) => {
       const { detail: message } = event as CustomEvent<MatchedMessage>;
 
       const chant = parseChant(message);
-      if (!chant) return;
+      // if the message is not a chant, clear the chant!
+      if (!chant) {
+        state.emoji.set("");
+        state.emoji_src.set("");
+        state.count.set(0);
+        state.show.set(false);
+        state.animation.set("");
+        state.pillBackground.set("");
+        return;
+      }
       console.dir(message);
 
       // if the chant is the same as the previous chant, increment the count
@@ -180,7 +196,10 @@ export default function Chants({ initialCount }: { initialCount: number }) {
     if (count <= 3) return;
   });
 
-  return state.show.get() ? (
+  const emojiSrc = useSelector(state.emoji_src);
+  const show = useSelector(state.show);
+  const background = useSelector(state.pillBackground);
+  return show ? (
     <>
       <div
         className="chant-container"
@@ -188,7 +207,7 @@ export default function Chants({ initialCount }: { initialCount: number }) {
           width: "80px",
           height: "36px",
           borderRadius: "22px",
-          background: state.pillBackground.get(),
+          background,
           backgroundSize: "1800% 1800%",
           animation: "rainbow 3s linear infinite",
           display: "flex",
@@ -201,7 +220,7 @@ export default function Chants({ initialCount }: { initialCount: number }) {
       >
         <img
           className="emoji"
-          src={state.emoji_src.get()}
+          src={emojiSrc}
           width={"24px"}
           style={{ marginTop: "3px", marginBottom: "3px" }}
         />

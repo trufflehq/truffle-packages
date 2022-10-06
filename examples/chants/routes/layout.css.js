@@ -9,4 +9,11 @@ export default css`
   // width: 100%;
   // height: 100%;
   // overflow: auto;
-}`;
+}
+
+@keyframes rainbow {
+  to {
+    background-position: 0 - 200%
+  }
+}
+`;
