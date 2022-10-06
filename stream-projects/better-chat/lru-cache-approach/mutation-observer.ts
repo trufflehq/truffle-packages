@@ -23,8 +23,7 @@ export function listen() {
     ],
     observerConfig: { childList: true, subtree: true },
     targetQuerySelector: "yt-live-chat-text-message-renderer",
-    // TBD if we need this (not sure if yt reuses chat frame, i'm guessing not)
-    // shouldCleanupMutatedElements: true,
+    shouldCleanupMutatedElements: true,
   }, onEmit);
 }
 
@@ -32,7 +31,7 @@ function onEmit(matches) {
   matches.forEach(async (match) => {
     console.log("match", match);
 
-    const { id: elementId, data, innerText } = match;
+    const { id: elementId, data } = match;
     const authorId = data?.authorExternalChannelId;
 
     // check if in cache
@@ -47,6 +46,8 @@ function onEmit(matches) {
       //   )
       // }
 
+      // TODO: figure out duplicate badge bug (happens whenever iframe reloads & new mut observer is created)
+      // eg saving this file on dev (hot reload) should trigger it
       if (connection?.orgUser?.activePowerupConnection?.nodes.length > 0) {
         layoutConfigSteps = layoutConfigSteps.concat(
           getAddBadgesSteps(
