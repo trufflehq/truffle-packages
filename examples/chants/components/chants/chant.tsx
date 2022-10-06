@@ -2,13 +2,13 @@ import { stripIndent } from "https://npm.tfl.dev/common-tags";
 import PropTypes from "https://npm.tfl.dev/prop-types@15";
 import React, { useEffect } from "https://npm.tfl.dev/react";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
-import jumper from "https://tfl.dev/@truffle/utils@~0.0.2/jumper/jumper.ts";
+import jumper from "https://tfl.dev/@truffle/utils@~0.0.17/jumper/jumper.ts";
 import {
   enableLegendStateReact,
   useObservable,
   useObserve,
   useSelector,
-} from "https://npm.tfl.dev/@legendapp/state/react";
+} from "https://npm.tfl.dev/@legendapp/state@0.18.6/react";
 
 enableLegendStateReact();
 
