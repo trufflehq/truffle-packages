@@ -13,7 +13,6 @@ function ExtensionMapping() {
       width: "104px",
       height: "36px",
       overflow: "hidden",
-      // background: "#fff",
       // display: "block",
     };
     // set styles for this iframe within YouTube's site
@@ -24,10 +23,10 @@ function ExtensionMapping() {
       ],
     });
   }, []);
-
+  console.log("loading chants");
   return (
     <div className="c-home">
-      <Chants initialCount={3} />
+      <Chants initialCount={1} />
     </div>
   );
 }

@@ -1,14 +1,14 @@
-import { stripIndent } from "https://npm.tfl.dev/common-tags";
-import PropTypes from "https://npm.tfl.dev/prop-types@15";
+// @deno-types="https://npm.tfl.dev/v86/@types/react@~18.0/index.d.ts"
 import React, { useEffect } from "https://npm.tfl.dev/react";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.17/jumper/jumper.ts";
 import {
   enableLegendStateReact,
+  observer,
   useObservable,
   useObserve,
   useSelector,
-} from "https://npm.tfl.dev/@legendapp/state@0.18.6/react";
+} from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 
 enableLegendStateReact();
 
@@ -25,7 +25,7 @@ const parseChant = (message: MatchedMessage): null | Required<Run> => {
   return isChant ? (emojiRun as Required<Run>) : null;
 };
 
-export default function Chants({ initialCount }: { initialCount: number }) {
+function Chants({ initialCount }: { initialCount: number }) {
   useStyleSheet(styleSheet);
 
   const state = useObservable({
@@ -53,6 +53,11 @@ export default function Chants({ initialCount }: { initialCount: number }) {
      * the background gradient of the chant pill
      */
     pillBackground: "",
+
+    /**
+     * the background of the header
+     */
+    headerBackground: "",
     /**
      * the element id of the header -- in an attempt to make it a rainbow loop
      */
@@ -79,9 +84,9 @@ export default function Chants({ initialCount }: { initialCount: number }) {
         targetQuerySelector: "yt-live-chat-header-renderer",
         shouldCleanupMutatedElements: true,
       },
-      onEmit
+      onEmit,
     );
-  }, [true]);
+  }, []);
 
   // monitor `state.pillBackground` and set the header background to it
   useObserve(() => {
@@ -89,31 +94,46 @@ export default function Chants({ initialCount }: { initialCount: number }) {
     jumper.call("layout.applyLayoutConfigSteps", {
       layoutConfigSteps: [
         {
-          action: "addStyleSheet",
+          action: "upsertStyleSheet",
           value: {
-            id: "header_style",
+            id: "chants-header-style",
             css: `
             [data-truffle-id="${id}"] {
-              background: ${state.pillBackground.get()};
-              animation: 3s linear infinite rainbow;
-              background-size: 400% 400%
-            }`,
+              background: ${state.headerBackground.get()};
+              background-size: 1800% 1800%;
+
+              -webkit-animation: rainbow 18s ease infinite;
+              -z-animation: rainbow 18s ease infinite;
+              -o-animation: rainbow 18s ease infinite;
+              animation: rainbow 18s ease infinite;
+            }
+
+            @-webkit-keyframes rainbow {
+              0%{background-position:0% 82%}
+              50%{background-position:100% 19%}
+              100%{background-position:0% 82%}
+            }
+            @-moz-keyframes rainbow {
+              0%{background-position:0% 82%}
+              50%{background-position:100% 19%}
+              100%{background-position:0% 82%}
+            }
+            @-o-keyframes rainbow {
+              0%{background-position:0% 82%}
+              50%{background-position:100% 19%}
+              100%{background-position:0% 82%}
+            }
+            @keyframes rainbow { 
+              0%{background-position:0% 82%}
+              50%{background-position:100% 19%}
+              100%{background-position:0% 82%}
+            }
+            
+            `,
           },
         },
       ],
       mutatedElementId: id,
-    });
-  });
-
-  useObserve(() => {
-    console.log({
-      emoji: state.emoji.get(),
-      emoji_src: state.emoji_src.get(),
-      count: state.count.get(),
-      show: state.show.get(),
-      animation: state.animation.get(),
-      pillBackground: state.pillBackground.get(),
-      header_id: state.header_id.get(),
     });
   });
 
@@ -124,8 +144,8 @@ export default function Chants({ initialCount }: { initialCount: number }) {
     // log an object of the state
     target.addEventListener("message", (event) => {
       const { detail: message } = event as CustomEvent<MatchedMessage>;
-
       const chant = parseChant(message);
+
       // if the message is not a chant, clear the chant!
       if (!chant) {
         state.emoji.set("");
@@ -134,6 +154,7 @@ export default function Chants({ initialCount }: { initialCount: number }) {
         state.show.set(false);
         state.animation.set("");
         state.pillBackground.set("");
+        state.headerBackground.set("");
         return;
       }
       console.dir(message);
@@ -150,8 +171,9 @@ export default function Chants({ initialCount }: { initialCount: number }) {
       state.show.set(false);
       state.animation.set("");
       state.pillBackground.set("");
+      state.headerBackground.set("");
     });
-  }, [true]);
+  }, []);
 
   // listen for new chat messages
   useEffect(() => {
@@ -174,9 +196,9 @@ export default function Chants({ initialCount }: { initialCount: number }) {
         targetQuerySelector: "yt-live-chat-text-message-renderer",
         shouldCleanupMutatedElements: true,
       },
-      onEmit
+      onEmit,
     );
-  }, [true]);
+  }, []);
 
   // monitors `state.count` and `state.show` and
   // controls the animations and effects as the count changes
@@ -184,68 +206,77 @@ export default function Chants({ initialCount }: { initialCount: number }) {
     state.animation.set("");
 
     const count = state.count.get();
+
     new Promise((resolve) => setTimeout(resolve, 10)).then(() =>
       state.animation.set("pop 0.3s ease-in-out")
     );
 
-    if (!state.show.get() && count >= 3) state.show.set(true);
-    if (count >= 5)
-      return state.pillBackground.set(
-        "linear-gradient(to right, #FF73D8, #FFBA53, #F0DE37, #41EEE4, #C2A2F8, #FF73D8), #FFFFFF"
+    if (!state.show.get() && count >= 2) state.show.set(true);
+    if (count >= 3) {
+      return state.headerBackground.set(
+        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)",
       );
-    if (count <= 3) return;
+    }
+
+    if (count >= 2) {
+      return state.pillBackground.set(
+        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)",
+      );
+    }
+
+    if (count <= 1) return;
   });
 
   const emojiSrc = useSelector(state.emoji_src);
   const show = useSelector(state.show);
   const background = useSelector(state.pillBackground);
-  return show ? (
-    <>
-      <div
-        className="chant-container"
-        style={{
-          width: "80px",
-          height: "36px",
-          borderRadius: "22px",
-          background,
-          backgroundSize: "1800% 1800%",
-          animation: "rainbow 3s linear infinite",
-          display: "flex",
-          justifyContent: "center",
-          gap: "8px",
-          alignItems: "center",
-          paddingLeft: "10px",
-          paddingRight: "12px",
-        }}
-      >
-        <img
-          className="emoji"
-          src={emojiSrc}
-          width={"24px"}
-          style={{ marginTop: "3px", marginBottom: "3px" }}
-        />
+  return show
+    ? (
+      <>
         <div
-          className="count"
+          className="chant-container"
           style={{
+            width: "80px",
+            height: "36px",
+            borderRadius: "22px",
+            background,
             display: "flex",
-            color: "black",
-            fontFamily: "Hobeaux",
-            fontStyle: "normal",
-            fontWeight: "bold",
-            fontSize: "11px",
-            lineHeight: "16px",
-            letterSpacing: "0.0025em",
-            // animation: "pop 0.25s ease-in-out",
+            justifyContent: "center",
+            gap: "8px",
+            alignItems: "center",
+            paddingLeft: "10px",
+            paddingRight: "12px",
           }}
         >
-          <p style={{ animation: state.animation.get(), paddingRight: "3px" }}>
-            {state.count}x
-          </p>
-          <p>combo</p>
+          <img
+            className="emoji"
+            src={emojiSrc}
+            width={"24px"}
+            style={{ marginTop: "3px", marginBottom: "3px" }}
+          />
+          <div
+            className="count"
+            style={{
+              display: "flex",
+              color: "black",
+              fontFamily: "Hobeaux",
+              fontStyle: "normal",
+              fontWeight: "bold",
+              fontSize: "11px",
+              lineHeight: "16px",
+              letterSpacing: "0.0025em",
+              // animation: "pop 0.25s ease-in-out",
+            }}
+          >
+            <p style={{ animation: state.animation.get(), paddingRight: "3px" }}>
+              {state.count}x
+            </p>
+            <p>combo</p>
+          </div>
         </div>
-      </div>
-    </>
-  ) : (
-    <></>
-  );
+      </>
+    )
+    : <></>;
 }
+
+export default observer(Chants);
