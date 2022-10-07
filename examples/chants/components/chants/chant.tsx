@@ -28,11 +28,20 @@ const parseChant = (message: MatchedMessage): null | Required<Run> => {
 function Chants({ initialCount }: { initialCount: number }) {
   useStyleSheet(styleSheet);
 
-  const state = useObservable({
+  const state = useObservable<{
+    emoji: Run["emoji"];
+    emoji_src: string;
+    count: number;
+    show: boolean;
+    animation: string;
+    pillBackground: string;
+    headerBackground: string;
+    header_id: string;
+  }>({
     /**
      * the id of the emoji that is currently being chanted
      */
-    emoji: "",
+    emoji: undefined,
     /**
      * the src of the emoji that is currently being chanted
      */
@@ -94,7 +103,7 @@ function Chants({ initialCount }: { initialCount: number }) {
     jumper.call("layout.applyLayoutConfigSteps", {
       layoutConfigSteps: [
         {
-          action: "upsertStyleSheet",
+          action: "setStyleSheet",
           value: {
             id: "chants-header-style",
             css: `
@@ -148,7 +157,7 @@ function Chants({ initialCount }: { initialCount: number }) {
 
       // if the message is not a chant, clear the chant!
       if (!chant) {
-        state.emoji.set("");
+        state.emoji.set(undefined);
         state.emoji_src.set("");
         state.count.set(0);
         state.show.set(false);
@@ -160,12 +169,13 @@ function Chants({ initialCount }: { initialCount: number }) {
       console.dir(message);
 
       // if the chant is the same as the previous chant, increment the count
-      if (state.emoji.get() === chant.emoji!.emojiId) {
+      if (state.emoji.get()?.emojiId === chant.emoji!.emojiId) {
         return state.count.set((prev) => prev + 1);
       }
 
+      console.log("SETTING emoji", chant);
       // otherwise, reset the chant
-      state.emoji.set(chant.emoji!.emojiId);
+      state.emoji.set(chant.emoji!);
       state.emoji_src.set(chant.emoji!.image.thumbnails[0].url);
       state.count.set(1);
       state.show.set(false);
@@ -230,12 +240,21 @@ function Chants({ initialCount }: { initialCount: number }) {
   const emojiSrc = useSelector(state.emoji_src);
   const show = useSelector(state.show);
   const background = useSelector(state.pillBackground);
+  const emoji = useSelector(state.emoji);
   const onClick = () => {
     console.log("on click");
-    jumper.call(
-      "youtube.setInputText",
-      { text: ":PauseChamp:" },
-    );
+    console.log("emoji", emoji);
+    // jumper.call(
+    //   "youtube.setInputText",
+    //   { text: ":PauseChamp:" },
+    // );
+
+    jumper.call("layout.applyLayoutConfigSteps", {
+      layoutConfigSteps: [
+        { action: "querySelector", value: "yt-live-chat-text-input-field-renderer" },
+        { action: "youtubeSetInputText", value: `${emoji?.shortcuts[0]}` },
+      ],
+    });
   };
   return true
     ? (
