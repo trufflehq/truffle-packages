@@ -9,11 +9,11 @@ export default css`
   display: flex;
 }
 .chant-container {
-background-size: 1800% 1800% !important;
+  background-size: 1800% 1800% !important;
 
--webkit-animation: rainbow 18s ease infinite;
--z-animation: rainbow 18s ease infinite;
--o-animation: rainbow 18s ease infinite;
+  -webkit-animation: rainbow 18s ease infinite;
+  -z-animation: rainbow 18s ease infinite;
+  -o-animation: rainbow 18s ease infinite;
   animation: rainbow 18s ease infinite;
 }
 

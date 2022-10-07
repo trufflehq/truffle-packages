@@ -28,6 +28,7 @@ const parseChant = (message: MatchedMessage): null | Required<Run> => {
 function Chants({ initialCount }: { initialCount: number }) {
   useStyleSheet(styleSheet);
 
+  // TODO - switch this to useSignal
   const state = useObservable<{
     emoji: Run["emoji"];
     emoji_src: string;
@@ -173,7 +174,6 @@ function Chants({ initialCount }: { initialCount: number }) {
         return state.count.set((prev) => prev + 1);
       }
 
-      console.log("SETTING emoji", chant);
       // otherwise, reset the chant
       state.emoji.set(chant.emoji!);
       state.emoji_src.set(chant.emoji!.image.thumbnails[0].url);
@@ -221,6 +221,7 @@ function Chants({ initialCount }: { initialCount: number }) {
       state.animation.set("pop 0.3s ease-in-out")
     );
 
+    // TODO - move the counts to constants
     if (!state.show.get() && count >= 2) state.show.set(true);
     if (count >= 3) {
       return state.headerBackground.set(
@@ -241,17 +242,14 @@ function Chants({ initialCount }: { initialCount: number }) {
   const show = useSelector(state.show);
   const background = useSelector(state.pillBackground);
   const emoji = useSelector(state.emoji);
-  const onClick = () => {
-    console.log("on click");
-    console.log("emoji", emoji);
-    // jumper.call(
-    //   "youtube.setInputText",
-    //   { text: ":PauseChamp:" },
-    // );
 
+  const onClick = () => {
     jumper.call("layout.applyLayoutConfigSteps", {
       layoutConfigSteps: [
-        { action: "querySelector", value: "yt-live-chat-text-input-field-renderer" },
+        {
+          action: "querySelector",
+          value: "yt-live-chat-text-input-field-renderer",
+        },
         { action: "youtubeSetInputText", value: `${emoji?.shortcuts[0]}` },
       ],
     });
@@ -293,11 +291,12 @@ function Chants({ initialCount }: { initialCount: number }) {
               fontSize: "11px",
               lineHeight: "16px",
               letterSpacing: "0.0025em",
-              // animation: "pop 0.25s ease-in-out",
             }}
           >
-            <p style={{ animation: state.animation.get(), paddingRight: "3px" }}>
-              {state.count}x
+            <p
+              style={{ animation: state.animation.get(), paddingRight: "3px" }}
+            >
+              {`${state.count}x`}
             </p>
             <p>combo</p>
           </div>
