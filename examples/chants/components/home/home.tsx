@@ -23,7 +23,6 @@ function ExtensionMapping() {
       ],
     });
   }, []);
-  console.log("loading chants");
   return (
     <div className="c-home">
       <Chants initialCount={1} />
