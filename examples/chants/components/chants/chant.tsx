@@ -256,7 +256,7 @@ function Chants({ initialCount }: { initialCount: number }) {
       ],
     });
   };
-  return true
+  return show
     ? (
       <div className="c-chants">
         <div
