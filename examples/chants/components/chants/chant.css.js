@@ -5,7 +5,9 @@ export default css`
 @keyframes pop {
   50%  {transform: scale(2);}
 }
-
+.c-chants {
+  display: flex;
+}
 .chant-container {
 background-size: 1800% 1800% !important;
 

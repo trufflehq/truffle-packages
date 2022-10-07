@@ -230,14 +230,23 @@ function Chants({ initialCount }: { initialCount: number }) {
   const emojiSrc = useSelector(state.emoji_src);
   const show = useSelector(state.show);
   const background = useSelector(state.pillBackground);
-  return show
+  const onClick = () => {
+    console.log("on click");
+    jumper.call(
+      "youtube.setInputText",
+      { text: ":PauseChamp:" },
+    );
+  };
+  return true
     ? (
-      <>
+      <div className="c-chants">
         <div
           className="chant-container"
+          onClick={onClick}
           style={{
             width: "80px",
             height: "36px",
+            cursor: "pointer",
             borderRadius: "22px",
             background,
             display: "flex",
@@ -274,7 +283,7 @@ function Chants({ initialCount }: { initialCount: number }) {
             <p>combo</p>
           </div>
         </div>
-      </>
+      </div>
     )
     : <></>;
 }
