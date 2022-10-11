@@ -74,6 +74,8 @@ const newReadme = readme.replace(
   `<!-- START PACKAGES -->\n${data}\n<!-- END PACKAGES -->`,
 );
 await Deno.writeTextFile(readmePath, newReadme);
-console.log("Successfully updated README.md repomap");
+console.log(
+  `\x1b[2mSuccessfully updated README.md repomap\x1b[0m`,
+);
 
 Deno.exit(0);
