@@ -51,7 +51,7 @@ const streamProjects = entries.filter(({ dirs }) =>
   dirs.length === 2 && dirs[0] === "stream-projects"
 );
 
-const entryToString = ({ name, version, description, dirs }) =>
+const entryToString = ({ name, version, description, dirs }: PackageEntry) =>
   `[${name}@\`${version}\`](./${dirs.join("/")}) - ${
     description ?? "No description"
   }`;
