@@ -9,5 +9,8 @@
   },
   "devDependencies": {
     "husky": "^8.0.1"
+  },
+  "volta": {
+    "node": "18.10.0"
   }
 }

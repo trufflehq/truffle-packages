@@ -51,8 +51,9 @@ minigame example
 
 # Contributing
 
-**Do not** import between packages with relative paths. Use
-`https://tfl.dev/@truffle/...`
+- **Do not** import between packages with relative paths. Use
+  `https://tfl.dev/@truffle/...`
+- run `npm ci` in the root to install Husky
 
 ## Prevent committing secrets
 
