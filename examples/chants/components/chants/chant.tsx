@@ -77,8 +77,6 @@ function Chants({ initialCount }: { initialCount: number }) {
   // pull header background id
   useEffect(() => {
     function onEmit(matches: { id: string }[]) {
-      console.log("matched header!");
-      console.dir(matches);
       state.header_id.set(matches[0].id);
     }
 
