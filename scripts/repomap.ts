@@ -1,12 +1,5 @@
 #!/usr/bin/env deno
-import { writeAllSync } from "https://deno.land/std@0.141.0/streams/conversion.ts";
 import { walk } from "https://deno.land/std@0.159.0/fs/mod.ts";
-
-class PackageError extends Error {
-  constructor(message, public readonly pkg) {
-    super(message);
-  }
-}
 
 type PackageEntry =
   & Record<"name" | "version" | "description" | "path", string>
@@ -32,9 +25,15 @@ for await (const step of walking) {
       .join(", ");
 
     throw new Deno.errors.InvalidData(
-      `Package ${name} is missing: ${missing} (${path})`,
+      `Package ${name} is missing: ${missing}`,
     );
   }
+  if (description.length > 100) {
+    throw new Deno.errors.InvalidData(
+      `Package ${name} has a description longer than 100 characters`,
+    );
+  }
+
   const dirs = path.replace("truffle.config.mjs", "").split("/").filter((x) =>
     x.length
   );
@@ -75,5 +74,6 @@ const newReadme = readme.replace(
   `<!-- START PACKAGES -->\n${data}\n<!-- END PACKAGES -->`,
 );
 await Deno.writeTextFile(readmePath, newReadme);
+console.log("Successfully updated README.md repomap");
 
 Deno.exit(0);
