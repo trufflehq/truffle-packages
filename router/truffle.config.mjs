@@ -4,4 +4,5 @@ export default {
   version: "1.0.0",
   // apiUrl: "https://mycelium.truffle.vip/graphql",
   apiUrl: "https://mycelium.staging.bio/graphql",
+  description: "Router for Truffle package routes",
 };

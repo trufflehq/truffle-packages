@@ -3,4 +3,5 @@ export default {
   name: "@truffle/spotify-integration",
   version: "3.0.1",
   apiUrl: "https://mycelium.staging.bio/graphql",
+  description: "Spotify Now Playing widget",
 };

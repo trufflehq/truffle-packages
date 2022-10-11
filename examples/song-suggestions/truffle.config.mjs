@@ -2,6 +2,7 @@ export default {
   name: "@truffle/song-suggestions",
   version: "0.0.24",
   apiUrl: "https://mycelium.staging.bio/graphql",
+  description: "Song Suggestions Suite",
   requestedPermissions: [
     {
       filters: { collectible: { isAll: true, rank: 0 } },

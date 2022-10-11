@@ -2,6 +2,7 @@ export default {
   name: "@dev/chessmaster",
   version: "0.6.3",
   apiUrl: "https://mycelium.staging.bio/graphql",
+  description: "Lichess integration",
   requestedPermissions: [
     // permission to update a collectible
     {

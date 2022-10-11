@@ -3,6 +3,7 @@ export default {
   version: "0.2.4",
   // apiUrl: "https://mycelium.truffle.vip/graphql",
   apiUrl: "https://mycelium.staging.bio/graphql",
+  description: "Stream Polls",
 
   // This is used to specify the required permissions that the package has access to
   requestedPermissions: [

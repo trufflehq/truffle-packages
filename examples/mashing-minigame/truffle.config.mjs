@@ -2,6 +2,7 @@ export default {
   name: '@truffle/mashing-minigame',
   version: '0.2.12',
   apiUrl: 'https://mycelium.staging.bio/graphql',
+  description: 'Round-based minigame example',
 
   // This is used to specify the required permissions that the package has access to
   requestedPermissions: [
