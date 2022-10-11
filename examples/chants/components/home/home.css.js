@@ -8,5 +8,4 @@ export default css`
   display: block;
   overflow: hidden;
 }
-@keyframes rainbow { to { background-position: 0 - 200% } }
 `;

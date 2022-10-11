@@ -11,9 +11,4 @@ export default css`
   // overflow: auto;
 }
 
-@keyframes rainbow {
-  to {
-    background-position: 0 - 200%
-  }
-}
 `;

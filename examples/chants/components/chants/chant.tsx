@@ -150,7 +150,6 @@ function Chants({ initialCount }: { initialCount: number }) {
   // convert the jumper.call onEmit function into an event emitter
   const target = new EventTarget();
   useEffect(() => {
-    console.log("setup target");
     // log an object of the state
     target.addEventListener("message", (event) => {
       const { detail: message } = event as CustomEvent<MatchedMessage>;
@@ -167,7 +166,6 @@ function Chants({ initialCount }: { initialCount: number }) {
         state.headerBackground.set("");
         return;
       }
-      console.dir(message);
 
       // if the chant is the same as the previous chant, increment the count
       if (state.emoji.get()?.emojiId === chant.emoji!.emojiId) {
