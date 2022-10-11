@@ -186,11 +186,8 @@ function Chants({ initialCount }: { initialCount: number }) {
   // listen for new chat messages
   useEffect(() => {
     const onEmit = (matches: MatchedMessage[]) => {
-      for (const match of matches) {
-        const e = target.dispatchEvent(
-          new CustomEvent("message", { detail: match })
-        );
-      }
+      for (const match of matches)
+        target.dispatchEvent(new CustomEvent("message", { detail: match }));
     };
 
     jumper.call(
