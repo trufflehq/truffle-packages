@@ -12,13 +12,15 @@ import {
 
 enableLegendStateReact();
 
-import styleSheet from "./chant.css.js";
+import styleSheet from "./chant.scss.js";
 import { MatchedMessage, Run } from "./types.ts";
 
 const parseChant = (message: MatchedMessage): null | Required<Run> => {
   const runs = message.data.message.runs;
-  // `runs` has the type `[ { emoji: [Object] }, { text: '' } ]` -- we want to ensure that one of the objects has a `text` property, and that the other has an `emoji` property
+  // `runs` has the type `[ { emoji: [Object] }, { text: '' } ]`
+  // we want to ensure that one of the objects has a `text` property
   const textRun = runs.find((run) => typeof run.text === "string");
+  // and that the other has an `emoji` property
   const emojiRun = runs.find((run) => typeof run.emoji === "object");
   // text should be empty and emoji should be an object
   const isChant = !textRun?.text?.length && emojiRun?.emoji?.emojiId;
@@ -92,7 +94,7 @@ function Chants({ initialCount }: { initialCount: number }) {
         targetQuerySelector: "yt-live-chat-header-renderer",
         shouldCleanupMutatedElements: true,
       },
-      onEmit,
+      onEmit
     );
   }, []);
 
@@ -185,8 +187,9 @@ function Chants({ initialCount }: { initialCount: number }) {
   useEffect(() => {
     const onEmit = (matches: MatchedMessage[]) => {
       for (const match of matches) {
-        const e = new CustomEvent("message", { detail: match });
-        target.dispatchEvent(e);
+        const e = target.dispatchEvent(
+          new CustomEvent("message", { detail: match })
+        );
       }
     };
 
@@ -202,7 +205,7 @@ function Chants({ initialCount }: { initialCount: number }) {
         targetQuerySelector: "yt-live-chat-text-message-renderer",
         shouldCleanupMutatedElements: true,
       },
-      onEmit,
+      onEmit
     );
   }, []);
 
@@ -221,13 +224,13 @@ function Chants({ initialCount }: { initialCount: number }) {
     if (!state.show.get() && count >= 2) state.show.set(true);
     if (count >= 3) {
       return state.headerBackground.set(
-        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)",
+        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)"
       );
     }
 
     if (count >= 2) {
       return state.pillBackground.set(
-        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)",
+        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)"
       );
     }
 
@@ -239,67 +242,39 @@ function Chants({ initialCount }: { initialCount: number }) {
   const background = useSelector(state.pillBackground);
   const emoji = useSelector(state.emoji);
 
-  const onClick = () => {
+  const setChatInput = (value: string) => {
     jumper.call("layout.applyLayoutConfigSteps", {
       layoutConfigSteps: [
         {
           action: "querySelector",
           value: "yt-live-chat-text-input-field-renderer",
         },
-        { action: "youtubeSetInputText", value: `${emoji?.shortcuts[0]}` },
+        { action: "youtubeSetInputText", value },
       ],
     });
   };
-  return show
-    ? (
-      <div className="c-chants">
-        <div
-          className="chant-container"
-          onClick={onClick}
-          style={{
-            width: "80px",
-            height: "36px",
-            cursor: "pointer",
-            borderRadius: "22px",
-            background,
-            display: "flex",
-            justifyContent: "center",
-            gap: "8px",
-            alignItems: "center",
-            paddingLeft: "10px",
-            paddingRight: "12px",
-          }}
-        >
-          <img
-            className="emoji"
-            src={emojiSrc}
-            width={"24px"}
-            style={{ marginTop: "3px", marginBottom: "3px" }}
-          />
-          <div
-            className="count"
-            style={{
-              display: "flex",
-              color: "black",
-              fontFamily: "Hobeaux",
-              fontStyle: "normal",
-              fontWeight: "bold",
-              fontSize: "11px",
-              lineHeight: "16px",
-              letterSpacing: "0.0025em",
-            }}
-          >
-            <p
-              style={{ animation: state.animation.get(), paddingRight: "3px" }}
-            >
-              {`${state.count}x`}
-            </p>
-            <p>combo</p>
-          </div>
+
+  return show ? (
+    <div className="c-chants">
+      <div
+        className="chant-container"
+        onClick={void setChatInput(`${emoji?.shortcuts[0]}`)}
+        style={{
+          background,
+        }}
+      >
+        <img className="emoji" src={emojiSrc} width={"24px"} />
+        <div className="count">
+          <p style={{ animation: state.animation.get(), paddingRight: "3px" }}>
+            {`${state.count}x`}
+          </p>
+          <p>combo</p>
         </div>
       </div>
-    )
-    : <></>;
+    </div>
+  ) : (
+    <></>
+  );
 }
 
 export default observer(Chants);
