@@ -1,0 +1,13 @@
+{
+  "name": "scripts",
+  "version": "0.1.0",
+  "description": "",
+  "license": "MIT",
+  "author": "Truffle <team@truffle.vip>",
+  "volta": {
+    "node": "18.10.0"
+  },
+  "dependencies": {
+    "fs-nextra": "^0.5.1"
+  }
+}
