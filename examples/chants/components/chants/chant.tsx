@@ -33,7 +33,7 @@ function Chants({ initialCount }: { initialCount: number }) {
   // TODO - switch this to useSignal
   const state = useObservable<{
     emoji: Run["emoji"];
-    emoji_src: string;
+    emojiSrc: string;
     count: number;
     show: boolean;
     animation: string;
@@ -48,7 +48,7 @@ function Chants({ initialCount }: { initialCount: number }) {
     /**
      * the src of the emoji that is currently being chanted
      */
-    emoji_src: "",
+    emojiSrc: "",
     /**
      * the number of times the emoji has been chanted
      */
@@ -158,7 +158,7 @@ function Chants({ initialCount }: { initialCount: number }) {
       // if the message is not a chant, clear the chant!
       if (!chant) {
         state.emoji.set(undefined);
-        state.emoji_src.set("");
+        state.emojiSrc.set("");
         state.count.set(0);
         state.show.set(false);
         state.animation.set("");
@@ -169,12 +169,12 @@ function Chants({ initialCount }: { initialCount: number }) {
 
       // if the chant is the same as the previous chant, increment the count
       if (state.emoji.get()?.emojiId === chant.emoji!.emojiId) {
-        return state.count.set((prev) => prev + 1);
+        return void state.count.set((prev) => prev + 1);
       }
 
       // otherwise, reset the chant
       state.emoji.set(chant.emoji!);
-      state.emoji_src.set(chant.emoji!.image.thumbnails[0].url);
+      state.emojiSrc.set(chant.emoji!.image.thumbnails[0].url);
       state.count.set(1);
       state.show.set(false);
       state.animation.set("");
@@ -234,7 +234,7 @@ function Chants({ initialCount }: { initialCount: number }) {
     if (count <= 1) return;
   });
 
-  const emojiSrc = useSelector(state.emoji_src);
+  const emojiSrc = useSelector(state.emojiSrc);
   const show = useSelector(state.show);
   const background = useSelector(state.pillBackground);
   const emoji = useSelector(state.emoji);
@@ -263,7 +263,7 @@ function Chants({ initialCount }: { initialCount: number }) {
         <img className="emoji" src={emojiSrc} width={"24px"} />
         <div className="count">
           <p style={{ animation: state.animation.get(), paddingRight: "3px" }}>
-            {`${state.count}x`}
+            {`${state.count.get()}x`}
           </p>
           <p>combo</p>
         </div>
