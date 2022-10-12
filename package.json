@@ -1,0 +1,16 @@
+{
+  "name": "truffle-packages",
+  "version": "0.1.0",
+  "repository": "git@github.com:trufflehq/truffle-packages.git",
+  "author": "Truffle <team@truffle.vip>",
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^8.0.1"
+  },
+  "volta": {
+    "node": "18.10.0"
+  }
+}

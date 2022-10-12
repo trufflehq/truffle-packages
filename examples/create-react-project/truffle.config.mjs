@@ -3,6 +3,7 @@ export default {
   version: "0.5.6",
   // apiUrl: "https://mycelium.truffle.vip/graphql",
   apiUrl: "https://mycelium.staging.bio/graphql",
+  description: "Truffle project React template",
   // apiUrl: 'http://localhost:50420/graphql',
   embeds: [
     // TODO: implement as part of deploy step
