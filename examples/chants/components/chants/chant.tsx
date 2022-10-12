@@ -94,7 +94,7 @@ function Chants({ initialCount }: { initialCount: number }) {
         targetQuerySelector: "yt-live-chat-header-renderer",
         shouldCleanupMutatedElements: true,
       },
-      onEmit
+      onEmit,
     );
   }, []);
 
@@ -186,8 +186,9 @@ function Chants({ initialCount }: { initialCount: number }) {
   // listen for new chat messages
   useEffect(() => {
     const onEmit = (matches: MatchedMessage[]) => {
-      for (const match of matches)
+      for (const match of matches) {
         target.dispatchEvent(new CustomEvent("message", { detail: match }));
+      }
     };
 
     jumper.call(
@@ -202,7 +203,7 @@ function Chants({ initialCount }: { initialCount: number }) {
         targetQuerySelector: "yt-live-chat-text-message-renderer",
         shouldCleanupMutatedElements: true,
       },
-      onEmit
+      onEmit,
     );
   }, []);
 
@@ -221,13 +222,13 @@ function Chants({ initialCount }: { initialCount: number }) {
     if (!state.show.get() && count >= 2) state.show.set(true);
     if (count >= 3) {
       return state.headerBackground.set(
-        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)"
+        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)",
       );
     }
 
     if (count >= 2) {
       return state.pillBackground.set(
-        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)"
+        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)",
       );
     }
 
@@ -246,32 +247,52 @@ function Chants({ initialCount }: { initialCount: number }) {
           action: "querySelector",
           value: "yt-live-chat-text-input-field-renderer",
         },
-        { action: "youtubeSetInputText", value },
+        {
+          action: "webComponentMethod",
+          value: {
+            method: "setText",
+            args: [value],
+          },
+        },
+        {
+          action: "webComponentMethod",
+          value: {
+            method: "setFocus_",
+            args: [true],
+          },
+        },
+        {
+          action: "webComponentMethod",
+          value: {
+            method: "fire",
+            args: ["yt-live-chat-send-message"],
+          },
+        },
       ],
     });
   };
 
-  return show ? (
-    <div className="c-chants">
-      <div
-        className="chant-container"
-        onClick={void setChatInput(`${emoji?.shortcuts[0]}`)}
-        style={{
-          background,
-        }}
-      >
-        <img className="emoji" src={emojiSrc} width={"24px"} />
-        <div className="count">
-          <p style={{ animation: state.animation.get(), paddingRight: "3px" }}>
-            {`${state.count.get()}x`}
-          </p>
-          <p>combo</p>
+  return show
+    ? (
+      <div className="c-chants">
+        <div
+          className="chant-container"
+          onClick={() => setChatInput(`${emoji?.shortcuts[0]}`)}
+          style={{
+            background,
+          }}
+        >
+          <img className="emoji" src={emojiSrc} width={"24px"} />
+          <div className="count">
+            <p style={{ animation: state.animation.get(), paddingRight: "3px" }}>
+              {`${state.count.get()}x`}
+            </p>
+            <p>combo</p>
+          </div>
         </div>
       </div>
-    </div>
-  ) : (
-    <></>
-  );
+    )
+    : <></>;
 }
 
 export default observer(Chants);
