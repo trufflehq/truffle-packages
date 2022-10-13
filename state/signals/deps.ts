@@ -2,10 +2,13 @@
 export {
   default as React,
   useCallback,
+  useEffect,
   useMemo,
 } from "https://npm.tfl.dev/react";
 // @deno-types="https://npm.tfl.dev/@legendapp/state"
 export { observable } from "https://npm.tfl.dev/@legendapp/state@~0.19.0";
+export { useObserve } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
+export { default as _ } from "https://cdn.skypack.dev/lodash?dts";
 export type {
   Observable,
   ObservableObject,
