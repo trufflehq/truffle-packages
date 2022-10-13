@@ -16,6 +16,8 @@ enableLegendStateReact();
 import styleSheet from "./chant.scss.js";
 import { MatchedMessage, Run } from "./types.ts";
 
+const SHOW_PILL_COUNT = 5;
+const SHOW_HEADER_BG_COUNT = 10;
 const parseChant = (message: MatchedMessage): null | Required<Run> => {
   const runs = message.data.message.runs;
   // `runs` has the type `[ { emoji: [Object] }, { text: '' } ]`
@@ -34,7 +36,6 @@ function Chants() {
   const font = "Bebas Neue";
   useGoogleFontLoader(() => [font], [font]);
 
-  // TODO - switch this to useSignal
   const state = useSignal<{
     emoji: Run["emoji"];
     emojiSrc: string;
@@ -98,7 +99,7 @@ function Chants() {
         targetQuerySelector: "yt-live-chat-header-renderer",
         shouldCleanupMutatedElements: true,
       },
-      onEmit
+      onEmit,
     );
   }, []);
 
@@ -207,7 +208,7 @@ function Chants() {
         targetQuerySelector: "yt-live-chat-text-message-renderer",
         shouldCleanupMutatedElements: true,
       },
-      onEmit
+      onEmit,
     );
   }, []);
 
@@ -222,11 +223,10 @@ function Chants() {
       state.animation.set("pop 0.3s ease-in-out")
     );
 
-    // TODO - move the counts to constants
-    if (!state.show.get() && count >= 3) state.show.set(true);
-    if (count >= 5) {
+    if (!state.show.get() && count >= SHOW_PILL_COUNT) state.show.set(true);
+    if (count >= SHOW_HEADER_BG_COUNT) {
       return state.headerBackground.set(
-        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)"
+        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)",
       );
     }
   });
@@ -270,22 +270,23 @@ function Chants() {
     });
   };
 
-  return show ? (
-    <div className="c-chants">
-      <div
-        className="chant-container"
-        onClick={() => setChatInput(`${emoji?.shortcuts[0]}`)}
-      >
-        <img className="emoji" src={emojiSrc} width={"24px"} />
-        <div className="count">
-          <p style={{ animation, paddingRight: "3px" }}>{`${count}x`}</p>
-          <p>combo</p>
+  console.log("show");
+  return show
+    ? (
+      <div className="c-chants">
+        <div
+          className="chant-container"
+          onClick={() => setChatInput(`${emoji?.shortcuts[0]}`)}
+        >
+          <img className="emoji" src={emojiSrc} width={"24px"} />
+          <div className="count">
+            <p style={{ animation, paddingRight: "3px" }}>{`${count}x`}</p>
+            <p>combo</p>
+          </div>
         </div>
       </div>
-    </div>
-  ) : (
-    <></>
-  );
+    )
+    : <></>;
 }
 
 export default observer(Chants);

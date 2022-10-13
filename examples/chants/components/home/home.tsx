@@ -8,21 +8,22 @@ import Chants from "../chants/chant.tsx";
 function ExtensionMapping() {
   useStyleSheet(styleSheet);
 
-  // useEffect(() => {
-  //   const style = {
-  //     width: "104px",
-  //     height: "36px",
-  //     overflow: "hidden",
-  //     // display: "block",
-  //   };
-  //   // set styles for this iframe within YouTube's site
-  //   jumper.call("layout.applyLayoutConfigSteps", {
-  //     layoutConfigSteps: [
-  //       { action: "useSubject" }, // start with our iframe
-  //       { action: "setStyle", value: style },
-  //     ],
-  //   });
-  // }, []);
+  useEffect(() => {
+    const style = {
+      width: "104px",
+      height: "36px",
+      padding: "6px 0 2px 0",
+      overflow: "hidden",
+      // display: "block",
+    };
+    // set styles for this iframe within YouTube's site
+    jumper.call("layout.applyLayoutConfigSteps", {
+      layoutConfigSteps: [
+        { action: "useSubject" }, // start with our iframe
+        { action: "setStyle", value: style },
+      ],
+    });
+  }, []);
   return (
     <div className="c-home">
       <Chants />
