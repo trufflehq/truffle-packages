@@ -16,8 +16,8 @@ enableLegendStateReact();
 import styleSheet from "./chant.scss.js";
 import { MatchedMessage, Run } from "./types.ts";
 
-const SHOW_PILL_COUNT = 5;
-const SHOW_HEADER_BG_COUNT = 10;
+const DEFAULT_SHOW_PILL_COUNT = 5;
+const DEFAULT_SHOW_HEADER_BG_COUNT = 10;
 const parseChant = (message: MatchedMessage): null | Required<Run> => {
   const runs = message.data.message.runs;
   // `runs` has the type `[ { emoji: [Object] }, { text: '' } ]`
@@ -30,11 +30,15 @@ const parseChant = (message: MatchedMessage): null | Required<Run> => {
   return isChant ? (emojiRun as Required<Run>) : null;
 };
 
-function Chants() {
+function Chants(
+  {
+    showPillCount = DEFAULT_SHOW_PILL_COUNT,
+    showBgCount = DEFAULT_SHOW_HEADER_BG_COUNT,
+  }: { showPillCount?: number; showBgCount?: number },
+) {
   useStyleSheet(styleSheet);
 
-  const font = "Bebas Neue";
-  useGoogleFontLoader(() => [font], [font]);
+  useGoogleFontLoader(() => ["Bebas Neue"], []);
 
   const state = useSignal<{
     emoji: Run["emoji"];
@@ -223,8 +227,8 @@ function Chants() {
       state.animation.set("pop 0.3s ease-in-out")
     );
 
-    if (!state.show.get() && count >= SHOW_PILL_COUNT) state.show.set(true);
-    if (count >= SHOW_HEADER_BG_COUNT) {
+    if (!state.show.get() && count >= showPillCount) state.show.set(true);
+    if (count >= showBgCount) {
       return state.headerBackground.set(
         "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)",
       );
@@ -270,7 +274,6 @@ function Chants() {
     });
   };
 
-  console.log("show");
   return show
     ? (
       <div className="c-chants">
