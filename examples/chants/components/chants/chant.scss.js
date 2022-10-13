@@ -7,6 +7,7 @@ export default scss`
 
 .chant-container {
   background-size: 1800% 1800% !important;
+  background: rgba(#FFFF, 0.5);
 
   width: 80px;
   height: 36px;
@@ -19,10 +20,10 @@ export default scss`
   padding-left: 10px;
   padding-right: 12px;
 
-  -webkit-animation: rainbow 18s ease infinite;
-  -z-animation: rainbow 18s ease infinite;
-  -o-animation: rainbow 18s ease infinite;
-  animation: rainbow 18s ease infinite;
+  -webkit-animation: rainbow 8s linear infinite;
+  -z-animation: rainbow 8s linear infinite;
+  -o-animation: rainbow 8s linear infinite;
+  animation: rainbow 8s linear infinite;
 }
 
 .emoji {
@@ -33,12 +34,12 @@ export default scss`
 .count {
   display: flex;
   color: black;
-  font-family: Hobeaux;
+  font-family: 'Bebas Neue';
   font-style: normal;
-  font-weight: bold;
-  font-size: 11px;
-  line-height: 16px;
-  letter-spacing: 0.0025em;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  letter-spacing: 1px;
 }
 
 @keyframes pop {

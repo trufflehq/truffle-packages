@@ -5,10 +5,11 @@ import jumper from "https://tfl.dev/@truffle/utils@~0.0.17/jumper/jumper.ts";
 import {
   enableLegendStateReact,
   observer,
-  useObservable,
   useObserve,
   useSelector,
 } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
+import { useSignal } from "https://tfl.dev/@truffle/state@~0.0.2/signals/hooks.ts";
+import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.17/google-font-loader/mod.ts";
 
 enableLegendStateReact();
 
@@ -27,11 +28,14 @@ const parseChant = (message: MatchedMessage): null | Required<Run> => {
   return isChant ? (emojiRun as Required<Run>) : null;
 };
 
-function Chants({ initialCount }: { initialCount: number }) {
+function Chants() {
   useStyleSheet(styleSheet);
 
+  const font = "Bebas Neue";
+  useGoogleFontLoader(() => [font], [font]);
+
   // TODO - switch this to useSignal
-  const state = useObservable<{
+  const state = useSignal<{
     emoji: Run["emoji"];
     emojiSrc: string;
     count: number;
@@ -94,7 +98,7 @@ function Chants({ initialCount }: { initialCount: number }) {
         targetQuerySelector: "yt-live-chat-header-renderer",
         shouldCleanupMutatedElements: true,
       },
-      onEmit,
+      onEmit
     );
   }, []);
 
@@ -112,10 +116,10 @@ function Chants({ initialCount }: { initialCount: number }) {
               background: ${state.headerBackground.get()};
               background-size: 1800% 1800%;
 
-              -webkit-animation: rainbow 18s ease infinite;
-              -z-animation: rainbow 18s ease infinite;
-              -o-animation: rainbow 18s ease infinite;
-              animation: rainbow 18s ease infinite;
+              -webkit-animation: rainbow 8s linear infinite;
+              -z-animation: rainbow 8s linear infinite;
+              -o-animation: rainbow 8s linear infinite;
+              animation: rainbow 8s linear infinite;
             }
 
             @-webkit-keyframes rainbow {
@@ -203,7 +207,7 @@ function Chants({ initialCount }: { initialCount: number }) {
         targetQuerySelector: "yt-live-chat-text-message-renderer",
         shouldCleanupMutatedElements: true,
       },
-      onEmit,
+      onEmit
     );
   }, []);
 
@@ -219,25 +223,19 @@ function Chants({ initialCount }: { initialCount: number }) {
     );
 
     // TODO - move the counts to constants
-    if (!state.show.get() && count >= 2) state.show.set(true);
-    if (count >= 3) {
+    if (!state.show.get() && count >= 3) state.show.set(true);
+    if (count >= 5) {
       return state.headerBackground.set(
-        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)",
+        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)"
       );
     }
-
-    if (count >= 2) {
-      return state.pillBackground.set(
-        "linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)",
-      );
-    }
-
-    if (count <= 1) return;
   });
 
   const emojiSrc = useSelector(state.emojiSrc);
   const show = useSelector(state.show);
-  const background = useSelector(state.pillBackground);
+  const animation = useSelector(state.animation);
+  const background = useSelector(state.background);
+  const count = useSelector(state.count);
   const emoji = useSelector(state.emoji);
 
   const setChatInput = (value: string) => {
@@ -272,27 +270,22 @@ function Chants({ initialCount }: { initialCount: number }) {
     });
   };
 
-  return show
-    ? (
-      <div className="c-chants">
-        <div
-          className="chant-container"
-          onClick={() => setChatInput(`${emoji?.shortcuts[0]}`)}
-          style={{
-            background,
-          }}
-        >
-          <img className="emoji" src={emojiSrc} width={"24px"} />
-          <div className="count">
-            <p style={{ animation: state.animation.get(), paddingRight: "3px" }}>
-              {`${state.count.get()}x`}
-            </p>
-            <p>combo</p>
-          </div>
+  return show ? (
+    <div className="c-chants">
+      <div
+        className="chant-container"
+        onClick={() => setChatInput(`${emoji?.shortcuts[0]}`)}
+      >
+        <img className="emoji" src={emojiSrc} width={"24px"} />
+        <div className="count">
+          <p style={{ animation, paddingRight: "3px" }}>{`${count}x`}</p>
+          <p>combo</p>
         </div>
       </div>
-    )
-    : <></>;
+    </div>
+  ) : (
+    <></>
+  );
 }
 
 export default observer(Chants);
