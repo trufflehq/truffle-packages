@@ -73,6 +73,10 @@ export type TruffleQuerySignal<T> = ObservableObject<
   T & { error: CombinedError | undefined }
 >;
 
+/**
+ * Wraps the useQuerySignal hook to return a signal that subscribes to a graphql query and updates the signal
+ * on an interval.
+ */
 export function usePollingQuerySignal<T extends object>({
   query,
   variables,

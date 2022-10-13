@@ -20,6 +20,12 @@ export function useSignal<T>(initialValue: T | Promise<T>) {
   return signal$;
 }
 
+/**
+ * Hook to update a signal only when the parent signal changes
+ *
+ * @param signal$ signal to update
+ * @param parent$ signal to update from
+ */
 export function useUpdateOnChange$<T extends object>(
   signal$: Observable<T>,
   parent$: ObservableObject<T | undefined> | undefined,
