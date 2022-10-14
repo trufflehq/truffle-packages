@@ -6,6 +6,7 @@ import {
   subscribe,
   TypedDocumentNode,
   useCallback,
+  useEffect,
   useQuery,
   UseQueryState,
 } from "./deps.ts";
@@ -47,7 +48,9 @@ export function useQuerySignal<T extends object>(
   query: TypedDocumentNode<T, any>,
   variables?: any,
 ) {
-  const signal$ = apiSignal<T & { error: CombinedError | undefined }>(undefined!);
+  const signal$ = apiSignal<T & { error: CombinedError | undefined }>(
+    undefined!,
+  );
   pipe(
     getClient().query(query, variables),
     subscribe((res) => {
@@ -69,3 +72,28 @@ export function useQuerySignal<T extends object>(
 export type TruffleQuerySignal<T> = ObservableObject<
   T & { error: CombinedError | undefined }
 >;
+
+/**
+ * Wraps the useQuerySignal hook to return a signal that subscribes to a graphql query and updates the signal
+ * on an interval.
+ */
+export function usePollingQuerySignal<T extends object>({
+  query,
+  variables,
+  interval,
+}: { query: TypedDocumentNode<T, object>; variables?: any; interval: number }) {
+  const { signal$, reexecuteQuery } = useUrqlQuerySignal(
+    query,
+    variables,
+  );
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      reexecuteQuery({ requestPolicy: "network-only" });
+    }, interval);
+
+    return () => clearInterval(id);
+  }, []);
+
+  return { signal$, reexecuteQuery };
+}
