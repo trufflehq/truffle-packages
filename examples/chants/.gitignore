@@ -1,0 +1,4 @@
+.DS_Store
+.vite
+truffle.secret.*
+data.json

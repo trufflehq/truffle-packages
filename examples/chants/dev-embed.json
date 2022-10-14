@@ -1,0 +1,25 @@
+[
+  {
+    "id": "http://localhost:50410",
+    "defaultLayoutConfigSteps": [
+      {
+        "action": "querySelector",
+        "value": "#chatframe"
+      },
+      {
+        "action": "getIframeDocument"
+      },
+      {
+        "action": "querySelector",
+        "value": "#action-buttons"
+      },
+      {
+        "action": "appendSubject"
+      }
+    ],
+    "domAction": "append",
+    "iframeUrl": "http://localhost:50410",
+    "orgId": "6f4edfe0-8446-11ec-b10d-3a946723cad5",
+    "slug": "http://localhost:50410"
+  }
+]
