@@ -6,7 +6,7 @@ import { _, Observable } from "./deps.ts";
  * @param signal$ signal to update
  * @param value value to update the signal with
  */
-export function updateOnChange$<T extends object>(
+export function updateSignalOnChange<T extends object>(
   signal$: Observable<T>,
   value: T | undefined,
 ) {

@@ -6,7 +6,7 @@ import {
   useObserve,
 } from "./deps.ts";
 import { signal } from "./signal.ts";
-import { updateOnChange$ } from "./utils.ts";
+import { updateSignalOnChange } from "./utils.ts";
 
 /*
 * returns a memoized signal to persist the signal across re-renders if the signal
@@ -26,13 +26,13 @@ export function useSignal<T>(initialValue: T | Promise<T>) {
  * @param signal$ signal to update
  * @param parent$ signal to update from
  */
-export function useUpdateOnChange$<T extends object>(
+export function useUpdateSignalOnChange<T extends object>(
   signal$: Observable<T>,
   parent$: ObservableObject<T | undefined> | undefined,
 ) {
   useObserve(() => {
     const updatedValue = parent$?.get() as T;
 
-    updateOnChange$(signal$, updatedValue);
+    updateSignalOnChange(signal$, updatedValue);
   });
 }
