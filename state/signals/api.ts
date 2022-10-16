@@ -93,7 +93,7 @@ export function usePollingQuerySignal<T extends object>({
     }, interval);
 
     return () => clearInterval(id);
-  }, []);
+  }, [interval]);
 
   return { signal$, reexecuteQuery };
 }
