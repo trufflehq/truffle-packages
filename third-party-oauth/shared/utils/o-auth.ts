@@ -7,7 +7,10 @@ const REDIRECT_URI = window?._truffleInitialData?.clientConfig?.IS_STAGING_ENV
   ? "https://third-party-oauth.truffle.vip/redirect/callback"
   : "http://localhost:50230/redirect/callback";
 const AUTHORIZE_URL = "https://accounts.google.com/o/oauth2/v2/auth";
-const SCOPES = ["https://www.googleapis.com/auth/youtube.readonly"];
+const SCOPES = [
+  "https://www.googleapis.com/auth/youtube.readonly",
+  "https://www.googleapis.com/auth/userinfo.email",
+];
 
 const GOOGLE_CLIENT_ID =
   window?._truffleInitialData?.clientConfig?.IS_STAGING_ENV
@@ -26,7 +29,7 @@ export const getYouTubeOAuthUrl = async (
     "&include_granted_scopes=true" +
     "&response_type=token" +
     "&duration=permanent" +
-    `&scope=${SCOPES.join(",")}` +
+    `&scope=${SCOPES.join(" ")}` +
     `&state=${stateStr}`;
 };
 
