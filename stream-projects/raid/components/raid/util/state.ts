@@ -9,7 +9,3 @@ export const raidState$ = signal<RaidState>({
   id: undefined,
   isShowing: false,
 });
-
-raidState$.onChange((value) => {
-  console.log("raidState:", value);
-});

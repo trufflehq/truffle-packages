@@ -21,7 +21,7 @@ export {
   useQuery,
 } from "https://tfl.dev/@truffle/api@^0.1.0/client.ts";
 export { signal } from "https://tfl.dev/@truffle/state@^0.0.5/mod.ts";
-export { useSelector } from "https://npm.tfl.dev/@legendapp/state@0.19.0/react";
+export { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 
 export {
   createSubject,

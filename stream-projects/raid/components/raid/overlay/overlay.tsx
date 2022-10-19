@@ -19,10 +19,6 @@ export default function RaidOverlay() {
   const isShowing = useSelector(() => raidState$.isShowing.get());
   useRaidPersistence(id);
 
-  useEffect(() => {
-    console.log("isShowing from useSelector:", isShowing);
-  }, [isShowing]);
-
   return (
     <div className="c-raid-overlay">
       {previewSrc && isShowing && (
