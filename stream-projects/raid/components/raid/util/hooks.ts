@@ -1,10 +1,7 @@
-import { useEffect, useState, usePollingQuery } from "../../../deps.ts";
+import { useEffect, usePollingQuery } from "../../../deps.ts";
 import { previewSrc as getPreviewSrc } from "../../../shared/util/stream-plat.ts";
 import { RAID_QUERY } from "../gql/raid.gql.ts";
-import {
-  hideRaid as hideRaidOverlay,
-  showRaid as showRaidOverlay,
-} from "./manager.ts";
+import { hideRaid, showRaid } from "./manager.ts";
 import { isPersistedRaidShowing } from "./persistence.ts";
 
 const RAID_DATA_POLL_INTERVAL = 5000;
@@ -15,18 +12,6 @@ const RAID_DATA_POLL_INTERVAL = 5000;
  * @param id - The id of the raid to ckeck persistence for.
  */
 export function useRaidPersistence(id: string) {
-  const [isShowing, setIsShowing] = useState(false);
-
-  const hideRaid = (id: string) => {
-    setIsShowing(false);
-    hideRaidOverlay(id);
-  };
-
-  const showRaid = (id: string) => {
-    setIsShowing(true);
-    showRaidOverlay(id);
-  };
-
   useEffect(() => {
     // if we haven't loaded the id yet,
     // then hide the raid
@@ -50,8 +35,6 @@ export function useRaidPersistence(id: string) {
       idChanged = true;
     };
   }, [id]);
-
-  return { isShowing, hideRaid, showRaid };
 }
 
 /**

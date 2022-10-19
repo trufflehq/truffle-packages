@@ -1,7 +1,14 @@
-import { Icon, React, useStyleSheet } from "../../../deps.ts";
+import {
+  Icon,
+  React,
+  useSelector,
+  useEffect,
+  useStyleSheet,
+} from "../../../deps.ts";
 import styleSheet from "./overlay.scss.js";
+import { hideRaid } from "../util/manager.ts";
 import Button from "../../button/button.tsx";
-
+import { raidState$ } from "../util/state.ts";
 import { BOXED_UP_RIGHT_ARROW_ICON } from "../../../shared/assets/icons.ts";
 import { useRaidData, useRaidPersistence } from "../util/hooks.ts";
 
@@ -9,7 +16,12 @@ export default function RaidOverlay() {
   useStyleSheet(styleSheet);
 
   const { id, title, description, previewSrc, url } = useRaidData();
-  const { isShowing, hideRaid } = useRaidPersistence(id);
+  const isShowing = useSelector(() => raidState$.isShowing.get());
+  useRaidPersistence(id);
+
+  useEffect(() => {
+    console.log("isShowing from useSelector:", isShowing);
+  }, [isShowing]);
 
   return (
     <div className="c-raid-overlay">
