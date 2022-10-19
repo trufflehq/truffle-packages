@@ -1,6 +1,5 @@
 import { Icon, React, useStyleSheet } from "../../../deps.ts";
 import styleSheet from "./overlay.scss.js";
-import { hideRaid } from "../util/manager.ts";
 import Button from "../../button/button.tsx";
 
 import { BOXED_UP_RIGHT_ARROW_ICON } from "../../../shared/assets/icons.ts";
@@ -10,11 +9,11 @@ export default function RaidOverlay() {
   useStyleSheet(styleSheet);
 
   const { id, title, description, previewSrc, url } = useRaidData();
-  useRaidPersistence(id);
+  const { isShowing, hideRaid } = useRaidPersistence(id);
 
   return (
     <div className="c-raid-overlay">
-      {previewSrc && (
+      {previewSrc && isShowing && (
         <div className="iframe-container">
           <iframe
             src={previewSrc}
