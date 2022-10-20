@@ -1,5 +1,5 @@
 import { _, React } from "../../../deps.ts";
-import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.11/format/wc/react/index.ts";
 import ThemeComponent from "https://tfl.dev/@truffle/mogul-menu@^0.1.59/components/base/theme-component/theme-component.tsx";
 
 import LoginManager from "../../../components/login-manager/login-manager.tsx";
