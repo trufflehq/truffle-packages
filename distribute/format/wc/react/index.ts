@@ -40,7 +40,8 @@ export function useStyleSheet(styleSheet) {
   const context = React.useContext(wcContainerContext);
   // memo instead of useEffect so it's synchronous
   React.useMemo(() => {
-    context?.container?.adoptedStyleSheets?.push(styleSheet);
+    const adoptedStyleSheets = context.container.adoptedStyleSheets || [];
+    context.container.adoptedStyleSheets = [...adoptedStyleSheets, styleSheet];
   }, []);
 }
 
