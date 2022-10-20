@@ -2,7 +2,7 @@ import React from "https://npm.tfl.dev/react";
 // TODO use esm.sh or oscar to conditionally load in react-dom client/server dep on env
 // using dynamic imports doesn't work, bc we need defineAndGetWebComponent to be sync, not async
 import ReactDOM from "https://npm.tfl.dev/react-dom/client";
-import "https://npm.tfl.dev/construct-style-sheets-polyfill@3.1.0"
+import "https://npm.tfl.dev/construct-style-sheets-polyfill@3.1.0";
 
 import reactToWebComponent from "./react-to-web-component.ts";
 
@@ -41,7 +41,7 @@ export function useStyleSheet(styleSheet) {
   const context = React.useContext(wcContainerContext);
   // memo instead of useEffect so it's synchronous
   React.useMemo(() => {
-    const adoptedStyleSheets = context.container.adoptedStyleSheets || [];
+    const adoptedStyleSheets = context?.container?.adoptedStyleSheets || [];
     context.container.adoptedStyleSheets = [...adoptedStyleSheets, styleSheet];
   }, []);
 }
