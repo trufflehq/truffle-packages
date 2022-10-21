@@ -2,7 +2,7 @@ import React from "https://npm.tfl.dev/react";
 import { PollOption as PollOptionType } from "../types.ts";
 import { largestRemainderRound } from "../utils.ts";
 import PollOption from "../poll-option/poll-option.tsx";
-import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.19/format/wc/react/index.ts";
 import styleSheet from "./poll-options.scss.js";
 type PollOptionsProps = {
   pollOptions: PollOptionType[];

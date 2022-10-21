@@ -17,7 +17,7 @@ import MashingLeaderboard from "../mashing-leaderboard/mashing-leaderboard.tsx";
 import UserInfo from "../user-info/user-info.tsx";
 import Timer from "../timer/timer.tsx";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
-import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.19/format/wc/react/index.ts";
 import styleSheet from "./admin-dashboard.scss.js";
 import { getMashTimeRemaining } from "../mash-controls/utils.ts";
 

@@ -1,6 +1,6 @@
 // https://github.com/bitovi/react-to-webcomponent
 // https://github.com/bitovi/react-to-webcomponent/blob/master/LICENSE
-import "https://npm.tfl.dev/construct-style-sheets-polyfill@3.1.0";
+// import "https://npm.tfl.dev/construct-style-sheets-polyfill@3.1.0";
 
 const renderSymbol = Symbol.for("r2wc.reactRender");
 const shouldRenderSymbol = Symbol.for("r2wc.shouldRender");
@@ -77,11 +77,13 @@ function mapChildren(React, node, options) {
       // so multiple window event listeners, etc... if useEffects do that.
       // since mapChildren is called before the actual dom mounting, we can effectively stop it
       // before it creates the react instance for the lightdom version by setting a flag
-      if (c.disconnectedCallback) {
+      if (c.disconnectedCallback || true) {
         c[isKilledSymbol] = true;
 
         // we still need to make sure we set context so useStylsheet has access to the
         // web component node to apply the styles to
+        console.log("el", element);
+
         if (options.wcContainerContext) {
           element = React.createElement(
             options.wcContainerContext.Provider,

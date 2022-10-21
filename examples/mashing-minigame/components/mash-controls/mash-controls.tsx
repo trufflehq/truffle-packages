@@ -9,7 +9,7 @@ import {
   MASHING_RANK_QUERY,
 } from "../../api/gql.ts";
 import Timer from "../timer/timer.tsx";
-import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.19/format/wc/react/index.ts";
 import styleSheet from "./mash-controls.scss.js";
 import Button from "https://tfl.dev/@truffle/ui@~0.1.0/components/button/button.tag.ts";
 import { getMashTimeRemaining } from "./utils.ts";

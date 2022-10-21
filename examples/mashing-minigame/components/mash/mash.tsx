@@ -1,7 +1,7 @@
 import React, { useEffect } from "https://npm.tfl.dev/react";
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.2/jumper/jumper.ts";
 import MashControls from "../mash-controls/mash-controls.tsx";
-import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.19/format/wc/react/index.ts";
 import styleSheet from "./mash.scss.js";
 function ExtensionMapping() {
   useEffect(() => {
