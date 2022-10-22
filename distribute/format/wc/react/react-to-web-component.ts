@@ -77,13 +77,11 @@ function mapChildren(React, node, options) {
       // so multiple window event listeners, etc... if useEffects do that.
       // since mapChildren is called before the actual dom mounting, we can effectively stop it
       // before it creates the react instance for the lightdom version by setting a flag
-      if (c.disconnectedCallback || true) {
+      if (c.disconnectedCallback) {
         c[isKilledSymbol] = true;
 
         // we still need to make sure we set context so useStylsheet has access to the
         // web component node to apply the styles to
-        console.log("el", element);
-
         if (options.wcContainerContext) {
           element = React.createElement(
             options.wcContainerContext.Provider,
