@@ -1,6 +1,6 @@
 import { React, setAccessToken, useEffect } from "../../../deps.ts";
 import { useParams } from "https://tfl.dev/@truffle/router@^1.0.0/index.ts";
-import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.19/format/wc/react/index.ts";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 import { OAuthSourceType } from "../../../shared/mod.ts";
 import OAuthButton, {
   ButtonTextVariant,

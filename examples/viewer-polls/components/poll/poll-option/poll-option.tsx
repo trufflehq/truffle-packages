@@ -1,7 +1,7 @@
 import React from "https://npm.tfl.dev/react";
 import classKebab from "https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js";
 import { PollOption as PollOptionType } from "../types.ts";
-import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.19/format/wc/react/index.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 import styleSheet from "./poll-option.scss.js";
 
 type PollOptionProps = {

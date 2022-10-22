@@ -1,6 +1,6 @@
 import React from "https://npm.tfl.dev/react";
 import { JSX } from "https://npm.tfl.dev/react";
-import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.19/format/wc/react/index.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 import styleSheet from "./tooltip.scss.js";
 export default function ToolTip(
   { children, setHoverState, hoverText, className, onClick }: {
