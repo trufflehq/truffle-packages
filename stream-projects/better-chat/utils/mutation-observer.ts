@@ -1,16 +1,13 @@
+import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
+
 import {
   setChatBgColor,
   setChatNameColor,
   setChatUsernameGradient,
 } from "./jumper.ts";
 
-// PROD
 const PUBLIC_CACHE_BASE_URL = "https://v2.truffle.vip/gateway/users/v2/c";
-
-// STAGING
 // const PUBLIC_CACHE_BASE_URL = 'https://truffle-tv-staging.truffle-tv.workers.dev/gateway/users/v2/c'
-
-// DEV
 // const PUBLIC_CACHE_BASE_URL = 'http://localhost:3000/gateway/users/v2/c'
 
 const CHAT_FRAME_ID = "#chatframe";
@@ -40,13 +37,18 @@ const extensionContext = await jumper.call("context.getInfo");
 const youtubePageIdentifier = getYoutubePageIdentifier(
   extensionContext?.pageInfo,
 );
-// FIXME: refresh every 5 seconds
-const activeChatters = await getYoutubeChannelActiveChattersByChannelId(
-  youtubePageIdentifier.sourceId,
-);
-const activeChattersMap = new Map(activeChatters);
 
-const orgUserActivePowerupsObs =
+let activeChatters, activeChattersMap;
+const setActiveChatters = async () => {
+  activeChatters = await getYoutubeChannelActiveChattersByChannelId(
+    youtubePageIdentifier.sourceId,
+  );
+  activeChattersMap = new Map(activeChatters);
+};
+setActiveChatters();
+setInterval(setActiveChatters, 5000);
+
+const orgUserActivePowerups =
   ytConnection?.orgUser?.activePowerupConnection?.nodes || [];
 const orgUserKeyValuesObs = ytConnection?.orgUser?.keyValueConnection?.nodes ||
   [];

@@ -2,7 +2,7 @@ import { FASTElement } from "https://npm.tfl.dev/@microsoft/fast-element@2.0.0-b
 import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/fast/index.ts";
 import isSsr from "https://tfl.dev/@truffle/utils@~0.0.3/ssr/is-ssr.ts";
 
-import { listen } from '../util/mutation-observer.ts'
+import { listen } from "../utils/mutation-observer.ts";
 
 if (!isSsr) {
   listen();
