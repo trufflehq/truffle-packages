@@ -13,8 +13,8 @@
 [@truffle/config@`1.0.0`](./config) - Env/API config  
 [@truffle/utils@`0.0.22`](./utils) - Browser & Node utilities  
 [@truffle/state@`0.0.5`](./state) - Signals coupled with Legend state for React  
-[@truffle/distribute@`2.0.12`](./distribute) - Wrappers to create web components from various frameworks  
-[@truffle/third-party-oauth@`0.0.33`](./third-party-oauth) - Login and other auth utilities  
+[@truffle/distribute@`2.0.19`](./distribute) - Wrappers to create web components from various frameworks  
+[@truffle/native-third-party-oauth@`0.0.37`](./third-party-oauth) - Login and other auth utilities  
 [@truffle/api@`0.1.12`](./api) - Hooks and functions for interacting with Truffle's backend  
 [@truffle/global-context@`1.0.0`](./global-context) - Truffle Global Context to share info between packages  
 [@truffle/events@`0.0.1`](./events) - Utilities for handling webhooks from Truffle  

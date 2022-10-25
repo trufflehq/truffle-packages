@@ -1,4 +1,4 @@
-import { _, React } from "../../../deps.ts";
+import { _, globalContext, jumper, React } from "../../../deps.ts";
 import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.19/format/wc/react/index.ts";
 import ThemeComponent from "https://tfl.dev/@truffle/mogul-menu@^0.1.59/components/base/theme-component/theme-component.tsx";
 
@@ -19,6 +19,10 @@ const hashParams: AuthCallbackHashParams = new Proxy(
 function AuthCallbackPage() {
   const oAuthAccessToken = hashParams?.access_token;
   const state = hashParams?.state;
+  jumper.call("platform.log", "hello");
+  const context = globalContext.getStore();
+  window.ReactNativeWebView.postMessage(`auth callback ${JSON.stringify(context)}`);
+  jumper.call("platform.log", `auth callback page ${JSON.stringify(state)}`);
 
   console.log("auth callback page", state);
 

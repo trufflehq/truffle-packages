@@ -1,5 +1,6 @@
 import {
   gql,
+  jumper,
   mutation,
   React,
   setAccessToken,
@@ -39,6 +40,8 @@ export default function LoginManager(
 ) {
   useStyleSheet(stylesheet);
   const [error, setError] = useState<string>();
+  jumper.call("platform.log", "login manager");
+  window.ReactNativeWebView.postMessage("auth callback");
 
   useEffect(() => {
     oAuthAccessToken && state && (async () => {
@@ -46,6 +49,10 @@ export default function LoginManager(
         oAuthAccessToken,
         state,
       );
+      setError(truffleAccessToken);
+      // if (truffleAccessToken) {
+      // }
+
       try {
         sendTruffleAccessTokenToOpener(truffleAccessToken);
       } catch (err) {
@@ -65,8 +72,10 @@ export default function LoginManager(
             <img src="https://cdn.bio/assets/images/landing/snuffle.svg?1" />
           </object>
         </div>
+        <div className="title">Logging in...</div>
         {error && (
           <div className="error">
+            {error}
           </div>
         )}
       </div>
@@ -78,9 +87,18 @@ async function truffleConnectionLogin(
   oAuthAccessToken: string,
   state: string,
 ): Promise<string | null> {
-  const { orgId, accessToken: truffleAccessToken, sourceType } =
-    await decodeState(state) || {};
+  const { orgId, accessToken: truffleAccessToken, sourceType } = await decodeState(state) || {};
 
+  jumper.call(
+    "platform.log",
+    `truffleConnectionLogin ${JSON.stringify({ orgId, truffleAccessToken, sourceType })}`,
+  );
+
+  window.ReactNativeWebView.postMessage(
+    `truffleConnectionLogin ${JSON.stringify({ orgId, truffleAccessToken, sourceType })}`,
+  );
+
+  console.log({ orgId, truffleAccessToken, sourceType });
   // login as this OrgUser
   setAccessToken(truffleAccessToken);
   if (orgId) {
@@ -96,6 +114,9 @@ async function truffleConnectionLogin(
     connectionSourceType: sourceType,
     connectionPrivateData: { accessToken: oAuthAccessToken },
   });
+  window.ReactNativeWebView.postMessage(`result ${JSON.stringify(result?.data)}`);
+
+  console.log("result", result);
 
   return result?.data?.userLoginConnection?.accessToken;
 }
@@ -110,6 +131,10 @@ function sendTruffleAccessTokenToOpener(truffleAccessToken) {
     truffleAccessToken,
   };
 
+  window.ReactNativeWebView.postMessage(`window.opener ${window.opener} ${window.close}`);
+  window.ReactNativeWebView.postMessage(JSON.stringify(payload));
+
+  window.close();
   window.opener?.postMessage(JSON.stringify(payload), "*");
   const self = window.self;
   self.opener = window.self;
