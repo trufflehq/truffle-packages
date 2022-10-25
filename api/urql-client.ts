@@ -8,10 +8,11 @@ import {
   getPackageContext,
   setPackageContext,
 } from "https://tfl.dev/@truffle/global-context@^1.0.0/package-context.ts";
+import isSsr from "https://tfl.dev/@truffle/utils@0.0.22/ssr/is-ssr.ts";
 import config from "https://tfl.dev/@truffle/config@^1.0.0/index.ts";
 
 import { getAuthExchange } from "./auth-exchange.ts";
-// import { getSubscriptionExchange } from "./subscription-exchange.ts";
+import { getSubscriptionExchange } from "./subscription-exchange.ts";
 
 export function getClient() {
   const context = getPackageContext("@truffle/api@0");
@@ -26,8 +27,8 @@ export function makeClient() {
     url: `${config.API_URL}/graphql`,
     exchanges: [
       getAuthExchange(),
-      // getSubscriptionExchange(),
+      isSsr && getSubscriptionExchange(),
       ...defaultExchanges,
-    ],
+    ].filter(Boolean),
   });
 }

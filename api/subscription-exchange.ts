@@ -6,6 +6,7 @@ const wsClient = createWSClient({
   // FIXME: .replace is hacky
   url: `${config.API_URL.replace("http", "ws")}/graphql`,
   // TODO: pass in websocket lib on node for ssr
+  // need to figure out smart way to import only for node - ideally normal import, not dynamic
 });
 
 export function getSubscriptionExchange() {
