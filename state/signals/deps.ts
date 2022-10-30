@@ -25,4 +25,5 @@ export type {
 export {
   getClient,
   useQuery,
+  useSubscription,
 } from "https://tfl.dev/@truffle/api@~0.1.11/mod.ts";

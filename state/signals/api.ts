@@ -9,6 +9,7 @@ import {
   useEffect,
   useQuery,
   UseQueryState,
+  useSubscription,
 } from "./deps.ts";
 import { signal } from "./signal.ts";
 import { useSignal } from "./hooks.ts";
@@ -94,6 +95,29 @@ export function usePollingQuerySignal<T extends object>({
 
     return () => clearInterval(id);
   }, [interval]);
+
+  return { signal$, reexecuteQuery };
+}
+
+/*
+* This is a custom hook that wraps the useSubscription hook from urql.
+*/
+// TODO: this will cause a re-render in the component that calls this.
+// that's fine most of the time, but for better perf we should probably
+// hook directly into urql client.subscription
+export function useSubscriptionSignal<T extends object>(
+  query: TypedDocumentNode<T, any>,
+  variables?: any,
+) {
+  const signal$ = useSignal<UseQueryState<T, object>>(undefined!);
+
+  const source = useCallback(() => useSubscription<T>({ query, variables }), [
+    query,
+    variables,
+  ]);
+  const [result, reexecuteQuery] = source();
+
+  signal$.set(result);
 
   return { signal$, reexecuteQuery };
 }
