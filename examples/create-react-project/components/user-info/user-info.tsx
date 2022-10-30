@@ -18,59 +18,40 @@ export default function UserInfo() {
   useStyleSheet(styleSheet);
   const [meResult] = useQuery({ query: USER_GET_ME_QUERY });
   const [isAuthDialogHidden, setIsAuthDialogHidden] = useState(true);
-  const [subResult, reexecuteSubscription] = useSubscription({
-    query: gql`subscription {
-      alertConnection(input: { type: "activity" }, first: 2) {
-        nodes {
-          id
-          message
-          activity {
-            __typename
-            ... on Poll {
-              id
-              question
-              options {
-                  text
-                  index
-                  count
-                  unique
-              }
-              myVote {
-                optionIndex
-                count
-              }
-            }
-            ... on Alert {
-              id
-            }
-          }
-        }
-      }
-    }`,
-  });
-  const [subResult2, reexecuteSubscription2] = useSubscription({
-    query: gql`subscription KOTHOrgQuery {
-      org {
-        name
-        orgConfig {
-          data
-          __typename
-        }
-        __typename
-      }
-    }`,
-  });
-  console.log(
-    "subscription example",
-    JSON.stringify(subResult?.data, null, 2),
-  );
-  React.useEffect(() => {
-    setTimeout(() => {
-      console.log("reex");
-
-      reexecuteSubscription();
-    }, 5000);
-  }, []);
+  // const [subResult] = useSubscription({
+  //   query: gql`subscription {
+  //     alertConnection(input: { type: "activity" }, first: 2) {
+  //       nodes {
+  //         id
+  //         message
+  //         activity {
+  //           __typename
+  //           ... on Poll {
+  //             id
+  //             question
+  //             options {
+  //                 text
+  //                 index
+  //                 count
+  //                 unique
+  //             }
+  //             myVote {
+  //               optionIndex
+  //               count
+  //             }
+  //           }
+  //           ... on Alert {
+  //             id
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }`,
+  // });
+  // console.log(
+  //   "subscription example",
+  //   JSON.stringify(subResult?.data, null, 2),
+  // );
 
   const { name, id } = meResult.data?.me || {};
 
