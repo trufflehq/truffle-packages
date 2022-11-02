@@ -1,24 +1,31 @@
-const MYCELIUM_API_URL = 'https://mycelium.staging.bio/graphql'
+const MYCELIUM_API_URL = "https://mycelium.staging.bio/graphql";
 
 interface MyceliumOptions {
-  apiKey?: string;
-  orgId?: string;
+  accessToken: string;
+  orgId: string;
 }
 
-// deno-lint-ignore no-explicit-any
-export function graphqlReq(query: string, variables: Record<string, any>, options: MyceliumOptions) {
+export interface GQLResponse<T = unknown> {
+  data: T;
+  errors: unknown[];
+}
 
+export function graphqlReq(
+  query: string,
+  variables: Record<string, unknown>,
+  options: MyceliumOptions
+) {
   return fetch(MYCELIUM_API_URL, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify({ query, variables }),
     headers: {
-      'Content-Type': 'application/json',
-      'x-org-id': options.orgId ?? '',
-      'Authorization': `Bearer ${options.apiKey}`
+      "Content-Type": "application/json",
+      "x-org-id": options.orgId,
+      "x-access-token": options.accessToken,
     },
-  })
+  });
 }
 
 export function gql(strings: TemplateStringsArray, ..._values: string[]) {
-  return strings.join()
+  return strings.join();
 }

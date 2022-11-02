@@ -3,17 +3,19 @@ import { gql, graphqlReq } from "./graphql-client.ts";
 const UPSERT_NOTIFICATION_JOB_MUTATION = gql`
   mutation ($input: NotificationJobUpsertInput) {
     notificationJobUpsert(input: $input) {
-      id
-      isScheduled
-      scheduledDeliveryTime
-      actualDeliveryTime
+      notificationJob {
+        id
+        isScheduled
+        scheduledDeliveryTime
+        actualDeliveryTime
+      }
     }
   }
 `;
 
-interface NotificationJobUpsertInput {
-  packageId: string;
-  notificationTopicSlug: string;
+export interface NotificationJobUpsertInput {
+  notificationTopicId?: string;
+  notificationTopicPath?: string;
   content: {
     title: string;
     body: string;
@@ -23,7 +25,8 @@ interface NotificationJobUpsertInput {
 
 export async function upsertNotificationJob(
   notificationJobUpsertInput: NotificationJobUpsertInput,
-  apiKey: string
+  accessToken: string,
+  orgId: string
 ) {
   const resp = await graphqlReq(
     UPSERT_NOTIFICATION_JOB_MUTATION,
@@ -31,7 +34,8 @@ export async function upsertNotificationJob(
       input: notificationJobUpsertInput,
     },
     {
-      apiKey,
+      accessToken,
+      orgId,
     }
   ).then((resp) => resp.json());
 

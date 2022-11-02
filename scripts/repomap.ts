@@ -7,7 +7,7 @@ type PackageEntry =
 
 const walking = walk(new URL("../", import.meta.url), {
   includeDirs: false,
-  exts: [".mjs"],
+  exts: ["config.mjs"],
 });
 
 const cwd = Deno.cwd();
@@ -25,7 +25,7 @@ for await (const step of walking) {
       .join(", ");
 
     throw new Deno.errors.InvalidData(
-      `Package ${name} is missing: ${missing}`,
+      `Package ${name} is missing: ${missing}. Path: ${path}`,
     );
   }
   if (description.length > 100) {

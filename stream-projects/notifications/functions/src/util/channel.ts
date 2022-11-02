@@ -1,9 +1,13 @@
-import { gql, graphqlReq } from "./graphql-client.ts";
+import { gql, GQLResponse, graphqlReq } from "./graphql-client.ts";
 
 interface Channel {
   id: string;
   isLive: boolean;
   isManual: boolean;
+}
+
+interface ChannelResponse {
+  channel: Channel;
 }
 
 const CHANNEL_QUERY = gql`
@@ -16,16 +20,27 @@ const CHANNEL_QUERY = gql`
   }
 `;
 
-const getChannel: (data: any) => Channel = (data: any) => data?.channel;
+const getChannel: (data: ChannelResponse) => Channel = (data) => data?.channel;
 
-export async function fetchChannel(apiKey: string) {
-  const resp = await graphqlReq(
+export async function fetchChannel(
+  accessToken: string,
+  orgId: string
+): Promise<Channel> {
+  // uncomment for testing
+  // return {
+  //   id: "someid",
+  //   isLive: true,
+  //   isManual: true,
+  // };
+
+  const resp = (await graphqlReq(
     CHANNEL_QUERY,
     {},
     {
-      apiKey,
+      accessToken,
+      orgId,
     }
-  ).then((result) => result.json());
+  ).then((result) => result.json())) as GQLResponse<ChannelResponse>;
 
   const channel = getChannel(resp?.data);
   return channel;
