@@ -18,7 +18,9 @@ function makeResp(statusCode: number, body: unknown) {
 }
 
 interface CheckIsLiveReqBody {
-  notificationJobUpsertInput: NotificationJobUpsertInput | undefined;
+  runtimeData?: {
+    notificationJobUpsertInput?: NotificationJobUpsertInput;
+  };
 }
 
 serve(
@@ -54,7 +56,7 @@ serve(
     }
 
     // grab the notificationJobUpsertInput from the body
-    const { notificationJobUpsertInput } = reqBody;
+    const { notificationJobUpsertInput } = reqBody?.runtimeData ?? {};
     if (!notificationJobUpsertInput) {
       return makeResp(400, {
         error: true,
