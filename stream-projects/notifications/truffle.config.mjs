@@ -8,7 +8,7 @@ const PACKAGE = "@dev/notifications";
 export default {
   name: PACKAGE,
   // TODO: reset the version number for prod
-  version: "0.5.15",
+  version: "0.5.16",
   // TODO: switch the api url to prod
   apiUrl: "https://mycelium.staging.bio/graphql",
   description: "Send notifications to your users when you go live.",
