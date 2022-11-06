@@ -22,7 +22,7 @@ function getIframeUrl(
     : `https://mobile-third-party-oauth.truffle.vip/auth/${sourceType}?accessToken=${accessToken}&orgId=${orgId}${
       variant ? `&variant=${variant}` : ""
     }`;
-}
+}6a919990-5405-11ed-8343-4b6ae9136707
 export default function OAuthIframe(
   { sourceType, accessToken, orgId, variant, styles = DEFAULT_STYLES }: {
     sourceType: OAuthSourceType;

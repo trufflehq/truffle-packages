@@ -21,7 +21,7 @@ function AuthCallbackPage() {
   const state = hashParams?.state;
   jumper.call("platform.log", "hello");
   const context = globalContext.getStore();
-  window.ReactNativeWebView.postMessage(`auth callback ${JSON.stringify(context)}`);
+  window.ReactNativeWebView?.postMessage(`auth callback ${JSON.stringify(context)}`);
   jumper.call("platform.log", `auth callback page ${JSON.stringify(state)}`);
 
   console.log("auth callback page", state);

@@ -41,7 +41,7 @@ export default function LoginManager(
   useStyleSheet(stylesheet);
   const [error, setError] = useState<string>();
   jumper.call("platform.log", "login manager");
-  window.ReactNativeWebView.postMessage("auth callback");
+  window.ReactNativeWebView?.postMessage("auth callback");
 
   useEffect(() => {
     oAuthAccessToken && state && (async () => {
@@ -89,14 +89,18 @@ async function truffleConnectionLogin(
 ): Promise<string | null> {
   const { orgId, accessToken: truffleAccessToken, sourceType } = await decodeState(state) || {};
 
-  jumper.call(
-    "platform.log",
-    `truffleConnectionLogin ${JSON.stringify({ orgId, truffleAccessToken, sourceType })}`,
+  // jumper.call(
+  //   "platform.log",
+  //   `truffleConnectionLogin ${JSON.stringify({ orgId, truffleAccessToken, sourceType })}`,
+  // );
+
+  window.ReactNativeWebView?.postMessage(
+    `truffleConnectionLogin ${
+      JSON.stringify({ orgId, truffleAccessToken, sourceType, oAuthAccessToken })
+    }`,
   );
 
-  window.ReactNativeWebView.postMessage(
-    `truffleConnectionLogin ${JSON.stringify({ orgId, truffleAccessToken, sourceType })}`,
-  );
+  window.ReactNativeWebView?.postMessage(JSON.stringify(window?._truffleInitialData));
 
   console.log({ orgId, truffleAccessToken, sourceType });
   // login as this OrgUser
@@ -114,7 +118,10 @@ async function truffleConnectionLogin(
     connectionSourceType: sourceType,
     connectionPrivateData: { accessToken: oAuthAccessToken },
   });
-  window.ReactNativeWebView.postMessage(`result ${JSON.stringify(result?.data)}`);
+
+  window.ReactNativeWebView?.postMessage(
+    `result ${JSON.stringify(result?.data)} ${JSON.stringify(result?.error)}`,
+  );
 
   console.log("result", result);
 
@@ -131,8 +138,8 @@ function sendTruffleAccessTokenToOpener(truffleAccessToken) {
     truffleAccessToken,
   };
 
-  window.ReactNativeWebView.postMessage(`window.opener ${window.opener} ${window.close}`);
-  window.ReactNativeWebView.postMessage(JSON.stringify(payload));
+  window.ReactNativeWebView?.postMessage(`window.opener ${window.opener} ${window.close}`);
+  window.ReactNativeWebView?.postMessage(JSON.stringify(payload));
 
   window.close();
   window.opener?.postMessage(JSON.stringify(payload), "*");

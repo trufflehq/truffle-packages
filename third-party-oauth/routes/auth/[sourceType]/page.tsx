@@ -2,9 +2,7 @@ import { React, setAccessToken, useEffect } from "../../../deps.ts";
 import { useParams } from "https://tfl.dev/@truffle/router@^1.0.0/index.ts";
 import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.19/format/wc/react/index.ts";
 import { OAuthSourceType } from "../../../shared/mod.ts";
-import OAuthButton, {
-  ButtonTextVariant,
-} from "../../../components/oauth-button/oauth-button.tsx";
+import OAuthButton, { ButtonTextVariant } from "../../../components/oauth-button/oauth-button.tsx";
 
 interface OAuthSourceTypeParams extends URLSearchParams {
   accessToken?: string;
@@ -29,6 +27,8 @@ function AuthPage() {
   const accessToken = urlParams?.accessToken;
   const orgId = urlParams?.orgId;
   const variant = urlParams?.variant;
+
+  window.ReactNativeWebView?.postMessage(`auth page ${JSON.stringify(urlParams)}`);
 
   useEffect(() => {
     setAccessToken(accessToken);

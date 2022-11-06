@@ -1,10 +1,4 @@
-import {
-  ImageByAspectRatio,
-  React,
-  useEffect,
-  useState,
-  useStyleSheet,
-} from "../../deps.ts";
+import { ImageByAspectRatio, React, useEffect, useState, useStyleSheet } from "../../deps.ts";
 import { getOAuthUrl, OAuthSourceType } from "../../shared/mod.ts";
 import { usePostTruffleAccessTokenToParent } from "./hooks.ts";
 
@@ -50,6 +44,8 @@ export default function OAuthButton(
   useEffect(() => {
     const getUrl = async () => {
       const oAuthUrl = await getOAuthUrl(sourceType, truffleAccessToken, orgId);
+      window?.ReactNativeWebView?.postMessage(`oauth url ${oAuthUrl}`);
+
       setUrl(oAuthUrl);
     };
     getUrl();
@@ -61,6 +57,8 @@ export default function OAuthButton(
     setIsOpen(false);
     onClose?.();
   };
+
+  window?.ReactNativeWebView?.postMessage(`isOpen ${isOpen}`);
 
   return (
     <Button
