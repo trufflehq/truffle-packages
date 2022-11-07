@@ -33,7 +33,7 @@
 [@truffle/chants@`0.0.3`](./examples/chants) - Chants
 
 **Stream Projects**  
-[@dev/notifications@`0.5.16`](./stream-projects/notifications) - Send notifications to your users when you go live.  
+[@truffle/notifications@`0.1.0`](./stream-projects/notifications) - Send notifications to your users when you go live.  
 [@truffle/raid@`0.0.6`](./stream-projects/raid) - Stream Raids
 
 <!-- END PACKAGES -->

@@ -1,16 +1,18 @@
 // here for syntax highlighting :)
 const gql = (strings) => strings.join();
 
-const PACKAGE = "@dev/notifications";
-// TODO: switch this package for prod
-// const PACKAGE = "@truffle/notifications";
+// const PACKAGE = "@dev/notifications";
+const PACKAGE = "@truffle/notifications";
 
 export default {
   name: PACKAGE,
-  // TODO: reset the version number for prod
-  version: "0.5.16",
-  // TODO: switch the api url to prod
-  apiUrl: "https://mycelium.staging.bio/graphql",
+  version: "0.1.0",
+  apiUrl: "https://mycelium.truffle.vip/graphql",
+
+  // staging @dev settings
+  // version: "0.5.16",
+  // apiUrl: "https://mycelium.staging.bio/graphql",
+
   description: "Send notifications to your users when you go live.",
   requestedPermissions: [
     {
@@ -103,7 +105,7 @@ export default {
     actionPath: "@truffle/core@latest/_Action/workflow",
     runtimeData: {
       mode: "sequential", // sequential | parallel
-      // create event topic that will be broadcast an event every 5 minutes
+      // create event topic that will be broadcast an event every minute
       // to check if the streamer is live
       stepActionRels: [
         {
@@ -125,7 +127,7 @@ export default {
             },
           },
         },
-        // the event cron that will actually trigger the broadcast every 5 minutes
+        // the event cron that will actually trigger the broadcast every minute
         {
           actionPath: "@truffle/core@latest/_Action/graphql",
           runtimeData: {
@@ -143,13 +145,12 @@ export default {
               input: {
                 resourcePath: `${PACKAGE}/_EventCron/notify-is-live`,
                 eventTopicPath: `${PACKAGE}/_EventTopic/notify-is-live`,
-                // TODO: switch this to 5 minutes
                 cronExpression: "* * * * *",
               },
             },
           },
         },
-        // the action to execute every 5 minutes
+        // the action to execute every minute
         {
           actionPath: "@truffle/core@latest/_Action/graphql",
           runtimeData: {
