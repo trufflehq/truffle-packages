@@ -1,5 +1,7 @@
 // https://github.com/bitovi/react-to-webcomponent
 // https://github.com/bitovi/react-to-webcomponent/blob/master/LICENSE
+// import "https://npm.tfl.dev/construct-style-sheets-polyfill@3.1.0";
+
 const renderSymbol = Symbol.for("r2wc.reactRender");
 const shouldRenderSymbol = Symbol.for("r2wc.shouldRender");
 const rootSymbol = Symbol.for("r2wc.root");

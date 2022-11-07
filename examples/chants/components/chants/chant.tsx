@@ -1,6 +1,6 @@
 // @deno-types="https://npm.tfl.dev/v86/@types/react@~18.0/index.d.ts"
 import React, { useEffect } from "https://npm.tfl.dev/react";
-import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.5/format/wc/react/index.ts";
+import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.17/jumper/jumper.ts";
 import {
   enableLegendStateReact,

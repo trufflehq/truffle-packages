@@ -7,6 +7,8 @@ const RAID_IRFRAME_HIDDEN_STYLES = {
 const RAID_IFRAME_SHOWING_STYLES = {
   width: "100%",
   height: "100%",
+  top: "0",
+  left: "0",
   position: "absolute",
   display: "block",
   "z-index": 999,

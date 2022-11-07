@@ -1,6 +1,5 @@
 export interface MatchedMessage {
   id: string;
-  existingMutatedElementId: string;
   hasMutated: null;
   mutationObserverId: string;
   data: Data;
