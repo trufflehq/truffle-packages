@@ -7,32 +7,33 @@
 <!-- START PACKAGES -->
 
 **Packages**  
+[@truffle/router@`1.0.0`](./router) - Framework-agnostic fs router  
+[@truffle/events@`0.0.1`](./events) - Utilities for handling webhooks from Truffle  
+[@truffle/distribute@`2.0.5`](./distribute) - Wrappers to create web components from various frameworks  
+[@truffle/global-context@`1.0.0`](./global-context) - Truffle Global Context to share info between packages  
+[@truffle/config@`1.0.0`](./config) - Env/API config  
+[@truffle/third-party-oauth@`0.0.32`](./third-party-oauth) - Login and other auth utilities  
+[@truffle/api@`0.1.12`](./api) - Hooks and functions for interacting with Truffle's backend  
+[@truffle/utils@`0.0.22`](./utils) - Browser & Node utilities  
 [@truffle/ui@`0.1.8`](./ui) - Unified UI library (WIP)  
 [@truffle/context@`1.0.0`](./context) - Framework-agnostic context  
-[@truffle/youtube-js@`0.5.9`](./youtube-js) - Truffle fork of [Youtube.js](https://github.com/LuanRT/YouTube.js)  
-[@truffle/config@`1.0.0`](./config) - Env/API config  
-[@truffle/utils@`0.0.22`](./utils) - Browser & Node utilities  
 [@truffle/state@`0.0.5`](./state) - Signals coupled with Legend state for React  
-[@truffle/distribute@`2.0.12`](./distribute) - Wrappers to create web components from various frameworks  
-[@truffle/third-party-oauth@`0.0.33`](./third-party-oauth) - Login and other auth utilities  
-[@truffle/api@`0.1.12`](./api) - Hooks and functions for interacting with Truffle's backend  
-[@truffle/global-context@`1.0.0`](./global-context) - Truffle Global Context to share info between packages  
-[@truffle/events@`0.0.1`](./events) - Utilities for handling webhooks from Truffle  
-[@truffle/router@`1.0.0`](./router) - Framework-agnostic fs router
+[@truffle/youtube-js@`0.5.9`](./youtube-js) - Truffle fork of [Youtube.js](https://github.com/LuanRT/YouTube.js)
 
 **Examples**  
-[@truffle/spotify-integration@`3.0.1`](./examples/spotify-integration) - Spotify Now Playing widget  
-[@truffle/create-react-project@`0.5.6`](./examples/create-react-project) - Truffle project React template  
-[@truffle/mashing-minigame@`0.2.12`](./examples/mashing-minigame) - Round-based minigame example  
 [@truffle/mutation-observer@`0.4.2`](./examples/mutation-observer) - Mutation Observer example  
-[@truffle/chants@`0.0.3`](./examples/chants) - Adding an effectful but lightweight extension of emoji spam in live chat.  
+[@truffle/mashing-minigame@`0.2.12`](./examples/mashing-minigame) - Round-based minigame example  
+[@truffle/spotify-integration@`3.0.1`](./examples/spotify-integration) - Spotify Now Playing widget  
 [@truffle/events-demo-backend@`0.0.12`](./examples/events-demo-backend) - [Events](../../events) demo  
+[@truffle/create-react-project@`0.5.6`](./examples/create-react-project) - Truffle project React template  
 [@dev/chessmaster@`0.6.3`](./examples/chessmaster) - A package to facilitate a streamer vs chat chess game using https://lichess.org.  
-[@truffle/demo-discord-bot@`0.0.1`](./examples/discord-bot-demo) - Discord bot using Truffle API  
 [@truffle/viewer-polls@`0.2.4`](./examples/viewer-polls) - Stream Polls  
-[@truffle/song-suggestions@`0.0.24`](./examples/song-suggestions) - Song Suggestions Suite
+[@truffle/demo-discord-bot@`0.0.1`](./examples/discord-bot-demo) - Discord bot using Truffle API  
+[@truffle/song-suggestions@`0.0.24`](./examples/song-suggestions) - Song Suggestions Suite  
+[@truffle/chants@`0.0.3`](./examples/chants) - Chants
 
 **Stream Projects**  
+[@truffle/notifications@`0.1.0`](./stream-projects/notifications) - Send notifications to your users when you go live.  
 [@truffle/raid@`0.0.6`](./stream-projects/raid) - Stream Raids
 
 <!-- END PACKAGES -->

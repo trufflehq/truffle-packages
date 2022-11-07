@@ -25,7 +25,7 @@ for await (const step of walking) {
       .join(", ");
 
     throw new Deno.errors.InvalidData(
-      `Package ${name} is missing: ${missing} at ${path}`,
+      `Package ${name} is missing: ${missing}. Path: ${path}`,
     );
   }
   if (description.length > 100) {
