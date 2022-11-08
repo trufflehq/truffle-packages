@@ -6,7 +6,7 @@ const PACKAGE = "@truffle/notifications";
 
 export default {
   name: PACKAGE,
-  version: "0.1.0",
+  version: "0.1.2",
   apiUrl: "https://mycelium.truffle.vip/graphql",
 
   // staging @dev settings
@@ -172,7 +172,7 @@ export default {
                 resourcePath: `${PACKAGE}/_Action/notify-is-live`,
                 config: {
                   edgeFunctionPath:
-                    "@dev/notifications/_EdgeFunction/notify-is-live:@dev",
+                    "@truffle/notifications/_EdgeFunction/notify-is-live:@truffle",
                 },
               },
             },

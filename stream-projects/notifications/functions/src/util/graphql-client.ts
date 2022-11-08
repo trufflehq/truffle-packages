@@ -1,4 +1,4 @@
-const MYCELIUM_API_URL = "https://mycelium.staging.bio/graphql";
+const MYCELIUM_API_URL = "https://mycelium.truffle.vip/graphql";
 
 interface MyceliumOptions {
   accessToken: string;
@@ -13,7 +13,7 @@ export interface GQLResponse<T = unknown> {
 export function graphqlReq(
   query: string,
   variables: Record<string, unknown>,
-  options: MyceliumOptions
+  options: MyceliumOptions,
 ) {
   return fetch(MYCELIUM_API_URL, {
     method: "POST",

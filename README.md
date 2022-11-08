@@ -9,11 +9,11 @@
 **Packages**  
 [@truffle/router@`1.0.0`](./router) - Framework-agnostic fs router  
 [@truffle/events@`0.0.1`](./events) - Utilities for handling webhooks from Truffle  
-[@truffle/distribute@`2.0.5`](./distribute) - Wrappers to create web components from various frameworks  
+[@truffle/distribute@`2.0.20`](./distribute) - Wrappers to create web components from various frameworks  
 [@truffle/global-context@`1.0.0`](./global-context) - Truffle Global Context to share info between packages  
 [@truffle/config@`1.0.0`](./config) - Env/API config  
-[@truffle/third-party-oauth@`0.0.32`](./third-party-oauth) - Login and other auth utilities  
-[@truffle/api@`0.1.12`](./api) - Hooks and functions for interacting with Truffle's backend  
+[@truffle/third-party-oauth@`0.0.39`](./third-party-oauth) - Login and other auth utilities  
+[@truffle/api@`0.1.19`](./api) - Hooks and functions for interacting with Truffle's backend  
 [@truffle/utils@`0.0.22`](./utils) - Browser & Node utilities  
 [@truffle/ui@`0.1.8`](./ui) - Unified UI library (WIP)  
 [@truffle/context@`1.0.0`](./context) - Framework-agnostic context  
@@ -30,11 +30,11 @@
 [@truffle/viewer-polls@`0.2.4`](./examples/viewer-polls) - Stream Polls  
 [@truffle/demo-discord-bot@`0.0.1`](./examples/discord-bot-demo) - Discord bot using Truffle API  
 [@truffle/song-suggestions@`0.0.24`](./examples/song-suggestions) - Song Suggestions Suite  
-[@truffle/chants@`0.0.3`](./examples/chants) - Chants
+[@truffle/chants@`0.0.4`](./examples/chants) - Chants
 
 **Stream Projects**  
-[@truffle/notifications@`0.1.0`](./stream-projects/notifications) - Send notifications to your users when you go live.  
-[@truffle/raid@`0.0.6`](./stream-projects/raid) - Stream Raids
+[@truffle/notifications@`0.1.2`](./stream-projects/notifications) - Send notifications to your users when you go live.  
+[@truffle/raid@`0.0.7`](./stream-projects/raid) - Stream Raids
 
 <!-- END PACKAGES -->
 
