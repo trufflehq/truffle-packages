@@ -110,6 +110,11 @@ function sendTruffleAccessTokenToOpener(truffleAccessToken) {
     truffleAccessToken,
   };
 
+  // check if the oauth flow is being loaded in the ReactNative webview
+  if (window?.ReactNativeWebView) {
+    window.ReactNativeWebView?.postMessage(JSON.stringify(payload));
+  }
+
   window.opener?.postMessage(JSON.stringify(payload), "*");
   const self = window.self;
   self.opener = window.self;
