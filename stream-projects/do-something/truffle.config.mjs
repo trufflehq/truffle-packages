@@ -4,4 +4,4 @@ export default {
   apiUrl: "https://mycelium.staging.bio/graphql",
   requestedPermissions: [],
   installActionRel: {},
-}
+};
