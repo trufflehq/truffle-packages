@@ -1,23 +1,36 @@
 import ActionHistory from "../../../components/action-history/action-history.tsx";
 import RecentActions from "../../../components/recent-actions/recent-actions.tsx";
-import { enableLegendStateReact, React, toDist, useStyleSheet } from "../../../deps.ts";
-import { useLiveAlertConnection } from "../../../shared/hooks/use-live-alert-connection.ts";
+import {
+  enableLegendStateReact,
+  React,
+  toDist,
+  useEffect,
+  useSelector,
+  useSignal,
+  useState,
+  useStyleSheet,
+} from "../../../deps.ts";
+import { useAlertConnection } from "../../../shared/hooks/use-alert-connection.ts";
 import styleSheet from "./page.scss.js";
 
 enableLegendStateReact();
 
 function DoSomethingAdminPage() {
   useStyleSheet(styleSheet);
-  const { alerts$ } = useLiveAlertConnection();
+
+  const { alerts$ } = useAlertConnection();
+
   return (
     <div className="c-do-something-admin-page">
-      <div>
+      {
+        /* <div>
         {JSON.stringify(alerts$.get())}
-      </div>
+      </div> */
+      }
       <div className="container">
         <div className="page-title">Actions</div>
-        <RecentActions />
-        <ActionHistory />
+        <RecentActions alerts$={alerts$} />
+        <ActionHistory alerts$={alerts$} />
       </div>
     </div>
   );

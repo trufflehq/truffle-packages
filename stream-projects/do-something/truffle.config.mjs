@@ -8,6 +8,7 @@ export default {
   name: PACKAGE,
   version: "0.5.9",
   apiUrl: "https://mycelium.staging.bio/graphql",
+  description: "Let your audience control you through collectibles!",
   requestedPermissions: [
     {
       filters: {

@@ -1,7 +1,7 @@
 import { gql } from "../../deps.ts";
 
 export const ALERT_CONNECTION_SUBSCRIPTION = gql`
-  subscription {
+  query {
     alertConnection(input: { type: "do-something" }) {
       nodes {
         id
