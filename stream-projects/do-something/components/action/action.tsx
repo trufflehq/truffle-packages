@@ -1,6 +1,7 @@
-import { Avatar, React, TimeAgo, TimeAgoEn, useStyleSheet } from "../../deps.ts";
+import { Avatar, React, useStyleSheet } from "../../deps.ts";
 import styleSheet from "./action.scss.js";
 import { Action } from "../../shared/types/action.ts";
+import { timeAgo } from "../../shared/util/time-ago.ts";
 
 type StringObj = Record<string, string>;
 type Styles<T extends string> = Record<T, StringObj>;
@@ -46,9 +47,6 @@ const modeStyleMap: Styles<Mode> = {
     "--collectible-icon-size": "32px",
   },
 };
-
-TimeAgo.addDefaultLocale(TimeAgoEn);
-const timeAgo = new TimeAgo("en-US");
 
 export default function Action(
   { state = "normal", mode = "normal", action }: { state?: State; mode?: Mode; action: Action },
