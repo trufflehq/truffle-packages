@@ -1,4 +1,5 @@
 import {
+  CombinedError,
   gql,
   mutation,
   React,
@@ -94,6 +95,31 @@ export default function LoginManager(
   );
 }
 
+const USER_CONNECTION_AUTH_ERR_CODE_TO_ERR: Record<
+  number | string,
+  { title: string; message: string }
+> = {
+  403: {
+    title: "Access error",
+    message:
+      "You must grant Truffle access to read your YouTube account to continue.",
+  },
+  404: {
+    title: "Youtube account error",
+    message: "You'll need to create a Youtube channel to connect your account.",
+  },
+  undefined: {
+    title: "Access error",
+    message: "Unknown error",
+  },
+};
+
+function getUserConnectionLoginError({ error }: { error: CombinedError }) {
+  const code = error?.graphQLErrors?.[0]?.extensions?.code as number;
+
+  return USER_CONNECTION_AUTH_ERR_CODE_TO_ERR[code];
+}
+
 async function truffleConnectionLogin(
   oAuthAccessToken: string,
   state: string,
@@ -118,9 +144,9 @@ async function truffleConnectionLogin(
   });
 
   if (result?.error) {
-    const error = result.error?.graphQLErrors?.[0]?.extensions?.info;
-    const title = result.error?.graphQLErrors?.[0]?.extensions?.title;
-    throw new Error(JSON.stringify({ title, message: error }));
+    console.error("connection login error", result?.error);
+    const error = getUserConnectionLoginError({ error: result?.error });
+    throw new Error(JSON.stringify(error));
   }
 
   return result?.data?.userLoginConnection?.accessToken;
