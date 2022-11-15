@@ -4,7 +4,7 @@ import stylesheet from "./error-renderer.scss.js";
 import Button from "../button/button.tsx";
 
 export default function ErrorRenderer(
-  { title, message }: { title?: string; message?: string },
+  { title = "Error", message = "Error during login" }: { title?: string; message?: string },
 ) {
   useStyleSheet(stylesheet);
 

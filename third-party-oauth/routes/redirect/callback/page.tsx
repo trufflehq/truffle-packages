@@ -27,6 +27,10 @@ const OAUTH_ERROR_MESSAGE: Record<string, { title: string; message: string }> =
       message:
         "You must grant Truffle access to read your YouTube account to continue.",
     },
+    undefined: {
+      title: "Error",
+      message: "Error during login",
+    },
   };
 
 function AuthCallbackPage() {
@@ -42,8 +46,8 @@ function AuthCallbackPage() {
       {error
         ? (
           <ErrorRenderer
-            title={OAUTH_ERROR_MESSAGE[error].title ?? "Error"}
-            message={OAUTH_ERROR_MESSAGE[error].message ?? "Error during login"}
+            title={OAUTH_ERROR_MESSAGE[error]?.title}
+            message={OAUTH_ERROR_MESSAGE[error]?.message}
           />
         )
         : <LoginManager oAuthAccessToken={oAuthAccessToken} state={state} />}
