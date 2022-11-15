@@ -6,7 +6,7 @@ const PACKAGE = `${ORG}/do-something`;
 
 export default {
   name: PACKAGE,
-  version: "0.1.0",
+  version: "0.1.1",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   description: "Let your audience control you through collectibles!",
   requestedPermissions: [
