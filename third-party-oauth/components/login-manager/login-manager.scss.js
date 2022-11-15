@@ -38,12 +38,5 @@ export default scss`
     > .title {
       font-family: var(--mm-font-family);
     }
-
-    > .error {
-      font-size: 16px;
-      line-height: 19px;
-      color: var(--error-red);
-      font-family: var(--mm-font-family);
-    }
   }
 }`;

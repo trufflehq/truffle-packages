@@ -61,6 +61,7 @@ export default function LoginManager(
           setError("Missing access token");
         }
       } catch (err) {
+        console.error("Error logging in", err);
         setError(err ?? "Error logging in");
       }
     })();
