@@ -13,7 +13,5 @@ export function postTruffleAccessTokenToOpener(truffleAccessToken?: string) {
   };
 
   // check if the oauth flow is being loaded in the ReactNative webview
-  if (window?.opener) {
-    window.opener?.postMessage(JSON.stringify(payload), "*");
-  }
+  window?.opener?.postMessage(JSON.stringify(payload), "*");
 }
