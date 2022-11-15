@@ -56,8 +56,8 @@ export default function LoginManager(
         );
       } catch (err) {
         console.error("Error logging in via connection", err);
-        const parsedError = JSON.parse(err.message || "{}");
-        setError({ title: parsedError.title, message: parsedError.message });
+        const parsedError = JSON.parse(err?.message || "{}");
+        setError({ title: parsedError?.title, message: parsedError?.message });
         return;
       }
 
