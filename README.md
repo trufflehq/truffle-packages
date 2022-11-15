@@ -5,6 +5,38 @@
 > More information available in package README
 
 <!-- START PACKAGES -->
+
+**Packages**  
+[@truffle/state@`0.0.6`](./state) - Signals coupled with Legend state for React  
+[@truffle/api@`0.1.19`](./api) - Hooks and functions for interacting with Truffle's backend  
+[@truffle/utils@`0.0.22`](./utils) - Browser & Node utilities  
+[@truffle/youtube-js@`0.5.9`](./youtube-js) - Truffle fork of [Youtube.js](https://github.com/LuanRT/YouTube.js)  
+[@truffle/events@`0.0.1`](./events) - Utilities for handling webhooks from Truffle  
+[@truffle/context@`1.0.0`](./context) - Framework-agnostic context  
+[@truffle/third-party-oauth@`0.0.40`](./third-party-oauth) - Login and other auth utilities  
+[@truffle/global-context@`1.0.0`](./global-context) - Truffle Global Context to share info between packages  
+[@truffle/distribute@`2.0.20`](./distribute) - Wrappers to create web components from various frameworks  
+[@truffle/ui@`0.1.8`](./ui) - Unified UI library (WIP)  
+[@truffle/config@`1.0.0`](./config) - Env/API config  
+[@truffle/router@`1.0.0`](./router) - Framework-agnostic fs router
+
+**Examples**  
+[@truffle/events-demo-backend@`0.0.12`](./examples/events-demo-backend) - [Events](../../events) demo  
+[@truffle/viewer-polls@`0.2.4`](./examples/viewer-polls) - Stream Polls  
+[@truffle/mutation-observer@`0.4.2`](./examples/mutation-observer) - Mutation Observer example  
+[@truffle/song-suggestions@`0.0.24`](./examples/song-suggestions) - Song Suggestions Suite  
+[@truffle/demo-discord-bot@`0.0.1`](./examples/discord-bot-demo) - Discord bot using Truffle API  
+[@truffle/create-react-project@`0.5.6`](./examples/create-react-project) - Truffle project React template  
+[@truffle/spotify-integration@`3.0.1`](./examples/spotify-integration) - Spotify Now Playing widget  
+[@truffle/chants@`0.0.4`](./examples/chants) - Chants  
+[@dev/chessmaster@`0.6.3`](./examples/chessmaster) - A package to facilitate a streamer vs chat chess game using https://lichess.org.  
+[@truffle/mashing-minigame@`0.2.12`](./examples/mashing-minigame) - Round-based minigame example
+
+**Stream Projects**  
+[@truffle/do-something@`0.1.0`](./stream-projects/do-something) - Let your audience control you through collectibles!  
+[@truffle/notifications@`0.1.2`](./stream-projects/notifications) - Send notifications to your users when you go live.  
+[@truffle/raid@`0.0.7`](./stream-projects/raid) - Stream Raids
+
 <!-- END PACKAGES -->
 
 # Contributing
