@@ -48,7 +48,7 @@ const modeStyleMap: Styles<Mode> = {
   },
 };
 
-export default function Action(
+export default function DoSomethingAction(
   { state = "normal", mode = "normal", action }: { state?: State; mode?: Mode; action: Action },
 ) {
   useStyleSheet(styleSheet);

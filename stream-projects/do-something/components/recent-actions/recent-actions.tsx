@@ -1,6 +1,6 @@
 import { Observable, React, useComputed, useStyleSheet } from "../../deps.ts";
 import { Alert } from "../../shared/types/alert.ts";
-import Action from "../action/action.tsx";
+import DoSomethingAction from "../do-something-action/do-something-action.tsx";
 import styleSheet from "./recent-actions.scss.js";
 import { Action as ActionInterface } from "../../shared/types/action.ts";
 import { extractAction } from "../../shared/util/extract-action.ts";
@@ -28,14 +28,14 @@ export default function RecentActions(
       <div className="actions-list">
         {firstAlert$.get() &&
           (
-            <Action
+            <DoSomethingAction
               mode="recent"
               state={firstAlertState$.get()}
               action={extractAction(firstAlert$.get())}
             />
           )}
         {otherAlerts$.get()?.map((alert) => (
-          <Action
+          <DoSomethingAction
             mode="recent"
             state="normal"
             action={extractAction(alert)}
