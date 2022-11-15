@@ -5,6 +5,7 @@ export default scss`
   color: var(--tfl-color-on-bg-fill);
   background: var(--tfl-color-bg-fill);
   font-family: var(--tfl-font-family-body-sans);
+  --error-red: rgba(238, 113, 113, 1);
   display: block;
   width: 100%;
   height: 100%;
@@ -35,6 +36,13 @@ export default scss`
       width: 100%;
     }
     > .title {
+      font-family: var(--mm-font-family);
+    }
+
+    > .error {
+      font-size: 16px;
+      line-height: 19px;
+      color: var(--error-red);
       font-family: var(--mm-font-family);
     }
   }

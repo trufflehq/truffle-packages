@@ -9,7 +9,7 @@ import {
   useStyleSheet,
 } from "../../deps.ts";
 import { DecodedAuth, MESSAGES, verifyJWT } from "../../shared/mod.ts";
-
+import ErrorRenderer from "../error-renderer/error-renderer.tsx";
 import stylesheet from "./login-manager.scss.js";
 
 export const ME_QUERY = gql`
@@ -42,14 +42,26 @@ export default function LoginManager(
 
   useEffect(() => {
     oAuthAccessToken && state && (async () => {
-      const truffleAccessToken = await truffleConnectionLogin(
-        oAuthAccessToken,
-        state,
-      );
+      let truffleAccessToken;
       try {
-        sendTruffleAccessTokenToOpener(truffleAccessToken);
+        try {
+          truffleAccessToken = await truffleConnectionLogin(
+            oAuthAccessToken,
+            state,
+          );
+        } catch (err) {
+          console.error("Error logging in via connection", err);
+          setError(err.message);
+          return;
+        }
+
+        if (truffleAccessToken) {
+          sendTruffleAccessTokenToOpener(truffleAccessToken);
+        } else {
+          setError("Missing access token");
+        }
       } catch (err) {
-        setError("Error logging in");
+        setError(err ?? "Error logging in");
       }
     })();
   }, [oAuthAccessToken, state]);
@@ -65,10 +77,7 @@ export default function LoginManager(
             <img src="https://cdn.bio/assets/images/landing/snuffle.svg?1" />
           </object>
         </div>
-        {error && (
-          <div className="error">
-          </div>
-        )}
+        {error && <ErrorRenderer message={error} />}
       </div>
     </div>
   );
@@ -97,10 +106,15 @@ async function truffleConnectionLogin(
     connectionPrivateData: { accessToken: oAuthAccessToken },
   });
 
+  if (result?.error) {
+    const error = result.error?.graphQLErrors?.[0]?.extensions?.info;
+    throw new Error(error);
+  }
+
   return result?.data?.userLoginConnection?.accessToken;
 }
 
-async function decodeState(state: string): Promise<DecodedAuth | null> {
+export async function decodeState(state: string): Promise<DecodedAuth | null> {
   return state ? await verifyJWT(state) : null;
 }
 
