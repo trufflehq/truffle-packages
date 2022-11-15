@@ -1,4 +1,4 @@
-import { scss } from "../../../deps.ts";
+import { scss } from "../../deps.ts";
 
 export default scss`
   .c-do-something-admin-page {

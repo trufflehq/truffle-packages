@@ -1,25 +1,4 @@
-import ActionHistory from "../../../components/action-history/action-history.tsx";
-import RecentActions from "../../../components/recent-actions/recent-actions.tsx";
-import { enableLegendStateReact, React, toDist, useStyleSheet } from "../../../deps.ts";
-import { useAlerts$ } from "../../../shared/hooks/use-alerts.ts";
-import styleSheet from "./page.scss.js";
-
-enableLegendStateReact();
-
-function DoSomethingAdminPage() {
-  useStyleSheet(styleSheet);
-
-  const alerts$ = useAlerts$();
-
-  return (
-    <div className="c-do-something-admin-page">
-      <div className="container">
-        <div className="page-title">Actions</div>
-        <RecentActions alerts$={alerts$} />
-        <ActionHistory alerts$={alerts$} />
-      </div>
-    </div>
-  );
-}
+import DoSomethingAdminPage from "../../../components/admin-page/admin-page.tsx";
+import { toDist } from "../../../deps.ts";
 
 export default toDist(DoSomethingAdminPage, import.meta.url);
