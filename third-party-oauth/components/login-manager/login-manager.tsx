@@ -44,24 +44,24 @@ export default function LoginManager(
     oAuthAccessToken && state && (async () => {
       let truffleAccessToken;
       try {
-        try {
-          truffleAccessToken = await truffleConnectionLogin(
-            oAuthAccessToken,
-            state,
-          );
-        } catch (err) {
-          console.error("Error logging in via connection", err);
-          setError(err.message);
-          return;
-        }
+        truffleAccessToken = await truffleConnectionLogin(
+          oAuthAccessToken,
+          state,
+        );
+      } catch (err) {
+        console.error("Error logging in via connection", err);
+        setError(err.message);
+        return;
+      }
 
+      try {
         if (truffleAccessToken) {
           sendTruffleAccessTokenToOpener(truffleAccessToken);
         } else {
           setError("Missing access token");
         }
       } catch (err) {
-        console.error("Error logging in", err);
+        console.error("Error sending token to opener", err);
         setError(err ?? "Error logging in");
       }
     })();
