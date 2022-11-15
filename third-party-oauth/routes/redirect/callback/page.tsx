@@ -19,6 +19,7 @@ const hashParams: AuthCallbackHashParams = new Proxy(
 );
 
 const OAUTH_ERROR_MESSAGE = {
+  // passed if the user hits cancel at the OAuth consent screen
   "access_denied":
     "You must grant Truffle access to read your YouTube account to continue.",
 };
