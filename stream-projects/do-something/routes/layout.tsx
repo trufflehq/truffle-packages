@@ -1,5 +1,4 @@
-import { toDist, useStyleSheet } from "../deps.ts";
-import { useGoogleFontLoader } from "../shared/hooks/use-google-font.ts";
+import { toDist, useGoogleFontLoader, useStyleSheet } from "../deps.ts";
 
 import styleSheet from "./layout.css.js";
 
