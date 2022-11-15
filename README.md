@@ -5,7 +5,6 @@
 > More information available in package README
 
 <!-- START PACKAGES -->
-
 <!-- END PACKAGES -->
 
 # Contributing

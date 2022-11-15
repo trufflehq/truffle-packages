@@ -1,13 +1,13 @@
 // here for syntax highlighting :)
 const gql = (strings) => strings.join();
 
-const ORG = "@dev";
+const ORG = "@truffle";
 const PACKAGE = `${ORG}/do-something`;
 
 export default {
   name: PACKAGE,
-  version: "0.5.9",
-  apiUrl: "https://mycelium.staging.bio/graphql",
+  version: "0.1.0",
+  apiUrl: "https://mycelium.truffle.vip/graphql",
   description: "Let your audience control you through collectibles!",
   requestedPermissions: [
     {
