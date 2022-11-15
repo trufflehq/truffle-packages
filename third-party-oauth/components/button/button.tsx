@@ -46,6 +46,11 @@ const buttonStyles: Record<string, Styles> = {
     "--text-color": "var(--mm-color-text-bg-tertiary)",
     "--border-color": "var(--mm-color-primary)",
   },
+  "pink": {
+    "--background": "rgba(243, 87, 161, 1)",
+    "--text-color": "rgba(31, 31, 31, 1)",
+    "--border-color": "transparent",
+  },
   undefined: {},
 };
 
@@ -71,6 +76,7 @@ export default function Button({
   isDisabled = false,
   onClick = () => null,
   size = "normal",
+  css,
 }: {
   className?: string;
   children?: React.ReactNode;
@@ -80,6 +86,7 @@ export default function Button({
   isDisabled?: boolean;
   onClick?: () => void;
   size?: keyof typeof sizeStyles;
+  css?: React.CSSProperties;
 }) {
   useStyleSheet(styleSheet);
   const [isLoading, setIsLoading] = useState(false);
@@ -99,9 +106,10 @@ export default function Button({
     }
   };
 
-  const styles: Styles = {
+  const styles = {
     ...(typeof style === "string" ? buttonStyles[style] : style),
     ...sizeStyles[size],
+    ...css,
   };
 
   if (border) styles["--border-color"] = "rgb(255, 255, 255, 0.16)";

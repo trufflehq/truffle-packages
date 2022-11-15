@@ -8,7 +8,13 @@ import {
   useState,
   useStyleSheet,
 } from "../../deps.ts";
-import { DecodedAuth, MESSAGES, verifyJWT } from "../../shared/mod.ts";
+import {
+  closeSelf,
+  DecodedAuth,
+  postTruffleAccessTokenToNative,
+  postTruffleAccessTokenToOpener,
+  verifyJWT,
+} from "../../shared/mod.ts";
 import ErrorRenderer from "../error-renderer/error-renderer.tsx";
 import stylesheet from "./login-manager.scss.js";
 
@@ -38,7 +44,7 @@ export default function LoginManager(
   },
 ) {
   useStyleSheet(stylesheet);
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<{ title: string; message: string }>();
 
   useEffect(() => {
     oAuthAccessToken && state && (async () => {
@@ -50,7 +56,8 @@ export default function LoginManager(
         );
       } catch (err) {
         console.error("Error logging in via connection", err);
-        setError(err.message);
+        const parsedError = JSON.parse(err.message || "{}");
+        setError({ title: parsedError.title, message: parsedError.message });
         return;
       }
 
@@ -58,7 +65,7 @@ export default function LoginManager(
         if (truffleAccessToken) {
           sendTruffleAccessTokenToOpener(truffleAccessToken);
         } else {
-          setError("Missing access token");
+          setError({ title: "Access error", message: "Missing access token" });
         }
       } catch (err) {
         console.error("Error sending token to opener", err);
@@ -70,15 +77,16 @@ export default function LoginManager(
   return (
     <div className="c-login-manager">
       <div className="inner">
-        <div className="snuffle">
-          <object
-            data="https://cdn.bio/assets/images/landing/snuffle.svg?1"
-            type="image/svg+xml"
-          >
-            <img src="https://cdn.bio/assets/images/landing/snuffle.svg?1" />
-          </object>
-        </div>
-        {error && <ErrorRenderer message={error} />}
+        {error ? <ErrorRenderer title={error.title} message={error.message} /> : (
+          <div className="snuffle">
+            <object
+              data="https://cdn.bio/assets/images/landing/snuffle.svg?1"
+              type="image/svg+xml"
+            >
+              <img src="https://cdn.bio/assets/images/landing/snuffle.svg?1" />
+            </object>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -109,7 +117,8 @@ async function truffleConnectionLogin(
 
   if (result?.error) {
     const error = result.error?.graphQLErrors?.[0]?.extensions?.info;
-    throw new Error(error);
+    const title = result.error?.graphQLErrors?.[0]?.extensions?.title;
+    throw new Error(JSON.stringify({ title, message: error }));
   }
 
   return result?.data?.userLoginConnection?.accessToken;
@@ -120,18 +129,7 @@ export async function decodeState(state: string): Promise<DecodedAuth | null> {
 }
 
 function sendTruffleAccessTokenToOpener(truffleAccessToken) {
-  const payload = {
-    type: MESSAGES.SET_ACCESS_TOKEN,
-    truffleAccessToken,
-  };
-
-  // check if the oauth flow is being loaded in the ReactNative webview
-  if (window?.ReactNativeWebView) {
-    window.ReactNativeWebView?.postMessage(JSON.stringify(payload));
-  }
-
-  window.opener?.postMessage(JSON.stringify(payload), "*");
-  const self = window.self;
-  self.opener = window.self;
-  self.close();
+  postTruffleAccessTokenToNative(truffleAccessToken);
+  postTruffleAccessTokenToOpener(truffleAccessToken);
+  closeSelf();
 }
