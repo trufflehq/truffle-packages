@@ -30,7 +30,6 @@ export function useAlertConnection() {
     variables: {},
     interval: QUERY_POLL_INTERVAL,
   });
-  // const alerts$ = useComputed(() => signal$.get()?.data?.alertConnection?.nodes);
   const alerts$ = useComputed(() => signal$.get()?.data?.alertConnection?.nodes);
 
   return { alerts$ };
