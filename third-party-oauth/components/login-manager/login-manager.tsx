@@ -69,7 +69,7 @@ export default function LoginManager(
         }
       } catch (err) {
         console.error("Error sending token to opener", err);
-        setError(err ?? "Error logging in");
+        setError({ title: "Error", message: err ?? "Error logging in" });
       }
     })();
   }, [oAuthAccessToken, state]);
@@ -77,16 +77,18 @@ export default function LoginManager(
   return (
     <div className="c-login-manager">
       <div className="inner">
-        {error ? <ErrorRenderer title={error.title} message={error.message} /> : (
-          <div className="snuffle">
-            <object
-              data="https://cdn.bio/assets/images/landing/snuffle.svg?1"
-              type="image/svg+xml"
-            >
-              <img src="https://cdn.bio/assets/images/landing/snuffle.svg?1" />
-            </object>
-          </div>
-        )}
+        {error
+          ? <ErrorRenderer title={error.title} message={error.message} />
+          : (
+            <div className="snuffle">
+              <object
+                data="https://cdn.bio/assets/images/landing/snuffle.svg?1"
+                type="image/svg+xml"
+              >
+                <img src="https://cdn.bio/assets/images/landing/snuffle.svg?1" />
+              </object>
+            </div>
+          )}
       </div>
     </div>
   );
