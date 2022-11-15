@@ -2,7 +2,6 @@ import { scss } from '../../../deps.ts'
 
 export default scss`
 :host {
-  --error-red: rgba(238, 113, 113, 1);
   color: var(--tfl-color-on-bg-fill);
   background: var(--tfl-color-bg-fill);
   font-family: var(--mm-font-family);

@@ -11,7 +11,8 @@ export default function ErrorRenderer(
   const onClick = () => {
     // check if the oauth flow is being loaded in the ReactNative webview
     if (window?.ReactNativeWebView) {
-      // want to redirect to the last embeddable page
+      // FIXME: want to redirect to the last embeddable page, should have a message for redirectToLastEmbeddablePage
+      // but will need to add the message on the native side. Sending an empty access token should work for now
       postTruffleAccessTokenToNative("");
     }
 
