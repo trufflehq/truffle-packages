@@ -68,7 +68,7 @@ export default function Action(
       <div className="profile">
         <Avatar user={action.user} size={styles["--avatar-size"]} />
         <div className="username">
-          {action.user?.name}
+          {action.user?.name ?? "Anonymous"}
         </div>
       </div>
       <div className="collectible">

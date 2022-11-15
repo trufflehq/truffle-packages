@@ -1,15 +1,6 @@
 import ActionHistory from "../../../components/action-history/action-history.tsx";
 import RecentActions from "../../../components/recent-actions/recent-actions.tsx";
-import {
-  enableLegendStateReact,
-  React,
-  toDist,
-  useEffect,
-  useSelector,
-  useSignal,
-  useState,
-  useStyleSheet,
-} from "../../../deps.ts";
+import { enableLegendStateReact, React, toDist, useStyleSheet } from "../../../deps.ts";
 import { useAlertConnection } from "../../../shared/hooks/use-alert-connection.ts";
 import styleSheet from "./page.scss.js";
 
@@ -22,11 +13,6 @@ function DoSomethingAdminPage() {
 
   return (
     <div className="c-do-something-admin-page">
-      {
-        /* <div>
-        {JSON.stringify(alerts$.get())}
-      </div> */
-      }
       <div className="container">
         <div className="page-title">Actions</div>
         <RecentActions alerts$={alerts$} />

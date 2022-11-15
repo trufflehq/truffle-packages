@@ -1,8 +1,21 @@
 import { serve } from "https://deno.land/std@0.159.0/http/server.ts";
+import { alertUpsert } from "./util/alert.ts";
+import { getCollectibleByPath } from "./util/collectible.ts";
 import { makeResp } from "./util/make-resp.ts";
+import { getUserById } from "./util/user.ts";
 
 interface DoSomethingRedeemReqBody {
-  runtimeData?: {};
+  runtimeData?: {
+    event: {
+      data: {
+        orgId: string;
+        userId: string;
+        collectibleData: {
+          collectiblePath: string;
+        };
+      };
+    };
+  };
 }
 
 serve(
@@ -36,13 +49,47 @@ serve(
       });
     }
 
-    console.log({ orgId, reqBody });
+    const userId = reqBody?.runtimeData?.event?.data?.userId;
+    if (!userId) {
+      return makeResp(400, {
+        error: true,
+        message:
+          "Missing userId from request body. It should be defined at 'runtimeData.event.data.userId'.",
+      });
+    }
 
-    return makeResp(200, {});
+    const collectiblePath = reqBody?.runtimeData?.event?.data?.collectibleData?.collectiblePath;
+    if (!collectiblePath) {
+      return makeResp(400, {
+        error: true,
+        message:
+          "Missing collectiblePath from request body. It should be defined at 'runtimeData.event.data.collectibleData.collectiblePath'.",
+      });
+    }
+
+    let alert;
+    try {
+      const user = await getUserById(userId, accessToken, orgId);
+      const collectible = await getCollectibleByPath(collectiblePath, accessToken, orgId);
+      alert = await alertUpsert(
+        { type: "do-something", data: { user, collectible } },
+        accessToken,
+        orgId,
+      );
+    } catch (error) {
+      return makeResp(400, { error });
+    }
+
+    return makeResp(200, {
+      error: false,
+      message: "Successfully upserted alert",
+      alert,
+    });
   },
   {
     onListen({ port, hostname }) {
       console.log(`Server started at http://${hostname}:${port}`);
     },
+    port: 8001,
   },
 );
