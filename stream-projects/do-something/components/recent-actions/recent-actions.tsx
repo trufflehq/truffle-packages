@@ -8,7 +8,9 @@ import { extractAction } from "../../shared/util/extract-action.ts";
 const HIGHLIGHT_RECENT_ACTION_SECONDS = 8;
 
 export default function RecentActions(
-  { alerts$ }: { alerts$: Observable<Alert<ActionInterface>[]> },
+  { alerts$ }: {
+    alerts$: Observable<Alert<ActionInterface>[]>;
+  },
 ): JSX.Element {
   useStyleSheet(styleSheet);
 

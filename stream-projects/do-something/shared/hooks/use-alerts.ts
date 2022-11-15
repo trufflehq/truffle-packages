@@ -1,5 +1,7 @@
-import { useComputed, usePollingQuerySignal } from "../../deps.ts";
+import { Observable, useComputed, usePollingQuerySignal } from "../../deps.ts";
 import { ALERT_CONNECTION_SUBSCRIPTION } from "../gql/alert-subscription.ts";
+import { Action } from "../types/action.ts";
+import { Alert } from "../types/alert.ts";
 
 const QUERY_POLL_INTERVAL = 1000;
 
@@ -24,7 +26,7 @@ interface AlertResponse {
   };
 }
 
-export function useAlertConnection() {
+export function useAlerts$() {
   const { signal$ } = usePollingQuerySignal({
     query: ALERT_CONNECTION_SUBSCRIPTION,
     variables: {},
@@ -32,5 +34,5 @@ export function useAlertConnection() {
   });
   const alerts$ = useComputed(() => signal$.get()?.data?.alertConnection?.nodes);
 
-  return { alerts$ };
+  return alerts$ as Observable<Alert<Action>[]>;
 }

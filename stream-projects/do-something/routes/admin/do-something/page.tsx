@@ -1,7 +1,7 @@
 import ActionHistory from "../../../components/action-history/action-history.tsx";
 import RecentActions from "../../../components/recent-actions/recent-actions.tsx";
 import { enableLegendStateReact, React, toDist, useStyleSheet } from "../../../deps.ts";
-import { useAlertConnection } from "../../../shared/hooks/use-alert-connection.ts";
+import { useAlerts$ } from "../../../shared/hooks/use-alerts.ts";
 import styleSheet from "./page.scss.js";
 
 enableLegendStateReact();
@@ -9,7 +9,7 @@ enableLegendStateReact();
 function DoSomethingAdminPage() {
   useStyleSheet(styleSheet);
 
-  const { alerts$ } = useAlertConnection();
+  const alerts$ = useAlerts$();
 
   return (
     <div className="c-do-something-admin-page">
