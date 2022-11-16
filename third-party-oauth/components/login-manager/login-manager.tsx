@@ -1,4 +1,5 @@
 import {
+  CombinedError,
   gql,
   mutation,
   React,
@@ -8,8 +9,14 @@ import {
   useState,
   useStyleSheet,
 } from "../../deps.ts";
-import { DecodedAuth, MESSAGES, verifyJWT } from "../../shared/mod.ts";
-
+import {
+  closeSelf,
+  DecodedAuth,
+  postTruffleAccessTokenToNative,
+  postTruffleAccessTokenToOpener,
+  verifyJWT,
+} from "../../shared/mod.ts";
+import ErrorRenderer from "../error-renderer/error-renderer.tsx";
 import stylesheet from "./login-manager.scss.js";
 
 export const ME_QUERY = gql`
@@ -38,18 +45,32 @@ export default function LoginManager(
   },
 ) {
   useStyleSheet(stylesheet);
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<{ title: string; message: string }>();
 
   useEffect(() => {
     oAuthAccessToken && state && (async () => {
-      const truffleAccessToken = await truffleConnectionLogin(
-        oAuthAccessToken,
-        state,
-      );
+      let truffleAccessToken;
       try {
-        sendTruffleAccessTokenToOpener(truffleAccessToken);
+        truffleAccessToken = await truffleConnectionLogin(
+          oAuthAccessToken,
+          state,
+        );
       } catch (err) {
-        setError("Error logging in");
+        console.error("Error logging in via connection", err);
+        const parsedError = JSON.parse(err?.message || "{}");
+        setError({ title: parsedError?.title, message: parsedError?.message });
+        return;
+      }
+
+      try {
+        if (truffleAccessToken) {
+          sendTruffleAccessTokenToOpener(truffleAccessToken);
+        } else {
+          setError({ title: "Access error", message: "Missing access token" });
+        }
+      } catch (err) {
+        console.error("Error sending token to opener", err);
+        setError({ title: "Error", message: err ?? "Error logging in" });
       }
     })();
   }, [oAuthAccessToken, state]);
@@ -57,21 +78,46 @@ export default function LoginManager(
   return (
     <div className="c-login-manager">
       <div className="inner">
-        <div className="snuffle">
-          <object
-            data="https://cdn.bio/assets/images/landing/snuffle.svg?1"
-            type="image/svg+xml"
-          >
-            <img src="https://cdn.bio/assets/images/landing/snuffle.svg?1" />
-          </object>
-        </div>
-        {error && (
-          <div className="error">
-          </div>
-        )}
+        {error
+          ? <ErrorRenderer title={error.title} message={error.message} />
+          : (
+            <div className="snuffle">
+              <object
+                data="https://cdn.bio/assets/images/landing/snuffle.svg?1"
+                type="image/svg+xml"
+              >
+                <img src="https://cdn.bio/assets/images/landing/snuffle.svg?1" />
+              </object>
+            </div>
+          )}
       </div>
     </div>
   );
+}
+
+const USER_CONNECTION_AUTH_ERR_CODE_TO_ERR: Record<
+  number | string,
+  { title: string; message: string }
+> = {
+  403: {
+    title: "Access error",
+    message:
+      "You must grant Truffle access to read your YouTube account to continue.",
+  },
+  404: {
+    title: "Youtube account error",
+    message: "You'll need to create a Youtube channel to connect your account.",
+  },
+  undefined: {
+    title: "Access error",
+    message: "Unknown error",
+  },
+};
+
+function getUserConnectionLoginError({ error }: { error: CombinedError }) {
+  const code = error?.graphQLErrors?.[0]?.extensions?.code as number;
+
+  return USER_CONNECTION_AUTH_ERR_CODE_TO_ERR[code];
 }
 
 async function truffleConnectionLogin(
@@ -97,26 +143,21 @@ async function truffleConnectionLogin(
     connectionPrivateData: { accessToken: oAuthAccessToken },
   });
 
+  if (result?.error) {
+    console.error("connection login error", result?.error);
+    const error = getUserConnectionLoginError({ error: result?.error });
+    throw new Error(JSON.stringify(error));
+  }
+
   return result?.data?.userLoginConnection?.accessToken;
 }
 
-async function decodeState(state: string): Promise<DecodedAuth | null> {
+export async function decodeState(state: string): Promise<DecodedAuth | null> {
   return state ? await verifyJWT(state) : null;
 }
 
 function sendTruffleAccessTokenToOpener(truffleAccessToken) {
-  const payload = {
-    type: MESSAGES.SET_ACCESS_TOKEN,
-    truffleAccessToken,
-  };
-
-  // check if the oauth flow is being loaded in the ReactNative webview
-  if (window?.ReactNativeWebView) {
-    window.ReactNativeWebView?.postMessage(JSON.stringify(payload));
-  }
-
-  window.opener?.postMessage(JSON.stringify(payload), "*");
-  const self = window.self;
-  self.opener = window.self;
-  self.close();
+  postTruffleAccessTokenToNative(truffleAccessToken);
+  postTruffleAccessTokenToOpener(truffleAccessToken);
+  closeSelf();
 }

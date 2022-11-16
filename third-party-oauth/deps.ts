@@ -30,3 +30,4 @@ export { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format
 export { default as scss } from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
 export { default as globalContext } from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 export * as jose from "https://npm.tfl.dev/jose-browser-runtime";
+export { CombinedError } from "https://npm.tfl.dev/urql@2";
