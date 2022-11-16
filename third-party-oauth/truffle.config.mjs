@@ -6,7 +6,7 @@ export default {
   // staging
   // version: "0.0.30",
   // apiUrl: "https://mycelium.staging.bio/graphql",
-  // apiUrl: 'http://172.20.10.4:50420/graphql',
+  // apiUrl: 'http://localhost:50420/graphql',
   requestedPermissions: [],
   installActionRel: {},
 };
