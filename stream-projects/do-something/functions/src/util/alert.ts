@@ -10,6 +10,7 @@ interface DoSomethingAlertUpsertInput {
     user: User;
     collectible: Collectible;
   };
+  ttl: number;
 }
 
 const ALERT_UPSERT_MUTATION = gql`
@@ -33,9 +34,10 @@ export async function alertUpsert(
   orgId: string,
 ) {
   const resp =
-    (await graphqlReq(ALERT_UPSERT_MUTATION, { input }, { accessToken, orgId }).then((resp) =>
-      resp.json()
-    )) as GQLResponse<{ alertUpsert: { alert: Alert<Action> } }>;
+    (await graphqlReq(ALERT_UPSERT_MUTATION, { input }, { accessToken, orgId })
+      .then((resp) => resp.json())) as GQLResponse<
+        { alertUpsert: { alert: Alert<Action> } }
+      >;
 
   if (resp?.errors?.length > 0) {
     throw resp.errors;

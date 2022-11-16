@@ -72,7 +72,7 @@ serve(
       const user = await getUserById(userId, accessToken, orgId);
       const collectible = await getCollectibleByPath(collectiblePath, accessToken, orgId);
       alert = await alertUpsert(
-        { type: "do-something", data: { user, collectible } },
+        { type: "do-something", data: { user, collectible }, ttl: 0 },
         accessToken,
         orgId,
       );
