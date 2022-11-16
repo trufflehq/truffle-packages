@@ -31,16 +31,18 @@ export function getUsernameColor(str) {
   return colors[((hash % colors.length) + colors.length) % colors.length];
 }
 
-function getYoutubeAuthorName(data) {
+export function getYoutubeAuthorName(data) {
   return data?.authorName?.simpleText;
 }
 
-export const isYoutubeSourceType = (sourceType) =>
+export function isYoutubeSourceType(sourceType) {
   sourceType === "youtube" ||
-  sourceType === "youtubeLive" ||
-  sourceType === "youtubeVideo";
+    sourceType === "youtubeLive" ||
+    sourceType === "youtubeVideo";
+}
 
-export const getYoutubePageIdentifier = (pageInfoIdentifiers) =>
+export function getYoutubePageIdentifier(pageInfoIdentifiers) {
   pageInfoIdentifiers.find((identifier) =>
     isYoutubeSourceType(identifier.sourceType)
   );
+}

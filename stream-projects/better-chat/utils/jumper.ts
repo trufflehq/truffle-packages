@@ -1,7 +1,9 @@
+import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
+
 export const setChatBgColor = (messageId, bgColor) => {
   jumper.call("layout.applyLayoutConfigSteps", {
     layoutConfigSteps: [
-      { action: "querySelector", value: CHAT_FRAME_ID },
+      { action: "querySelector", value: "#chatframe" },
       { action: "getIframeDocument" },
       { action: "querySelector", value: `[data-truffle-id="${messageId}"]` },
       {
@@ -15,7 +17,7 @@ export const setChatBgColor = (messageId, bgColor) => {
 export const setChatNameColor = (messageId, nameColor) => {
   jumper.call("layout.applyLayoutConfigSteps", {
     layoutConfigSteps: [
-      { action: "querySelector", value: CHAT_FRAME_ID },
+      { action: "querySelector", value: "#chatframe" },
       { action: "getIframeDocument" },
       {
         action: "querySelector",
@@ -35,7 +37,7 @@ export const setChatNameColor = (messageId, nameColor) => {
 export const setChatUsernameGradient = (messageId, gradient) => {
   jumper.call("layout.applyLayoutConfigSteps", {
     layoutConfigSteps: [
-      { action: "querySelector", value: CHAT_FRAME_ID },
+      { action: "querySelector", value: "#chatframe" },
       { action: "getIframeDocument" },
       {
         action: "querySelector",

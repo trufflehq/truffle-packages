@@ -1,20 +1,22 @@
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
+import { GLOBAL_JUMPER_MESSAGES } from "https://tfl.dev/@truffle/utils@~0.0.22/embed/mod.ts";
 
 import {
   setChatBgColor,
   setChatNameColor,
   setChatUsernameGradient,
 } from "./jumper.ts";
+import {
+  getUsernameColor,
+  getYoutubeAuthorName,
+  getYoutubePageIdentifier,
+} from "./helpers.ts";
+import { getMeOrgUser } from "./org-user.ts";
 
 const PUBLIC_CACHE_BASE_URL = "https://v2.truffle.vip/gateway/users/v2/c";
 // const PUBLIC_CACHE_BASE_URL = 'https://truffle-tv-staging.truffle-tv.workers.dev/gateway/users/v2/c'
 // const PUBLIC_CACHE_BASE_URL = 'http://localhost:3000/gateway/users/v2/c'
 
-const CHAT_FRAME_ID = "#chatframe";
-
-const MESSAGE = {
-  INVALIDATE_USER: "user.invalidate",
-};
 function getYoutubeChannelActiveChattersByChannelId(channelId) {
   return fetch(`${PUBLIC_CACHE_BASE_URL}/${channelId}`);
 }
@@ -22,54 +24,53 @@ function getYoutubeChannelActiveChattersByChannelId(channelId) {
 // user should be logged in via cookie from the creator site domain (eg new.ludwig.social)
 // but if/when they login via yotuube oauth button, we need to invalidate and login via cookie again
 jumper.call("comms.onMessage", (message: string) => {
-  if (message === GLOBAL_JUMPER_MESSAGES.INVALIDATE_USER) {
-    // invalidateYoutubeConnectionFn();
-    refetchOrgUserConnections({ requestPolicy: "network-only" });
-  } else if (message === GLOBAL_JUMPER_MESSAGES.ACCESS_TOKEN_UPDATED) {
-    // reset the api client w/ the updated user and refetch user/channel points info
-    _clearCache();
-    refetchOrgUserConnections({ requestPolicy: "network-only" });
-    reexecuteChannelPointsQuery({ requestPolicy: "network-only" });
+  const shouldUpdateOrgUser = [
+    GLOBAL_JUMPER_MESSAGES.ACCESS_TOKEN_UPDATED,
+    GLOBAL_JUMPER_MESSAGES.INVALIDATE_USER,
+  ].includes(message);
+  if (shouldUpdateOrgUser) {
+    setOrgUser();
   }
 });
+
+let orgUser;
+const setOrgUser = async () => {
+  orgUser = await getMeOrgUser();
+};
+await setOrgUser();
 
 const extensionContext = await jumper.call("context.getInfo");
 const youtubePageIdentifier = getYoutubePageIdentifier(
   extensionContext?.pageInfo,
 );
 
-let activeChatters, activeChattersMap;
+// update active chatters every 5 seconds
+let activeChatters;
 const setActiveChatters = async () => {
-  activeChatters = await getYoutubeChannelActiveChattersByChannelId(
-    youtubePageIdentifier.sourceId,
+  activeChattersMap = new Map(
+    await getYoutubeChannelActiveChattersByChannelId(
+      youtubePageIdentifier.sourceId,
+    ),
   );
-  activeChattersMap = new Map(activeChatters);
 };
 setActiveChatters();
 setInterval(setActiveChatters, 5000);
 
-const orgUserActivePowerups =
-  ytConnection?.orgUser?.activePowerupConnection?.nodes || [];
-const orgUserKeyValuesObs = ytConnection?.orgUser?.keyValueConnection?.nodes ||
-  [];
-
 const onEmit = (matches) => {
-  matches.forEach(({ id, data, innerText, styles }) => {
+  matches.forEach(({ id, data }) => {
     const authorExternalChannelId = data?.authorExternalChannelId;
     const userInfo = activeChatters &&
       activeChatters.get(authorExternalChannelId);
-    const isMe = authorExternalChannelId === mogulTvUser?.sub;
+    const isMe = authorExternalChannelId === orgUser.connection.sourceId;
     let color, gradient, nameColor;
     if (isMe) {
-      color = orgUserActivePowerups?.find((activePowerup) =>
+      color = orgUser.activePowerupConnection.nodes?.find((activePowerup) =>
         activePowerup?.powerup?.slug === "chat-highlight-message"
       )?.data?.rgba;
-      gradient = orgUserActivePowerups?.find((activePowerup) =>
+      gradient = orgUser.activePowerupConnection.nodes?.find((activePowerup) =>
         activePowerup?.powerup?.slug === "chat-gradient-username"
       )?.data?.value;
-      nameColor = orgUserKeyValues?.find((kv) =>
-        kv?.key === "nameColor"
-      )?.value || userInfo?.c;
+      nameColor = orgUser.keyValue.value || userInfo?.c;
     } else if (userInfo) {
       color = userInfo?.g;
       gradient = userInfo?.h;
@@ -89,7 +90,7 @@ const onEmit = (matches) => {
 
 jumper.call("layout.listenForElements", {
   listenElementLayoutConfigSteps: [
-    { action: "querySelector", value: CHAT_FRAME_ID },
+    { action: "querySelector", value: "#chat" },
     { action: "getIframeDocument" },
     { action: "querySelector", value: "#item-scroller #items" },
   ],
