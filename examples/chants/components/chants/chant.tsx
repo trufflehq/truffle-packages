@@ -19,7 +19,7 @@ import { MatchedMessage, Run } from "./types.ts";
 const DEFAULT_SHOW_PILL_COUNT = 5;
 const DEFAULT_SHOW_HEADER_BG_COUNT = 10;
 const parseChant = (message: MatchedMessage): null | Required<Run> => {
-  const runs = message.data.message.runs;
+  const runs = message.data.message?.runs || [];
   // `runs` has the type `[ { emoji: [Object] }, { text: '' } ]`
   // we want to ensure that one of the objects has a `text` property
   const textRun = runs.find((run) => typeof run.text === "string");
