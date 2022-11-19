@@ -76,9 +76,9 @@ interface YoutubeMessageData {
 }
 
 interface YoutubeEmote {
-  id: string
-  type: 'emoji'
-  value: string
+  id: string;
+  type: "emoji";
+  value: string;
 }
 
 interface YoutubeUser {
@@ -95,17 +95,21 @@ interface YoutubeBadge {
 
 interface NormalizedYoutubeChatMessage extends YouTubeChatMessage {
   html: string;
+  authorName: string;
+  badges: Badge[];
+  authorNameColor: string;
   connection: {
     id: string;
-    orgUser: OrgUserWithChatInfo & {
-      truffleBadges: TruffleBadge[];
-    };
+    orgUser: OrgUserWithChatInfo;
   };
 }
 
-interface TruffleBadge {
-  name: string;
-  src: string;
+interface NormalizedChatMessage {
+  id: string | number;
+  html: string;
+  authorName: string;
+  authorNameColor: string;
+  badges: Badge[];
 }
 
 interface TruffleYouTubeChatMessage extends YouTubeChatMessage {
@@ -185,19 +189,11 @@ const getUserNameColorByName = (name: string) => {
   ];
 };
 
-export function getUsernameColorByMessage(message: NormalizedYoutubeChatMessage) {
-  const orgUserNameColor = getOrgUserNameColor(message.connection.orgUser);
+export function getUsernameColorByMessage(message: TruffleYouTubeChatMessage) {
+  const orgUserNameColor = getOrgUserNameColor(message?.connection?.orgUser);
   const youtubeAuthorName = message.data?.author?.name;
 
   return orgUserNameColor ?? getUserNameColorByName(youtubeAuthorName);
-}
-
-const getOrgUserName = (orgUser: OrgUserWithChatInfo) => orgUser?.name;
-
-export function getAuthorNameByMessage(message: NormalizedYoutubeChatMessage) {
-  const youtubeAuthorName = message.data?.author?.name;
-
-  return getOrgUserName(message.connection.orgUser) ?? youtubeAuthorName;
 }
 
 const TRUFFLE_BADGE_FRAGMENT = gql`
@@ -262,11 +258,11 @@ function getBadgeImgSrc(badge: string | "MODERATOR" | "OWNER") {
     ? "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1"
     : badge === "OWNER"
     ? "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/1"
-    : badge === 'VERIFIED'
+    : badge === "VERIFIED"
     ? "https://cdn.bio/assets/images/features/browser_extension/yt_check_white.svg"
     : badge;
 
-    return badgeSrc;
+  return badgeSrc;
 }
 
 export enum EmoteProvider {
@@ -312,10 +308,9 @@ function getEmoteUrl(emote: Emote) {
     return `https://cdn.bio/ugc/collectible/${emote.id}.tiny.${emote.ext}`;
   } else if (emote.provider === EmoteProvider.Custom) {
     return `https://v2.truffle.vip/emotes/${emote.id}`;
-  } else if(emote.provider === EmoteProvider.Youtube) {
-    return emote.src
-  }
-   else {
+  } else if (emote.provider === EmoteProvider.Youtube) {
+    return emote.src;
+  } else {
     return undefined;
   }
 }
@@ -343,11 +338,13 @@ function formatMessageHtmlStr({ text, emoteMap }: { text: string; emoteMap: Map<
       const tooltip = `
       <div>${emote.name}</div>
       <div>${EMOTE_PROVIDER_NAME[emote.provider]}</div>
-      `
+      `;
 
       msg += `
       <div class="truffle-tooltip-wrapper truffle-emote">
-        <img class="truffle-emote chat-line__message--emote truffle-emote-image" src="${getEmoteUrl(emote)}" />
+        <img class="truffle-emote chat-line__message--emote truffle-emote-image" src="${
+        getEmoteUrl(emote)
+      }" />
         <div class="truffle-tooltip truffle-tooltip--up truffle-tooltip--align-center">${tooltip}</div>
       </div>
       `;
@@ -359,33 +356,48 @@ function formatMessageHtmlStr({ text, emoteMap }: { text: string; emoteMap: Map<
   return msg;
 }
 
-function getBadgesByActivePowerups(activePowerupConnection?: ActivePowerupConnection) {
-  return activePowerupConnection?.nodes
-    ?.map((activePowerup) => ({
-      name: activePowerup.powerup.slug,
-      src: activePowerup?.powerup?.componentRels?.[0]?.props?.imageSrc
-    }))
-    .filter(({ src }) => src !== undefined)
-
-}
-
 function normalizeYoutubeEmote(emote: YoutubeEmote) {
   return {
     provider: EmoteProvider.Youtube,
     id: emote.id,
     name: emote.id,
-    src: emote.value
+    src: emote.value,
   };
+}
+
+type Badge = {
+  src: string;
+  tooltip: string;
+};
+
+function getBadgesByActivePowerups(activePowerupConnection?: ActivePowerupConnection) {
+  return activePowerupConnection?.nodes
+    ?.map((activePowerup) => ({
+      name: activePowerup.powerup.slug,
+      src: activePowerup?.powerup?.componentRels?.[0]?.props?.imageSrc,
+    }))
+    .filter(({ src }) => src !== undefined) ?? [];
+}
+
+function getYoutubeBadgesByMessage(message: TruffleYouTubeChatMessage): Badge[] {
+  return message.data?.author.badges.map((badge) => ({
+    src: badge.badge,
+    tooltip: badge.tooltip,
+  }));
+}
+
+const getOrgUserName = (orgUser: OrgUserWithChatInfo) => orgUser?.name;
+
+export function getAuthorNameByMessage(message: TruffleYouTubeChatMessage) {
+  const youtubeAuthorName = message.data?.author?.name;
+
+  return getOrgUserName(message?.connection?.orgUser) ?? youtubeAuthorName;
 }
 
 function normalizeTruffleYoutubeChatMessage(
   message: TruffleYouTubeChatMessage,
   emoteMap: Map<string, Emote>,
 ) {
-  const truffleBadges = getBadgesByActivePowerups(
-    message?.connection?.orgUser?.activePowerupConnection,
-  );
-
   if (message?.connection?.orgUser?.activePowerupConnection) {
     delete message.connection.orgUser.activePowerupConnection;
   }
@@ -395,14 +407,14 @@ function normalizeTruffleYoutubeChatMessage(
   return {
     ...message,
     html: formatMessageHtmlStr({ text: message.data.message, emoteMap }),
-    connection: {
-      ...message?.connection,
-      orgUser: {
-        ...message?.connection?.orgUser,
-        truffleBadges,
-      },
-    },
-  } as NormalizedYoutubeChatMessage;
+    badges: [
+      ...(getBadgesByActivePowerups(message?.connection?.orgUser?.activePowerupConnection) ?? []),
+      ...(getYoutubeBadgesByMessage(message) ?? []),
+    ],
+    authorName: getAuthorNameByMessage(message),
+    authorNameColor: getUsernameColorByMessage(message),
+    connection: message.connection,
+  } as NormalizedChatMessage;
 }
 
 async function fetchTruffleEmotesByChannelId(channelId?: string | null) {
@@ -419,20 +431,14 @@ async function getTruffleChatEmoteMapByChannelId(channelId?: string | null) {
   const emotes = await fetchTruffleEmotesByChannelId(channelId);
 
   for (const emote of emotes) {
-    const url = getEmoteUrl(emote);
-    // if (url) {
-    //   emoteMap.set(emote.name, url);
-    // }
     emoteMap.set(emote.name, emote);
   }
 
   return emoteMap;
 }
 
-const messages$ = observable<NormalizedYoutubeChatMessage[]>([]);
-
 function isMessageDupe(
-  existingMessages: NormalizedYoutubeChatMessage[],
+  existingMessages: NormalizedChatMessage[],
   newMessage: TruffleYouTubeChatMessage | undefined,
 ) {
   const messageIdSet = new Set(existingMessages.map((message) => message.id));
@@ -441,6 +447,8 @@ function isMessageDupe(
 }
 
 function useMessageAddedSubscription() {
+  const messages$ = useObservable<NormalizedChatMessage[]>([]);
+
   const extensionInfo$ = useObservable(jumper.call("context.getInfo"));
 
   const channelId$ = useComputed(() => {
@@ -506,11 +514,15 @@ function useMessageAddedSubscription() {
       );
     }
   });
+
+  return { messages$ };
 }
 
 export default function YoutubeChat() {
   useStyleSheet(styleSheet);
-  useMessageAddedSubscription();
+  const renderCount = ++useRef(0).current;
+
+  const { messages$ } = useMessageAddedSubscription();
 
   const handleScroll = (e) => {
     const scrollTop = e.target.scrollTop;
@@ -531,11 +543,11 @@ export default function YoutubeChat() {
         className="status"
         onClick={() => window.open("https://truffle.vip/extension", "_blank")}
       >
-        Update Truffle to 3.3.10 for a better chat experience
+        Update Truffle to 3.3.10 for a better chat experience {renderCount}
       </div>
       <div className="messages">
         <div className="inner" onScroll={handleScroll}>
-          <For<NormalizedYoutubeChatMessage, {}>
+          <For<NormalizedChatMessage, {}>
             each={messages$}
             item={ChatMessage}
             optimized
@@ -547,54 +559,45 @@ export default function YoutubeChat() {
 }
 
 function ChatMessage(
-  { item }: { item: ObservableObject<NormalizedYoutubeChatMessage> },
+  { item }: { item: ObservableObject<NormalizedChatMessage> },
 ) {
-  return <MemoizedTextMessage message={item.peek()} />;
+  return (
+    <MemoizedTextMessage
+      id={item.id.peek()}
+      html={item.html.peek()}
+      badges={item.badges.peek()}
+      authorName={item.authorName.peek()}
+      authorNameColor={item.authorNameColor.peek()}
+    />
+  );
 }
 
 const MemoizedTextMessage = React.memo(TextMessage, (prev, next) => {
-  return prev.message.id === next.message.id;
+  return prev.id === next.id;
 });
 
-function getTruffleBadgesByMessage(message: NormalizedYoutubeChatMessage) {
-  const badges = message.connection?.orgUser?.truffleBadges?.map((badge) => badge)
-    .slice(0, NUM_TRUFFLE_BADGES) ?? [];
-
-  if (!badges.length) {
-    return;
-  }
-  return badges.map((badge) => <Badge src={badge.src} tooltip={badge.name} />);
-}
-
-function Badge({ src, tooltip }: { src: string; tooltip: string }) {
-
-  return <div className="truffle-tooltip-wrapper">
-  <img className="truffle-emote chat-line__message--emote truffle-emote-image badge" src={getBadgeImgSrc(src)} />
-  <div className="truffle-tooltip truffle-tooltip--up truffle-tooltip--align-left">{tooltip}</div>
-</div>
-}
-
-function getYoutubeBadgesByMessage(message: NormalizedYoutubeChatMessage) {
-  return message.data?.author.badges.map((badge) => <Badge src={badge.badge} tooltip={badge.tooltip} />)
-}
-
 function TextMessage(
-  { message }: { message: NormalizedYoutubeChatMessage },
+  { id, html, authorName, authorNameColor, badges }: {
+    id: string | number; // used for memoization
+    html: string;
+    authorName: string;
+    authorNameColor?: string;
+    badges?: Badge[];
+  },
 ) {
   return (
-    <div className="message">
+    <div key={id} className="message">
       <span className="author">
         <span className="badges">
-          {getYoutubeBadgesByMessage(message)}
-          {getTruffleBadgesByMessage(message)}
+          {badges?.map((badge) => <Badge src={badge.src} tooltip={badge.tooltip} />)}
         </span>
         <span
           className="name"
           style={{
-            color: getUsernameColorByMessage(message),
+            color: authorNameColor,
           }}
         >
-          {getAuthorNameByMessage(message)}
+          {authorName}
           <span className="separator">
             :
           </span>
@@ -603,10 +606,24 @@ function TextMessage(
       <span
         className="message-text"
         dangerouslySetInnerHTML={{
-          __html: message?.html,
+          __html: html,
         }}
       >
       </span>
+    </div>
+  );
+}
+
+function Badge({ src, tooltip }: { src: string; tooltip: string }) {
+  return (
+    <div className="truffle-tooltip-wrapper">
+      <img
+        className="truffle-emote chat-line__message--emote truffle-emote-image badge"
+        src={getBadgeImgSrc(src)}
+      />
+      <div className="truffle-tooltip truffle-tooltip--up truffle-tooltip--align-left">
+        {tooltip}
+      </div>
     </div>
   );
 }
