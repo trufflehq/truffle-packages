@@ -131,8 +131,6 @@ export default scss`
 }
 
 
-
-
 .truffle-tooltip-wrapper {
   display: inline-block;
   position: relative;
@@ -170,18 +168,10 @@ export default scss`
     &.truffle-tooltip--align-center {
       left: 50%;
       transform: translateX(-50%);
-
-      &:after {
-        left: 50%;
-        margin-left: -3px;
-      }
     }
 
-    &:after {
-      border-radius: 1px;
-      top: 100%;
-      left: 6px;
-      margin-top: -3px;
+    &.truffle-tooltip--align-left {
+      left: -3%;
     }
   }
 

@@ -69,9 +69,16 @@ interface YouTubeChatMessage {
 interface YoutubeMessageData {
   id: string;
   message: string;
+  emotes: YoutubeEmote[];
   type: YoutubeChatMessageType;
   unix: number;
   author: YoutubeUser;
+}
+
+interface YoutubeEmote {
+  id: string
+  type: 'emoji'
+  value: string
 }
 
 interface YoutubeUser {
@@ -255,14 +262,11 @@ function getBadgeImgSrc(badge: string | "MODERATOR" | "OWNER") {
     ? "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1"
     : badge === "OWNER"
     ? "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/1"
+    : badge === 'VERIFIED'
+    ? "https://cdn.bio/assets/images/features/browser_extension/yt_check_white.svg"
     : badge;
 
     return badgeSrc;
-
-  // return URL_REGEX.test(badgeSrc) ? 
-
-  // <img className="badge" src={badgeSrc} /> 
-  // : undefined;
 }
 
 export enum EmoteProvider {
@@ -272,6 +276,7 @@ export enum EmoteProvider {
   Custom,
   Spore,
   SevenTV,
+  Youtube,
 }
 
 const EMOTE_PROVIDER_NAME: Record<EmoteProvider, string> = {
@@ -281,6 +286,7 @@ const EMOTE_PROVIDER_NAME: Record<EmoteProvider, string> = {
   [EmoteProvider.Custom]: "Global",
   [EmoteProvider.Spore]: "Truffle",
   [EmoteProvider.SevenTV]: "7TV",
+  [EmoteProvider.Youtube]: "YouTube",
 };
 
 export type Emote = {
@@ -290,6 +296,7 @@ export type Emote = {
   ext?: string;
   bitIndex?: number;
   channelId?: string;
+  src?: string;
 };
 
 function getEmoteUrl(emote: Emote) {
@@ -305,7 +312,10 @@ function getEmoteUrl(emote: Emote) {
     return `https://cdn.bio/ugc/collectible/${emote.id}.tiny.${emote.ext}`;
   } else if (emote.provider === EmoteProvider.Custom) {
     return `https://v2.truffle.vip/emotes/${emote.id}`;
-  } else {
+  } else if(emote.provider === EmoteProvider.Youtube) {
+    return emote.src
+  }
+   else {
     return undefined;
   }
 }
@@ -359,6 +369,15 @@ function getBadgesByActivePowerups(activePowerupConnection?: ActivePowerupConnec
 
 }
 
+function normalizeYoutubeEmote(emote: YoutubeEmote) {
+  return {
+    provider: EmoteProvider.Youtube,
+    id: emote.id,
+    name: emote.id,
+    src: emote.value
+  };
+}
+
 function normalizeTruffleYoutubeChatMessage(
   message: TruffleYouTubeChatMessage,
   emoteMap: Map<string, Emote>,
@@ -370,6 +389,8 @@ function normalizeTruffleYoutubeChatMessage(
   if (message?.connection?.orgUser?.activePowerupConnection) {
     delete message.connection.orgUser.activePowerupConnection;
   }
+
+  message?.data?.emotes?.forEach((emote) => emoteMap.set(emote.id, normalizeYoutubeEmote(emote)));
 
   return {
     ...message,
@@ -528,10 +549,10 @@ export default function YoutubeChat() {
 function ChatMessage(
   { item }: { item: ObservableObject<NormalizedYoutubeChatMessage> },
 ) {
-  return <MemoizedMessage message={item.peek()} />;
+  return <MemoizedTextMessage message={item.peek()} />;
 }
 
-const MemoizedMessage = React.memo(Message, (prev, next) => {
+const MemoizedTextMessage = React.memo(TextMessage, (prev, next) => {
   return prev.message.id === next.message.id;
 });
 
@@ -542,17 +563,14 @@ function getTruffleBadgesByMessage(message: NormalizedYoutubeChatMessage) {
   if (!badges.length) {
     return;
   }
-  // return badge.map((badgeSrc) => getBadgeImg(badgeSrc));
   return badges.map((badge) => <Badge src={badge.src} tooltip={badge.name} />);
 }
 
 function Badge({ src, tooltip }: { src: string; tooltip: string }) {
 
-  return <div className="truffle-tooltip-wrapper truffle-emote">
+  return <div className="truffle-tooltip-wrapper">
   <img className="truffle-emote chat-line__message--emote truffle-emote-image badge" src={getBadgeImgSrc(src)} />
-  {/* {getBadgeImg(src)} */}
-
-  <div className="truffle-tooltip truffle-tooltip--up truffle-tooltip--align-center">${tooltip}</div>
+  <div className="truffle-tooltip truffle-tooltip--up truffle-tooltip--align-left">{tooltip}</div>
 </div>
 }
 
@@ -560,7 +578,7 @@ function getYoutubeBadgesByMessage(message: NormalizedYoutubeChatMessage) {
   return message.data?.author.badges.map((badge) => <Badge src={badge.badge} tooltip={badge.tooltip} />)
 }
 
-function Message(
+function TextMessage(
   { message }: { message: NormalizedYoutubeChatMessage },
 ) {
   return (
