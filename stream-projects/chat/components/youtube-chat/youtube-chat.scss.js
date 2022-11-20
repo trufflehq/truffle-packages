@@ -96,7 +96,7 @@ export default scss`
           .truffle-emote {
             width: auto !important;
             height: 28px;
-            margin: -1px 2px 1px;
+            // margin: -1px 2px 1px;
             vertical-align: middle;
           }
         }

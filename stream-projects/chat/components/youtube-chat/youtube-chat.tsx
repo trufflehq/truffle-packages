@@ -3,6 +3,7 @@ import {
   // ExtensionInfo,
   getClient as _getClient,
   gql,
+  renderToString,
   // extension
   jumper,
   PageIdentifier,
@@ -42,6 +43,7 @@ import {
   observable,
   ObservableComputed,
   ObservableObject,
+  opaqueObject
 } from "https://npm.tfl.dev/@legendapp/state@~0.21.0";
 
 import ThemeComponent from "../theme-component/theme-component.tsx";
@@ -93,20 +95,10 @@ interface YoutubeBadge {
   type: string; // this is the type of badge
 }
 
-interface NormalizedYoutubeChatMessage extends YouTubeChatMessage {
-  html: string;
-  authorName: string;
-  badges: Badge[];
-  authorNameColor: string;
-  connection: {
-    id: string;
-    orgUser: OrgUserWithChatInfo;
-  };
-}
-
 interface NormalizedChatMessage {
   id: string | number;
-  html: string;
+  richMessageText: React.ReactNode; // string of text
+  text: string;
   authorName: string;
   authorNameColor: string;
   badges: Badge[];
@@ -251,8 +243,6 @@ subscription YouTubeChatMessages($channelId: String) {
 ${ORG_USER_CHAT_INFO_FIELDS}
 `;
 
-const URL_REGEX = /^(http|https):\/\/*/;
-
 function getBadgeImgSrc(badge: string | "MODERATOR" | "OWNER") {
   const badgeSrc = badge === "MODERATOR"
     ? "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1"
@@ -315,46 +305,7 @@ function getEmoteUrl(emote: Emote) {
   }
 }
 
-const splitPattern = /[\s.,?!]/;
-function splitWords(string: string): string[] {
-  const result: string[] = [];
-  let startOfMatch = 0;
-  for (let i = 0; i < string.length - 1; i++) {
-    if (splitPattern.test(string[i]) !== splitPattern.test(string[i + 1])) {
-      result.push(string.substring(startOfMatch, i + 1));
-      startOfMatch = i + 1;
-    }
-  }
-  result.push(string.substring(startOfMatch));
-  return result;
-}
 
-function formatMessageHtmlStr({ text, emoteMap }: { text: string; emoteMap: Map<string, Emote> }) {
-  const words = splitWords(text);
-  let msg = "";
-  for (const word of words) {
-    const emote = emoteMap?.get(word);
-    if (emote) {
-      const tooltip = `
-      <div>${emote.name}</div>
-      <div>${EMOTE_PROVIDER_NAME[emote.provider]}</div>
-      `;
-
-      msg += `
-      <div class="truffle-tooltip-wrapper truffle-emote">
-        <img class="truffle-emote chat-line__message--emote truffle-emote-image" src="${
-        getEmoteUrl(emote)
-      }" />
-        <div class="truffle-tooltip truffle-tooltip--up truffle-tooltip--align-center">${tooltip}</div>
-      </div>
-      `;
-    } else {
-      msg += word;
-    }
-  }
-
-  return msg;
-}
 
 function normalizeYoutubeEmote(emote: YoutubeEmote) {
   return {
@@ -370,7 +321,7 @@ type Badge = {
   tooltip: string;
 };
 
-function getBadgesByActivePowerups(activePowerupConnection?: ActivePowerupConnection) {
+function getTruffleBadgesByActivePowerups(activePowerupConnection?: ActivePowerupConnection) {
   return activePowerupConnection?.nodes
     ?.map((activePowerup) => ({
       name: activePowerup.powerup.slug,
@@ -402,13 +353,17 @@ function normalizeTruffleYoutubeChatMessage(
     delete message.connection.orgUser.activePowerupConnection;
   }
 
+  // apend youtube badges to truffle badges
   message?.data?.emotes?.forEach((emote) => emoteMap.set(emote.id, normalizeYoutubeEmote(emote)));
 
   return {
     ...message,
-    html: formatMessageHtmlStr({ text: message.data.message, emoteMap }),
+    // wrap with opaqueObject so legend doesn't track any changes in the react node
+    // https://github.com/LegendApp/legend-state/issues/6
+    richMessageText: opaqueObject(<RichMessageText text={message.data.message} emoteMap={emoteMap} />),
+    text: message.data.message,
     badges: [
-      ...(getBadgesByActivePowerups(message?.connection?.orgUser?.activePowerupConnection) ?? []),
+      ...(getTruffleBadgesByActivePowerups(message?.connection?.orgUser?.activePowerupConnection) ?? []).slice(0, NUM_TRUFFLE_BADGES),
       ...(getYoutubeBadgesByMessage(message) ?? []),
     ],
     authorName: getAuthorNameByMessage(message),
@@ -437,7 +392,7 @@ async function getTruffleChatEmoteMapByChannelId(channelId?: string | null) {
   return emoteMap;
 }
 
-function isMessageDupe(
+function isDupeYoutubeMessage(
   existingMessages: NormalizedChatMessage[],
   newMessage: TruffleYouTubeChatMessage | undefined,
 ) {
@@ -453,24 +408,21 @@ function useMessageAddedSubscription() {
 
   const channelId$ = useComputed(() => {
     const extensionInfo = extensionInfo$.get();
-    console.log("EXTENSION INFO", extensionInfo);
-
-    // jumper.call("platform.log", `extensionInfo compute ${JSON.stringify(extensionInfo)}`);
-    console.log("PAGE INFO", extensionInfo?.pageInfo);
     const channelId = getChannelId(extensionInfo?.pageInfo);
 
+    console.log("EXTENSION INFO", extensionInfo);
+    console.log("PAGE INFO", extensionInfo?.pageInfo);
+    
     console.log("CHANNELID", channelId);
-    // jumper.call("platform.log", `extensionInfo compute channelId ${channelId}`);
+
     // return "UCGwu0nbY2wSkW8N-cghnLpA"; // jaiden
     return "UCrPseYLGpNygVi34QpGNqpA"; // lud
     // return "UCXBE_QQSZueB8082ml5fslg"; // tim
     // return "UCZaVG6KWBuquVXt63G6xopg"; // riley
     // return "UCvQczq3aHiHRBGEx-BKdrcg"; // myth
     // return "UCG6zBb8GZKo1XZW4eHdg-0Q"; // pcrow
-    // return "UCNF0LEQ2abMr0PAX3cfkAMg";
+    // return "UCNF0LEQ2abMr0PAX3cfkAMg"; // lupo
     return channelId;
-    // return channelId ?? "UCNF0LEQ2abMr0PAX3cfkAMg";
-    // return "UCNF0LEQ2abMr0PAX3cfkAMg";
   });
 
   const emoteMap$ = useComputed(() => {
@@ -490,7 +442,7 @@ function useMessageAddedSubscription() {
           const newMessage = response.data?.youtubeChatMessageAdded;
           if (newMessage) {
             messages$.set((prev) => {
-              if (newMessage?.id && isMessageDupe(prev, newMessage)) {
+              if (newMessage?.id && isDupeYoutubeMessage(prev, newMessage)) {
                 return prev;
               }
 
@@ -515,7 +467,7 @@ function useMessageAddedSubscription() {
     }
   });
 
-  return { messages$ };
+  return { messages$, emoteMap$ };
 }
 
 export default function YoutubeChat() {
@@ -558,13 +510,20 @@ export default function YoutubeChat() {
   );
 }
 
+// need to split out the message type as well so we can render different types of messages
+
+// there's some complexity around merging yt message emotes with truffle/3rd party emotes
+// since they get sent w/ each message vs. being fetched globally from the server
+// we can either render each message to html and then parse it back into a react element
+// or we can pass in a function that returns a react element?
+
 function ChatMessage(
   { item }: { item: ObservableObject<NormalizedChatMessage> },
 ) {
   return (
     <MemoizedTextMessage
       id={item.id.peek()}
-      html={item.html.peek()}
+      richMessageText={item.richMessageText?.peek()}
       badges={item.badges.peek()}
       authorName={item.authorName.peek()}
       authorNameColor={item.authorNameColor.peek()}
@@ -577,9 +536,9 @@ const MemoizedTextMessage = React.memo(TextMessage, (prev, next) => {
 });
 
 function TextMessage(
-  { id, html, authorName, authorNameColor, badges }: {
+  { id, richMessageText, authorName, authorNameColor, badges }: {
     id: string | number; // used for memoization
-    html: string;
+    richMessageText: React.ReactNode; // string of text
     authorName: string;
     authorNameColor?: string;
     badges?: Badge[];
@@ -603,15 +562,43 @@ function TextMessage(
           </span>
         </span>
       </span>
-      <span
-        className="message-text"
-        dangerouslySetInnerHTML={{
-          __html: html,
-        }}
-      >
-      </span>
+      {
+        richMessageText
+      }
     </div>
   );
+}
+
+
+const splitPattern = /[\s.,?!]/;
+function splitWords(string: string): string[] {
+  const result: string[] = [];
+  let startOfMatch = 0;
+  for (let i = 0; i < string.length - 1; i++) {
+    if (splitPattern.test(string[i]) !== splitPattern.test(string[i + 1])) {
+      result.push(string.substring(startOfMatch, i + 1));
+      startOfMatch = i + 1;
+    }
+  }
+  result.push(string.substring(startOfMatch));
+  return result;
+}
+
+function RichMessageText({ text, emoteMap }: { text: string; emoteMap: Map<string, Emote> }) {
+  const words = splitWords(text);
+  let msg = "";
+  for (const word of words) {
+    const emote = emoteMap?.get(word);
+    if (emote) {
+      msg += renderToString(<Emote emote={emote} />);
+    } else {
+      msg += word;
+    }
+  }
+
+  return <span className="message-text" dangerouslySetInnerHTML={{
+    __html: msg
+  }} />
 }
 
 function Badge({ src, tooltip }: { src: string; tooltip: string }) {
@@ -627,3 +614,21 @@ function Badge({ src, tooltip }: { src: string; tooltip: string }) {
     </div>
   );
 }
+
+function EmoteToolTip({ emote }: { emote: Emote }) {
+  return <div className="c-emote-tool-tip">
+    <div>{emote.name}</div>
+    <div>{EMOTE_PROVIDER_NAME[emote.provider]}</div>
+  </div>
+}
+
+function Emote({ emote }: { emote: Emote }) {
+  return  <div className="truffle-tooltip-wrapper truffle-emote">
+  <img className="truffle-emote chat-line__message--emote truffle-emote-image" src={getEmoteUrl(emote)} />
+  <div className="truffle-tooltip truffle-tooltip--up truffle-tooltip--align-center">
+    <EmoteToolTip emote={emote} />
+  </div>
+</div>
+}
+
+// function TooltipWrapper

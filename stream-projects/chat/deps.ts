@@ -34,6 +34,7 @@ export {
   useRef,
   useState,
 } from "https://npm.tfl.dev/react";
+export { renderToString } from "https://npm.tfl.dev/react-dom/server";
 export { default as semver } from "https://npm.tfl.dev/semver@7.3.7";
 export { default as useObservables } from "https://tfl.dev/@truffle/utils@~0.0.17/obs/use-observables-react.ts";
 export { default as scss } from "https://tfl.dev/@truffle/utils@~0.0.17/css/css.ts";
