@@ -95,23 +95,7 @@ export {
 export * as ProgressPrimitive from "https://npm.tfl.dev/@radix-ui/react-progress";
 export * as LabelPrimitive from "https://npm.tfl.dev/@radix-ui/react-label";
 export * as RadioGroup from "https://npm.tfl.dev/@radix-ui/react-radio-group";
-export {
-  Computed,
-  enableLegendStateReact,
-  For,
-  Memo,
-  observer,
-  useComputed,
-  useObserve,
-  useSelector,
-} from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
-export type {
-  Observable,
-  ObservableComputed,
-  ObservableObject,
-  ObservablePrimitiveChild,
-} from "https://npm.tfl.dev/@legendapp/state@~0.19.0";
-export { legend } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react-components";
+
 export {
   signal,
   updateSignalOnChange,
@@ -126,3 +110,22 @@ export type { TruffleQuerySignal } from "https://tfl.dev/@truffle/state@~0.0.6/m
 export type { Client, CombinedError, OperationContext } from "https://npm.tfl.dev/urql@2";
 export { previewSrc as getPreviewSrc } from "https://tfl.dev/@truffle/raid@~0.0.4/shared/util/stream-plat.ts";
 export { pipe, subscribe } from "https://npm.tfl.dev/wonka@4.0.15";
+
+export {
+  Computed,
+  For,
+  Memo,
+  observer,
+  Switch,
+  useComputed,
+  useObservable,
+  useObserve,
+  useSelector,
+} from "https://npm.tfl.dev/@legendapp/state@~0.21.0/react";
+
+export { observable, opaqueObject } from "https://npm.tfl.dev/@legendapp/state@~0.21.0";
+export type {
+  Observable,
+  ObservableComputed,
+  ObservableObject,
+} from "https://npm.tfl.dev/@legendapp/state@~0.21.0";

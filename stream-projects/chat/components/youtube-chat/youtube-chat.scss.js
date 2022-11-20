@@ -5,6 +5,7 @@ export default scss`
   --mm-tooltip-bg: #5c6066;
   --mm-tooltip-text-color: #fff;
 }
+
 .c-youtube-chat {
   display: flex;
   flex-direction: column;
@@ -57,48 +58,43 @@ export default scss`
         word-wrap: break-word;
         word-break: break-word;
         font-family: Inter;
+        border-radius: 0.2rem;
+
+        &:hover {
+          background: hsla(0,0%,100%,.16);
+        }
+
         > .author {
           display: inline-block;
           align-items: baseline;
-          margin-right: 4px;
           gap: 2px;
+          border-radius: 0.2rem;
+          
+          &:hover {
+            background: hsla(0,0%,100%,.16);
+          }
 
           > .badges {
 
-            .badge {
-              width: 16px;
-              height: 16px;
-              margin-bottom: -2px;
-              margin-right: 4px;
-              box-sizing: border-box;
-            }
           }
 
           > .name {
             font-weight: 700;
-    
-            > .separator {
-              color: #efeff1;
+            border-radius: 0.2rem;
+            padding: 0.1rem;
+
+            &.is-verified {
+              background: #606060;
+              color: #FFF !important;
             }
+    
           }
+          
         }
 
-        > .message-text {
-          word-wrap: break-word;
-          word-break: break-word;
-          overflow-wrap: break-word;
-          overflow: hidden;
-          min-height: 24px;
-
-          // display: flex;
-          // align-items: center;
-
-          .truffle-emote {
-            width: auto !important;
-            height: 28px;
-            // margin: -1px 2px 1px;
-            vertical-align: middle;
-          }
+        > .separator {
+          margin-right: 4px;
+          color: #efeff1;
         }
       }
     }
@@ -127,74 +123,6 @@ export default scss`
 .landscape {
   .youtube {
     margin-top: -120px; /* hack for android to slide the keyboard up */
-  }
-}
-
-
-.truffle-tooltip-wrapper {
-  display: inline-block;
-  position: relative;
-
-  &:hover .truffle-tooltip {
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-.truffle-tooltip {
-  padding: 3px 6px;
-  border-radius: 0.4rem;
-  background-color: var(--mm-tooltip-bg);
-  color: var(--mm-tooltip-text-color);
-  display: none;
-  position: absolute;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.2;
-  text-align: center;
-  z-index: 2000;
-  pointer-events: none;
-  user-select: none;
-  white-space: nowrap;
-  gap: 2px;
-  margin-bottom: 6px;
-
-  &.truffle-tooltip--up {
-    top: auto;
-    bottom: 100%;
-    left: 0;
-    margin-bottom: 6px;
-
-    &.truffle-tooltip--align-center {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    &.truffle-tooltip--align-left {
-      left: -3%;
-    }
-  }
-
-  &:before {
-    top: -6px;
-    left: -6px;
-    width: calc(100% + 12px);
-    height: calc(100% + 12px);
-    z-index: -1;
-  }
-
-  &:after {
-    background-color: var(--mm-tooltip-bg);
-    width: 6px;
-    height: 6px;
-    transform: rotate(45deg);
-    z-index: -1;
-  }
-
-  &:after,
-  &:before {
-    position: absolute;
-    content: '';
   }
 }
 `;

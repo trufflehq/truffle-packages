@@ -1,4 +1,4 @@
-import { PageIdentifier } from '../../deps.ts'
+import { PageIdentifier } from "../../deps.ts";
 
 export function getStringHash(str: string) {
   let hash = 0;
@@ -27,16 +27,3 @@ export const DEFAULT_CHAT_COLORS = [
   "#00ff7f",
   "#a244f9",
 ];
-
-export function getChannelId(pageIdentifiers?: PageIdentifier[]) {
-  if(!pageIdentifiers?.length) return null;
-  const channelIdentifier = pageIdentifiers.find((identifier) =>
-    identifier.sourceType === "youtubeLive"
-  );
-
-  if (!channelIdentifier) {
-    return null;
-  }
-
-  return channelIdentifier.sourceId;
-}
