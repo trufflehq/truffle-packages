@@ -1,51 +1,45 @@
 import {
-  classKebab,
   // urql
   Client,
-  For,
   // ExtensionInfo,
   getClient as _getClient,
   gql,
   // extension
-  ObservableObject,
   opaqueObject,
   pipe,
   // react
   React,
   subscribe,
-  Switch,
   useObservable,
   useObserve,
   useStyleSheet,
 } from "../../deps.ts";
 
 import {
+  Badge,
   ConnectionOrgUserWithChatInfoAndPowerups,
   Emote,
   EmoteProvider,
   getOrgUserName,
   getOrgUserNameColor,
   getTruffleBadgesByActivePowerups,
+  NormalizedChatMessage,
   ORG_USER_CHAT_INFO_FIELDS,
   useTruffleEmoteMap$,
   useYoutubeChannelId$,
 } from "../../shared/mod.ts";
-import ThemeComponent from "../theme-component/theme-component.tsx";
 
 import { DEFAULT_CHAT_COLORS, getStringHash } from "./utils.ts";
 import { useSetChatFrameStyles } from "./jumper.ts";
 import styleSheet from "./youtube-chat.scss.js";
-import Badge from "../badges/badge.tsx";
 import RichText from "../rich-text/rich-text.tsx";
+import { default as Chat } from "../chat/chat.tsx";
 
 const getClient = _getClient as () => Client;
 
 const NUM_TRUFFLE_BADGES = 2;
 const NUM_MESSAGES_TO_RENDER = 250;
 const NUM_MESSAGES_TO_CUT = 25;
-
-const VERIFIED_CHECK_IMG_URL =
-  "https://cdn.bio/assets/images/features/browser_extension/yt_check_white.svg";
 
 type YoutubeChatMessageType = "text";
 
@@ -80,19 +74,6 @@ interface YoutubeBadge {
   badge: string; // this is the url for the badge
   tooltip: string; // this is the tooltip for the badge
   type: string; // this is the type of badge
-}
-
-type ChatMessageType = "text"; // status, superchat, etc.
-
-interface NormalizedChatMessage {
-  id: string;
-  type: ChatMessageType;
-  richText: React.ReactNode; // string of text
-  text: string;
-  authorName: string;
-  authorNameColor: string;
-  badges: Badge[];
-  isVerified: boolean;
 }
 
 interface TruffleYouTubeChatMessage extends YouTubeChatMessage {
@@ -137,8 +118,6 @@ function getYoutubeBadgeImgSrc(badge: string | "MODERATOR" | "OWNER") {
     : badge === "OWNER"
     ? "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/1"
     : badge;
-  // : badge === "VERIFIED"
-  // ? "https://cdn.bio/assets/images/features/browser_extension/yt_check_white.svg"
 
   return badgeSrc;
 }
@@ -151,11 +130,6 @@ function normalizeYoutubeEmote(emote: YoutubeEmote): Emote {
     src: emote.value,
   };
 }
-
-type Badge = {
-  src: string;
-  tooltip: string;
-};
 
 function getYoutubeBadgesByMessage(message: TruffleYouTubeChatMessage): Badge[] {
   return message.data?.author.badges
@@ -176,28 +150,24 @@ function normalizeTruffleYoutubeChatMessage(
   message: TruffleYouTubeChatMessage,
   emoteMap: Map<string, Emote>,
 ) {
-  if (message?.connection?.orgUser?.activePowerupConnection) {
-    delete message.connection.orgUser.activePowerupConnection;
-  }
-
-  // append youtube badges to truffle badges
+  // append youtube emotes to truffle emotes
   message?.data?.emotes?.forEach((emote) => emoteMap.set(emote.id, normalizeYoutubeEmote(emote)));
 
   return {
     ...message,
     type: message.data.type,
-    // wrap with opaqueObject so legend doesn't track any changes in the react node
+    // wrap with opaqueObject so legend doesn't track any changes in the react node since it's a large object
     // https://github.com/LegendApp/legend-state/issues/6
     richText: opaqueObject(<RichText text={message.data.message} emoteMap={emoteMap} />),
     text: message.data.message,
     badges: [
       ...(getTruffleBadgesByActivePowerups(message?.connection?.orgUser?.activePowerupConnection) ??
-        []).slice(0, NUM_TRUFFLE_BADGES),
+        []).slice(0, NUM_TRUFFLE_BADGES), // cap to 2 truffle badges
       ...(getYoutubeBadgesByMessage(message) ?? []),
     ],
     authorName: getAuthorNameByMessage(message),
     authorNameColor: getUsernameColorByMessage(message),
-    isVerified: message.data?.author?.badges?.some((badge) => badge.badge === "VERIFIED"),
+    isVerified: message.data?.author?.badges?.some((badge) => badge.badge === "VERIFIED"), // FIXME - move this server side
   } as NormalizedChatMessage;
 }
 
@@ -258,95 +228,11 @@ export default function YoutubeChat() {
 
   const { messages$ } = useYoutubeMessageAddedSubscription();
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const scrollTop = (e.target as HTMLDivElement).scrollTop;
-    const isPinnedToBottom = scrollTop < 0;
-    if (isPinnedToBottom) {
-      console.log("not bottom");
-    } else {
-      console.log("pinned to bottom");
-    }
-  };
-
   useSetChatFrameStyles();
 
   return (
     <div className="c-youtube-chat">
-      <ThemeComponent />
-      <div className="messages">
-        <div className="inner" onScroll={handleScroll}>
-          <For<NormalizedChatMessage, {}>
-            each={messages$}
-            item={ChatMessage}
-            optimized
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// need to split out the message type as well so we can render different types of messages
-function ChatMessage(
-  { item }: { item: ObservableObject<NormalizedChatMessage> },
-) {
-  return (
-    <Switch value={item.type}>
-      {{
-        "text": () => (
-          <MemoizedTextMessage
-            id={item.id.peek()}
-            richText={item.richText?.peek()}
-            badges={item.badges.peek()}
-            authorName={item.authorName.peek()}
-            authorNameColor={item.authorNameColor.peek()}
-            isVerified={item.isVerified.peek()}
-          />
-        ),
-        default: () => <></>,
-      }}
-    </Switch>
-  );
-}
-
-const MemoizedTextMessage = React.memo(TextMessage, (prev, next) => {
-  return prev.id === next.id;
-});
-
-function TextMessage(
-  { id, richText, authorName, authorNameColor, badges, isVerified }: {
-    id: string; // used for memoization
-    richText: React.ReactNode; // string of text
-    authorName: string;
-    authorNameColor?: string;
-    badges?: Badge[];
-    isVerified?: boolean;
-  },
-) {
-  return (
-    <div key={id} className="message">
-      <span className="author">
-        <span className="badges">
-          {badges?.map((badge) => <Badge src={badge.src} tooltip={badge.tooltip} />)}
-        </span>
-        <span
-          className={`name ${
-            classKebab({
-              isVerified,
-            })
-          }`}
-          style={{
-            color: authorNameColor,
-          }}
-        >
-          {authorName}
-          {isVerified ? <Badge src={VERIFIED_CHECK_IMG_URL} tooltip={"Verified"} /> : null}
-        </span>
-      </span>
-      <span className="separator">
-        :
-      </span>
-      {richText}
+      <Chat messages$={messages$} />
     </div>
   );
 }

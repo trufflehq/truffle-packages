@@ -124,8 +124,10 @@ export {
 } from "https://npm.tfl.dev/@legendapp/state@~0.21.0/react";
 
 export { observable, opaqueObject } from "https://npm.tfl.dev/@legendapp/state@~0.21.0";
+export { pageHashParams } from "https://npm.tfl.dev/@legendapp/state@~0.21.0/helpers/pageHashParams";
 export type {
   Observable,
+  ObservableArray,
   ObservableComputed,
   ObservableObject,
 } from "https://npm.tfl.dev/@legendapp/state@~0.21.0";
