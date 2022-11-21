@@ -14,9 +14,6 @@ export function useYoutubeChannelId$() {
 
     // allows passing in a yt channel id via the url hash, can be used during development or for a dynamic channel id via a url
     const paramYoutubeChannelId = pageHashParams.ytChannelId.get();
-
-    console.log("hash params ytChannelId", paramYoutubeChannelId);
-
     const youtubeChannelId = getYoutubeChannelId(extensionInfo?.pageInfo);
 
     console.log("EXTENSION INFO", extensionInfo);

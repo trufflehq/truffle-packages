@@ -17,7 +17,6 @@ import { Badge, NormalizedChatMessage } from "../../shared/mod.ts";
 import ThemeComponent from "../theme-component/theme-component.tsx";
 import styleSheet from "./chat.scss.js";
 import { default as BadgeRenderer } from "../badges/badge.tsx";
-
 const VERIFIED_CHECK_IMG_URL =
   "https://cdn.bio/assets/images/features/browser_extension/yt_check_white.svg";
 
