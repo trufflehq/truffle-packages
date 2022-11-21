@@ -24,6 +24,8 @@ export default function Chat(
   { messages$ }: { messages$: ObservableArray<NormalizedChatMessage[]> },
 ) {
   useStyleSheet(styleSheet);
+
+  // TODO: use this to render a scroll to bottom button
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const scrollTop = (e.target as HTMLDivElement).scrollTop;
     const isPinnedToBottom = scrollTop < 0;
@@ -79,7 +81,7 @@ const MemoizedTextMessage = React.memo(TextMessage, (prev, next) => {
 function TextMessage(
   { id, richText, authorName, authorNameColor, badges, isVerified }: {
     id: string; // used for memoization
-    richText: React.ReactNode; // string of text
+    richText: React.ReactNode; // component with rich text markup (emotes, etc.)
     authorName: string;
     authorNameColor?: string;
     badges?: Badge[];
