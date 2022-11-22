@@ -49,9 +49,9 @@ export async function getTruffleChatEmoteMapByYoutubeChannelId(channelId?: strin
 
   const emotes = await fetchTruffleEmotesByChannelId(channelId);
 
-  for (const emote of emotes) {
+  emotes.forEach((emote) => {
     emoteMap.set(emote.name, emote);
-  }
+  });
 
   return emoteMap;
 }
