@@ -6,6 +6,7 @@ export enum EmoteProvider {
   Spore,
   SevenTV,
   Youtube,
+  Emotesly,
 }
 
 export type Emote = {
@@ -15,5 +16,6 @@ export type Emote = {
   ext?: string;
   bitIndex?: number;
   channelId?: string;
+  cat?: string;
   src?: string;
 };
