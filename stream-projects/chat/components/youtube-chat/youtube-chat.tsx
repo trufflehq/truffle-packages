@@ -151,32 +151,36 @@ function normalizeTruffleYoutubeChatMessage(
   message: TruffleYouTubeChatMessage,
   emoteMap: Map<string, Emote>,
 ) {
-  // append youtube emotes to truffle emotes
-  message?.data?.emotes?.forEach((emote) => emoteMap.set(emote.id, normalizeYoutubeEmote(emote)));
+  try {
+    // append youtube emotes to truffle emotes
+    message?.data?.emotes?.forEach((emote) => emoteMap.set(emote.id, normalizeYoutubeEmote(emote)));
 
-  switch (message.data.type) {
-    case "text": {
-      return {
-        ...message,
-        type: message.data.type,
-        data: {
-          // wrap with opaqueObject so legend doesn't track any changes in the react node since it's a large object
-          // https://github.com/LegendApp/legend-state/issues/6
-          richText: opaqueObject(<RichText text={message.data.message} emoteMap={emoteMap} />),
-          text: message.data.message,
-          badges: [
-            ...(getTruffleBadgesByActivePowerups(
-              message?.connection?.orgUser?.activePowerupConnection,
-            ) ??
-              []).slice(0, NUM_TRUFFLE_BADGES), // cap to 2 truffle badges
-            ...(getYoutubeBadgesByMessage(message) ?? []),
-          ],
-          authorName: getAuthorNameByMessage(message),
-          authorNameColor: getUsernameColorByMessage(message),
-          isVerified: message.data?.author?.badges?.some((badge) => badge.badge === "VERIFIED"), // FIXME - move this server side
-        },
-      } as NormalizedChatMessage;
+    switch (message.data.type) {
+      case "text": {
+        return {
+          ...message,
+          type: message.data.type,
+          data: {
+            // wrap with opaqueObject so legend doesn't track any changes in the react node since it's a large object
+            // https://github.com/LegendApp/legend-state/issues/6
+            richText: opaqueObject(<RichText text={message.data.message} emoteMap={emoteMap} />),
+            text: message.data.message,
+            badges: [
+              ...(getTruffleBadgesByActivePowerups(
+                message?.connection?.orgUser?.activePowerupConnection,
+              ) ??
+                []).slice(0, NUM_TRUFFLE_BADGES), // cap to 2 truffle badges
+              ...(getYoutubeBadgesByMessage(message) ?? []),
+            ],
+            authorName: getAuthorNameByMessage(message),
+            authorNameColor: getUsernameColorByMessage(message),
+            isVerified: message.data?.author?.badges?.some((badge) => badge.badge === "VERIFIED"), // FIXME - move this server side
+          },
+        } as NormalizedChatMessage;
+      }
     }
+  } catch (e) {
+    console.log("error normalizing message", e);
   }
 }
 
@@ -209,6 +213,7 @@ function useYoutubeMessageAddedSubscription() {
               // FIXME - need to track down why we're getting dupe messages and whether
               // we're getting dupe messages from the server or the client
               if (newMessage?.id && isDupeYoutubeMessage(prev, newMessage)) {
+                console.log("is dupe");
                 return prev;
               }
 
@@ -216,8 +221,15 @@ function useYoutubeMessageAddedSubscription() {
                 newMessage,
                 emoteMap,
               );
+              if (!normalizedChatMessage) return prev;
 
-              return [normalizedChatMessage, ...prev].slice(0, NUM_MESSAGES_TO_RENDER);
+              let newMessages = [normalizedChatMessage, ...prev];
+
+              const shouldTrimMessages = newMessages.length > NUM_MESSAGES_TO_RENDER;
+              if (shouldTrimMessages) {
+                newMessages = newMessages.slice(0, newMessages?.length - NUM_MESSAGES_TO_CUT);
+              }
+              return newMessages;
             });
           } else {
             console.error("ERRROR", response);
