@@ -2,6 +2,7 @@ import { React, useGoogleFontLoader } from "../../deps.ts";
 const DEFAULT_FONT_FAMILY = "Poppins";
 const SECONDARY_FONT_FAMILY = "Roboto";
 
+// FIXME - clean this up to be a chat specific stylesheet that devs can customize
 function ThemeComponent({
   colorBgPrimary = "#050D13",
   colorBgSecondary = "#1F1F1F",
