@@ -12,7 +12,7 @@ import {
   subscribe,
   useObservable,
   useObserve,
-  useSelector,
+  useRef,
   useStyleSheet,
 } from "../../deps.ts";
 
@@ -193,42 +193,48 @@ function useYoutubeMessageAddedSubscription() {
   const messages$ = useObservable<NormalizedChatMessage[]>([]);
   const { youtubeChannelId$ } = useYoutubeChannelId$();
   const { emoteMap$ } = useTruffleEmoteMap$();
+  const unsubscribeRef = useRef<() => void>();
+  useObserve(() => {
+    const youtubeChannelId = youtubeChannelId$.get();
+    const emoteMap = emoteMap$.get();
+    if (youtubeChannelId && emoteMap?.size) {
+      unsubscribeRef.current?.();
 
-  const youtubeChannelId = useSelector(() => youtubeChannelId$.get());
-  const emoteMap = useSelector(() => emoteMap$.get());
+      const { unsubscribe } = pipe(
+        getClient().subscription(YOUTUBE_CHAT_MESSAGE_ADDED, { youtubeChannelId }),
+        subscribe((response) => {
+          const newMessage = response.data?.youtubeChatMessageAdded;
+          if (newMessage) {
+            messages$.set((prev) => {
+              // FIXME - need to track down why we're getting dupe messages and whether
+              // we're getting dupe messages from the server or the client
+              if (newMessage?.id && isDupeYoutubeMessage(prev, newMessage)) {
+                return prev;
+              }
 
-  if (youtubeChannelId && emoteMap?.size) {
-    pipe(
-      getClient().subscription(YOUTUBE_CHAT_MESSAGE_ADDED, { youtubeChannelId }),
-      subscribe((response) => {
-        const newMessage = response.data?.youtubeChatMessageAdded;
-        if (newMessage) {
-          messages$.set((prev) => {
-            // FIXME - need to track down why we're getting dupe messages and whether
-            // we're getting dupe messages from the server or the client
-            if (newMessage?.id && isDupeYoutubeMessage(prev, newMessage)) {
-              return prev;
-            }
+              const normalizedChatMessage = normalizeTruffleYoutubeChatMessage(
+                newMessage,
+                emoteMap,
+              );
 
-            const normalizedChatMessage = normalizeTruffleYoutubeChatMessage(
-              newMessage,
-              emoteMap,
-            );
+              return [normalizedChatMessage, ...prev].slice(0, NUM_MESSAGES_TO_RENDER);
+            });
+          } else {
+            console.error("ERRROR", response);
+          }
+        }),
+      );
 
-            return [normalizedChatMessage, ...prev].slice(0, NUM_MESSAGES_TO_RENDER);
-          });
-        } else {
-          console.error("ERRROR", response);
-        }
-      }),
-    );
-  }
+      unsubscribeRef.current = unsubscribe;
+    }
+  });
 
   return { messages$, emoteMap$ };
 }
 
 export default function YoutubeChat() {
   useStyleSheet(styleSheet);
+
   const { messages$ } = useYoutubeMessageAddedSubscription();
 
   useSetChatFrameStyles();
