@@ -203,6 +203,8 @@ function useYoutubeMessageAddedSubscription() {
           const newMessage = response.data?.youtubeChatMessageAdded;
           if (newMessage) {
             messages$.set((prev) => {
+              // FIXME - need to track down why we're getting dupe messages and whether
+              // we're getting dupe messages from the server or the client
               if (newMessage?.id && isDupeYoutubeMessage(prev, newMessage)) {
                 return prev;
               }
@@ -212,13 +214,7 @@ function useYoutubeMessageAddedSubscription() {
                 emoteMap,
               );
 
-              let newMessages = [normalizedChatMessage, ...prev];
-
-              const shouldTrimMessages = newMessages.length > NUM_MESSAGES_TO_RENDER;
-              if (shouldTrimMessages) {
-                newMessages = newMessages.slice(0, newMessages?.length - NUM_MESSAGES_TO_CUT);
-              }
-              return newMessages;
+              return [normalizedChatMessage, ...prev].slice(0, NUM_MESSAGES_TO_RENDER);
             });
           } else {
             console.error("ERRROR", response);
