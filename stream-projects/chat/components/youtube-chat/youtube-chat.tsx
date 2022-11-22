@@ -153,22 +153,30 @@ function normalizeTruffleYoutubeChatMessage(
   // append youtube emotes to truffle emotes
   message?.data?.emotes?.forEach((emote) => emoteMap.set(emote.id, normalizeYoutubeEmote(emote)));
 
-  return {
-    ...message,
-    type: message.data.type,
-    // wrap with opaqueObject so legend doesn't track any changes in the react node since it's a large object
-    // https://github.com/LegendApp/legend-state/issues/6
-    richText: opaqueObject(<RichText text={message.data.message} emoteMap={emoteMap} />),
-    text: message.data.message,
-    badges: [
-      ...(getTruffleBadgesByActivePowerups(message?.connection?.orgUser?.activePowerupConnection) ??
-        []).slice(0, NUM_TRUFFLE_BADGES), // cap to 2 truffle badges
-      ...(getYoutubeBadgesByMessage(message) ?? []),
-    ],
-    authorName: getAuthorNameByMessage(message),
-    authorNameColor: getUsernameColorByMessage(message),
-    isVerified: message.data?.author?.badges?.some((badge) => badge.badge === "VERIFIED"), // FIXME - move this server side
-  } as NormalizedChatMessage;
+  switch (message.data.type) {
+    case "text": {
+      return {
+        ...message,
+        type: message.data.type,
+        data: {
+          // wrap with opaqueObject so legend doesn't track any changes in the react node since it's a large object
+          // https://github.com/LegendApp/legend-state/issues/6
+          richText: opaqueObject(<RichText text={message.data.message} emoteMap={emoteMap} />),
+          text: message.data.message,
+          badges: [
+            ...(getTruffleBadgesByActivePowerups(
+              message?.connection?.orgUser?.activePowerupConnection,
+            ) ??
+              []).slice(0, NUM_TRUFFLE_BADGES), // cap to 2 truffle badges
+            ...(getYoutubeBadgesByMessage(message) ?? []),
+          ],
+          authorName: getAuthorNameByMessage(message),
+          authorNameColor: getUsernameColorByMessage(message),
+          isVerified: message.data?.author?.badges?.some((badge) => badge.badge === "VERIFIED"), // FIXME - move this server side
+        },
+      } as NormalizedChatMessage;
+    }
+  }
 }
 
 function isDupeYoutubeMessage(

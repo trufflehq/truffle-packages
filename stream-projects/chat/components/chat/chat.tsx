@@ -61,11 +61,11 @@ export function ChatMessage(
         "text": () => (
           <MemoizedTextMessage
             id={item.id.peek()}
-            richText={item.richText?.peek()}
-            badges={item.badges.peek()}
-            authorName={item.authorName.peek()}
-            authorNameColor={item.authorNameColor.peek()}
-            isVerified={item.isVerified.peek()}
+            richText={item.data?.richText.peek()}
+            badges={item.data?.badges.peek()}
+            authorName={item.data?.authorName.peek()}
+            authorNameColor={item.data?.authorNameColor.peek()}
+            isVerified={item.data?.isVerified.peek()}
           />
         ),
         default: () => <></>,

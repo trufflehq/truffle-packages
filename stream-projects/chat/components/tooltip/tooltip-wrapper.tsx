@@ -1,5 +1,4 @@
-import { classKebab, React, useStyleSheet } from "../../deps.ts";
-import stylesheet from './tooltip-wrapper.scss.js'
+import { classKebab, React } from "../../deps.ts";
 export default function TooltipWrapper(
   { children, tooltip, position = "top", align = "center" }: {
     children: React.ReactNode;
@@ -8,7 +7,6 @@ export default function TooltipWrapper(
     align?: "center" | "left";
   },
 ) {
-  useStyleSheet(stylesheet);
 
   return (
     <div className="truffle-tooltip-wrapper">
