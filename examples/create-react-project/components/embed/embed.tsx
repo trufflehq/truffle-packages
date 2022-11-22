@@ -14,7 +14,7 @@ const IFRAME_VISIBLE_STYLE = {
 const IFRAME_HIDDEN_STYLE = { display: "none" };
 const INITIAL_DELAY_MS = 3000; // show after 3s
 
-function HiddenExtensionMapping() {
+function Embed() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -45,4 +45,4 @@ function HiddenExtensionMapping() {
   );
 }
 
-export default HiddenExtensionMapping;
+export default Embed;

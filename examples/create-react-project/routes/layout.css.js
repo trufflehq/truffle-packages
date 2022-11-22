@@ -9,4 +9,11 @@ export default css`
   width: 100%;
   height: 100%;
   overflow: auto;
+  font-family: Arial;
+}
+
+.p-layout > .links > .link {
+  margin: 8px;
+  display: inline-block;
+  color: var(--tfl-color-on-bg-fill);
 }`;

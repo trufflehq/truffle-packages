@@ -101,7 +101,7 @@ function Example({ example }) {
 }
 
 function getGqlString(doc) {
-  return doc.loc && doc.loc.source.body;
+  return (doc.loc && doc.loc.source.body) || "";
 }
 
 function CodeHighlight({ code, language }) {
@@ -109,7 +109,7 @@ function CodeHighlight({ code, language }) {
     <Highlight
       {...defaultProps}
       language={language}
-      code={code}
+      code={code || ""}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre className={className} style={style}>
