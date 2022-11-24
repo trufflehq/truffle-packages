@@ -26,17 +26,11 @@ async function getYoutubeChannelActiveChattersByChannelId(channelId) {
 export async function listen() {
   // user should be logged in via cookie from the creator site domain (eg new.ludwig.social)
   // but if/when they login via yotuube oauth button, we need to invalidate and login via cookie again
-  console.log("listen jumper");
-
   jumper.call("comms.onMessage", (message: string) => {
-    console.log("jumper message", message);
-
     const shouldUpdateOrgUser = [
       GLOBAL_JUMPER_MESSAGES.ACCESS_TOKEN_UPDATED,
       GLOBAL_JUMPER_MESSAGES.INVALIDATE_USER,
     ].includes(message);
-    console.log("should", shouldUpdateOrgUser);
-
     if (shouldUpdateOrgUser) {
       setOrgUser();
     }
@@ -45,7 +39,6 @@ export async function listen() {
   let orgUser: OrgUserWithExtras;
   const setOrgUser = async () => {
     orgUser = await getMeOrgUser();
-    console.log("ou", orgUser);
   };
   await setOrgUser();
 
