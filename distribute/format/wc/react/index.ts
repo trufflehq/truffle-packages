@@ -2,12 +2,13 @@ import React from "https://npm.tfl.dev/react";
 // TODO use esm.sh or oscar to conditionally load in react-dom client/server dep on env
 // using dynamic imports doesn't work, bc we need defineAndGetWebComponent to be sync, not async
 import ReactDOM from "https://npm.tfl.dev/react-dom/client";
+// for safari
+import "https://npm.tfl.dev/construct-style-sheets-polyfill@3.1.0";
 
 import reactToWebComponent from "./react-to-web-component.ts";
+import wcContainerContext from "./wc-container-context.ts";
 
 import { addFormat, urlToTagName } from "../shared.ts";
-
-const wcContainerContext = React.createContext();
 
 export function defineAndGetWebComponent(
   component,
@@ -40,7 +41,13 @@ export function useStyleSheet(styleSheet) {
   const context = React.useContext(wcContainerContext);
   // memo instead of useEffect so it's synchronous
   React.useMemo(() => {
-    context?.container?.adoptedStyleSheets?.push(styleSheet);
+    if (context?.container) {
+      const adoptedStyleSheets = context.container.adoptedStyleSheets || [];
+      context.container.adoptedStyleSheets = [
+        ...adoptedStyleSheets,
+        styleSheet,
+      ];
+    }
   }, []);
 }
 

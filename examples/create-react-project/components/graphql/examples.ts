@@ -33,7 +33,7 @@ export default {
           }
         }
       }`,
-      variables: { input: {} },
+      variables: {},
     },
     mutation: {
       query: gql`mutation KeyValueUpsert($input: KeyValueUpsertInput!) {
@@ -64,7 +64,7 @@ export default {
           }
         }
       }`,
-      variables: { input: {} },
+      variables: {},
     },
     mutation: {
       query: gql`mutation KeyValueUpsert($input: KeyValueUpsertInput!) {

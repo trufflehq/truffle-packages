@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "truffle-cli": "file:../../../truffle-cli"
+  }
+}
