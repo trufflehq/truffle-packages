@@ -1,23 +1,34 @@
 import {
   // urql
   Client,
+  CombinedError,
   // ExtensionInfo,
   getClient as _getClient,
   gql,
+  ImageByAspectRatio,
+  observable,
+  ObservableArray,
+  ObservableComputed,
   // extension
   opaqueObject,
   pipe,
   // react
   React,
   subscribe,
+  TypedDocumentNode,
+  useComputed,
+  useMutation,
   useObservable,
   useObserve,
   useRef,
+  useSelector,
   useStyleSheet,
+  uuidv4,
 } from "../../deps.ts";
 
 import {
   Badge,
+  CONNECTION_FIELDS,
   ConnectionOrgUserWithChatInfoAndPowerups,
   Emote,
   EmoteProvider,
@@ -26,6 +37,8 @@ import {
   getTruffleBadgesByActivePowerups,
   NormalizedChatMessage,
   ORG_USER_CHAT_INFO_FIELDS,
+  OrgUserWithChatInfo,
+  OrgUserWithChatInfoConnection,
   useTruffleEmoteMap$,
   useYoutubeChannelId$,
 } from "../../shared/mod.ts";
@@ -34,6 +47,7 @@ import { DEFAULT_CHAT_COLORS, getStringHash } from "./utils.ts";
 import { useSetChatFrameStyles } from "./jumper.ts";
 import styleSheet from "./youtube-chat.scss.js";
 import RichText from "../rich-text/rich-text.tsx";
+import Input from "../input/input.tsx";
 import { default as Chat } from "../chat/chat.tsx";
 
 const getClient = _getClient as () => Client;
@@ -41,6 +55,7 @@ const getClient = _getClient as () => Client;
 const NUM_TRUFFLE_BADGES = 2;
 const NUM_MESSAGES_TO_RENDER = 250;
 const NUM_MESSAGES_TO_CUT = 25;
+const SEND_MESSAGE_ICON_SRC = "https://cdn.bio/assets/images/features/browser_extension/send.svg";
 
 type YoutubeChatMessageType = "text";
 
@@ -53,7 +68,7 @@ interface YouTubeChatMessage {
 interface YoutubeMessageData {
   id: string;
   message: string;
-  emotes: YoutubeEmote[];
+  emotes?: YoutubeEmote[];
   type: YoutubeChatMessageType;
   unix: number;
   author: YoutubeUser;
@@ -77,11 +92,11 @@ interface YoutubeBadge {
   type: string; // this is the type of badge
 }
 
-interface TruffleYouTubeChatMessage extends YouTubeChatMessage {
+interface TruffleYouTubeChatMessage extends Partial<YouTubeChatMessage> {
   connection: ConnectionOrgUserWithChatInfoAndPowerups;
 }
 
-const getUserNameColorByName = (name: string) => {
+const getUserNameColorByName = (name?: string) => {
   const hash = getStringHash(name ?? "base name");
   return DEFAULT_CHAT_COLORS[
     ((hash % DEFAULT_CHAT_COLORS.length) + DEFAULT_CHAT_COLORS.length) % DEFAULT_CHAT_COLORS.length
@@ -133,18 +148,19 @@ function normalizeYoutubeEmote(emote: YoutubeEmote): Emote {
 }
 
 function getYoutubeBadgesByMessage(message: TruffleYouTubeChatMessage): Badge[] {
-  return message.data?.author.badges
-    .filter((badge) => badge.badge !== "VERIFIED") // filter out verified badge since we handle that separately
+  return message.data?.author?.badges?.filter((badge) => badge.badge !== "VERIFIED") // filter out verified badge since we handle that separately
     .map((badge) => ({
       src: getYoutubeBadgeImgSrc(badge.badge),
       tooltip: badge.tooltip,
-    }));
+    })) ?? [];
 }
 
 export function getAuthorNameByMessage(message: TruffleYouTubeChatMessage) {
   const youtubeAuthorName = message.data?.author?.name;
 
-  return getOrgUserName(message?.connection?.orgUser) ?? youtubeAuthorName;
+  const name = getOrgUserName(message?.connection?.orgUser) ?? youtubeAuthorName;
+  console.log("getAuthorNameByMessage", message?.connection?.orgUser, youtubeAuthorName, message);
+  return name;
 }
 
 function normalizeTruffleYoutubeChatMessage(
@@ -155,7 +171,7 @@ function normalizeTruffleYoutubeChatMessage(
     // append youtube emotes to truffle emotes
     message?.data?.emotes?.forEach((emote) => emoteMap.set(emote.id, normalizeYoutubeEmote(emote)));
 
-    switch (message.data.type) {
+    switch (message.data?.type) {
       case "text": {
         return {
           ...message,
@@ -172,6 +188,7 @@ function normalizeTruffleYoutubeChatMessage(
                 []).slice(0, NUM_TRUFFLE_BADGES), // cap to 2 truffle badges
               ...(getYoutubeBadgesByMessage(message) ?? []),
             ],
+            authorId: message.data.author.id,
             authorName: getAuthorNameByMessage(message),
             authorNameColor: getUsernameColorByMessage(message),
             isVerified: message.data?.author?.badges?.some((badge) => badge.badge === "VERIFIED"), // FIXME - move this server side
@@ -193,8 +210,26 @@ function isDupeYoutubeMessage(
   return newMessage?.id && messageIdSet.has(newMessage?.id);
 }
 
+function isAlreadySentMessage(
+  existingMessages: NormalizedChatMessage[],
+  newMessage: TruffleYouTubeChatMessage | undefined,
+) {
+  const messageIdSet = new Set(
+    existingMessages.map((message) =>
+      generateBespokeMessageIdPrefix(message.data.text, message.data.authorId)
+    ),
+  );
+
+  return newMessage?.id && newMessage.data?.message &&
+    messageIdSet.has(
+      generateBespokeMessageIdPrefix(newMessage.data?.message, newMessage.data?.author.id),
+    );
+}
+
+const messages$ = observable<NormalizedChatMessage[]>([]);
+
 function useYoutubeMessageAddedSubscription() {
-  const messages$ = useObservable<NormalizedChatMessage[]>([]);
+  // const messages$ = useObservable<NormalizedChatMessage[]>([]);
   const { youtubeChannelId$ } = useYoutubeChannelId$();
   const { emoteMap$ } = useTruffleEmoteMap$();
   const unsubscribeRef = useRef<() => void>();
@@ -214,6 +249,11 @@ function useYoutubeMessageAddedSubscription() {
               // we're getting dupe messages from the server or the client
               if (newMessage?.id && isDupeYoutubeMessage(prev, newMessage)) {
                 console.log("is dupe");
+                return prev;
+              }
+
+              if (isAlreadySentMessage(prev, newMessage)) {
+                console.log("is already sent message", prev);
                 return prev;
               }
 
@@ -241,19 +281,193 @@ function useYoutubeMessageAddedSubscription() {
     }
   });
 
-  return { messages$, emoteMap$ };
+  // return { messages$, youtubeChannelId$, emoteMap$ };
+  return { youtubeChannelId$, emoteMap$ };
 }
+
+const SEND_YT_MESSAGE_MUTATION = gql
+  `mutation YoutubeChatMessageUpsert($text: String, $youtubeVideoId: String) {
+  youtubeChatMessageUpsert(input: { text: $text, youtubeVideoId: $youtubeVideoId }) {
+      innerTubeResponse
+  }
+}`;
 
 export default function YoutubeChat() {
   useStyleSheet(styleSheet);
 
-  const { messages$ } = useYoutubeMessageAddedSubscription();
-
+  // const { messages$, emoteMap$ } = useYoutubeMessageAddedSubscription();
+  const { emoteMap$ } = useYoutubeMessageAddedSubscription();
   useSetChatFrameStyles();
 
   return (
     <div className="c-youtube-chat">
       <Chat messages$={messages$} />
+      <ChatInput messages$={messages$} emoteMap$={emoteMap$} />
     </div>
   );
+}
+
+function ChatInput(
+  { messages$, emoteMap$ }: {
+    messages$: ObservableArray<NormalizedChatMessage[]>;
+    emoteMap$: ObservableComputed<Map<string, Emote>>;
+  },
+) {
+  const chatInput$ = useObservable("");
+  const numChars$ = useComputed(() => chatInput$.get().length);
+  const numChars = useSelector(() => numChars$.get());
+
+  const { orgUserWithChatInfoAndConnection$ } = useOrgUserWithChatInfoAndConnections$();
+
+  const text = useSelector(() => chatInput$.get());
+  const orgUser = useSelector(() => orgUserWithChatInfoAndConnection$.orgUser.get());
+  const emoteMap = useSelector(() => emoteMap$.get());
+
+  const [, executeSendYtMessageMutation] = useMutation(SEND_YT_MESSAGE_MUTATION);
+
+  async function sendMessage() {
+    const localMessage = generateYoutubeMessage(text, orgUser);
+
+    console.log("localMessage", localMessage);
+
+    const normalizedChatMessage = normalizeTruffleYoutubeChatMessage(localMessage, emoteMap);
+
+    console.log("normalizedChatMessage", normalizedChatMessage);
+    if (normalizedChatMessage) {
+      messages$.set((prev) => {
+        console.log("adding new message", normalizedChatMessage);
+        return [normalizedChatMessage, ...prev];
+      });
+    }
+    chatInput$.set("");
+
+    const result = await executeSendYtMessageMutation({
+      text,
+      youtubeVideoId: "m4u4EKzebFQ",
+    });
+    console.log("result", result);
+
+    // normalize and send message
+  }
+
+  const onEnter = async () => {
+    console.log("on enter", chatInput$.get());
+    await sendMessage();
+  };
+  const handleKeyPress = (ev: React.KeyboardEvent<HTMLInputElement>) => {
+    if (ev.key === "Enter") {
+      onEnter();
+    } else if (ev.key === "Tab") {
+      ev.preventDefault();
+      console.log("TAB");
+    }
+  };
+
+  return (
+    <div className="chat-input">
+      <Input
+        className="input"
+        value$={chatInput$}
+        onKeyDown={handleKeyPress}
+        css={{
+          border: "none",
+          color: "#fff",
+        }}
+      />
+      <div className="actions">
+        <div className="send">
+          <div className="char-count">{numChars}/200</div>
+          <div className="icon" tabIndex={0} onClick={sendMessage}>
+            <ImageByAspectRatio
+              imageUrl={SEND_MESSAGE_ICON_SRC}
+              aspectRatio={1}
+              widthPx={24}
+              height={24}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS = gql<
+  { orgUser: OrgUserWithChatInfoConnection }
+>`
+  query {
+    orgUser {
+      ...OrgUserChatInfoFields
+      connectionConnection (sourceTypes: ["youtube"]) {
+        nodes {
+          ...ConnectionFields
+        }
+      }
+    }
+  } ${ORG_USER_CHAT_INFO_FIELDS} ${CONNECTION_FIELDS}
+`;
+
+export function useOrgUserWithChatInfoAndConnections$() {
+  const orgUserWithChatInfoAndConnection$ = useQuerySignal(ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS);
+
+  return { orgUserWithChatInfoAndConnection$ };
+}
+
+function generateYoutubeMessage(
+  message: string,
+  orgUser: OrgUserWithChatInfoConnection,
+): TruffleYouTubeChatMessage {
+  const youtubeChannelId = orgUser.connectionConnection?.nodes?.[0]?.sourceId;
+  // what if you send the same message consecutively?
+  const messageId = generateBespokeMessageId(message, youtubeChannelId);
+  return {
+    // connection
+    id: messageId, // TODO generate an id or maybe have some type of reconciliation logic based on id
+    data: {
+      id: messageId, // TODO generate an id or maybe have some type of reconciliation logic based on id
+      type: "text",
+      message,
+      author: {
+        name: orgUser?.name, // FIXME this is not the right name
+        id: youtubeChannelId,
+        badges: [], // FIXME - pull in badges
+      },
+      unix: 1, // FIXME - generate unix timestamp
+    },
+    connection: {
+      orgUser,
+    },
+  };
+}
+
+function generateBespokeMessageId(message: string, authorId: string) {
+  return `${generateBespokeMessageIdPrefix(message, authorId)}-${uuidv4()}`;
+}
+
+function generateBespokeMessageIdPrefix(message: string, authorId: string) {
+  return `${message.replace(/\s/g, "")}-${authorId}`; // FIXME - shorthash the message
+}
+
+export function useQuerySignal<T extends object>(
+  query: TypedDocumentNode<T, any>,
+  variables?: any,
+) {
+  const signal$ = observable<T & { error: CombinedError | undefined }>(
+    undefined!,
+  );
+  pipe(
+    getClient().query(query, variables),
+    subscribe((res) => {
+      if (res?.data) {
+        signal$.set({ ...res.data, error: undefined });
+      }
+
+      // if there's an error in the response, set the `error` observable of the signal
+      // but don't void the existing `value` observable since we don't want to lose the last good value
+      // and will handle errors separately through updates to the error observable
+      if (res?.error) {
+        signal$.set((prev) => ({ ...prev, error: res.error }));
+      }
+    }),
+  );
+  return signal$;
 }

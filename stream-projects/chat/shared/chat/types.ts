@@ -13,6 +13,7 @@ export interface NormalizedChatTextMessageData {
   richText: React.ReactNode; // component that renders message markup
   text: string;
   authorName: string;
+  authorId: string;
   authorNameColor: string;
   badges: Badge[];
   isVerified: boolean;
