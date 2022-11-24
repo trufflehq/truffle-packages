@@ -1,6 +1,5 @@
 import { Obs, op } from "https://tfl.dev/@truffle/utils@~0.0.2/obs/subject.ts";
 import { useEffect } from "https://npm.tfl.dev/react";
-import { createRequest } from "https://npm.tfl.dev/urql@2";
 import { pipe, take, toObservable } from "https://npm.tfl.dev/wonka@4.0.15";
 import { setPackageContext } from "https://tfl.dev/@truffle/global-context@^1.0.0/package-context.ts";
 
@@ -14,6 +13,8 @@ import {
 import { getClient as _getClient, makeClient } from "./urql-client.ts";
 
 // NOTE: want to keep the exports minimal so we don't have to always support all of urql
+// TODO: i think we can pull from urql/core instead of urql
+import { createRequest } from "https://npm.tfl.dev/urql@2";
 export { createRequest, gql } from "https://npm.tfl.dev/urql@2";
 
 export const useMutation = _useMutation;
@@ -45,8 +46,8 @@ export function pollingQueryObservable(interval, query, variables) {
   return obs.pipe(op.poll(interval));
 }
 
-export function query(query, variables) {
-  return getClient().query(query, variables).toPromise();
+export function query(query, variables, operationContext) {
+  return getClient().query(query, variables, operationContext).toPromise();
 }
 
 export function mutation(query, variables) {

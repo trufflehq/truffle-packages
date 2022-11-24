@@ -1,9 +1,9 @@
-import { gql, query } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+import { gql, query } from "https://tfl.dev/@truffle/api@~0.1.22/client.ts";
+import { OrgUserWithExtras } from "./types.ts";
 
 const ME_ORG_USER_QUERY = gql`
-query MeOrgUserWithMutationObserverInfo ($input: ConnectionInput) {
+query MeOrgUserWithMutationObserverInfo {
   orgUser {
-    # TODO: need to add mycelium resolver for this
     connection(input: { sourceType: "youtube" }) {
       sourceId
     }
@@ -29,6 +29,12 @@ query MeOrgUserWithMutationObserverInfo ($input: ConnectionInput) {
   }
 }`;
 
-export function getMeOrgUser() {
-  return query(ME_ORG_USER_QUERY, {});
+export async function getMeOrgUser(): Promise<OrgUserWithExtras> {
+  const response = await query(ME_ORG_USER_QUERY, {}, {
+    requestPolicy: "network-only",
+  });
+  if (response?.error) {
+    console.error(response.error);
+  }
+  return response?.data?.orgUser;
 }

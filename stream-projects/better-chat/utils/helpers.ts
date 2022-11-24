@@ -26,23 +26,23 @@ const colors = [
   "#a244f9",
 ];
 
-export function getUsernameColor(str) {
+export function getUsernameColor(str: string): string {
   const hash = str ? getStringHash(str) : "base name";
   return colors[((hash % colors.length) + colors.length) % colors.length];
 }
 
-export function getYoutubeAuthorName(data) {
+export function getYoutubeAuthorName(data): string {
   return data?.authorName?.simpleText;
 }
 
-export function isYoutubeSourceType(sourceType) {
-  sourceType === "youtube" ||
+export function isYoutubeSourceType(sourceType): boolean {
+  return sourceType === "youtube" ||
     sourceType === "youtubeLive" ||
     sourceType === "youtubeVideo";
 }
 
-export function getYoutubePageIdentifier(pageInfoIdentifiers) {
-  pageInfoIdentifiers.find((identifier) =>
+export function getYoutubePageIdentifier(pageInfoIdentifiers?) {
+  return pageInfoIdentifiers?.find((identifier) =>
     isYoutubeSourceType(identifier.sourceType)
   );
 }
