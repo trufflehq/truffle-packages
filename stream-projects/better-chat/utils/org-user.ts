@@ -1,4 +1,4 @@
-import { gql, query } from "https://tfl.dev/@truffle/api@~0.1.22/client.ts";
+import { gql, query } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
 import { OrgUserWithExtras } from "./types.ts";
 
 const ME_ORG_USER_QUERY = gql`
