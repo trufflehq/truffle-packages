@@ -1,0 +1,25 @@
+[
+  {
+    "id": "localhost",
+    "defaultLayoutConfigSteps": [
+      {
+        "action": "querySelector",
+        "value": "#chatframe"
+      },
+      {
+        "action": "getIframeDocument"
+      },
+      {
+        "action": "querySelector",
+        "value": "#items"
+      },
+      {
+        "action": "replaceWithSubject"
+      }
+    ],
+    "domAction": "append",
+    "iframeUrl": "http://localhost:50410/chat",
+    "orgId": "8e35b570-6c2f-11ec-bade-b32a8d305590",
+    "slug": "yt-chat"
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "tasks": {
+    "dev": "we'll add as soon as deno is ready for us :)"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsxdev",
+    "jsxImportSource": "react",
+    "lib": [
+      "deno.ns",
+      "dom"
+    ]
+  },
+  "fmt": {
+    "options": {
+      "lineWidth": 100
+    }
+  }
+}
