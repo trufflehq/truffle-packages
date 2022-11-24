@@ -8,7 +8,6 @@ export const EMOTE_PROVIDER_NAME: Record<EmoteProvider, string> = {
   [EmoteProvider.Spore]: "Truffle",
   [EmoteProvider.SevenTV]: "7TV",
   [EmoteProvider.Youtube]: "YouTube",
-  [EmoteProvider.Emotesly]: "Emotesly",
 };
 
 export function getEmoteUrl(emote: Emote) {
@@ -26,8 +25,6 @@ export function getEmoteUrl(emote: Emote) {
     return `https://v2.truffle.vip/emotes/${emote.id}`;
   } else if (emote.provider === EmoteProvider.Youtube) {
     return emote.src;
-  } else if (emote.provider === EmoteProvider.Emotesly && emote?.cat) {
-    return `https://cdn.jsdelivr.net/gh/bhavita/YTEmotesly/assets/${emote.cat}/${emote.id}.${emote.ext}`;
   } else {
     return undefined;
   }
