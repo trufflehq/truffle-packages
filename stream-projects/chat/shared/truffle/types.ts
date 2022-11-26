@@ -12,7 +12,7 @@ export interface OrgUserWithChatInfo {
 }
 
 export type OrgUserWithChatInfoConnection = OrgUserWithChatInfo & {
-  connectionConnection: ConnectionConnection
+  connectionConnection?: ConnectionConnection
 };
 
 export type ConnectionConnection = TruffleGQlConnection<Connection>;

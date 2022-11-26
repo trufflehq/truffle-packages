@@ -53,3 +53,5 @@ export type {
   ObservableObject,
 } from "https://npm.tfl.dev/@legendapp/state@~0.21.0";
 export { v4 as uuidv4 } from 'https://npm.tfl.dev/uuid'
+export {default as Fuse} from "https://npm.tfl.dev/fuse.js";
+export {default as shorthash} from "https://npm.tfl.dev/shorthash2";

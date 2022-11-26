@@ -1,6 +1,8 @@
-import { jumper, pageHashParams, useComputed, useObservable } from "../../deps.ts";
+import { jumper, pageHashParams, useComputed, useObservable, gql } from "../../deps.ts";
 import { getTruffleChatEmoteMapByYoutubeChannelId, getYoutubeChannelId } from "./utils.ts";
-
+import { OrgUserWithChatInfoConnection } from './types.ts'
+import { CONNECTION_FIELDS, ORG_USER_CHAT_INFO_FIELDS } from "./fragments.ts";
+import { useQuerySignal } from '../mod.ts'
 export function useExtensionInfo$() {
   const extensionInfo$ = useObservable(jumper.call("context.getInfo"));
 
@@ -42,4 +44,25 @@ export function useTruffleEmoteMap$() {
   });
 
   return { emoteMap$ };
+}
+
+export const ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS = gql<
+  { orgUser: OrgUserWithChatInfoConnection }
+>`
+  query {
+    orgUser {
+      ...OrgUserChatInfoFields
+      connectionConnection (sourceTypes: ["youtube"]) {
+        nodes {
+          ...ConnectionFields
+        }
+      }
+    }
+  } ${ORG_USER_CHAT_INFO_FIELDS} ${CONNECTION_FIELDS}
+`;
+
+export function useOrgUserWithChatInfoAndConnections$() {
+  const orgUserWithChatInfoAndConnection$ = useQuerySignal(ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS);
+
+  return { orgUserWithChatInfoAndConnection$ };
 }

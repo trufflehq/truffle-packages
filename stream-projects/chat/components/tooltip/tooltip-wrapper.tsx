@@ -1,13 +1,15 @@
 import { classKebab, React } from "../../deps.ts";
+
+export type TooltipAlignment = "center" | "left";
+
 export default function TooltipWrapper(
   { children, tooltip, position = "top", align = "center" }: {
     children: React.ReactNode;
     tooltip: React.ReactNode;
     position?: "top" | "bottom";
-    align?: "center" | "left";
+    align?: TooltipAlignment;
   },
 ) {
-
   return (
     <div className="truffle-tooltip-wrapper">
       {children}

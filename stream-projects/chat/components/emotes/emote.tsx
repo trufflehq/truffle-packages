@@ -1,6 +1,6 @@
 import { React } from "../../deps.ts";
 import { Emote, EMOTE_PROVIDER_NAME, getEmoteUrl } from "../../shared/mod.ts";
-import TooltipWrapper from "../tooltip/tooltip-wrapper.tsx";
+import TooltipWrapper, { TooltipAlignment } from "../tooltip/tooltip-wrapper.tsx";
 
 function EmoteToolTipInfo({ emote }: { emote: Emote }) {
   return (
@@ -11,9 +11,11 @@ function EmoteToolTipInfo({ emote }: { emote: Emote }) {
   );
 }
 
-export default function EmoteRenderer({ emote }: { emote: Emote }) {
+export default function EmoteRenderer(
+  { emote, tooltipAlign = "center" }: { emote: Emote; tooltipAlign?: TooltipAlignment },
+) {
   return (
-    <TooltipWrapper tooltip={<EmoteToolTipInfo emote={emote} />}>
+    <TooltipWrapper tooltip={<EmoteToolTipInfo emote={emote} />} align={tooltipAlign}>
       <img className="truffle-emote" src={getEmoteUrl(emote)} />
     </TooltipWrapper>
   );
