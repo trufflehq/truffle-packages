@@ -38,6 +38,17 @@ export default scss`
       border: none;
     }
   }
+
+  .empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--mm-font-family);
+    font-size: 16px;
+    line-height: 21px;
+    color: #fff;
+    padding: 12px;
+  }
 }
 
 .landscape {
