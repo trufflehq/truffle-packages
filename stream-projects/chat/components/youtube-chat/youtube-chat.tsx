@@ -322,6 +322,7 @@ export default function YoutubeChat() {
   const [, executeSendYtMessageMutation] = useMutation(SEND_YT_MESSAGE_MUTATION);
   const { orgUserWithChatInfoAndConnection$ } = useOrgUserWithChatInfoAndConnections$();
   const orgUser = useSelector(() => orgUserWithChatInfoAndConnection$.orgUser.get());
+  console.log("orgUser", orgUser);
   const youtubeChannelId = useSelector(() => youtubeChannelId$.get());
   async function sendMessage(
     { text, emoteMap, chatInput$ }: {
@@ -333,6 +334,7 @@ export default function YoutubeChat() {
     const localYoutubeMessage = generateYoutubeMessage(text, orgUser);
     const normalizedChatMessage = normalizeTruffleYoutubeChatMessage(localYoutubeMessage, emoteMap);
 
+    console.log("local normalizedChatMessage", youtubeChannelId, normalizedChatMessage);
     if (normalizedChatMessage) {
       messages$.set((prev) => {
         return [normalizedChatMessage, ...prev];
@@ -344,10 +346,13 @@ export default function YoutubeChat() {
 
     // TODO - add some error handling if the server fails to send the message
     try {
+      console.log("sending message", text, youtubeChannelId);
       const result = await executeSendYtMessageMutation({
         text,
         youtubeChannelId,
       });
+
+      console.log("send message result", result);
 
       if (result.error) {
         console.error("error sending message", result.error);
@@ -362,11 +367,15 @@ export default function YoutubeChat() {
   return (
     <div className="c-youtube-chat">
       <Chat messages$={messages$} />
-      <ChatInput
-        emoteMap$={emoteMap$}
-        sendMessage={sendMessage}
-        maxMessageLength={YT_MAX_MESSAGE_LENGTH}
-      />
+      {youtubeChannelId
+        ? (
+          <ChatInput
+            emoteMap$={emoteMap$}
+            sendMessage={sendMessage}
+            maxMessageLength={YT_MAX_MESSAGE_LENGTH}
+          />
+        )
+        : <div className="empty">Missing Youtube channel ID</div>}
     </div>
   );
 }
