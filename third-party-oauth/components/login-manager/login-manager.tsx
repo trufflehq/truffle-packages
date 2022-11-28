@@ -78,19 +78,21 @@ export default function LoginManager(
   return (
     <div className="c-login-manager">
       <div className="inner">
-        {error
-          ? <ErrorRenderer title={error.title} message={error.message} />
-          : (
-            <div className="snuffle">
-              <object
-                data="https://cdn.bio/assets/images/landing/snuffle.svg?1"
-                type="image/svg+xml"
-              >
-                <img src="https://cdn.bio/assets/images/landing/snuffle.svg?1" />
-              </object>
-            </div>
-          )}
+        {error ? <ErrorRenderer title={error.title} message={error.message} /> : <JetPackSnuffle />}
       </div>
+    </div>
+  );
+}
+
+export function JetPackSnuffle() {
+  return (
+    <div className="snuffle">
+      <object
+        data="https://cdn.bio/assets/images/landing/snuffle.svg?1"
+        type="image/svg+xml"
+      >
+        <img src="https://cdn.bio/assets/images/landing/snuffle.svg?1" />
+      </object>
     </div>
   );
 }
@@ -101,8 +103,7 @@ const USER_CONNECTION_AUTH_ERR_CODE_TO_ERR: Record<
 > = {
   403: {
     title: "Access error",
-    message:
-      "You must grant Truffle access to read your YouTube account to continue.",
+    message: "You must grant Truffle access to read your YouTube account to continue.",
   },
   404: {
     title: "Youtube account error",
@@ -124,8 +125,7 @@ async function truffleConnectionLogin(
   oAuthAccessToken: string,
   state: string,
 ): Promise<string | null> {
-  const { orgId, accessToken: truffleAccessToken, sourceType } =
-    await decodeState(state) || {};
+  const { orgId, accessToken: truffleAccessToken, sourceType } = await decodeState(state) || {};
 
   // login as this OrgUser
   setAccessToken(truffleAccessToken);
@@ -156,7 +156,7 @@ export async function decodeState(state: string): Promise<DecodedAuth | null> {
   return state ? await verifyJWT(state) : null;
 }
 
-function sendTruffleAccessTokenToOpener(truffleAccessToken) {
+export function sendTruffleAccessTokenToOpener(truffleAccessToken: string) {
   postTruffleAccessTokenToNative(truffleAccessToken);
   postTruffleAccessTokenToOpener(truffleAccessToken);
   closeSelf();
