@@ -37,14 +37,10 @@ function AuthCallbackPage() {
   useStyleSheet(stylesheet);
   useGoogleFontLoader(() => ["Inter"], []);
   const truffleAccessToken = hashParams?.truffleAccessToken;
-
-  console.log("truffleAccessToken", truffleAccessToken);
   const error = hashParams?.error;
-  console.log('error', error)
 
   useEffect(() => {
     if (truffleAccessToken) {
-      console.log("sending truffle access token to opener");
       sendTruffleAccessTokenToOpener(truffleAccessToken);
     }
   }, [truffleAccessToken]);
