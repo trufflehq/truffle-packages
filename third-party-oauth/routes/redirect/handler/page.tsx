@@ -1,14 +1,16 @@
-import { _, React, useStyleSheet } from "../../../deps.ts";
+import { _, React, useEffect, useStyleSheet } from "../../../deps.ts";
 import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 import ThemeComponent from "https://tfl.dev/@truffle/mogul-menu@^0.1.59/components/base/theme-component/theme-component.tsx";
 import stylesheet from "./page.scss.js";
 import ErrorRenderer from "../../../components/error-renderer/error-renderer.tsx";
-import LoginManager from "../../../components/login-manager/login-manager.tsx";
+import {
+  JetPackSnuffle,
+  sendTruffleAccessTokenToOpener,
+} from "../../../components/login-manager/login-manager.tsx";
 import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.17/google-font-loader/mod.ts";
 
 interface AuthCallbackHashParams extends URLSearchParams {
-  access_token?: string;
-  state?: string;
+  truffleAccessToken?: string;
   error?: string;
 }
 
@@ -34,9 +36,18 @@ const OAUTH_ERROR_MESSAGE: Record<string, { title: string; message: string }> = 
 function AuthCallbackPage() {
   useStyleSheet(stylesheet);
   useGoogleFontLoader(() => ["Inter"], []);
-  const oAuthAccessToken = hashParams?.access_token;
-  const state = hashParams?.state;
+  const truffleAccessToken = hashParams?.truffleAccessToken;
+
+  console.log("truffleAccessToken", truffleAccessToken);
   const error = hashParams?.error;
+  console.log('error', error)
+
+  useEffect(() => {
+    if (truffleAccessToken) {
+      console.log("sending truffle access token to opener");
+      sendTruffleAccessTokenToOpener(truffleAccessToken);
+    }
+  }, [truffleAccessToken]);
 
   return (
     <>
@@ -48,7 +59,7 @@ function AuthCallbackPage() {
             message={OAUTH_ERROR_MESSAGE[error]?.message}
           />
         )
-        : <LoginManager oAuthAccessToken={oAuthAccessToken} state={state} />}
+        : <JetPackSnuffle />}
     </>
   );
 }
