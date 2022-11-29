@@ -36,3 +36,10 @@ export const ORG_USER_CHAT_INFO_FIELDS = gql`
   }
   ${TRUFFLE_BADGE_FRAGMENT}
 `;
+
+export const CONNECTION_FIELDS = gql`
+  fragment ConnectionFields on Connection {
+    sourceType
+    sourceId
+  }
+`;

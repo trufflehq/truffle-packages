@@ -1,16 +1,25 @@
 import { TruffleGQlConnection } from "../../deps.ts";
 
 export type ConnectionOrgUserWithChatInfoAndPowerups = {
-  id: string;
-  orgUser: OrgUserWithChatInfo & {
-    activePowerupConnection?: ActivePowerupConnection;
-  };
+  orgUser: OrgUserWithChatInfo
 };
 
 export interface OrgUserWithChatInfo {
   name: string;
   keyValueConnection: ChatKeyValueConnection;
   user: UserWithName;
+  activePowerupConnection?: ActivePowerupConnection;
+}
+
+export type OrgUserWithChatInfoConnection = OrgUserWithChatInfo & {
+  connectionConnection?: ConnectionConnection
+};
+
+export type ConnectionConnection = TruffleGQlConnection<Connection>;
+
+export interface Connection {
+  sourceType: string;
+  sourceId: string;
 }
 
 export type UserWithName = {

@@ -9,6 +9,7 @@ export default scss`
   height: 100%;
   width: 100%;
   overflow: hidden;
+  background: #181818;
 
   > .status {
     display: flex;
@@ -36,6 +37,22 @@ export default scss`
       height: 100%;
       border: none;
     }
+  }
+
+  .empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--mm-font-family);
+    font-size: 16px;
+    line-height: 21px;
+    color: #fff;
+    padding: 12px;
+  }
+
+  .input {
+    position: relative;
+
   }
 }
 

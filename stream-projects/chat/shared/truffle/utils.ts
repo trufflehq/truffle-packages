@@ -1,5 +1,5 @@
 import { PageIdentifier } from "../../deps.ts";
-import { Emote } from "../emotes/mod.ts";
+import { Emote, EmoteProvider } from "../emotes/mod.ts";
 import { ActivePowerupConnection, OrgUserWithChatInfo } from "./types.ts";
 
 const BASE_API_URL = `https://v2.truffle.vip/gateway/emotes`;
@@ -50,7 +50,10 @@ export async function getTruffleChatEmoteMapByYoutubeChannelId(channelId?: strin
   const emotes = await fetchTruffleEmotesByChannelId(channelId);
 
   emotes.forEach((emote) => {
-    emoteMap.set(emote.name, emote);
+    // check that the emote provider is supported
+    if(emote.provider in EmoteProvider) {
+      emoteMap.set(emote.name, emote);
+    }
   });
 
   return emoteMap;

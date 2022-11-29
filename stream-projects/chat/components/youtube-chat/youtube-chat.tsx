@@ -1,19 +1,27 @@
 import {
+  _setAccessTokenAndClear,
   // urql
   Client,
+  getAccessToken,
   // ExtensionInfo,
   getClient as _getClient,
   gql,
+  jumper,
+  Observable,
   // extension
   opaqueObject,
   pipe,
   // react
   React,
+  shorthash,
   subscribe,
+  useMutation,
   useObservable,
   useObserve,
   useRef,
+  useSelector,
   useStyleSheet,
+  uuidv4,
 } from "../../deps.ts";
 
 import {
@@ -26,6 +34,8 @@ import {
   getTruffleBadgesByActivePowerups,
   NormalizedChatMessage,
   ORG_USER_CHAT_INFO_FIELDS,
+  OrgUserWithChatInfoConnection,
+  useOrgUserWithChatInfoAndConnections$,
   useTruffleEmoteMap$,
   useYoutubeChannelId$,
 } from "../../shared/mod.ts";
@@ -34,13 +44,16 @@ import { DEFAULT_CHAT_COLORS, getStringHash } from "./utils.ts";
 import { useSetChatFrameStyles } from "./jumper.ts";
 import styleSheet from "./youtube-chat.scss.js";
 import RichText from "../rich-text/rich-text.tsx";
-import { default as Chat } from "../chat/chat.tsx";
+import Chat from "../chat/chat.tsx";
+import ChatInput from "../chat-input/chat-input.tsx";
+import LoginPrompt from "../login-prompt/login-prompt.tsx";
 
 const getClient = _getClient as () => Client;
 
 const NUM_TRUFFLE_BADGES = 2;
 const NUM_MESSAGES_TO_RENDER = 250;
 const NUM_MESSAGES_TO_CUT = 25;
+const YT_MAX_MESSAGE_LENGTH = 200;
 
 type YoutubeChatMessageType = "text";
 
@@ -53,7 +66,7 @@ interface YouTubeChatMessage {
 interface YoutubeMessageData {
   id: string;
   message: string;
-  emotes: YoutubeEmote[];
+  emotes?: YoutubeEmote[];
   type: YoutubeChatMessageType;
   unix: number;
   author: YoutubeUser;
@@ -77,22 +90,8 @@ interface YoutubeBadge {
   type: string; // this is the type of badge
 }
 
-interface TruffleYouTubeChatMessage extends YouTubeChatMessage {
+interface TruffleYouTubeChatMessage extends Partial<YouTubeChatMessage> {
   connection: ConnectionOrgUserWithChatInfoAndPowerups;
-}
-
-const getUserNameColorByName = (name: string) => {
-  const hash = getStringHash(name ?? "base name");
-  return DEFAULT_CHAT_COLORS[
-    ((hash % DEFAULT_CHAT_COLORS.length) + DEFAULT_CHAT_COLORS.length) % DEFAULT_CHAT_COLORS.length
-  ];
-};
-
-export function getUsernameColorByMessage(message: TruffleYouTubeChatMessage) {
-  const orgUserNameColor = getOrgUserNameColor(message?.connection?.orgUser);
-  const youtubeAuthorName = message.data?.author?.name;
-
-  return orgUserNameColor ?? getUserNameColorByName(youtubeAuthorName);
 }
 
 const YOUTUBE_CHAT_MESSAGE_ADDED = gql<{ youtubeChatMessageAdded: TruffleYouTubeChatMessage }>`
@@ -112,6 +111,27 @@ subscription YouTubeChatMessages($youtubeChannelId: String) {
 }
 ${ORG_USER_CHAT_INFO_FIELDS}
 `;
+
+const SEND_YT_MESSAGE_MUTATION = gql`
+mutation YoutubeChatMessageUpsert($text: String, $youtubeVideoId: String, $youtubeChannelId: String) {
+  youtubeChatMessageUpsert(input: { text: $text, youtubeVideoId: $youtubeVideoId, youtubeChannelId: $youtubeChannelId }) {
+    innertubeResponse
+  }
+}`;
+
+const getUserNameColorByName = (name?: string) => {
+  const hash = getStringHash(name ?? "base name");
+  return DEFAULT_CHAT_COLORS[
+    ((hash % DEFAULT_CHAT_COLORS.length) + DEFAULT_CHAT_COLORS.length) % DEFAULT_CHAT_COLORS.length
+  ];
+};
+
+export function getUsernameColorByMessage(message: TruffleYouTubeChatMessage) {
+  const orgUserNameColor = getOrgUserNameColor(message?.connection?.orgUser);
+  const youtubeAuthorName = message.data?.author?.name;
+
+  return orgUserNameColor ?? getUserNameColorByName(youtubeAuthorName);
+}
 
 function getYoutubeBadgeImgSrc(badge: string | "MODERATOR" | "OWNER") {
   const badgeSrc = badge === "MODERATOR"
@@ -133,12 +153,11 @@ function normalizeYoutubeEmote(emote: YoutubeEmote): Emote {
 }
 
 function getYoutubeBadgesByMessage(message: TruffleYouTubeChatMessage): Badge[] {
-  return message.data?.author.badges
-    .filter((badge) => badge.badge !== "VERIFIED") // filter out verified badge since we handle that separately
+  return message.data?.author?.badges?.filter((badge) => badge.badge !== "VERIFIED") // filter out verified badge since we handle that separately
     .map((badge) => ({
       src: getYoutubeBadgeImgSrc(badge.badge),
       tooltip: badge.tooltip,
-    }));
+    })) ?? [];
 }
 
 export function getAuthorNameByMessage(message: TruffleYouTubeChatMessage) {
@@ -155,7 +174,7 @@ function normalizeTruffleYoutubeChatMessage(
     // append youtube emotes to truffle emotes
     message?.data?.emotes?.forEach((emote) => emoteMap.set(emote.id, normalizeYoutubeEmote(emote)));
 
-    switch (message.data.type) {
+    switch (message.data?.type) {
       case "text": {
         return {
           ...message,
@@ -172,6 +191,7 @@ function normalizeTruffleYoutubeChatMessage(
                 []).slice(0, NUM_TRUFFLE_BADGES), // cap to 2 truffle badges
               ...(getYoutubeBadgesByMessage(message) ?? []),
             ],
+            authorId: message.data.author.id,
             authorName: getAuthorNameByMessage(message),
             authorNameColor: getUsernameColorByMessage(message),
             isVerified: message.data?.author?.badges?.some((badge) => badge.badge === "VERIFIED"), // FIXME - move this server side
@@ -184,6 +204,40 @@ function normalizeTruffleYoutubeChatMessage(
   }
 }
 
+function generateYoutubeMessage(
+  message: string,
+  orgUser: OrgUserWithChatInfoConnection,
+): TruffleYouTubeChatMessage {
+  const youtubeChannelId = orgUser?.connectionConnection?.nodes?.[0]?.sourceId;
+  const messageId = generateBespokeMessageId(message, youtubeChannelId);
+
+  return {
+    id: messageId,
+    data: {
+      id: messageId,
+      type: "text",
+      message,
+      author: {
+        name: orgUser?.name, // FIXME this is not the YT name
+        id: youtubeChannelId ?? "",
+        badges: [], // FIXME - pull in badges
+      },
+      unix: Math.floor(new Date().getTime() / 1000), // FIXME - generate unix timestamp
+    },
+    connection: {
+      orgUser,
+    },
+  };
+}
+
+function generateBespokeMessageId(message: string, authorId?: string) {
+  return `${generateBespokeMessageIdPrefix(message, authorId)}-${uuidv4()}`;
+}
+
+function generateBespokeMessageIdPrefix(message: string, authorId?: string) {
+  return `${shorthash(message.replace(/\s/g, ""))}-${authorId}`;
+}
+
 function isDupeYoutubeMessage(
   existingMessages: NormalizedChatMessage[],
   newMessage: TruffleYouTubeChatMessage | undefined,
@@ -193,8 +247,25 @@ function isDupeYoutubeMessage(
   return newMessage?.id && messageIdSet.has(newMessage?.id);
 }
 
+function isAlreadySentMessage(
+  existingMessages: NormalizedChatMessage[],
+  newMessage: TruffleYouTubeChatMessage | undefined,
+) {
+  const messageIdSet = new Set(
+    existingMessages.map((message) =>
+      generateBespokeMessageIdPrefix(message.data.text, message.data.authorId)
+    ),
+  );
+
+  return newMessage?.id && newMessage.data?.message &&
+    messageIdSet.has(
+      generateBespokeMessageIdPrefix(newMessage.data?.message, newMessage.data?.author.id),
+    );
+}
+
 function useYoutubeMessageAddedSubscription() {
   const messages$ = useObservable<NormalizedChatMessage[]>([]);
+
   const { youtubeChannelId$ } = useYoutubeChannelId$();
   const { emoteMap$ } = useTruffleEmoteMap$();
   const unsubscribeRef = useRef<() => void>();
@@ -213,7 +284,11 @@ function useYoutubeMessageAddedSubscription() {
               // FIXME - need to track down why we're getting dupe messages and whether
               // we're getting dupe messages from the server or the client
               if (newMessage?.id && isDupeYoutubeMessage(prev, newMessage)) {
-                console.log("is dupe");
+                return prev;
+              }
+
+              // check if the message was already optimistically rendered by the logged in user
+              if (isAlreadySentMessage(prev, newMessage)) {
                 return prev;
               }
 
@@ -241,19 +316,94 @@ function useYoutubeMessageAddedSubscription() {
     }
   });
 
-  return { messages$, emoteMap$ };
+  return { messages$, youtubeChannelId$, emoteMap$ };
 }
 
-export default function YoutubeChat() {
+export default function YoutubeChat({ hasChatInput = false }: { hasChatInput?: boolean }) {
   useStyleSheet(styleSheet);
+  const accessToken$ = useObservable(
+    getAccessToken() || jumper.call("storage.get", {
+      key: "mogul-menu:accessToken",
+    }),
+  );
+  const isLoginPromptOpen$ = useObservable(false);
+  const { messages$, emoteMap$, youtubeChannelId$ } = useYoutubeMessageAddedSubscription();
+  const [, executeSendYtMessageMutation] = useMutation(SEND_YT_MESSAGE_MUTATION);
+  const { orgUserWithChatInfoAndConnection$ } = useOrgUserWithChatInfoAndConnections$();
+  const orgUser = useSelector(() => orgUserWithChatInfoAndConnection$.orgUser.get());
+  console.log("orgUser", orgUser);
+  const youtubeChannelId = useSelector(() => youtubeChannelId$.get());
+  const isLoginPromptOpen = useSelector(() => isLoginPromptOpen$.get());
+  async function sendMessage(
+    { text, emoteMap, chatInput$ }: {
+      text: string;
+      emoteMap: Map<string, Emote>;
+      chatInput$: Observable<string>;
+    },
+  ) {
+    const localYoutubeMessage = generateYoutubeMessage(text, orgUser);
+    const normalizedChatMessage = normalizeTruffleYoutubeChatMessage(localYoutubeMessage, emoteMap);
 
-  const { messages$ } = useYoutubeMessageAddedSubscription();
+    if (normalizedChatMessage) {
+      messages$.set((prev) => {
+        return [normalizedChatMessage, ...prev];
+      });
+    }
+
+    // clear the chat input after sending the message
+    chatInput$.set("");
+
+    // TODO - add some error handling if the server fails to send the message
+    try {
+      // FIXME - this mutation isn't currently working with our existing YT OAuth flow.
+      // we'll either need to convert this over to the YT TV OAuth flow or post the message via jumper
+      // to a yt chat frame/webview
+      const result = await executeSendYtMessageMutation({
+        text,
+        youtubeChannelId,
+      });
+
+      if (result.error) {
+        console.error("error sending message", result.error);
+
+        if (result.error.graphQLErrors[0].extensions?.code === 401) {
+          // prompt OAuth flow
+          console.log("MISSING OAUTH PERMISSIONS");
+          isLoginPromptOpen$.set(true);
+        }
+      }
+    } catch (err) {
+      console.error("error sending message", err);
+    }
+  }
 
   useSetChatFrameStyles();
 
   return (
     <div className="c-youtube-chat">
       <Chat messages$={messages$} />
+      {hasChatInput
+        ? (
+          <div className="input">
+            {youtubeChannelId
+              ? (
+                <ChatInput
+                  emoteMap$={emoteMap$}
+                  sendMessage={sendMessage}
+                  maxMessageLength={YT_MAX_MESSAGE_LENGTH}
+                />
+              )
+              : <div className="empty">Missing Youtube channel ID</div>}
+            {isLoginPromptOpen && (
+              <LoginPrompt
+                isLoginPromptOpen$={isLoginPromptOpen$}
+                accessToken$={accessToken$}
+                sourceType="youtube"
+              />
+            )}
+          </div>
+        )
+        : null}
     </div>
   );
 }
