@@ -1,5 +1,8 @@
 import { observable, CombinedError, TypedDocumentNode, pipe, subscribe, getClient, } from '../../deps.ts'
 
+/*
+* FIXME - replace once we upgrade the legend version of @truffle/state
+*/
 export function useQuerySignal<T extends object>(
   query: TypedDocumentNode<T, any>,
   variables?: any,
