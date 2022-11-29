@@ -6,7 +6,6 @@ export enum EmoteProvider {
   Spore,
   SevenTV,
   Youtube,
-  Emotesly,
 }
 
 export type Emote = {

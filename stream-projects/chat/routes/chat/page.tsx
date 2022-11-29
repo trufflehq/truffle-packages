@@ -1,6 +1,5 @@
 import React from "https://npm.tfl.dev/react";
 import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP
-// import Menu from "../../components/menu/menu.tsx";
 
 import YoutubeChat from "../../components/youtube-chat/youtube-chat.tsx";
 
@@ -32,7 +31,7 @@ const iconImageObj = {
 function HomePage() {
   return (
     <>
-      <YoutubeChat />
+      <YoutubeChat hasChatInput />
     </>
   );
 }

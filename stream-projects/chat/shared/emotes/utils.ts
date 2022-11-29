@@ -8,7 +8,6 @@ export const EMOTE_PROVIDER_NAME: Record<EmoteProvider, string> = {
   [EmoteProvider.Spore]: "Truffle",
   [EmoteProvider.SevenTV]: "7TV",
   [EmoteProvider.Youtube]: "YouTube",
-  [EmoteProvider.Emotesly]: "Emotesly",
 };
 
 export function getEmoteUrl(emote?: Emote) {

@@ -2,15 +2,11 @@ import {
   _setAccessTokenAndClear,
   // urql
   Client,
-  ConnectionSourceType,
   getAccessToken,
   // ExtensionInfo,
   getClient as _getClient,
-  GLOBAL_JUMPER_MESSAGES,
-  globalContext,
   gql,
   jumper,
-  OAuthResponse,
   Observable,
   // extension
   opaqueObject,
@@ -19,7 +15,6 @@ import {
   React,
   shorthash,
   subscribe,
-  useHandleTruffleOAuth,
   useMutation,
   useObservable,
   useObserve,
@@ -51,6 +46,7 @@ import styleSheet from "./youtube-chat.scss.js";
 import RichText from "../rich-text/rich-text.tsx";
 import Chat from "../chat/chat.tsx";
 import ChatInput from "../chat-input/chat-input.tsx";
+import LoginPrompt from "../login-prompt/login-prompt.tsx";
 
 const getClient = _getClient as () => Client;
 
@@ -359,6 +355,9 @@ export default function YoutubeChat({ hasChatInput = false }: { hasChatInput?: b
 
     // TODO - add some error handling if the server fails to send the message
     try {
+      // FIXME - this mutation isn't currently working with our existing YT OAuth flow.
+      // we'll either need to convert this over to the YT TV OAuth flow or post the message via jumper
+      // to a yt chat frame/webview
       const result = await executeSendYtMessageMutation({
         text,
         youtubeChannelId,
@@ -396,79 +395,15 @@ export default function YoutubeChat({ hasChatInput = false }: { hasChatInput?: b
               )
               : <div className="empty">Missing Youtube channel ID</div>}
             {isLoginPromptOpen && (
-              <LoginWithYoutubePrompt
+              <LoginPrompt
                 isLoginPromptOpen$={isLoginPromptOpen$}
                 accessToken$={accessToken$}
+                sourceType="youtube"
               />
             )}
           </div>
         )
         : null}
     </div>
-  );
-}
-
-function LoginWithYoutubePrompt(
-  { isLoginPromptOpen$, accessToken$ }: {
-    isLoginPromptOpen$: Observable<boolean>;
-    accessToken$: Observable<string>;
-  },
-) {
-  const onSetAccessToken = (oauthResponse: OAuthResponse) => {
-    console.log("oauthResponse", oauthResponse);
-    jumper.call("platform.log", `onSetAccessToken ${JSON.stringify(oauthResponse)}`);
-    _setAccessTokenAndClear(oauthResponse.truffleAccessToken);
-
-    // let other embeds know that the user has changed and they need to
-    // reset their api client and cache
-    jumper.call("comms.postMessage", GLOBAL_JUMPER_MESSAGES.ACCESS_TOKEN_UPDATED);
-    isLoginPromptOpen$.set(false);
-  };
-  useHandleTruffleOAuth(onSetAccessToken);
-  const accessToken = useSelector(() => accessToken$.get());
-
-  console.log("accessToken", accessToken);
-  const context = globalContext.getStore();
-  const orgId = context?.orgId;
-
-  return (
-    <div className="sign-in">
-      {
-        /* <OAuthIframe
-      sourceType={sourceType}
-      accessToken={accessToken}
-      orgId={orgId}
-      styles={{
-        width: "308px",
-        height: "42px",
-        margin: "20px auto",
-        border: "none",
-      }}
-    /> */
-      }
-      <LocalOAuthFrame orgId={orgId} accessToken={accessToken} sourceType={"youtube"} />
-    </div>
-  );
-}
-
-const LOCAL_HOSTNAME = "https://local-oauth.rileymiller.dev";
-
-export function LocalOAuthFrame(
-  { sourceType, accessToken, orgId }: {
-    sourceType: ConnectionSourceType;
-    accessToken: string;
-    orgId: string;
-  },
-) {
-  return (
-    <iframe
-      src={`${LOCAL_HOSTNAME}/auth/${sourceType}?accessToken=${accessToken}&orgId=${orgId}`}
-      style={{
-        width: "290px",
-        height: "42px",
-        margin: "20px auto 8px auto",
-        border: "none",
-      }}
-    />
   );
 }

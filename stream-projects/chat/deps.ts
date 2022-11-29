@@ -60,5 +60,8 @@ export {default as shorthash} from "https://npm.tfl.dev/shorthash2";
 export {
   OAuthIframe,
   useHandleTruffleOAuth,
-} from "https://tfl.dev/@truffle/third-party-oauth@^0.0.40/components/oauth-iframe/mod.ts?bundle";
-export type { OAuthResponse } from "https://tfl.dev/@truffle/third-party-oauth@^0.0.40/components/oauth-iframe/mod.ts?bundle";
+} from "https://tfl.dev/@truffle/third-party-oauth@^0.0.40/components/oauth-iframe/mod.ts";
+export type { OAuthResponse } from "https://tfl.dev/@truffle/third-party-oauth@^0.0.40/components/oauth-iframe/mod.ts";
+export type {
+  OAuthSourceType
+} from "https://tfl.dev/@truffle/third-party-oauth@^0.0.40/shared/mod.ts"
