@@ -1,5 +1,5 @@
 // utils
-export { getClient, gql, useMutation } from "https://tfl.dev/@truffle/api@~0.1.19/mod.ts";
+export { getClient, gql, useMutation, _setAccessTokenAndClear, getAccessToken } from "https://tfl.dev/@truffle/api@~0.1.19/mod.ts";
 
 export type { TruffleGQlConnection } from "https://tfl.dev/@truffle/api@^0.1.0/types/mod.ts";
 export { default as _ } from "https://cdn.skypack.dev/lodash?dts";
@@ -22,12 +22,14 @@ export { default as scss } from "https://tfl.dev/@truffle/utils@~0.0.17/css/css.
 export { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP
 export { default as classKebab } from "https://tfl.dev/@truffle/utils@~0.0.17/legacy/class-kebab.ts";
 export { default as jumper } from "https://tfl.dev/@truffle/utils@~0.0.17/jumper/jumper.ts";
+export { default as globalContext } from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 export {
   useExtensionInfo,
   useExtensionInfo$,
+  GLOBAL_JUMPER_MESSAGES,
 } from "https://tfl.dev/@truffle/utils@~0.0.22/embed/mod.ts";
 export { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.22/google-font-loader/mod.ts";
-export type { PageIdentifier } from "https://tfl.dev/@truffle/utils@0.0.22/embed/mod.ts";
+export type { ConnectionSourceType, PageIdentifier } from "https://tfl.dev/@truffle/utils@0.0.22/embed/mod.ts";
 
 export type { Client, CombinedError, OperationContext, TypedDocumentNode } from "https://npm.tfl.dev/urql@2";
 export { pipe, subscribe } from "https://npm.tfl.dev/wonka@4.0.15";
@@ -55,3 +57,8 @@ export type {
 export { v4 as uuidv4 } from 'https://npm.tfl.dev/uuid'
 export {default as Fuse} from "https://npm.tfl.dev/fuse.js";
 export {default as shorthash} from "https://npm.tfl.dev/shorthash2";
+export {
+  OAuthIframe,
+  useHandleTruffleOAuth,
+} from "https://tfl.dev/@truffle/third-party-oauth@^0.0.40/components/oauth-iframe/mod.ts?bundle";
+export type { OAuthResponse } from "https://tfl.dev/@truffle/third-party-oauth@^0.0.40/components/oauth-iframe/mod.ts?bundle";

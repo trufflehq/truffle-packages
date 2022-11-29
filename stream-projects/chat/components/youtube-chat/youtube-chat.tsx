@@ -1,9 +1,16 @@
 import {
+  _setAccessTokenAndClear,
   // urql
   Client,
+  ConnectionSourceType,
+  getAccessToken,
   // ExtensionInfo,
   getClient as _getClient,
+  GLOBAL_JUMPER_MESSAGES,
+  globalContext,
   gql,
+  jumper,
+  OAuthResponse,
   Observable,
   // extension
   opaqueObject,
@@ -12,6 +19,7 @@ import {
   React,
   shorthash,
   subscribe,
+  useHandleTruffleOAuth,
   useMutation,
   useObservable,
   useObserve,
@@ -315,15 +323,21 @@ function useYoutubeMessageAddedSubscription() {
   return { messages$, youtubeChannelId$, emoteMap$ };
 }
 
-export default function YoutubeChat() {
+export default function YoutubeChat({ hasChatInput = false }: { hasChatInput?: boolean }) {
   useStyleSheet(styleSheet);
-
+  const accessToken$ = useObservable(
+    getAccessToken() || jumper.call("storage.get", {
+      key: "mogul-menu:accessToken",
+    }),
+  );
+  const isLoginPromptOpen$ = useObservable(false);
   const { messages$, emoteMap$, youtubeChannelId$ } = useYoutubeMessageAddedSubscription();
   const [, executeSendYtMessageMutation] = useMutation(SEND_YT_MESSAGE_MUTATION);
   const { orgUserWithChatInfoAndConnection$ } = useOrgUserWithChatInfoAndConnections$();
   const orgUser = useSelector(() => orgUserWithChatInfoAndConnection$.orgUser.get());
   console.log("orgUser", orgUser);
   const youtubeChannelId = useSelector(() => youtubeChannelId$.get());
+  const isLoginPromptOpen = useSelector(() => isLoginPromptOpen$.get());
   async function sendMessage(
     { text, emoteMap, chatInput$ }: {
       text: string;
@@ -334,7 +348,6 @@ export default function YoutubeChat() {
     const localYoutubeMessage = generateYoutubeMessage(text, orgUser);
     const normalizedChatMessage = normalizeTruffleYoutubeChatMessage(localYoutubeMessage, emoteMap);
 
-    console.log("local normalizedChatMessage", youtubeChannelId, normalizedChatMessage);
     if (normalizedChatMessage) {
       messages$.set((prev) => {
         return [normalizedChatMessage, ...prev];
@@ -346,16 +359,19 @@ export default function YoutubeChat() {
 
     // TODO - add some error handling if the server fails to send the message
     try {
-      console.log("sending message", text, youtubeChannelId);
       const result = await executeSendYtMessageMutation({
         text,
         youtubeChannelId,
       });
 
-      console.log("send message result", result);
-
       if (result.error) {
         console.error("error sending message", result.error);
+
+        if (result.error.graphQLErrors[0].extensions?.code === 401) {
+          // prompt OAuth flow
+          console.log("MISSING OAUTH PERMISSIONS");
+          isLoginPromptOpen$.set(true);
+        }
       }
     } catch (err) {
       console.error("error sending message", err);
@@ -367,15 +383,92 @@ export default function YoutubeChat() {
   return (
     <div className="c-youtube-chat">
       <Chat messages$={messages$} />
-      {youtubeChannelId
+      {hasChatInput
         ? (
-          <ChatInput
-            emoteMap$={emoteMap$}
-            sendMessage={sendMessage}
-            maxMessageLength={YT_MAX_MESSAGE_LENGTH}
-          />
+          <div className="input">
+            {youtubeChannelId
+              ? (
+                <ChatInput
+                  emoteMap$={emoteMap$}
+                  sendMessage={sendMessage}
+                  maxMessageLength={YT_MAX_MESSAGE_LENGTH}
+                />
+              )
+              : <div className="empty">Missing Youtube channel ID</div>}
+            {isLoginPromptOpen && (
+              <LoginWithYoutubePrompt
+                isLoginPromptOpen$={isLoginPromptOpen$}
+                accessToken$={accessToken$}
+              />
+            )}
+          </div>
         )
-        : <div className="empty">Missing Youtube channel ID</div>}
+        : null}
     </div>
+  );
+}
+
+function LoginWithYoutubePrompt(
+  { isLoginPromptOpen$, accessToken$ }: {
+    isLoginPromptOpen$: Observable<boolean>;
+    accessToken$: Observable<string>;
+  },
+) {
+  const onSetAccessToken = (oauthResponse: OAuthResponse) => {
+    console.log("oauthResponse", oauthResponse);
+    jumper.call("platform.log", `onSetAccessToken ${JSON.stringify(oauthResponse)}`);
+    _setAccessTokenAndClear(oauthResponse.truffleAccessToken);
+
+    // let other embeds know that the user has changed and they need to
+    // reset their api client and cache
+    jumper.call("comms.postMessage", GLOBAL_JUMPER_MESSAGES.ACCESS_TOKEN_UPDATED);
+    isLoginPromptOpen$.set(false);
+  };
+  useHandleTruffleOAuth(onSetAccessToken);
+  const accessToken = useSelector(() => accessToken$.get());
+
+  console.log("accessToken", accessToken);
+  const context = globalContext.getStore();
+  const orgId = context?.orgId;
+
+  return (
+    <div className="sign-in">
+      {
+        /* <OAuthIframe
+      sourceType={sourceType}
+      accessToken={accessToken}
+      orgId={orgId}
+      styles={{
+        width: "308px",
+        height: "42px",
+        margin: "20px auto",
+        border: "none",
+      }}
+    /> */
+      }
+      <LocalOAuthFrame orgId={orgId} accessToken={accessToken} sourceType={"youtube"} />
+    </div>
+  );
+}
+
+const LOCAL_HOSTNAME = "https://local-oauth.rileymiller.dev";
+
+export function LocalOAuthFrame(
+  { sourceType, accessToken, orgId }: {
+    sourceType: ConnectionSourceType;
+    accessToken: string;
+    orgId: string;
+  },
+) {
+  return (
+    <iframe
+      src={`${LOCAL_HOSTNAME}/auth/${sourceType}?accessToken=${accessToken}&orgId=${orgId}`}
+      style={{
+        width: "290px",
+        height: "42px",
+        margin: "20px auto 8px auto",
+        border: "none",
+      }}
+    />
   );
 }
