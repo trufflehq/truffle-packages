@@ -183,7 +183,7 @@ export function useQuerySignal<Data = any, Variables = object>(
     }
   }, [source]);
 
-  useObserve(() => {
+  useEffect(() => {
     const source = signal$.get()[0];
     const request = signal$[2][1].get();
 
@@ -219,7 +219,7 @@ export function useQuerySignal<Data = any, Variables = object>(
     } else {
       updateResult({ fetching: false });
     }
-  });
+  }, [cache, source]);
 
   const currentResult$ = useComputed(() => signal$.get()[1]);
   return currentResult$;
