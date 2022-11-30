@@ -8,13 +8,21 @@ import {
 import { signal } from "./signal.ts";
 import { updateSignalOnChange } from "./utils.ts";
 
+const isFunction = (inp: unknown) => typeof inp === "function";
+
 /*
 * returns a memoized signal to persist the signal across re-renders if the signal
 * is instantiated in a React component
 */
-export function useSignal<T>(initialValue: T | Promise<T>) {
+export function useSignal<T>(
+  initialValue: T | (() => T) | (() => Promise<T>),
+) {
   const signal$ = useMemo(() => {
-    return signal(initialValue);
+    return signal(
+      isFunction(initialValue as () => T)
+        ? (initialValue as () => T)()
+        : (initialValue as T),
+    );
   }, []);
 
   return signal$;
