@@ -168,7 +168,7 @@ export function useQuerySignal<Data = any, Variables = object>(
     },
   );
 
-  useObserve(() => {
+  useEffect(() => {
     if (source !== signal$.get()[0] && hasDepsChanged(signal$[2].get(), deps)) {
       signal$.set((prev) =>
         [
@@ -181,7 +181,7 @@ export function useQuerySignal<Data = any, Variables = object>(
         ] as const
       );
     }
-  });
+  }, [source]);
 
   useObserve(() => {
     const source = signal$.get()[0];
