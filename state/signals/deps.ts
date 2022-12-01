@@ -7,7 +7,10 @@ export {
 } from "https://npm.tfl.dev/react";
 // @deno-types="https://npm.tfl.dev/@legendapp/state"
 export { observable } from "https://npm.tfl.dev/@legendapp/state@~0.19.0";
-export { useObserve } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
+export {
+  useComputed,
+  useObserve,
+} from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 export { default as _ } from "https://cdn.skypack.dev/lodash?dts";
 export type {
   Observable,
@@ -15,9 +18,21 @@ export type {
   ObservableObjectOrArray,
   ObservablePrimitive,
 } from "https://npm.tfl.dev/@legendapp/state@~0.19.0";
-export { pipe, subscribe } from "https://npm.tfl.dev/wonka@4.0.15";
+export {
+  onEnd,
+  onPush,
+  pipe,
+  subscribe,
+  takeWhile,
+} from "https://npm.tfl.dev/wonka";
+export type { Source } from "https://npm.tfl.dev/wonka";
 export type {
+  Client,
   CombinedError,
+  Operation,
+  OperationContext,
+  OperationResult,
+  RequestPolicy,
   TypedDocumentNode,
   UseQueryResponse,
   UseQueryState,
