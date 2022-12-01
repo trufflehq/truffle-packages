@@ -1,6 +1,6 @@
 import { _, React, useStyleSheet } from "../../../deps.ts";
 import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
-import ThemeComponent from "https://tfl.dev/@truffle/mogul-menu@^0.1.59/components/base/theme-component/theme-component.tsx";
+import ThemeComponent from "../../../components/theme-component/theme-component.tsx";
 import stylesheet from "./page.scss.js";
 import ErrorRenderer from "../../../components/error-renderer/error-renderer.tsx";
 import LoginManager from "../../../components/login-manager/login-manager.tsx";
