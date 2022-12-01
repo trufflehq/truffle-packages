@@ -31,7 +31,14 @@ const iconImageObj = {
 function HomePage() {
   return (
     <>
-      <YoutubeChat hasChatInput />
+      <YoutubeChat
+        hasChatInput
+        inputControls={
+          <>
+            <button>click me</button>
+          </>
+        }
+      />
     </>
   );
 }

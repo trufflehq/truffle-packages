@@ -320,7 +320,11 @@ function useYoutubeMessageAddedSubscription() {
 }
 
 export default function YoutubeChat(
-  { hasChatInput = false, onSend }: { hasChatInput?: boolean; onSend?: (message: string) => void },
+  { hasChatInput = false, inputControls, onSend }: {
+    hasChatInput?: boolean;
+    inputControls?: React.ReactNode;
+    onSend?: (message: string) => void;
+  },
 ) {
   useStyleSheet(styleSheet);
   const accessToken$ = useObservable(
@@ -395,6 +399,7 @@ export default function YoutubeChat(
                   emoteMap$={emoteMap$}
                   sendMessage={sendMessage}
                   maxMessageLength={YT_MAX_MESSAGE_LENGTH}
+                  inputControls={inputControls}
                 />
               )
               : <div className="empty">Missing Youtube channel ID</div>}
