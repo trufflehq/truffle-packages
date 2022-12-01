@@ -319,7 +319,9 @@ function useYoutubeMessageAddedSubscription() {
   return { messages$, youtubeChannelId$, emoteMap$ };
 }
 
-export default function YoutubeChat({ hasChatInput = false }: { hasChatInput?: boolean }) {
+export default function YoutubeChat(
+  { hasChatInput = false, onSend }: { hasChatInput?: boolean; onSend?: (message: string) => void },
+) {
   useStyleSheet(styleSheet);
   const accessToken$ = useObservable(
     getAccessToken() || jumper.call("storage.get", {
@@ -334,13 +336,14 @@ export default function YoutubeChat({ hasChatInput = false }: { hasChatInput?: b
   console.log("orgUser", orgUser);
   const youtubeChannelId = useSelector(() => youtubeChannelId$.get());
   const isLoginPromptOpen = useSelector(() => isLoginPromptOpen$.get());
-  async function sendMessage(
+  function sendMessage(
     { text, emoteMap, chatInput$ }: {
       text: string;
       emoteMap: Map<string, Emote>;
       chatInput$: Observable<string>;
     },
   ) {
+    if (!text) return;
     const localYoutubeMessage = generateYoutubeMessage(text, orgUser);
     const normalizedChatMessage = normalizeTruffleYoutubeChatMessage(localYoutubeMessage, emoteMap);
 
@@ -358,20 +361,21 @@ export default function YoutubeChat({ hasChatInput = false }: { hasChatInput?: b
       // FIXME - this mutation isn't currently working with our existing YT OAuth flow.
       // we'll either need to convert this over to the YT TV OAuth flow or post the message via jumper
       // to a yt chat frame/webview
-      const result = await executeSendYtMessageMutation({
-        text,
-        youtubeChannelId,
-      });
+      // const result = await executeSendYtMessageMutation({
+      //   text,
+      //   youtubeChannelId,
+      // });
 
-      if (result.error) {
-        console.error("error sending message", result.error);
+      // if (result.error) {
+      //   console.error("error sending message", result.error);
 
-        if (result.error.graphQLErrors[0].extensions?.code === 401) {
-          // prompt OAuth flow
-          console.log("MISSING OAUTH PERMISSIONS");
-          isLoginPromptOpen$.set(true);
-        }
-      }
+      //   if (result.error.graphQLErrors[0].extensions?.code === 401) {
+      //     // prompt OAuth flow
+      //     console.log("MISSING OAUTH PERMISSIONS");
+      //     isLoginPromptOpen$.set(true);
+      //   }
+      // }
+      onSend?.(text);
     } catch (err) {
       console.error("error sending message", err);
     }

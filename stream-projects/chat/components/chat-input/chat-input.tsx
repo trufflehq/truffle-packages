@@ -46,6 +46,8 @@ export default function ChatInput(
   const emoteMap = useSelector(() => emoteMap$.get());
 
   const onSendMessage = async () => {
+    if(!text) return;
+    
     if (!isDisabled$.get()) {
       await sendMessage({ text, emoteMap, chatInput$ });
     }
@@ -55,12 +57,16 @@ export default function ChatInput(
     await onSendMessage();
   };
 
-  const onClick = async () => {
+  const onClick = async (ev: React.MouseEvent) => {
+    ev.preventDefault();
+    ev.stopPropagation();
     await onSendMessage();
   };
 
   const handleKeyPress = (ev: React.KeyboardEvent<HTMLInputElement>) => {
     if (ev.key === "Enter") {
+      ev.preventDefault();
+      ev.stopPropagation();
       onEnter();
     } else if (ev.key === "Tab") {
       ev.preventDefault();
