@@ -5,6 +5,9 @@
 > More information available in package README
 
 <!-- START PACKAGES -->
+
+> c78e4b1 (chore: version bump)
+
 <!-- END PACKAGES -->
 
 # Contributing
