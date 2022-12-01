@@ -376,7 +376,6 @@ export default function YoutubeChat(
       //   }
       // }
       onSend?.(text);
-      // jumper.call("yt.sendMessage", text);
     } catch (err) {
       console.error("error sending message", err);
     }
