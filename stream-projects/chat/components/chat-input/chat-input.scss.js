@@ -23,12 +23,20 @@ export default scss`
 
   > .actions { 
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 8px 16px;
+
+    > .controls {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
 
     > .send {
       display: flex;
       align-items: center;
+      flex: 1;
+      justify-content: flex-end;
       gap: 12px;
 
       > .char-count {

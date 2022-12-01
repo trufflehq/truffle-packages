@@ -27,6 +27,7 @@ export default function ChatInput(
     sendMessage,
     numSearchResults = DEFAULT_NUM_SEARCH_RESULTS,
     maxMessageLength = DEFAULT_MAX_MESSAGE_LENGTH,
+    inputControls,
     shouldShowEmoteTypeAhead = true,
   }: {
     emoteMap$: ObservableComputed<Map<string, Emote>>;
@@ -35,6 +36,7 @@ export default function ChatInput(
     ) => void;
     numSearchResults?: number;
     maxMessageLength?: number;
+    inputControls?: React.ReactNode;
     shouldShowEmoteTypeAhead?: boolean;
   },
 ) {
@@ -46,8 +48,8 @@ export default function ChatInput(
   const emoteMap = useSelector(() => emoteMap$.get());
 
   const onSendMessage = async () => {
-    if(!text) return;
-    
+    if (!text) return;
+
     if (!isDisabled$.get()) {
       await sendMessage({ text, emoteMap, chatInput$ });
     }
@@ -97,6 +99,9 @@ export default function ChatInput(
         }}
       />
       <div className="actions">
+      {inputControls ? <div className="controls">
+        {inputControls}
+      </div> : null}
         <div className="send">
           <div className={`char-count ${classKebab({ isDisabled })}`}>
             {numChars}/{maxMessageLength}
