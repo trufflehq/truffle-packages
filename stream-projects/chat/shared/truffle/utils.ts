@@ -1,5 +1,6 @@
 import { PageIdentifier } from "../../deps.ts";
 import { Emote, EmoteProvider } from "../emotes/mod.ts";
+import { Badge } from '../badges/mod.ts'
 import { ActivePowerupConnection, OrgUserWithChatInfo } from "./types.ts";
 
 const BASE_API_URL = `https://v2.truffle.vip/gateway/emotes`;
@@ -14,10 +15,10 @@ export const getOrgUserNameColor = (orgUser: OrgUserWithChatInfo) =>
 
 export function getTruffleBadgesByActivePowerups(
   activePowerupConnection?: ActivePowerupConnection,
-) {
+): Badge[] {
   return activePowerupConnection?.nodes
     ?.map((activePowerup) => ({
-      name: activePowerup.powerup.slug,
+      tooltip: activePowerup.powerup.slug,
       src: activePowerup?.powerup?.componentRels?.[0]?.props?.imageSrc,
     }))
     .filter(({ src }) => src !== undefined) ?? [];
