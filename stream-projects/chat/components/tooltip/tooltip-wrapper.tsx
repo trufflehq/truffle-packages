@@ -13,18 +13,22 @@ export default function TooltipWrapper(
   return (
     <div className="truffle-tooltip-wrapper">
       {children}
-      <div
-        className={`truffle-tooltip ${
-          classKebab({
-            isTop: position === "top",
-            isBottom: position === "bottom",
-            isAlignLeft: align === "left",
-            isAlignCenter: align === "center",
-          })
-        }`}
-      >
-        {tooltip}
-      </div>
+      {tooltip
+        ? (
+          <div
+            className={`truffle-tooltip ${
+              classKebab({
+                isTop: position === "top",
+                isBottom: position === "bottom",
+                isAlignLeft: align === "left",
+                isAlignCenter: align === "center",
+              })
+            }`}
+          >
+            {tooltip}
+          </div>
+        )
+        : null}
     </div>
   );
 }

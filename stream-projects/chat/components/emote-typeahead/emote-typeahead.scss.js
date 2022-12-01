@@ -12,6 +12,7 @@ export default scss`
   width: 100%;
 
   // FIXME: figure out overflow-x: auto while being able to render the emote tooltip
+  overflow-x: auto;
 
   display: flex;
   gap: 12px;

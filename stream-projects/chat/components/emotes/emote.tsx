@@ -12,10 +12,14 @@ function EmoteToolTipInfo({ emote }: { emote: Emote }) {
 }
 
 export default function EmoteRenderer(
-  { emote, tooltipAlign = "center" }: { emote: Emote; tooltipAlign?: TooltipAlignment },
+  { emote, tooltipAlign = "center", shouldShowTooltip = true }: {
+    emote: Emote;
+    tooltipAlign?: TooltipAlignment;
+    shouldShowTooltip?: boolean;
+  },
 ) {
   return (
-    <TooltipWrapper tooltip={<EmoteToolTipInfo emote={emote} />} align={tooltipAlign}>
+    <TooltipWrapper tooltip={shouldShowTooltip ? <EmoteToolTipInfo emote={emote} /> : null} align={tooltipAlign}>
       <img className="truffle-emote" src={getEmoteUrl(emote)} />
     </TooltipWrapper>
   );

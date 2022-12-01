@@ -89,7 +89,7 @@ export default function EmoteTypeAhead(
             >
               <EmoteRenderer
                 emote={result.item.value}
-                tooltipAlign={isFirst ? "left" : "center"}
+                shouldShowTooltip={false}
               />
             </div>
           )
