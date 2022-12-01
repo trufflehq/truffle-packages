@@ -69,6 +69,9 @@ let currentInit = false;
 /*
  * This hook creates a signal that subscribes to a graphql query. Can access the value of the response from the `value`
  * observable of the signal and any errors on the `error` observable.
+ *
+ * This function is based on "useQuery" from urql:
+ * https://github.com/urql-graphql/urql/blob/39bae9ff03cd05fc1d9948928df6dd9f65358155/packages/react-urql/src/hooks/useQuery.ts
 */
 export function useQuerySignal<Data = any, Variables = object>(
   query: TypedDocumentNode<Data, Variables>,
