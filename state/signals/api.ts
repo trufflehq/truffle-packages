@@ -195,11 +195,24 @@ export function useQuerySignal<Data = any, Variables = object>(
     const updateResult = (result: Partial<UseQueryState<Data, Variables>>) => {
       hasResult = true;
       if (!currentInit) {
-        signal$.set((state) => {
-          const nextResult = computeNextState(state[1], result);
-          return state[1] !== nextResult
-            ? [state[0], nextResult, state[2]]
-            : state;
+        signal$.set((prev) => {
+          let nextResult: any;
+          if (result?.data) {
+            nextResult = {
+              ...result.data,
+              error: undefined,
+            };
+          }
+          // if there's an error in the response, set the `error` observable of the signal
+          // but don't void the existing `value` observable since we don't want to lose the last good value
+          // and will handle errors separately through updates to the error observable
+          if (result?.error) {
+            nextResult = {
+              ...prev,
+              error: result.error,
+            };
+          }
+          return prev[1] !== nextResult ? [prev[0], nextResult, prev[2]] : prev;
         });
       }
     };
