@@ -17,7 +17,7 @@
 [@truffle/utils@`0.0.22`](./utils) - Browser & Node utilities  
 [@truffle/ui@`0.1.8`](./ui) - Unified UI library (WIP)  
 [@truffle/context@`1.0.0`](./context) - Framework-agnostic context  
-[@truffle/state@`0.0.7`](./state) - Signals coupled with Legend state for React  
+[@truffle/state@`0.0.9`](./state) - Signals coupled with Legend state for React  
 [@truffle/youtube-js@`0.5.9`](./youtube-js) - Truffle fork of [Youtube.js](https://github.com/LuanRT/YouTube.js)
 
 **Examples**  
