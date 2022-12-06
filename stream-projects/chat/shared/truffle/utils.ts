@@ -57,7 +57,6 @@ export function getYoutubeVideoId(pageIdentifiers?: PageIdentifier[]) {
 
   const match = YOUTUBE_VIDEO_ID_REGEX.exec(urlIdentifier.sourceId);
 
-  console.log("match", match);
   if (match) {
     return match[1];
   }
