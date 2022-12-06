@@ -1,6 +1,6 @@
 import React, { useMemo } from "https://npm.tfl.dev/react";
 import { createSubject } from "https://tfl.dev/@truffle/utils@0.0.1/obs/subject.js";
-import useObservables from "https://tfl.dev/@truffle/utils@0.0.3/obs/use-observables-react.ts";
+import useObservables from "https://tfl.dev/@truffle/utils@~0.0.3/obs/use-observables-react.ts";
 import classKebab from "https://tfl.dev/@truffle/utils@0.0.1/legacy/class-kebab.js";
 import Icon from "../icon/icon.tsx";
 import ImageByAspectRatio from "../image-by-aspect-ratio/image-by-aspect-ratio.tsx";

@@ -3,7 +3,7 @@ import {
   setCookie,
 } from "https://tfl.dev/@truffle/utils@~0.0.2/cookie/cookie.ts";
 import isSsr from "https://tfl.dev/@truffle/utils@~0.0.22/ssr/is-ssr.ts";
-import jumper from "https://tfl.dev/@truffle/utils@0.0.3/jumper/jumper.ts";
+import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
 import { _clearCache } from "./client.ts";
 import { TRUFFLE_ACCESS_TOKEN_KEY } from "./auth-exchange.ts";
 import { default as globalContext } from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";

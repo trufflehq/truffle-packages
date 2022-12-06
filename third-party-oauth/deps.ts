@@ -11,7 +11,7 @@ export {
   useRef,
   useState,
 } from "https://npm.tfl.dev/react";
-export { default as jumper } from "https://tfl.dev/@truffle/utils@0.0.3/jumper/jumper.ts";
+export { default as jumper } from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
 export { default as _ } from "https://cdn.skypack.dev/lodash?dts";
 export {
   gql,

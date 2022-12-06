@@ -4,11 +4,15 @@ import { jumper } from "../../deps.ts";
 export async function postTruffleAccessTokenToNative(
   truffleAccessToken?: string,
 ) {
-  console.log("web to native");
+  console.log("web to native...");
 
-  await jumper.call("user.setAccessToken", {
-    accessToken: truffleAccessToken,
-  });
+  try {
+    await jumper.call("user.setAccessToken", {
+      accessToken: truffleAccessToken,
+    });
+  } catch (err) {
+    console.log("jumper err", err);
+  }
 
   console.log("jumper called");
 
