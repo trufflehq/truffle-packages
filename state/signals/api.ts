@@ -173,16 +173,20 @@ export function useQuerySignal<Data = any, Variables = object>(
 
   useEffect(() => {
     if (source !== signal$.get()[0] && hasDepsChanged(signal$[2].get(), deps)) {
-      signal$.set((prev) =>
-        [
+      signal$.set((prev) => {
+        const snapshot = getSnapshot(source, suspense);
+        // FIXME: why?
+        if (!prev[1]) console.warn("prevState not defined");
+        if (!snapshot) console.warn("snapshot not defined");
+        return [
           source,
           computeNextState(
-            prev[1],
-            getSnapshot(source, suspense),
+            prev[1] || {},
+            snapshot || {},
           ),
           deps,
-        ] as const
-      );
+        ] as const;
+      });
     }
   }, [source]);
 
