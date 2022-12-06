@@ -1,4 +1,4 @@
-import jumper from "https://tfl.dev/@truffle/utils@0.0.3/jumper/jumper.ts";
+import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
 import { gql, makeOperation } from "https://npm.tfl.dev/urql@2";
 import { authExchange } from "https://npm.tfl.dev/@urql/exchange-auth@0";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
