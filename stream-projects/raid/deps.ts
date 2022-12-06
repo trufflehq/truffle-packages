@@ -1,8 +1,8 @@
 // @deno-types="https://npm.tfl.dev/v86/@types/react@~18.0/index.d.ts"
 export {
   default as React,
-  useState,
   useEffect,
+  useState,
 } from "https://npm.tfl.dev/react@0.0.0-experimental-7a4336c40-20220712";
 export {
   toDist,
@@ -19,8 +19,8 @@ export {
   useMutation,
   usePollingQuery,
   useQuery,
-} from "https://tfl.dev/@truffle/api@^0.1.0/client.ts";
-export { signal } from "https://tfl.dev/@truffle/state@^0.0.5/mod.ts";
+} from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+export { signal } from "https://tfl.dev/@truffle/state@~0.0.5/mod.ts";
 export { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 
 export {
