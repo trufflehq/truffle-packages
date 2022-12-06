@@ -20,8 +20,6 @@
  * with RPCCallback which should be used to emit callback responses
  */
 
-import uuid from "https://npm.tfl.dev/uuid@3";
-
 export const ERROR_CODES = {
   METHOD_NOT_FOUND: -32601,
   INVALID_ORIGIN: 100,
@@ -165,7 +163,7 @@ export default class RPCClient {
       throw new Error("Callback not found");
     }
 
-    callbackFn.apply(null, rPCCallbackResponse.params);
+    callbackFn(...(rPCCallbackResponse.params || []));
     return null;
   }
 }
@@ -212,9 +210,11 @@ export function createRPCRequestAcknowledgement({ requestId }) {
   @param {RPCError|Null} [props.error]
   @returns RPCResponse
   */
-export function createRPCResponse(
-  { requestId, result = null, rPCError = null },
-) {
+export function createRPCResponse({
+  requestId,
+  result = null,
+  rPCError = null,
+}) {
   return { _browserComms: true, id: requestId, result, error: rPCError };
 }
 
@@ -243,8 +243,9 @@ export function isRPCRequest(request) {
 }
 
 export function isRPCResponse(response) {
-  return response?.id && (
-    response.result !== undefined || response.error !== undefined
+  return (
+    response?.id &&
+    (response.result !== undefined || response.error !== undefined)
   );
 }
 
@@ -260,7 +261,7 @@ export function createRPCCallback() {
   return {
     _browserComms: true,
     _browserCommsGunCallback: true,
-    callbackId: uuid.v4(),
+    callbackId: generateUuid(),
   };
 }
 
@@ -287,7 +288,7 @@ export function createRPCRequest({ method, params }) {
     }
   }
 
-  return { _browserComms: true, id: uuid.v4(), method, params };
+  return { _browserComms: true, id: generateUuid(), method, params };
 }
 
 export function isRPCRequestAcknowledgement(ack) {
@@ -300,4 +301,27 @@ export function isRPCCallbackResponse(response) {
 
 export function isRPCCallback(callback) {
   return callback?._browserCommsGunCallback;
+}
+
+// https://stackoverflow.com/a/8809472
+function generateUuid() {
+  // Public Domain/MIT
+  let d = new Date().getTime();
+  let d2 = (typeof performance !== "undefined" &&
+    performance.now &&
+    performance.now() * 1000) ||
+    0; // Time in microseconds since page-load or 0 if unsupported
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    let r = Math.random() * 16;
+    if (d > 0) {
+      // Use timestamp until depleted
+      r = (d + r) % 16 | 0;
+      d = Math.floor(d / 16);
+    } else {
+      // Use microseconds since page-load if supported
+      r = (d2 + r) % 16 | 0;
+      d2 = Math.floor(d2 / 16);
+    }
+    return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
+  });
 }
