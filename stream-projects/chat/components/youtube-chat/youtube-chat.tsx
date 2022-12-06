@@ -94,7 +94,9 @@ interface TruffleYouTubeChatMessage extends Partial<YouTubeChatMessage> {
   connection: ConnectionOrgUserWithChatInfoAndPowerups;
 }
 
-const YOUTUBE_CHAT_MESSAGE_ADDED = gql<{ youtubeChatMessageAdded: TruffleYouTubeChatMessage }>`
+const YOUTUBE_CHAT_MESSAGE_ADDED = gql<
+  { youtubeChatMessageAdded: TruffleYouTubeChatMessage }
+>`
 subscription YouTubeChatMessages($youtubeChannelId: String) {
   youtubeChatMessageAdded(youtubeChannelId: $youtubeChannelId)
   {
@@ -122,7 +124,8 @@ mutation YoutubeChatMessageUpsert($text: String, $youtubeVideoId: String, $youtu
 const getUserNameColorByName = (name?: string) => {
   const hash = getStringHash(name ?? "base name");
   return DEFAULT_CHAT_COLORS[
-    ((hash % DEFAULT_CHAT_COLORS.length) + DEFAULT_CHAT_COLORS.length) % DEFAULT_CHAT_COLORS.length
+    ((hash % DEFAULT_CHAT_COLORS.length) + DEFAULT_CHAT_COLORS.length) %
+    DEFAULT_CHAT_COLORS.length
   ];
 };
 
@@ -152,8 +155,12 @@ function normalizeYoutubeEmote(emote: YoutubeEmote): Emote {
   };
 }
 
-function getYoutubeBadgesByMessage(message: TruffleYouTubeChatMessage): Badge[] {
-  return message.data?.author?.badges?.filter((badge) => badge.badge !== "VERIFIED") // filter out verified badge since we handle that separately
+function getYoutubeBadgesByMessage(
+  message: TruffleYouTubeChatMessage,
+): Badge[] {
+  return message.data?.author?.badges?.filter((badge) =>
+    badge.badge !== "VERIFIED"
+  ) // filter out verified badge since we handle that separately
     .map((badge) => ({
       src: getYoutubeBadgeImgSrc(badge.badge),
       tooltip: badge.tooltip,
@@ -172,7 +179,9 @@ function normalizeTruffleYoutubeChatMessage(
 ) {
   try {
     // append youtube emotes to truffle emotes
-    message?.data?.emotes?.forEach((emote) => emoteMap.set(emote.id, normalizeYoutubeEmote(emote)));
+    message?.data?.emotes?.forEach((emote) =>
+      emoteMap.set(emote.id, normalizeYoutubeEmote(emote))
+    );
 
     switch (message.data?.type) {
       case "text": {
@@ -182,7 +191,9 @@ function normalizeTruffleYoutubeChatMessage(
           data: {
             // wrap with opaqueObject so legend doesn't track any changes in the react node since it's a large object
             // https://github.com/LegendApp/legend-state/issues/6
-            richText: opaqueObject(<RichText text={message.data.message} emoteMap={emoteMap} />),
+            richText: opaqueObject(
+              <RichText text={message.data.message} emoteMap={emoteMap} />,
+            ),
             text: message.data.message,
             badges: [
               ...(getTruffleBadgesByActivePowerups(
@@ -194,7 +205,9 @@ function normalizeTruffleYoutubeChatMessage(
             authorId: message.data.author.id,
             authorName: getAuthorNameByMessage(message),
             authorNameColor: getUsernameColorByMessage(message),
-            isVerified: message.data?.author?.badges?.some((badge) => badge.badge === "VERIFIED"), // FIXME - move this server side
+            isVerified: message.data?.author?.badges?.some((badge) =>
+              badge.badge === "VERIFIED"
+            ), // FIXME - move this server side
           },
         } as NormalizedChatMessage;
       }
@@ -259,7 +272,10 @@ function isAlreadySentMessage(
 
   return newMessage?.id && newMessage.data?.message &&
     messageIdSet.has(
-      generateBespokeMessageIdPrefix(newMessage.data?.message, newMessage.data?.author.id),
+      generateBespokeMessageIdPrefix(
+        newMessage.data?.message,
+        newMessage.data?.author.id,
+      ),
     );
 }
 
@@ -276,7 +292,9 @@ function useYoutubeMessageAddedSubscription() {
       unsubscribeRef.current?.();
 
       const { unsubscribe } = pipe(
-        getClient().subscription(YOUTUBE_CHAT_MESSAGE_ADDED, { youtubeChannelId }),
+        getClient().subscription(YOUTUBE_CHAT_MESSAGE_ADDED, {
+          youtubeChannelId,
+        }),
         subscribe((response) => {
           const newMessage = response.data?.youtubeChatMessageAdded;
           if (newMessage) {
@@ -300,9 +318,13 @@ function useYoutubeMessageAddedSubscription() {
 
               let newMessages = [normalizedChatMessage, ...prev];
 
-              const shouldTrimMessages = newMessages.length > NUM_MESSAGES_TO_RENDER;
+              const shouldTrimMessages =
+                newMessages.length > NUM_MESSAGES_TO_RENDER;
               if (shouldTrimMessages) {
-                newMessages = newMessages.slice(0, newMessages?.length - NUM_MESSAGES_TO_CUT);
+                newMessages = newMessages.slice(
+                  0,
+                  newMessages?.length - NUM_MESSAGES_TO_CUT,
+                );
               }
               return newMessages;
             });
@@ -320,10 +342,11 @@ function useYoutubeMessageAddedSubscription() {
 }
 
 export default function YoutubeChat(
-  { hasChatInput = false, inputControls, onSend }: {
+  { hasChatInput = false, inputControls, onSend, visibleBanners }: {
     hasChatInput?: boolean;
     inputControls?: React.ReactNode;
     onSend?: (message: string) => void;
+    visibleBanners?: React.ReactNode[];
   },
 ) {
   useStyleSheet(styleSheet);
@@ -333,10 +356,16 @@ export default function YoutubeChat(
     }),
   );
   const isLoginPromptOpen$ = useObservable(false);
-  const { messages$, emoteMap$, youtubeChannelId$ } = useYoutubeMessageAddedSubscription();
-  const [, executeSendYtMessageMutation] = useMutation(SEND_YT_MESSAGE_MUTATION);
-  const { orgUserWithChatInfoAndConnection$ } = useOrgUserWithChatInfoAndConnections$();
-  const orgUser = useSelector(() => orgUserWithChatInfoAndConnection$.orgUser.get());
+  const { messages$, emoteMap$, youtubeChannelId$ } =
+    useYoutubeMessageAddedSubscription();
+  const [, executeSendYtMessageMutation] = useMutation(
+    SEND_YT_MESSAGE_MUTATION,
+  );
+  const { orgUserWithChatInfoAndConnection$ } =
+    useOrgUserWithChatInfoAndConnections$();
+  const orgUser = useSelector(() =>
+    orgUserWithChatInfoAndConnection$.orgUser.get()
+  );
   console.log("orgUser", orgUser);
   const youtubeChannelId = useSelector(() => youtubeChannelId$.get());
   const isLoginPromptOpen = useSelector(() => isLoginPromptOpen$.get());
@@ -349,7 +378,10 @@ export default function YoutubeChat(
   ) {
     if (!text) return;
     const localYoutubeMessage = generateYoutubeMessage(text, orgUser);
-    const normalizedChatMessage = normalizeTruffleYoutubeChatMessage(localYoutubeMessage, emoteMap);
+    const normalizedChatMessage = normalizeTruffleYoutubeChatMessage(
+      localYoutubeMessage,
+      emoteMap,
+    );
 
     if (normalizedChatMessage) {
       messages$.set((prev) => {
@@ -389,6 +421,13 @@ export default function YoutubeChat(
 
   return (
     <div className="c-youtube-chat">
+      {visibleBanners
+        ? (
+          <div className="visible-banners">
+            {visibleBanners}
+          </div>
+        )
+        : null}
       <Chat messages$={messages$} />
       {hasChatInput
         ? (
