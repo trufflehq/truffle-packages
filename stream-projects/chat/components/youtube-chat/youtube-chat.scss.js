@@ -11,6 +11,18 @@ export default scss`
   overflow: hidden;
   background: #181818;
 
+  > .visible-banners {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 12;
+    width: 100%;
+  }
+
   > .status {
     display: flex;
     justify-content: center;
