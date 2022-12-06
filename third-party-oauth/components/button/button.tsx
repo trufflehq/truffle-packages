@@ -119,7 +119,7 @@ export default function Button({
       disabled={_isDisabled}
       tabIndex={_isDisabled ? -1 : 0}
       className={`c-button ${className}`}
-      onChange={clickHandler}
+      // onChange={clickHandler}
       onClick={clickHandler}
       style={styles}
     >

@@ -1,6 +1,5 @@
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
 import { GLOBAL_JUMPER_MESSAGES } from "https://tfl.dev/@truffle/utils@~0.0.22/embed/mod.ts";
-import { _clearCache } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
 
 import {
   setChatBgColor,
@@ -25,21 +24,8 @@ async function getYoutubeChannelActiveChattersByChannelId(channelId) {
 }
 
 export async function listen() {
-  // user should be logged in via cookie from the creator site domain (eg new.ludwig.social)
-  // but if/when they login via yotuube oauth button, we need to invalidate and login via cookie again
   jumper.call("comms.onMessage", (message: string) => {
-    const shouldUpdateOrgUser = [
-      GLOBAL_JUMPER_MESSAGES.ACCESS_TOKEN_UPDATED,
-      GLOBAL_JUMPER_MESSAGES.INVALIDATE_USER,
-      GLOBAL_JUMPER_MESSAGES.ACCESS_TOKEN_UPDATED,
-    ].includes(message);
-    const shouldResetClient =
-      message === GLOBAL_JUMPER_MESSAGES.ACCESS_TOKEN_UPDATED;
-    if (shouldResetClient) {
-      // reset the api client w/ the updated user
-      _clearCache();
-    }
-    if (shouldUpdateOrgUser) {
+    if (message === GLOBAL_JUMPER_MESSAGES.INVALIDATE_USER) {
       setOrgUser();
     }
   });

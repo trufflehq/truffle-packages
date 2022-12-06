@@ -1,13 +1,11 @@
 import {
-  _setAccessTokenAndClear,
   ConnectionSourceType,
-  GLOBAL_JUMPER_MESSAGES,
   globalContext,
-  jumper,
   OAuthIframe,
   OAuthResponse,
   OAuthSourceType,
   Observable,
+  setAccessToken,
   useHandleTruffleOAuth,
   useSelector,
   useStyleSheet,
@@ -26,13 +24,7 @@ export default function LoginWithYoutubePrompt(
   useStyleSheet(stylesheet);
 
   const onSetAccessToken = (oauthResponse: OAuthResponse) => {
-    console.log("oauthResponse", oauthResponse);
-    jumper.call("platform.log", `onSetAccessToken ${JSON.stringify(oauthResponse)}`);
-    _setAccessTokenAndClear(oauthResponse.truffleAccessToken);
-
-    // let other embeds know that the user has changed and they need to
-    // reset their api client and cache
-    jumper.call("comms.postMessage", GLOBAL_JUMPER_MESSAGES.ACCESS_TOKEN_UPDATED);
+    setAccessToken(oauthResponse.truffleAccessToken);
     isLoginPromptOpen$.set(false);
   };
   useHandleTruffleOAuth(onSetAccessToken);

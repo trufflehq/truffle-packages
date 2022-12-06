@@ -24,15 +24,15 @@ import {
 
 import {
   computeNextState,
+  getCacheForClient,
   hasDepsChanged,
   initialState,
-} from "https://tfl.dev/@truffle/api@~0.1.11/urql-mods/state.ts";
-import { getCacheForClient } from "https://tfl.dev/@truffle/api@~0.1.11/urql-mods/cache.ts";
-import { useRequest } from "https://tfl.dev/@truffle/api@~0.1.11/urql-mods/useRequest.ts";
+  UseQueryArgs,
+  useRequest,
+} from "https://tfl.dev/@truffle/api@~0.2.0/urql-mods/index.ts";
 
 import { signal } from "./signal.ts";
 import { useSignal } from "./hooks.ts";
-import { UseQueryArgs } from "https://tfl.dev/@truffle/api@~0.1.11/urql-mods/useQuery.ts";
 
 /*
 * This is a custom hook that wraps the useQuery hook from urql.

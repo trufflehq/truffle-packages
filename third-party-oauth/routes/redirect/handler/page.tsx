@@ -21,17 +21,19 @@ const hashParams: AuthCallbackHashParams = new Proxy(
   },
 );
 
-const OAUTH_ERROR_MESSAGE: Record<string, { title: string; message: string }> = {
-  // passed if the user hits cancel at the OAuth consent screen
-  "access_denied": {
-    title: "Access error",
-    message: "You must grant Truffle access to read your YouTube account to continue.",
-  },
-  undefined: {
-    title: "Error",
-    message: "Error during login",
-  },
-};
+const OAUTH_ERROR_MESSAGE: Record<string, { title: string; message: string }> =
+  {
+    // passed if the user hits cancel at the OAuth consent screen
+    "access_denied": {
+      title: "Access error",
+      message:
+        "You must grant Truffle access to read your YouTube account to continue.",
+    },
+    undefined: {
+      title: "Error",
+      message: "Error during login",
+    },
+  };
 
 function AuthCallbackPage() {
   useStyleSheet(stylesheet);
@@ -41,6 +43,7 @@ function AuthCallbackPage() {
 
   useEffect(() => {
     if (truffleAccessToken) {
+      console.log("send token", truffleAccessToken);
       sendTruffleAccessTokenToOpener(truffleAccessToken);
     }
   }, [truffleAccessToken]);

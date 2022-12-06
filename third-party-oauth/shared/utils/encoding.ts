@@ -1,6 +1,6 @@
-import { jose } from '../../deps.ts'
+import { jose } from "../../deps.ts";
 
-import { OAuthSourceType } from '../mod.ts'
+import { OAuthSourceType } from "../mod.ts";
 const privateKey =
   `QUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUxGenp2MFhWNWNMTzJCaUxCYlBoTCtMV0RmellvS2JXc1RzNWFpS3FNcVkK`;
 // const privateKey = 'javainuse-secret-key'
@@ -27,7 +27,12 @@ export function decodeJwtPart(str: string) {
   return decodeURIComponent(str);
 }
 
-export async function signJwt(sourceType: OAuthSourceType, accessToken: string, orgId: string) {
+// TODO: let sever generate oauth url
+export async function signJwt(
+  sourceType: OAuthSourceType,
+  accessToken: string,
+  orgId: string,
+) {
   const payload = {
     sourceType,
     accessToken,

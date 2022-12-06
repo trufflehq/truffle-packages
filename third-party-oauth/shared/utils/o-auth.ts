@@ -1,8 +1,8 @@
 import { OAuthSourceType, signJwt } from "../mod.ts";
 
-const isStaging = window?._truffleInitialData?.clientConfig?.IS_STAGING_ENV
-const isProd = window?._truffleInitialData?.clientConfig?.IS_PROD_ENV
-const isDev = !isStaging && !isProd
+const isStaging = window?._truffleInitialData?.clientConfig?.IS_STAGING_ENV;
+const isProd = window?._truffleInitialData?.clientConfig?.IS_PROD_ENV;
+const isDev = !isStaging && !isProd;
 
 // TODO — figure out a better way to detect environments vs. using window._truffleInitialData
 const REDIRECT_URI = isStaging
@@ -17,10 +17,9 @@ const SCOPES = [
   "https://www.googleapis.com/auth/userinfo.email",
 ];
 
-const GOOGLE_CLIENT_ID =
-  (isStaging || isDev)
-    ? "553820530287-q469ekatefosqqt4fs03ap985inudto4.apps.googleusercontent.com"
-    : "710684531554-58ngiqv3jreg88ns30s3vkptb401rja1.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = (isStaging || isDev)
+  ? "553820530287-q469ekatefosqqt4fs03ap985inudto4.apps.googleusercontent.com"
+  : "710684531554-58ngiqv3jreg88ns30s3vkptb401rja1.apps.googleusercontent.com";
 
 export const getYouTubeOAuthUrl = async (
   accessToken: string,
@@ -38,6 +37,7 @@ export const getYouTubeOAuthUrl = async (
     `&state=${stateStr}`;
 };
 
+// TODO: let sever generate oauth url
 export const getOAuthUrl = (
   sourceType: OAuthSourceType,
   accessToken: string,
