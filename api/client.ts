@@ -8,13 +8,14 @@ import { Observable } from "https://npm.tfl.dev/rxjs?bundle";
 import {
   useMutation as _useMutation,
   useQuery as _useQuery,
+  UseQueryArgs,
   useSubscription as _useSubscription,
 } from "./urql-mods/index.ts";
 import { getClient as _getClient, makeClient } from "./urql-client.ts";
 
 // NOTE: want to keep the exports minimal so we don't have to always support all of urql
 // TODO: i think we can pull from urql/core instead of urql
-import { createRequest } from "https://npm.tfl.dev/urql@2";
+import { createRequest, OperationContext } from "https://npm.tfl.dev/urql@2";
 export { createRequest, gql } from "https://npm.tfl.dev/urql@2";
 
 export const useMutation = _useMutation;
@@ -22,12 +23,19 @@ export const useQuery = _useQuery;
 export const useSubscription = _useSubscription;
 export const getClient = _getClient;
 
-export function queryObservable(query, variables) {
+export function queryObservable(
+  query: string,
+  variables: Record<string, unknown>,
+) {
   // might be able to get rid of toPromise since urql returns an observable (wonka, not rxjs)
   return Obs.from(getClient().query(query, variables).toPromise());
 }
 
-export function pollingQueryObservable(interval, query, variables) {
+export function pollingQueryObservable(
+  interval: number,
+  query: string,
+  variables?: Record<string, unknown>,
+) {
   // have to convert to spec-compliant observable to work with RxJS
   // https://stackoverflow.com/questions/66309283/convert-ecmascript-observable-zen-observable-to-rxjs-observable/66380963#66380963
   const obs = new Observable((observer) => {
@@ -46,15 +54,22 @@ export function pollingQueryObservable(interval, query, variables) {
   return obs.pipe(op.poll(interval));
 }
 
-export function query(query, variables, operationContext) {
+export function query(
+  query: string,
+  variables?: Record<string, unknown>,
+  operationContext?: Partial<OperationContext>,
+) {
   return getClient().query(query, variables, operationContext).toPromise();
 }
 
-export function mutation(query, variables) {
+export function mutation(query: string, variables: Record<string, unknown>) {
   return getClient().mutation(query, variables).toPromise();
 }
 
-export function usePollingQuery(interval, queryInput) {
+export function usePollingQuery<V = object, D = any>(
+  interval: number,
+  queryInput: UseQueryArgs<V, D>,
+) {
   const [result, reexecuteQuery] = useQuery(queryInput);
 
   useEffect(() => {

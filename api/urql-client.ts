@@ -2,6 +2,7 @@ import {
   Client,
   createClient,
   defaultExchanges,
+  Exchange,
 } from "https://npm.tfl.dev/urql@2";
 
 import {
@@ -29,6 +30,6 @@ export function makeClient() {
       getAuthExchange(),
       !isSsr && getSubscriptionExchange(),
       ...defaultExchanges,
-    ].filter(Boolean),
+    ].filter(Boolean) as Exchange[],
   });
 }
