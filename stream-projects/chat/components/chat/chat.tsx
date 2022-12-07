@@ -4,6 +4,7 @@ import {
   For,
   // ExtensionInfo,
   getClient as _getClient,
+  jumper,
   ObservableArray,
   // extension
   ObservableObject,
@@ -88,11 +89,52 @@ function TextMessage(
     isVerified?: boolean;
   },
 ) {
+  const onDelete = () => {
+    console.log("delete", id);
+
+    jumper.call("layout.applyLayoutConfigSteps", {
+      layoutConfigSteps: [
+        {
+          action: "querySelector",
+          value: `[id^="${id.slice(0, -3)}"]`,
+        },
+        {
+          action: "webComponentMethod",
+          value: {
+            method: "showContextMenu",
+            args: [],
+          },
+        },
+      ],
+    });
+
+    // give the popup menu time to render
+    setTimeout(() => {
+      jumper.call("layout.applyLayoutConfigSteps", {
+        layoutConfigSteps: [
+          {
+            action: "querySelector",
+            value: "ytd-menu-popup-renderer",
+          },
+          {
+            action: "findByText",
+            value: "Remove"
+          },
+          {
+            action: 'click'
+          }
+        ],
+      });
+    }, 150);
+  };
+
   return (
     <div key={id} className="message">
       <span className="author">
         <span className="badges">
-          {badges?.map((badge) => <BadgeRenderer src={badge.src} tooltip={badge.tooltip} />)}
+          {badges?.map((badge) => (
+            <BadgeRenderer src={badge.src} tooltip={badge.tooltip} />
+          ))}
         </span>
         <span
           className={`name ${
@@ -105,13 +147,25 @@ function TextMessage(
           }}
         >
           {authorName}
-          {isVerified ? <BadgeRenderer src={VERIFIED_CHECK_IMG_URL} tooltip={"Verified"} /> : null}
+          {isVerified
+            ? (
+              <BadgeRenderer
+                src={VERIFIED_CHECK_IMG_URL}
+                tooltip={"Verified"}
+              />
+            )
+            : null}
         </span>
       </span>
       <span className="separator">
         :
       </span>
       {richText}
+      <span className="delete">
+        <button onClick={onDelete}>
+          delete
+        </button>
+      </span>
     </div>
   );
 }
