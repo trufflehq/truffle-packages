@@ -1,20 +1,11 @@
 import { MESSAGES } from "./messaging.ts";
-import { jumper } from "../../deps.ts";
+import { setAccessToken } from "../../deps.ts";
 
-export async function postTruffleAccessTokenToNative(
+export function postTruffleAccessTokenToNative(
   truffleAccessToken?: string,
+  orgId?: string,
 ) {
-  console.log("web to native...");
-
-  try {
-    await jumper.call("user.setAccessToken", {
-      accessToken: truffleAccessToken,
-    });
-  } catch (err) {
-    console.log("jumper err", err);
-  }
-
-  console.log("jumper called");
+  setAccessToken(truffleAccessToken, { orgId });
 
   // FIXME: legacy, rm after 12/15/2022
   const payload = {

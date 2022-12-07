@@ -1,4 +1,3 @@
-import isSsr from "https://tfl.dev/@truffle/utils@~0.0.22/ssr/is-ssr.ts";
 import { gql, makeOperation } from "https://npm.tfl.dev/urql@2";
 import { authExchange } from "https://npm.tfl.dev/@urql/exchange-auth@0";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
@@ -67,9 +66,11 @@ export function getAuthExchange() {
     getAuth: async ({ authState, mutate }) => {
       let accessToken = await getAccessToken();
 
-      // can't create an anon user during ssr because
-      // the user may actually exist, but has 3rd party cookies disabled
-      if (!accessToken && !isSsr) {
+      // TODO: ideally we don't want to create an anon user during ssr because
+      // the user may actually exist, but has 3rd party cookies disabled.
+      // BUT we have to for now since sporocarp will break if we don't have
+      // an accessToken
+      if (!accessToken) {
         console.log("no user found, creating one");
 
         const response = await mutate(LOGIN_ANON_MUTATION);

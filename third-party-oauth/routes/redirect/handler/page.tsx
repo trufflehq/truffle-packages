@@ -11,6 +11,7 @@ import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.17/goog
 
 interface AuthCallbackHashParams extends URLSearchParams {
   truffleAccessToken?: string;
+  orgId?: string;
   error?: string;
 }
 
@@ -43,8 +44,7 @@ function AuthCallbackPage() {
 
   useEffect(() => {
     if (truffleAccessToken) {
-      console.log("send token", truffleAccessToken);
-      sendTruffleAccessTokenToOpener(truffleAccessToken);
+      sendTruffleAccessTokenToOpener(truffleAccessToken, hashParams?.orgId);
     }
   }, [truffleAccessToken]);
 

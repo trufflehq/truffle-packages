@@ -38,15 +38,21 @@ class Jumper {
     this.handshakeTimeout = handshakeTimeout;
     this.isParentValidFn = isParentValidFn;
     this.isListening = false;
+    this.isNotTopWindow = typeof document !== "undefined" &&
+      window.self !== window.top;
     this.hasParent = globalThis?.window?.ReactNativeWebView ||
-      (typeof document !== "undefined" && indow.self !== window.top);
-    this.parent = globalThis?.window?.ReactNativeWebView ||
-      globalThis?.window?.parent;
+      this.isNotTopWindow;
+    if (this.isNotTopWindow) {
+      this.parent = globalThis?.window?.parent;
+    } else {
+      this.parent = globalThis?.window?.ReactNativeWebView ||
+        globalThis?.window?.parent;
+    }
 
     this.client = new RPCClient({
       timeout,
       postMessage: (msg, origin) => {
-        globalThis?.window?.ReactNativeWebView
+        globalThis?.window?.ReactNativeWebView && !this.isNotTopWindow
           ? this.parent?.postMessage(msg) // react-native doesn't like 2 params
           : this.parent?.postMessage(msg, origin);
       },

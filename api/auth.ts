@@ -10,6 +10,8 @@ import { default as globalContext } from "https://tfl.dev/@truffle/global-contex
 
 const ACCESS_TOKEN_COOKIE = "accessToken";
 
+const onAccessTokenChangeListeners = {};
+
 if (!isSsr) {
   jumper.call(
     "user.onAccessTokenChange",
@@ -17,6 +19,9 @@ if (!isSsr) {
     ({ accessToken }) => {
       setAccessTokenCookie(accessToken);
       _clearCache();
+      Object.values(onAccessTokenChangeListeners).forEach((listener) =>
+        listener?.(accessToken)
+      );
     },
   );
 
@@ -27,6 +32,19 @@ if (!isSsr) {
     }
   });
   // end legacy
+}
+
+export function onAccessTokenChange(
+  callback: (accessToken: string) => unknown,
+): { unsubscribe: () => void } {
+  const id = `${Date.now()}${Math.random()}`;
+  onAccessTokenChangeListeners[id] = callback;
+
+  return {
+    unsubscribe: () => {
+      delete onAccessTokenChangeListeners[id];
+    },
+  };
 }
 
 export async function getAccessToken(): Promise<string> {
@@ -47,14 +65,18 @@ export async function getAccessToken(): Promise<string> {
   return accessTokenFromJumper || getCookie(ACCESS_TOKEN_COOKIE);
 }
 
-export function setAccessToken(accessToken: string) {
+export function setAccessToken(
+  accessToken: string,
+  { orgId }: { orgId?: string } = {},
+) {
   if (!accessToken) {
     return console.warn("Attempting to set falsey accessToken");
   }
+
   setAccessTokenCookie(accessToken);
   jumper.call("user.setAccessToken", {
     // we'll eventually have different accessTokens per orgId
-    orgId: getOrgId(),
+    orgId: orgId || getOrgId(),
     accessToken,
   });
 
