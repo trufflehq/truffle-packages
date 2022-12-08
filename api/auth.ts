@@ -69,8 +69,8 @@ export function setAccessToken(
   accessToken: string,
   { orgId }: { orgId?: string } = {},
 ) {
-  if (!accessToken) {
-    return console.warn("Attempting to set falsey accessToken");
+  if (accessToken == null) {
+    return console.warn("Attempting to set nullish accessToken");
   }
 
   setAccessTokenCookie(accessToken);
