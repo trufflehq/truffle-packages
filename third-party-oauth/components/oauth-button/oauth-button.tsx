@@ -13,13 +13,18 @@ import stylesheet from "./oauth-button.scss.js";
 
 interface NewWindowProps {
   onClose: (() => void) | undefined;
-  url?: string;
-  top: number;
-  left: number;
-  right: number;
-  bottom: number;
-  width: number;
-  height: number;
+  url: string;
+  target: string;
+  options: {
+    style: {
+      top: number;
+      left: number;
+      right: number;
+      bottom: number;
+      width: number;
+      height: number;
+    };
+  };
 }
 
 function getSourceTypeTitle(sourceType: OAuthSourceType) {
@@ -69,12 +74,17 @@ export default function OAuthButton(
         const url = await oauthUrlPromise;
         openWindow({
           url,
-          width: 450,
-          height: 600,
-          top: 200,
-          left: 400,
-          right: 0,
-          bottom: 0,
+          options: {
+            style: {
+              width: 450,
+              height: 600,
+              top: 200,
+              left: 400,
+              right: 0,
+              bottom: 0,
+            },
+          },
+          target: "_blank",
           onClose,
         });
       }}
@@ -93,17 +103,23 @@ export default function OAuthButton(
 }
 
 function openWindow(
-  { url, width, height, top, right, bottom, left, onClose }: NewWindowProps,
+  { url, options, onClose }: NewWindowProps,
 ) {
   // TODO: method to get current platform (detect if native app, etc...)
   const isNative = window?.ReactNativeWebView;
   const openWindowFn = isNative ? openWindowNative : openWindowBrowser;
   const target = "_blank";
-  const options =
+
+  openWindowFn({ url, target, options, onClose });
+}
+
+function openWindowBrowser({ url, target, options, onClose }): void {
+  const { width, height, left, right, top, bottom } = options.style;
+  const windowFeatures =
     `width=${width},height=${height},left=${left},right=${right},top=${top},bottom=${bottom}`;
-  const openedWindow = openWindowFn({ url, target, options });
-  // FIXME: detect if webview is closed
-  const timer = setInterval(function () {
+  // jumper doesn't yet support passing messages from opened windows, so have to do manually
+  const openedWindow = window.open(url, target, windowFeatures);
+  const timer = setInterval(() => {
     if (openedWindow.closed) {
       clearInterval(timer);
       onClose?.();
@@ -111,12 +127,7 @@ function openWindow(
   }, 250);
 }
 
-function openWindowBrowser({ url, target, options }) {
-  // can't use jumper.call here since it'll use injection script jumper
-  // which doesn't show if window is opened or closed
-  return window.open(url, target, options);
-}
-
-function openWindowNative({ url, target, options }) {
-  return jumper.call("browser.openWindow", { url, target, options });
+function openWindowNative({ url, target, options }: NewWindowProps): void {
+  // we don't need to know when this closes. jumper handles updating the accessToken
+  jumper.call("browser.openWindow", { url, target, options });
 }
