@@ -1,11 +1,12 @@
 import { MESSAGES } from "./messaging.ts";
-import { setAccessToken } from "../../deps.ts";
+import { jumper, setAccessToken } from "../../deps.ts";
 
 export function postTruffleAccessTokenToNative(
   truffleAccessToken?: string,
   orgId?: string,
 ) {
   setAccessToken(truffleAccessToken, { orgId });
+  jumper.call("browser.closeWindow");
 
   // FIXME: legacy, rm after 12/15/2022
   const payload = {
