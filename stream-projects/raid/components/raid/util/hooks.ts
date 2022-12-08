@@ -44,6 +44,25 @@ export function useRaidData() {
   const { data: raidAlertData } = usePollingQuery(RAID_DATA_POLL_INTERVAL, {
     query: RAID_QUERY,
   });
+
+  if (!raidAlertData?.alertConnection?.nodes?.length) return {};
+
+  // FIXME: add a sort key in the resolver
+  // sort client side since we're querying by status and types which spans multiple partitions
+  raidAlertData.alertConnection.nodes = raidAlertData?.alertConnection?.nodes
+    .sort(function (a, b) {
+      const dateA = new Date(a.time);
+      const dateB = new Date(b.time);
+
+      if (dateA > dateB) {
+        return -1;
+      }
+      if (dateA < dateB) {
+        return 1;
+      }
+      return 0;
+    });
+
   const raidAlert = raidAlertData?.alertConnection?.nodes?.[0];
   const id = raidAlert?.id;
   const raidData = raidAlert?.data;
