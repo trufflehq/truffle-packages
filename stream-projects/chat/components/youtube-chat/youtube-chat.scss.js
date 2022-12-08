@@ -19,7 +19,7 @@ export default scss`
     top: 0;
     left: 0;
     right: 0;
-    z-index: 12;
+    z-index: 3;
     width: 100%;
   }
 

@@ -36,7 +36,7 @@ import {
   OrgUserWithChatInfoConnection,
   useOrgUserWithChatInfoAndConnections$,
   useTruffleEmoteMap$,
-  useYoutubeChannelId$,
+  useYoutubeStreamInfo$,
 } from "../../shared/mod.ts";
 
 import { DEFAULT_CHAT_COLORS, getStringHash } from "./utils.ts";
@@ -96,8 +96,8 @@ interface TruffleYouTubeChatMessage extends Partial<YouTubeChatMessage> {
 const YOUTUBE_CHAT_MESSAGE_ADDED = gql<
   { youtubeChatMessageAdded: TruffleYouTubeChatMessage }
 >`
-subscription YouTubeChatMessages($youtubeChannelId: String) {
-  youtubeChatMessageAdded(youtubeChannelId: $youtubeChannelId)
+subscription YouTubeChatMessages($youtubeChannelId: String, $youtubeVideoId: String) {
+  youtubeChatMessageAdded(youtubeChannelId: $youtubeChannelId, youtubeVideoId: $youtubeVideoId)
   {
     id
     youtubeUserId
@@ -281,18 +281,20 @@ function isAlreadySentMessage(
 function useYoutubeMessageAddedSubscription() {
   const messages$ = useObservable<NormalizedChatMessage[]>([]);
 
-  const { youtubeChannelId$ } = useYoutubeChannelId$();
+  const { youtubeChannelId$, youtubeVideoId$ } = useYoutubeStreamInfo$();
   const { emoteMap$ } = useTruffleEmoteMap$();
   const unsubscribeRef = useRef<() => void>();
   useObserve(() => {
     const youtubeChannelId = youtubeChannelId$.get();
+    const youtubeVideoId = youtubeVideoId$.get();
     const emoteMap = emoteMap$.get();
-    if (youtubeChannelId && emoteMap?.size) {
+    if ((youtubeVideoId || youtubeChannelId) && emoteMap?.size) {
       unsubscribeRef.current?.();
 
       const { unsubscribe } = pipe(
         getClient().subscription(YOUTUBE_CHAT_MESSAGE_ADDED, {
           youtubeChannelId,
+          youtubeVideoId,
         }),
         subscribe((response) => {
           const newMessage = response.data?.youtubeChatMessageAdded;

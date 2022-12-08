@@ -38,7 +38,7 @@ export { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.22/goog
 export type {
   ConnectionSourceType,
   PageIdentifier,
-} from "https://tfl.dev/@truffle/utils@0.0.22/embed/mod.ts";
+} from "https://tfl.dev/@truffle/utils@~0.0.22/embed/mod.ts";
 
 export type {
   Client,

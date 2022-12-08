@@ -1,0 +1,25 @@
+[
+  {
+    "id": "https://local-chat.rileymiller.dev/chat",
+    "defaultLayoutConfigSteps": [
+      {
+        "action": "querySelector",
+        "value": "#chatframe"
+      },
+      {
+        "action": "getIframeDocument"
+      },
+      {
+        "action": "querySelector",
+        "value": "#chat"
+      },
+      {
+        "action": "appendSubject"
+      }
+    ],
+    "domAction": "append",
+    "iframeUrl": "https://local-chat.rileymiller.dev/chat",
+    "orgId": "6f4edfe0-8446-11ec-b10d-3a946723cad5",
+    "slug": "https://local-chat.rileymiller.dev/chat"
+  }
+]
