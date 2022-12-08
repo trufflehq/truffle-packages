@@ -4,7 +4,7 @@ import Button from "https://tfl.dev/@truffle/ui@~0.1.0/components/button/button.
 import {
   useMutation,
   useQuery,
-} from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+} from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 import Highlight, {
   defaultProps,

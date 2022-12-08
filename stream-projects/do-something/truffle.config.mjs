@@ -105,7 +105,8 @@ export default {
                   "Creates an alert that notifies the streamer to do something.",
                 resourcePath: `${PACKAGE}/_Action/do-something-redeem`,
                 config: {
-                  edgeFunctionPath: `${PACKAGE}/_EdgeFunction/do-something-redeem:${ORG}`,
+                  edgeFunctionPath:
+                    `${PACKAGE}/_EdgeFunction/do-something-redeem:${ORG}`,
                 },
               },
             },
@@ -127,7 +128,8 @@ export default {
             `,
             variables: {
               input: {
-                resourcePath: `${PACKAGE}/_EventSubscription/do-something-redeem`,
+                resourcePath:
+                  `${PACKAGE}/_EventSubscription/do-something-redeem`,
                 actionRel: {
                   actionPath: `${PACKAGE}/_Action/do-something-redeem`,
                   runtimeData: {},

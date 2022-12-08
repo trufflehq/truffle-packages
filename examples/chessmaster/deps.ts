@@ -12,7 +12,7 @@ export {
   useMutation,
   usePollingQuery,
   useQuery,
-} from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+} from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 export { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 export { default as css } from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
 export { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;

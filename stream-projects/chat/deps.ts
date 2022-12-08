@@ -5,9 +5,9 @@ export {
   gql,
   setAccessToken,
   useMutation,
-} from "https://tfl.dev/@truffle/api@~0.1.19/mod.ts";
+} from "https://tfl.dev/@truffle/api@~0.2.0/mod.ts";
 
-export type { TruffleGQlConnection } from "https://tfl.dev/@truffle/api@~0.1.0/types/mod.ts";
+export type { TruffleGQlConnection } from "https://tfl.dev/@truffle/api@~0.2.0/types/mod.ts";
 export { default as _ } from "https://cdn.skypack.dev/lodash?dts";
 
 // @deno-types="https://npm.tfl.dev/v86/@types/react@~18.0/index.d.ts"

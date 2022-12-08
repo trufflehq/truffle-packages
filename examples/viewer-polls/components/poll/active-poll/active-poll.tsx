@@ -5,7 +5,7 @@ import { POLL_VOTE_MUTATION } from "../gql.ts";
 import { getPollTimeRemaining } from "../utils.ts";
 import PollOptions from "../poll-options/poll-options.tsx";
 import PollBody from "../poll-body/poll-body.tsx";
-import { useMutation } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+import { useMutation } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 import styleSheet from "./active-poll.scss.js";
 

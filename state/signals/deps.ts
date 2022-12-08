@@ -41,4 +41,4 @@ export {
   getClient,
   useQuery,
   useSubscription,
-} from "https://tfl.dev/@truffle/api@~0.1.11/mod.ts";
+} from "https://tfl.dev/@truffle/api@~0.2.0/mod.ts";
