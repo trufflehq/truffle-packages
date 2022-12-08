@@ -1,7 +1,7 @@
 import { gql, makeOperation } from "https://npm.tfl.dev/urql@2";
 import { authExchange } from "https://npm.tfl.dev/@urql/exchange-auth@0";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
-import { getAccessToken, setAccessToken } from "./auth.ts";
+import { getAccessToken, setAccessTokenCookie } from "./auth.ts";
 
 export const TRUFFLE_ACCESS_TOKEN_KEY = "mogul-menu:accessToken";
 const LOGIN_ANON_MUTATION = gql
@@ -58,7 +58,7 @@ export function getAuthExchange() {
 
       if (hasAuthError) {
         console.log("Auth error, retrying");
-        setAccessToken("");
+        setAccessTokenCookie("");
       }
 
       return hasAuthError;
@@ -75,7 +75,7 @@ export function getAuthExchange() {
 
         const response = await mutate(LOGIN_ANON_MUTATION);
         accessToken = response?.data?.userLoginAnon?.accessToken;
-        setAccessToken(accessToken);
+        setAccessTokenCookie(accessToken);
       }
       return { accessToken };
     },

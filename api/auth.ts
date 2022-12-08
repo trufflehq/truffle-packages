@@ -74,13 +74,16 @@ export function setAccessToken(
   }
 
   setAccessTokenCookie(accessToken);
+  _clearCache();
+  // set accessToken in highest possible storage we have, and notify anyone
+  // listening for accessToken changes
   jumper.call("user.setAccessToken", {
     // we'll eventually have different accessTokens per orgId
     orgId: orgId || getOrgId(),
     accessToken,
   });
 
-  // FIXME: legacy, rm 4/2023
+  // FIXME: legacy, rm 4/2023 (extension doesn't have user.setAccessToken setup properly in <=3.3.12)
   jumper.call("storage.set", {
     key: TRUFFLE_ACCESS_TOKEN_KEY,
     value: accessToken,
@@ -89,7 +92,7 @@ export function setAccessToken(
   // end legacy
 }
 
-function setAccessTokenCookie(accessToken: string) {
+export function setAccessTokenCookie(accessToken: string) {
   setCookie(ACCESS_TOKEN_COOKIE, accessToken, {});
 }
 
