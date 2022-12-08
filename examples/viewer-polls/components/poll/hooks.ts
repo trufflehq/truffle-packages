@@ -1,6 +1,6 @@
 import { PACKAGE_CONNECTION_QUERY, POLL_QUERY } from "./gql.ts";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
-import { usePollingQuery } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+import { usePollingQuery } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 
 export function useFetchPoll({ pollId }) {
   const context = globalContext.getStore();

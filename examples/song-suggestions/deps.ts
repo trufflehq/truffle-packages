@@ -13,7 +13,7 @@ export {
   gql,
   useMutation,
   useQuery,
-} from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+} from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 
 export { default as Button } from "https://tfl.dev/@truffle/ui@~0.1.0/components/button/button.tag.ts";
 export { default as TextField } from "https://tfl.dev/@truffle/ui@~0.1.0/components/text-field/text-field.tag.ts";

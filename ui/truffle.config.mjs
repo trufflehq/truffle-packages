@@ -1,6 +1,6 @@
 export default {
   name: "@truffle/ui",
-  version: "0.1.8",
+  version: "0.1.12",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   description: "Unified UI library (WIP)",
   // apiUrl: "https://mycelium.staging.bio/graphql",

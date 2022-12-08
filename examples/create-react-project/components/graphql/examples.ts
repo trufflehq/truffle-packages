@@ -1,4 +1,4 @@
-import { gql } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+import { gql } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 
 export default {
   me: {

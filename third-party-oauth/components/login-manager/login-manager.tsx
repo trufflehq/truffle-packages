@@ -47,6 +47,7 @@ export default function LoginManager(
   useStyleSheet(stylesheet);
   const [error, setError] = useState<{ title: string; message: string }>();
 
+  // TODO: remove? this all seems to be code from before server-side oauth
   useEffect(() => {
     oAuthAccessToken && state && (async () => {
       let truffleAccessToken;
@@ -78,7 +79,9 @@ export default function LoginManager(
   return (
     <div className="c-login-manager">
       <div className="inner">
-        {error ? <ErrorRenderer title={error.title} message={error.message} /> : <JetPackSnuffle />}
+        {error
+          ? <ErrorRenderer title={error.title} message={error.message} />
+          : <JetPackSnuffle />}
       </div>
     </div>
   );
@@ -103,7 +106,8 @@ const USER_CONNECTION_AUTH_ERR_CODE_TO_ERR: Record<
 > = {
   403: {
     title: "Access error",
-    message: "You must grant Truffle access to read your YouTube account to continue.",
+    message:
+      "You must grant Truffle access to read your YouTube account to continue.",
   },
   404: {
     title: "Youtube account error",
@@ -125,7 +129,8 @@ async function truffleConnectionLogin(
   oAuthAccessToken: string,
   state: string,
 ): Promise<string | null> {
-  const { orgId, accessToken: truffleAccessToken, sourceType } = await decodeState(state) || {};
+  const { orgId, accessToken: truffleAccessToken, sourceType } =
+    await decodeState(state) || {};
 
   // login as this OrgUser
   setAccessToken(truffleAccessToken);
@@ -156,8 +161,11 @@ export async function decodeState(state: string): Promise<DecodedAuth | null> {
   return state ? await verifyJWT(state) : null;
 }
 
-export function sendTruffleAccessTokenToOpener(truffleAccessToken: string) {
-  postTruffleAccessTokenToNative(truffleAccessToken);
+export function sendTruffleAccessTokenToOpener(
+  truffleAccessToken: string,
+  orgId: string,
+) {
+  postTruffleAccessTokenToNative(truffleAccessToken, orgId);
   postTruffleAccessTokenToOpener(truffleAccessToken);
   closeSelf();
 }

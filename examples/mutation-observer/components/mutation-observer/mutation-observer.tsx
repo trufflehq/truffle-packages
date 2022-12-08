@@ -2,7 +2,7 @@ import React, { useEffect } from "https://npm.tfl.dev/react";
 import randomColor from "https://npm.tfl.dev/randomcolor@~0.6.2";
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.2/jumper/jumper.ts";
 // import { getOrgId } from "https://tfl.dev/@truffle/utils@~0.0.2/site/site.ts";
-import { gql, query } from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+import { gql, query } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 
 // const GET_ORG_USER_QUERY = gql`query ConnectionGet ($input: ConnectionInput!) {
 //   connection(input: $input) {

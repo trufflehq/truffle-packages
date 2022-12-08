@@ -1,5 +1,5 @@
 import React, { useRef } from "https://npm.tfl.dev/react";
-import useObservables from "https://tfl.dev/@truffle/utils@0.0.3/obs/use-observables-react.ts";
+import useObservables from "https://tfl.dev/@truffle/utils@~0.0.3/obs/use-observables-react.ts";
 function Input({ valueSubject, type = "text", label, ref }) {
   const { currentValue } = useObservables(() => ({
     currentValue: valueSubject?.obs,

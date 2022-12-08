@@ -1,13 +1,13 @@
 // utils
 export {
-  _setAccessTokenAndClear,
   getAccessToken,
   getClient,
   gql,
+  setAccessToken,
   useMutation,
-} from "https://tfl.dev/@truffle/api@~0.1.19/mod.ts";
+} from "https://tfl.dev/@truffle/api@~0.2.0/mod.ts";
 
-export type { TruffleGQlConnection } from "https://tfl.dev/@truffle/api@^0.1.0/types/mod.ts";
+export type { TruffleGQlConnection } from "https://tfl.dev/@truffle/api@~0.2.0/types/mod.ts";
 export { default as _ } from "https://cdn.skypack.dev/lodash?dts";
 
 // @deno-types="https://npm.tfl.dev/v86/@types/react@~18.0/index.d.ts"
@@ -81,4 +81,4 @@ export {
 export type { OAuthResponse } from "https://tfl.dev/@truffle/third-party-oauth@^2.0.0/components/oauth-iframe/mod.ts";
 export type {
   OAuthSourceType,
-} from "https://tfl.dev/@truffle/third-party-oauth@^0.0.40/shared/mod.ts";
+} from "https://tfl.dev/@truffle/third-party-oauth@^2.0.0/shared/mod.ts";

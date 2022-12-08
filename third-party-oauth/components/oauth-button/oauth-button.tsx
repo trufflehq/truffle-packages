@@ -1,16 +1,31 @@
 import {
   ImageByAspectRatio,
+  jumper,
   React,
-  useEffect,
-  useState,
+  useMemo,
   useStyleSheet,
 } from "../../deps.ts";
 import { getOAuthUrl, OAuthSourceType } from "../../shared/mod.ts";
 import { usePostTruffleAccessTokenToParent } from "./hooks.ts";
 
-import NewWindow from "../new-window/new-window.tsx";
 import Button from "../button/button.tsx";
 import stylesheet from "./oauth-button.scss.js";
+
+interface NewWindowProps {
+  onClose: (() => void) | undefined;
+  url: string;
+  target: string;
+  options: {
+    style: {
+      top: number;
+      left: number;
+      right: number;
+      bottom: number;
+      width: number;
+      height: number;
+    };
+  };
+}
 
 function getSourceTypeTitle(sourceType: OAuthSourceType) {
   return sourceType === "youtube" ? "YouTube" : "Twitch";
@@ -44,28 +59,35 @@ export default function OAuthButton(
   },
 ) {
   useStyleSheet(stylesheet);
-  const [isOpen, setIsOpen] = useState(false);
-  const [url, setUrl] = useState("");
 
-  useEffect(() => {
-    const getUrl = async () => {
-      const oAuthUrl = await getOAuthUrl(sourceType, truffleAccessToken, orgId);
-      setUrl(oAuthUrl);
-    };
-    getUrl();
+  const oauthUrlPromise = useMemo(() => {
+    return getOAuthUrl(sourceType, truffleAccessToken, orgId);
   }, [truffleAccessToken, orgId]);
 
+  // listen for the new window to send us an accessToken, then post back to parent iframe
   usePostTruffleAccessTokenToParent();
-
-  const onWindowClose = () => {
-    setIsOpen(false);
-    onClose?.();
-  };
 
   return (
     <Button
       className={`${sourceType} oauth-button`}
-      onClick={() => setIsOpen(true)}
+      onClick={async () => {
+        const url = await oauthUrlPromise;
+        openWindow({
+          url,
+          options: {
+            style: {
+              width: 450,
+              height: 600,
+              top: 200,
+              left: 400,
+              right: 0,
+              bottom: 0,
+            },
+          },
+          target: "_blank",
+          onClose,
+        });
+      }}
     >
       <div className="logo">
         <ImageByAspectRatio
@@ -76,18 +98,36 @@ export default function OAuthButton(
         />
         {`${getTextVariant(variant)} ${getSourceTypeTitle(sourceType)}`}
       </div>
-      {isOpen && (
-        <NewWindow
-          onClose={onWindowClose}
-          url={url}
-          width={450}
-          height={600}
-          top={200}
-          left={400}
-          right={0}
-          bottom={0}
-        />
-      )}
     </Button>
   );
+}
+
+function openWindow(
+  { url, options, onClose }: NewWindowProps,
+) {
+  // TODO: method to get current platform (detect if native app, etc...)
+  const isNative = window?.ReactNativeWebView;
+  const openWindowFn = isNative ? openWindowNative : openWindowBrowser;
+  const target = "_blank";
+
+  openWindowFn({ url, target, options, onClose });
+}
+
+function openWindowBrowser({ url, target, options, onClose }): void {
+  const { width, height, left, right, top, bottom } = options.style;
+  const windowFeatures =
+    `width=${width},height=${height},left=${left},right=${right},top=${top},bottom=${bottom}`;
+  // jumper doesn't yet support passing messages from opened windows, so have to do manually
+  const openedWindow = window.open(url, target, windowFeatures);
+  const timer = setInterval(() => {
+    if (openedWindow.closed) {
+      clearInterval(timer);
+      onClose?.();
+    }
+  }, 250);
+}
+
+function openWindowNative({ url, target, options }: NewWindowProps): void {
+  // we don't need to know when this closes. jumper handles updating the accessToken
+  jumper.call("browser.openWindow", { url, target, options });
 }

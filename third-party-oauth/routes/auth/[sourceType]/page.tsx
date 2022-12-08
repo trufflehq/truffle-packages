@@ -30,9 +30,10 @@ function AuthPage() {
   const orgId = urlParams?.orgId;
   const variant = urlParams?.variant;
 
-  useEffect(() => {
-    setAccessToken(accessToken);
-  }, [accessToken]);
+  // shouldn't be necessary
+  // useEffect(() => {
+  //   setAccessToken(accessToken);
+  // }, [accessToken]);
 
   console.log({
     sourceType,

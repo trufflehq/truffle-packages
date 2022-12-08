@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "https://npm.tfl.dev/react";
 import {
   useMutation,
   useQuery,
-} from "https://tfl.dev/@truffle/api@~0.1.1/client.ts";
+} from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 import {
   ACTION_EXECUTE_MUTATION,
   getRemoteIncrementInput,

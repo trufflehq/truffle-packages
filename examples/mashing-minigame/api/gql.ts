@@ -1,10 +1,11 @@
-import { gql } from "https://tfl.dev/@truffle/api@~0.1.1/client.ts";
+import { gql } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 
 const MASHING_CONFIG_KEY = "mashingConfig";
-const MASHING_PACKAGE_ID = "208bee01-048b-11ed-b214-24c4e95f5b37"
-const MASHING_FUNCTION_ADMIN_START_ENDPOINT = "https://gxsvaymsxjpjenqvycnj.functions.supabase.co/mashing-function/admin/start"
-const MASHING_FUNCTION_GAME_INCREMENT_ENDPOINT = "https://gxsvaymsxjpjenqvycnj.functions.supabase.co/mashing-function/game/increment"
-
+const MASHING_PACKAGE_ID = "208bee01-048b-11ed-b214-24c4e95f5b37";
+const MASHING_FUNCTION_ADMIN_START_ENDPOINT =
+  "https://gxsvaymsxjpjenqvycnj.functions.supabase.co/mashing-function/admin/start";
+const MASHING_FUNCTION_GAME_INCREMENT_ENDPOINT =
+  "https://gxsvaymsxjpjenqvycnj.functions.supabase.co/mashing-function/game/increment";
 
 export const MASHING_CONFIG_QUERY = gql`
   query MashingConfigQuery ($input: OrgKeyValueInput) {
@@ -28,7 +29,6 @@ export const MASHING_RANK_QUERY = gql`
     }
 }
 `;
-
 
 export const MASHING_LEADERBOARD_QUERY = gql`
   query MashingLeaderboardQuery ($input: OrgUserCounterTypeInput) {
@@ -57,7 +57,7 @@ export const ORG_USER_COUNTER_TYPE_UPSERT = gql`
       }
     }
   }
-`
+`;
 
 export const MASHING_CONFIG_MUTATION = gql`
   mutation MashingConfigMutation ($input: KeyValueUpsertInput!) {
@@ -68,18 +68,21 @@ export const MASHING_CONFIG_MUTATION = gql`
       }
     }
   }
-`
+`;
 
-export const ACTION_EXECUTE_MUTATION = gql `
+export const ACTION_EXECUTE_MUTATION = gql`
   mutation ActionExecute ($input: ActionExecuteInput!) {
     actionExecute(input: $input) {
         hasExecuted
     }
   }
-`
+`;
 
-
-export function getUpdateRemoteConfigInput(orgUserCounterTypeId: string, orgId: string, endTime: Date) {
+export function getUpdateRemoteConfigInput(
+  orgUserCounterTypeId: string,
+  orgId: string,
+  endTime: Date,
+) {
   return {
     input: {
       actionPath: "@truffle/core@latest/_Action/webhook",
@@ -89,7 +92,7 @@ export function getUpdateRemoteConfigInput(orgUserCounterTypeId: string, orgId: 
         orgId,
         endTime: endTime,
       },
-      packageId: MASHING_PACKAGE_ID
+      packageId: MASHING_PACKAGE_ID,
     },
   };
 }
@@ -100,13 +103,12 @@ export function getRemoteIncrementInput(orgId: string) {
       actionPath: "@truffle/core@latest/_Action/webhook",
       runtimeData: {
         endpoint: MASHING_FUNCTION_GAME_INCREMENT_ENDPOINT,
-        orgId
+        orgId,
       },
-      packageId: MASHING_PACKAGE_ID
+      packageId: MASHING_PACKAGE_ID,
     },
   };
 }
-
 
 export function getCreateOrgUserCounterTypeInput(orgId: string) {
   return {
@@ -116,7 +118,10 @@ export function getCreateOrgUserCounterTypeInput(orgId: string) {
   };
 }
 
-export function getUpdateConfigInput(orgUserCounterTypeId: string, endTime: Date) {
+export function getUpdateConfigInput(
+  orgUserCounterTypeId: string,
+  endTime: Date,
+) {
   return {
     input: {
       sourceType: "org",

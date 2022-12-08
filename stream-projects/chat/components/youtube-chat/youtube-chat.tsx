@@ -1,5 +1,4 @@
 import {
-  _setAccessTokenAndClear,
   // urql
   Client,
   getAccessToken,

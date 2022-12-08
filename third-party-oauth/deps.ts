@@ -11,7 +11,7 @@ export {
   useRef,
   useState,
 } from "https://npm.tfl.dev/react";
-export { default as jumper } from "https://tfl.dev/@truffle/utils@0.0.3/jumper/jumper.ts";
+export { default as jumper } from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
 export { default as _ } from "https://cdn.skypack.dev/lodash?dts";
 export {
   gql,
@@ -24,7 +24,7 @@ export {
   useMutation,
   usePollingQuery,
   useQuery,
-} from "https://tfl.dev/@truffle/api@^0.1.4/mod.ts";
+} from "https://tfl.dev/@truffle/api@~0.2.0/mod.ts";
 export { default as ImageByAspectRatio } from "https://tfl.dev/@truffle/ui@~0.1.0/components/legacy/image-by-aspect-ratio/image-by-aspect-ratio.tsx";
 export { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 export { default as scss } from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";

@@ -13,7 +13,7 @@ import {
   _clearCache,
   gql,
   mutation,
-} from "https://tfl.dev/@truffle/api@~0.1.0/client.ts";
+} from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 import { setCookie } from "https://tfl.dev/@truffle/utils@~0.0.2/cookie/cookie.ts";
 
 // unsafeStatic was solution to https://stackoverflow.com/a/59833334

@@ -1,8 +1,7 @@
-import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
 import { gql, makeOperation } from "https://npm.tfl.dev/urql@2";
 import { authExchange } from "https://npm.tfl.dev/@urql/exchange-auth@0";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
-import { getAccessToken, setAccessToken } from "./auth.ts";
+import { getAccessToken, setAccessTokenCookie } from "./auth.ts";
 
 export const TRUFFLE_ACCESS_TOKEN_KEY = "mogul-menu:accessToken";
 const LOGIN_ANON_MUTATION = gql
@@ -59,25 +58,24 @@ export function getAuthExchange() {
 
       if (hasAuthError) {
         console.log("Auth error, retrying");
-        setAccessToken("");
+        setAccessTokenCookie("");
       }
 
       return hasAuthError;
     },
     getAuth: async ({ authState, mutate }) => {
-      // try existing accessToken
-      let accessToken;
-      try {
-        accessToken = await jumper.call("storage.get", {
-          key: TRUFFLE_ACCESS_TOKEN_KEY,
-        });
-      } catch {}
-      accessToken = accessToken || getAccessToken();
+      let accessToken = await getAccessToken();
 
+      // TODO: ideally we don't want to create an anon user during ssr because
+      // the user may actually exist, but has 3rd party cookies disabled.
+      // BUT we have to for now since sporocarp will break if we don't have
+      // an accessToken
       if (!accessToken) {
+        console.log("no user found, creating one");
+
         const response = await mutate(LOGIN_ANON_MUTATION);
         accessToken = response?.data?.userLoginAnon?.accessToken;
-        setAccessToken(accessToken);
+        setAccessTokenCookie(accessToken);
       }
       return { accessToken };
     },

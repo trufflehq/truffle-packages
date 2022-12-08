@@ -7,6 +7,7 @@ export default `
       height: 100%;
       padding: 0;
       margin: 0;
+      color-scheme: light only; /* otherwise dark mode inverts images and text too much */
     }
     /* avoid fouc */
     :not(:defined) {
