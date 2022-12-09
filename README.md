@@ -35,7 +35,7 @@
 **Stream Projects**  
 [@truffle/chat@`0.0.16`](./stream-projects/chat) - Chat client for 3rd party chats  
 [@truffle/do-something@`0.1.4`](./stream-projects/do-something) - Let your audience control you through collectibles!  
-[@truffle/raid@`0.0.10`](./stream-projects/raid) - Stream Raids  
+[@truffle/raid@`1.0.4`](./stream-projects/raid) - Stream Raids  
 [@truffle/better-chat@`0.0.13`](./stream-projects/better-chat) - Youtube chat mutation observer  
 [@truffle/notifications@`0.1.2`](./stream-projects/notifications) - Send notifications to your users when you go live.
 
