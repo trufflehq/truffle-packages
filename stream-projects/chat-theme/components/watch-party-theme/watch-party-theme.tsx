@@ -24,39 +24,21 @@ const setJumperYoutubeStyles = () => {
         value: {
           id: "watch-party-styles",
           css: `
-          /* TODO see if we can just override the yt css vars */
-          #chat.yt-live-chat-renderer {
-            background: #232255 !important;
+          :root {
+            --yt-live-chat-product-picker-hover-color: #232255 !important;
+            --yt-live-chat-background-color: #232255 !important;
+            --yt-live-chat-header-background-color: #020226 !important;
+            --yt-live-chat-action-panel-background-color: #020226 !important;
+            --yt-live-chat-message-highlight-background-color: #232255 !important;
+            --yt-live-chat-ninja-message-background-color: #020226 !important;
+            --yt-live-chat-vem-background-color: #020226 !important;
+            --yt-live-chat-banner-gradient-scrim: #020226 !important;
+            --yt-spec-menu-background: #020226 !important;
+            --yt-spec-raised-background: #020226 !important;
           }
 
-          yt-live-chat-banner-manager[has-active-banner] {
-            background: #232255 !important;
-          }
-
-          yt-live-chat-text-message-renderer[author-is-owner] {
-            background: #232255 !important;
-          }
-
-          yt-live-chat-header-renderer {
-            background: #020226 !important;
-          }
-
-          #items.yt-live-chat-ticker-renderer {
-            background: #020226 !important;
-          }
-
-          yt-live-chat-message-input-renderer {
-            background: #020226 !important;
-          }
-          #container.yt-live-chat-restricted-participation-renderer {
-            background: #020226 !important;
-          }
           #item-scroller.yt-live-chat-item-list-renderer::-webkit-scrollbar-track {
             background: #232255 !important;
-          }
-
-          #card.yt-live-chat-viewer-engagement-message-renderer {
-            background: #020226 !important;
           }
 
           #action-buttons.yt-live-chat-header-renderer::before {
@@ -69,9 +51,7 @@ const setJumperYoutubeStyles = () => {
             background-image: url(https://cdn.bio/assets/images/features/browser_extension/chat-themes/watch-party/watch-party-logosvg.svg);
             background-size: 100%;
             background-repeat: no-repeat;
-
-          }
-        
+          }        
           `,
         },
       },
@@ -81,13 +61,28 @@ const setJumperYoutubeStyles = () => {
   });
 };
 
+export const onCleanup = () => {
+  jumper.call("layout.applyLayoutConfigSteps", {
+    layoutConfigSteps: [
+      {
+        action: "setStyleSheet",
+        value: {
+          id: "watch-party-styles",
+          css: ``,
+        },
+      },
+    ],
+  });
+};
+
 export default function WatchPartyTheme(
   { sourceType = "youtube" }: { sourceType?: "youtube" | "twitch" },
 ) {
-  console.log("sourceType", sourceType);
   useStyleSheet(stylesheet);
   useEffect(() => {
-    setJumperYoutubeStyles();
+    if (sourceType === "youtube") {
+      setJumperYoutubeStyles();
+    }
   }, []);
 
   return (

@@ -1,87 +1,56 @@
 import {
-  getConnectionSourceType as getChannelSourceType,
-  gql,
   Memo,
   React,
-  TruffleGQlConnection,
   useComputed,
-  useExtensionInfo$,
+  useRef,
   useSelector,
   useStyleSheet,
-  useSubscriptionSignal,
 } from "../../deps.ts";
 import styleSheet from "./chat-theme.scss.js";
-import WatchPartyTheme from "../watch-party-theme/watch-party-theme.tsx";
-// TODO pass in the alert type dynamically
-export type AlertStatus = "ready" | "shown";
-export type AlertType = "raid-stream" | "activity" | "watch-party";
+import {
+  Alert,
+  useAlertSubscription$,
+  useSourcetype$,
+} from "../../shared/mod.ts";
+import WatchPartyTheme, {
+  onCleanup as onWatchPartyCleanup,
+} from "../watch-party-theme/watch-party-theme.tsx";
 
-export interface Alert<
-  SourceType extends string,
-  AlertDataType = Record<string, any>,
-> {
-  __typename: "Alert";
-  id: string;
-  userId: string;
-  orgId: string;
-  message: string;
-  status: AlertStatus;
-  type: AlertType;
-  sourceType: SourceType; // the sourceType of the activity alert
-  time: Date;
-  data: AlertDataType;
-}
+const ALERT_CONNECTION_LIMIT = 5;
 
-export type AlertConnection = TruffleGQlConnection<
-  Alert<AlertType, Record<string, unknown>>
->;
-export const ALERTS_SUBSCRIPTION = gql<{ alertConnection: AlertConnection }>`
-  subscription AlertsReadyByTypeSubscription($types: [String], $status: String, $limit: Int) {
-    alertConnection(input: { types: $types, status: $status }, first: $limit) {
-      nodes {
-        id
-        orgId
-        type
-        status
-        sourceType
-        data
-      }
-    }
-  }
-`;
-
-export function useAlertSubscription$(
-  { status, types, limit }: {
-    status?: string;
-    types?: string[];
-    limit?: number;
-  },
-) {
-  const { signal$: alertConnection$ } = useSubscriptionSignal(
-    ALERTS_SUBSCRIPTION,
-    { limit, status, types },
-  );
-
-  return { alertConnection$ };
-}
-
-interface ThemeProps {
+export interface ThemeProps {
+  alert?: Alert; // passing the alert down in case the theme stores state in the alert data
   sourceType?: "youtube" | "twitch";
 }
 
-type ThemeMap = {
-  [x: string]: (props: ThemeProps) => JSX.Element;
+export type ThemeMap = {
+  [x: string]: {
+    Component: (props: ThemeProps) => JSX.Element;
+    onCleanup?: () => void;
+  };
 };
 
-const ALERT_CHAT_THEMES: ThemeMap = {
-  "watch-party": WatchPartyTheme,
+export const ALERT_CHAT_THEMES: ThemeMap = {
+  "watch-party": {
+    Component: WatchPartyTheme,
+    onCleanup: onWatchPartyCleanup,
+  },
 };
 
-function ChatTheme() {
-  const { signal$: alertConnection$ } = useSubscriptionSignal(
-    ALERTS_SUBSCRIPTION,
-    { limit: 5, status: "ready", types: ["watch-party"] },
-  );
+function ChatTheme(
+  { themes = ALERT_CHAT_THEMES, alertTypes = ["watch-party"] }: {
+    themes?: ThemeMap;
+    alertTypes?: string[];
+  },
+) {
+  useStyleSheet(styleSheet);
+  const onCleanupFn = useRef<(() => void) | undefined>();
+  const { sourceType$ } = useSourcetype$();
+  const { alertConnection$ } = useAlertSubscription$({
+    limit: ALERT_CONNECTION_LIMIT,
+    status: "ready",
+    types: alertTypes,
+  });
 
   const latestAlert$ = useComputed(() =>
     alertConnection$.data?.get()?.alertConnection.nodes.find((alert) =>
@@ -89,36 +58,24 @@ function ChatTheme() {
     )
   );
 
-  const extensionInfo$ = useExtensionInfo$();
-  const sourceType$ = useComputed(() => {
-    const extensionInfo = extensionInfo$.get();
-    return extensionInfo?.pageInfo
-      ? getChannelSourceType(extensionInfo.pageInfo)
-      : undefined;
+  // call the onCleanup function when the alert type changes to
+  // cleanup any leftover jumper modifications or stylesheets
+  latestAlert$.type.onChange((type) => {
+    onCleanupFn.current?.();
+    if (type) {
+      onCleanupFn.current = themes[type].onCleanup;
+    }
   });
 
-  useStyleSheet(styleSheet);
   return (
     <div>
       <Memo>
         {() => {
-          // const alertConnection = useSelector(() => alertConnection$.get());
-
-          // console.log("alertConnection", alertConnection);
-
-          // // get latestAlert$ value using useSelector
           const sourceType = useSelector(() => sourceType$.get());
           const latestAlert = useSelector(() => latestAlert$.get());
           if (!latestAlert) return <></>;
-          console.log("latestAlert", latestAlert?.type);
-          const Component = ALERT_CHAT_THEMES[latestAlert?.type];
-          return (
-            <>
-              {/* <WatchPartyTheme /> */}
-              <Component sourceType={sourceType} />
-              {/* {ALERT_CHAT_THEMES[latestAlert?.type]} */}
-            </>
-          );
+          const Component = themes[latestAlert?.type].Component;
+          return <Component alert={latestAlert} sourceType={sourceType} />;
         }}
       </Memo>
     </div>

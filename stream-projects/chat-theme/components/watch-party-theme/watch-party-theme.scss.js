@@ -11,6 +11,7 @@ export default scss`
   left: 0;
   right: 0;
   bottom: 0;
+  overflow: hidden;
   // background: rgba(11, 10, 66, 0.4); // Makes the bg overlay opaque
 
   .background {

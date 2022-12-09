@@ -1,7 +1,6 @@
 import { scss } from '../../deps.ts'
 
 export default scss`
-
 .c-sparkles {
   position: relative !important;
   display: inline-block;
@@ -30,6 +29,4 @@ export default scss`
   50% { opacity: 1; }
   100% { opacity: 0; }
 }
-
-
 `
