@@ -45,7 +45,7 @@ class JumperInstance {
         // (infinite errors on page load/route)
         // FIXME: re-enable
         // console.log('missing jumper call', args)
-        if (err.message !== "Method not found") {
+        if (!err.message?.startsWith?.("Method not found")) {
           console.log(err);
         }
         return null;

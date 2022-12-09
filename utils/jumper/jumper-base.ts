@@ -174,7 +174,7 @@ class Jumper {
               return localMethod(method, params);
             }
           } catch (err) {
-            if (err.message === "Method not found" && parentError) {
+            if (err.message?.startsWith?.("Method not found") && parentError) {
               throw parentError;
             } else {
               throw err;
