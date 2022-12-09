@@ -24,11 +24,16 @@ const setJumperYoutubeStyles = () => {
         value: {
           id: "watch-party-styles",
           css: `
+          /* TODO see if we can just override the yt css vars */
           #chat.yt-live-chat-renderer {
             background: #232255 !important;
           }
 
           yt-live-chat-banner-manager[has-active-banner] {
+            background: #232255 !important;
+          }
+
+          yt-live-chat-text-message-renderer[author-is-owner] {
             background: #232255 !important;
           }
 
@@ -49,6 +54,23 @@ const setJumperYoutubeStyles = () => {
           #item-scroller.yt-live-chat-item-list-renderer::-webkit-scrollbar-track {
             background: #232255 !important;
           }
+
+          #card.yt-live-chat-viewer-engagement-message-renderer {
+            background: #020226 !important;
+          }
+
+          #action-buttons.yt-live-chat-header-renderer::before {
+            content: "";
+            width: 141px;
+            height: 24px;
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            background-image: url(https://cdn.bio/assets/images/features/browser_extension/chat-themes/watch-party/watch-party-logosvg.svg);
+            background-size: 100%;
+            background-repeat: no-repeat;
+
+          }
         
           `,
         },
@@ -60,7 +82,7 @@ const setJumperYoutubeStyles = () => {
 };
 
 export default function WatchPartyTheme(
-  { sourceType = 'youtube'}: { sourceType?: "youtube" | "twitch" },
+  { sourceType = "youtube" }: { sourceType?: "youtube" | "twitch" },
 ) {
   console.log("sourceType", sourceType);
   useStyleSheet(stylesheet);
