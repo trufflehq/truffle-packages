@@ -11,11 +11,11 @@
 [@truffle/context@`1.0.0`](./context) - Framework-agnostic context  
 [@truffle/youtube-js@`0.5.9`](./youtube-js) - Truffle fork of [Youtube.js](https://github.com/LuanRT/YouTube.js)  
 [@truffle/config@`1.0.0`](./config) - Env/API config  
-[@truffle/utils@`0.0.34`](./utils) - Browser & Node utilities  
+[@truffle/utils@`0.0.35`](./utils) - Browser & Node utilities  
 [@truffle/state@`0.0.12`](./state) - Signals coupled with Legend state for React  
 [@truffle/distribute@`2.0.20`](./distribute) - Wrappers to create web components from various frameworks  
 [@truffle/third-party-oauth@`2.0.22`](./third-party-oauth) - Login and other auth utilities  
-[@truffle/api@`0.2.11`](./api) - Hooks and functions for interacting with Truffle's backend  
+[@truffle/api@`0.2.27`](./api) - Hooks and functions for interacting with Truffle's backend  
 [@truffle/global-context@`1.0.0`](./global-context) - Truffle Global Context to share info between packages  
 [@truffle/events@`0.0.1`](./events) - Utilities for handling webhooks from Truffle  
 [@truffle/router@`1.0.0`](./router) - Framework-agnostic fs router
@@ -37,7 +37,7 @@
 [@truffle/do-something@`0.1.4`](./stream-projects/do-something) - Let your audience control you through collectibles!  
 [@truffle/raid@`1.0.4`](./stream-projects/raid) - Stream Raids  
 [@truffle/better-chat@`0.0.13`](./stream-projects/better-chat) - Youtube chat mutation observer  
-[@truffle/notifications@`0.1.2`](./stream-projects/notifications) - Send notifications to your users when you go live.
+[@truffle/notifications@`0.1.2`](./stream-projects/notifications) - Send notifications to your users when you go live.  
 [@truffle/chat-theme@`0.0.1`](./stream-projects/chat-theme) - Theme for chat
 
 <!-- END PACKAGES -->

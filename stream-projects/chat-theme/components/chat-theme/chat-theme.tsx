@@ -54,7 +54,7 @@ function ChatTheme(
   latestAlert$.type.onChange((type) => {
     onCleanupFn.current?.();
     if (type) {
-      onCleanupFn.current = themes[type].onCleanup;
+      onCleanupFn.current = themes[type]?.onCleanup;
     }
   });
 
