@@ -16,7 +16,6 @@ const setJumperYoutubeStyles = () => {
     "pointer-events": "none",
     "z-index": "1",
   };
-  // set styles for this iframe within YouTube's site
   jumper.call("layout.applyLayoutConfigSteps", {
     layoutConfigSteps: [
       {
@@ -55,7 +54,7 @@ const setJumperYoutubeStyles = () => {
           `,
         },
       },
-      { action: "useSubject" }, // start with our iframe
+      { action: "useSubject" },
       { action: "setStyle", value: style },
     ],
   });

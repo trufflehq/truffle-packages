@@ -1,12 +1,4 @@
-import {
-  Memo,
-  React,
-  useComputed,
-  useRef,
-  useSelector,
-  useStyleSheet,
-} from "../../deps.ts";
-import styleSheet from "./chat-theme.scss.js";
+import { Memo, React, useComputed, useRef, useSelector } from "../../deps.ts";
 import {
   Alert,
   useAlertSubscription$,
@@ -43,7 +35,6 @@ function ChatTheme(
     alertTypes?: string[];
   },
 ) {
-  useStyleSheet(styleSheet);
   const onCleanupFn = useRef<(() => void) | undefined>();
   const { sourceType$ } = useSourcetype$();
   const { alertConnection$ } = useAlertSubscription$({
