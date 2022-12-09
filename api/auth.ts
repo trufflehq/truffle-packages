@@ -4,6 +4,7 @@ import {
 } from "https://tfl.dev/@truffle/utils@~0.0.2/cookie/cookie.ts";
 import isSsr from "https://tfl.dev/@truffle/utils@~0.0.22/ssr/is-ssr.ts";
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
+import { signal } from "https://tfl.dev/@truffle/state@~0.0.12/signals/signal.ts";
 import { _clearCache } from "./client.ts";
 import { TRUFFLE_ACCESS_TOKEN_KEY } from "./auth-exchange.ts";
 import { default as globalContext } from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
@@ -11,6 +12,7 @@ import { default as globalContext } from "https://tfl.dev/@truffle/global-contex
 const ACCESS_TOKEN_COOKIE = "accessToken";
 
 const onAccessTokenChangeListeners = {};
+const accessToken$ = signal(getAccessToken());
 
 if (!isSsr) {
   jumper.call(
@@ -27,6 +29,7 @@ if (!isSsr) {
 
   // TODO: legacy, rm 4/2023
   jumper.call("comms.onMessage", (message: string) => {
+    getAccessToken().then(accessToken$.set);
     if (message === "user.accessTokenUpdated") {
       _clearCache();
     }
@@ -65,6 +68,10 @@ export async function getAccessToken(): Promise<string> {
   return accessTokenFromJumper || getCookie(ACCESS_TOKEN_COOKIE);
 }
 
+export function getAccessToken$() {  
+  return accessToken$;
+}
+
 export function setAccessToken(
   accessToken: string,
   { orgId }: { orgId?: string } = {},
@@ -93,6 +100,7 @@ export function setAccessToken(
 }
 
 export function setAccessTokenCookie(accessToken: string) {
+  accessToken$.set(accessToken);
   setCookie(ACCESS_TOKEN_COOKIE, accessToken, {});
 }
 
