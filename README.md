@@ -7,15 +7,15 @@
 <!-- START PACKAGES -->
 
 **Packages**  
-[@truffle/ui@`0.1.8`](./ui) - Unified UI library (WIP)  
+[@truffle/ui@`0.1.12`](./ui) - Unified UI library (WIP)  
 [@truffle/context@`1.0.0`](./context) - Framework-agnostic context  
 [@truffle/youtube-js@`0.5.9`](./youtube-js) - Truffle fork of [Youtube.js](https://github.com/LuanRT/YouTube.js)  
 [@truffle/config@`1.0.0`](./config) - Env/API config  
-[@truffle/utils@`0.0.22`](./utils) - Browser & Node utilities  
-[@truffle/state@`0.0.9`](./state) - Signals coupled with Legend state for React  
+[@truffle/utils@`0.0.34`](./utils) - Browser & Node utilities  
+[@truffle/state@`0.0.12`](./state) - Signals coupled with Legend state for React  
 [@truffle/distribute@`2.0.20`](./distribute) - Wrappers to create web components from various frameworks  
-[@truffle/third-party-oauth@`1.0.1`](./third-party-oauth) - Login and other auth utilities  
-[@truffle/api@`0.1.26`](./api) - Hooks and functions for interacting with Truffle's backend  
+[@truffle/third-party-oauth@`2.0.22`](./third-party-oauth) - Login and other auth utilities  
+[@truffle/api@`0.2.11`](./api) - Hooks and functions for interacting with Truffle's backend  
 [@truffle/global-context@`1.0.0`](./global-context) - Truffle Global Context to share info between packages  
 [@truffle/events@`0.0.1`](./events) - Utilities for handling webhooks from Truffle  
 [@truffle/router@`1.0.0`](./router) - Framework-agnostic fs router
@@ -33,10 +33,10 @@
 [@truffle/song-suggestions@`0.0.24`](./examples/song-suggestions) - Song Suggestions Suite
 
 **Stream Projects**  
-[@truffle/chat@`0.0.15`](./stream-projects/chat) - Chat client for 3rd party chats  
+[@truffle/chat@`0.0.16`](./stream-projects/chat) - Chat client for 3rd party chats  
 [@truffle/do-something@`0.1.4`](./stream-projects/do-something) - Let your audience control you through collectibles!  
-[@truffle/raid@`0.0.9`](./stream-projects/raid) - Stream Raids  
-[@truffle/better-chat@`0.0.11`](./stream-projects/better-chat) - Youtube chat mutation observer  
+[@truffle/raid@`0.0.10`](./stream-projects/raid) - Stream Raids  
+[@truffle/better-chat@`0.0.13`](./stream-projects/better-chat) - Youtube chat mutation observer  
 [@truffle/notifications@`0.1.2`](./stream-projects/notifications) - Send notifications to your users when you go live.
 
 <!-- END PACKAGES -->
