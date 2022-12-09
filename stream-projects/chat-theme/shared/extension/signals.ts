@@ -4,7 +4,7 @@ import {
   useExtensionInfo$,
 } from "../../deps.ts";
 
-export function useSourcetype$() {
+export function useSourceType$() {
   const extensionInfo$ = useExtensionInfo$();
   const sourceType$ = useComputed(() => {
     const extensionInfo = extensionInfo$.get();

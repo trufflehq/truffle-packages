@@ -2,7 +2,7 @@ import { Memo, React, useComputed, useRef, useSelector } from "../../deps.ts";
 import {
   Alert,
   useAlertSubscription$,
-  useSourcetype$,
+  useSourceType$,
 } from "../../shared/mod.ts";
 import WatchPartyTheme, {
   onCleanup as onWatchPartyCleanup,
@@ -36,7 +36,7 @@ function ChatTheme(
   },
 ) {
   const onCleanupFn = useRef<(() => void) | undefined>();
-  const { sourceType$ } = useSourcetype$();
+  const { sourceType$ } = useSourceType$();
   const { alertConnection$ } = useAlertSubscription$({
     limit: ALERT_CONNECTION_LIMIT,
     status: "ready",
@@ -51,6 +51,10 @@ function ChatTheme(
 
   // call the onCleanup function when the alert type changes to
   // cleanup any leftover jumper modifications or stylesheets
+  // NOTE: this doesn't really work if YT removes the iframe since this
+  // cleanup fn won't get called. We need some sort of way for the injection
+  // script to track this and somehow cleanup the steps/stylesheet mods from these
+  // chat themes
   latestAlert$.type.onChange((type) => {
     onCleanupFn.current?.();
     if (type) {

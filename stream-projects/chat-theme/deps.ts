@@ -13,13 +13,13 @@ export {
   useSignal,
   useSubscriptionSignal,
 } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
-export { gql } from "https://tfl.dev/@truffle/api@~0.1.19/mod.ts";
+export { gql } from "https://tfl.dev/@truffle/api@~0.2.0/mod.ts";
 export {
   Memo,
   useComputed,
   useSelector,
 } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
-export type { TruffleGQlConnection } from "https://tfl.dev/@truffle/api@^0.1.0/types/mod.ts";
+export type { TruffleGQlConnection } from "https://tfl.dev/@truffle/api@~0.2.0/types/mod.ts";
 export type { ExtensionInfo } from "https://tfl.dev/@truffle/utils@~0.0.22/embed/mod.ts";
 export {
   getConnectionSourceType,
