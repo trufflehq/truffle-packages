@@ -102,6 +102,7 @@ const generateSparkle = (color) => {
     // Bright yellow color:
     color,
     size: random(10, 20),
+    path: SPARKLE_PATHS[Math.floor(Math.random() * SPARKLE_PATHS.length)],
     style: {
       // Pick a random spot in the available space
       top: `${random(0, 100)}%`,
@@ -112,9 +113,7 @@ const generateSparkle = (color) => {
   };
 };
 
-function SparkleInstance({ color, size, style }) {
-  const path = SPARKLE_PATHS[Math.floor(Math.random() * SPARKLE_PATHS.length)];
-
+function SparkleInstance({ color, size, style, path }) {
   return (
     <div className="c-sparkle-instance" style={style}>
       <svg width={size} height={size} viewBox="0 0 68 68" fill="none">
@@ -212,6 +211,7 @@ export default function Sparkles({ color = "#FF38D3", children }) {
           color={sparkle.color}
           size={sparkle.size}
           style={sparkle.style}
+          path={sparkle.path}
         />
       ))}
       <strong className="child-wrapper">
