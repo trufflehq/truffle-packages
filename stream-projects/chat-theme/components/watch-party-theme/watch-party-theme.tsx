@@ -26,6 +26,8 @@ const setJumperYoutubeStyles = () => {
           :root {
             --yt-live-chat-product-picker-hover-color: #232255 !important;
             --yt-live-chat-background-color: #232255 !important;
+            --yt-live-chat-primary-text-color: #ffffff !important;
+            --yt-live-chat-secondary-text-color: #eeeeee !important;
             --yt-live-chat-header-background-color: #020226 !important;
             --yt-live-chat-action-panel-background-color: #020226 !important;
             --yt-live-chat-message-highlight-background-color: #232255 !important;
@@ -34,6 +36,7 @@ const setJumperYoutubeStyles = () => {
             --yt-live-chat-banner-gradient-scrim: #020226 !important;
             --yt-spec-menu-background: #020226 !important;
             --yt-spec-raised-background: #020226 !important;
+            --yt-spec-text-primary: #ffffff !important;
           }
 
           #item-scroller.yt-live-chat-item-list-renderer::-webkit-scrollbar-track {
