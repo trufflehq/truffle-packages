@@ -19,7 +19,7 @@
 [@truffle/context@`1.0.0`](./context) - Framework-agnostic context  
 [@truffle/state@`0.0.12`](./state) - Signals coupled with Legend state for React  
 [@truffle/youtube-js@`0.5.9`](./youtube-js) - Truffle fork of [Youtube.js](https://github.com/LuanRT/YouTube.js)  
-[@truffle/functions@`0.0.5`](./functions) - Utilities for creating Truffle Edge Functions.
+[@truffle/functions@`0.0.6`](./functions) - Utilities for creating Truffle Edge Functions.
 
 **Examples**  
 [@truffle/mutation-observer@`0.4.2`](./examples/mutation-observer) - Mutation Observer example  
