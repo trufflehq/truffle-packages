@@ -25,6 +25,8 @@ export function serveTruffleEdgeFunction<RuntimeDataType = unknown>(
     const accessToken = request.headers.get("x-access-token");
     const orgId = request.headers.get("x-org-id");
 
+    // TODO: implement some kind of mechanism to verify that the request is coming from truffle
+
     // return an error if they don't provide an access token
     if (!accessToken) {
       return makeResp(400, {
