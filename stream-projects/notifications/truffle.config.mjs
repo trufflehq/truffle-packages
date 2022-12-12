@@ -6,7 +6,7 @@ const PACKAGE = "@truffle/notifications";
 
 export default {
   name: PACKAGE,
-  version: "0.1.5",
+  version: "0.1.6",
   apiUrl: "https://mycelium.truffle.vip/graphql",
 
   // staging @dev settings
