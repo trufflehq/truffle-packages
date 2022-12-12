@@ -19,7 +19,7 @@
 [@truffle/context@`1.0.0`](./context) - Framework-agnostic context  
 [@truffle/state@`0.0.12`](./state) - Signals coupled with Legend state for React  
 [@truffle/youtube-js@`0.5.9`](./youtube-js) - Truffle fork of [Youtube.js](https://github.com/LuanRT/YouTube.js)  
-[@truffle/functions@`0.0.4`](./functions) - Utilities for creating Truffle Edge Functions
+[@truffle/functions@`0.0.4`](./functions) - Utilities for creating Truffle Edge Functions.
 
 **Examples**  
 [@truffle/mutation-observer@`0.4.2`](./examples/mutation-observer) - Mutation Observer example  
@@ -34,7 +34,7 @@
 [@truffle/chants@`0.0.5`](./examples/chants) - Chants
 
 **Stream Projects**  
-[@truffle/notifications@`0.1.4`](./stream-projects/notifications) - Send notifications to your users when you go live.  
+[@truffle/notifications@`0.1.2`](./stream-projects/notifications) - Send notifications to your users when you go live.  
 [@truffle/do-something@`0.1.4`](./stream-projects/do-something) - Let your audience control you through collectibles!  
 [@truffle/raid@`1.0.4`](./stream-projects/raid) - Stream Raids  
 [@truffle/better-chat@`0.0.13`](./stream-projects/better-chat) - Youtube chat mutation observer  
