@@ -1,0 +1,24 @@
+{
+  "version": "2",
+  "remote": {
+    "https://deno.land/std@0.167.0/async/abortable.ts": "80b2ac399f142cc528f95a037a7d0e653296352d95c681e284533765961de409",
+    "https://deno.land/std@0.167.0/async/deadline.ts": "2c2deb53c7c28ca1dda7a3ad81e70508b1ebc25db52559de6b8636c9278fd41f",
+    "https://deno.land/std@0.167.0/async/debounce.ts": "60301ffb37e730cd2d6f9dadfd0ecb2a38857681bd7aaf6b0a106b06e5210a98",
+    "https://deno.land/std@0.167.0/async/deferred.ts": "77d3f84255c3627f1cc88699d8472b664d7635990d5358c4351623e098e917d6",
+    "https://deno.land/std@0.167.0/async/delay.ts": "5a9bfba8de38840308a7a33786a0155a7f6c1f7a859558ddcec5fe06e16daf57",
+    "https://deno.land/std@0.167.0/async/mod.ts": "7809ad4bb223e40f5fdc043e5c7ca04e0e25eed35c32c3c32e28697c553fa6d9",
+    "https://deno.land/std@0.167.0/async/mux_async_iterator.ts": "770a0ff26c59f8bbbda6b703a2235f04e379f73238e8d66a087edc68c2a2c35f",
+    "https://deno.land/std@0.167.0/async/pool.ts": "6854d8cd675a74c73391c82005cbbe4cc58183bddcd1fbbd7c2bcda42b61cf69",
+    "https://deno.land/std@0.167.0/async/retry.ts": "e8e5173623915bbc0ddc537698fa418cf875456c347eda1ed453528645b42e67",
+    "https://deno.land/std@0.167.0/async/tee.ts": "3a47cc4e9a940904fd4341f0224907e199121c80b831faa5ec2b054c6d2eff5e",
+    "https://deno.land/std@0.167.0/http/server.ts": "e99c1bee8a3f6571ee4cdeb2966efad465b8f6fe62bec1bdb59c1f007cc4d155",
+    "https://tfl.dev/@truffle/functions@0.0.3/mod.ts": "d41d38c96ef1ec09a6c25e50bde7032bb3824279a6fe9b5f370fede836f0ed93",
+    "https://tfl.dev/@truffle/functions@0.0.3/utils/graphql-client.ts": "a9058e49649169b9e29c3f9b64cb7289f1ef239d94359ed4df9f677c2f2f0d9f",
+    "https://tfl.dev/@truffle/functions@0.0.3/utils/make-resp.ts": "6b913f32a33bf1c64d89d5f23e401da8bc9cf9d2a8f77c3125251de9daa9bf51",
+    "https://tfl.dev/@truffle/functions@0.0.3/utils/serve.ts": "0b99cd8db41d666978f23b804d7864375752314059911083701a50838fd39644",
+    "https://tfl.dev/@truffle/functions@0.0.4/mod.ts": "d41d38c96ef1ec09a6c25e50bde7032bb3824279a6fe9b5f370fede836f0ed93",
+    "https://tfl.dev/@truffle/functions@0.0.4/utils/graphql-client.ts": "a9058e49649169b9e29c3f9b64cb7289f1ef239d94359ed4df9f677c2f2f0d9f",
+    "https://tfl.dev/@truffle/functions@0.0.4/utils/make-resp.ts": "6b913f32a33bf1c64d89d5f23e401da8bc9cf9d2a8f77c3125251de9daa9bf51",
+    "https://tfl.dev/@truffle/functions@0.0.4/utils/serve.ts": "4a32644642e829cde175e5f8c89efc62261724ea3864578a2ff7dcdd8de0caff"
+  }
+}
