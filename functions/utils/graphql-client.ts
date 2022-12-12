@@ -1,4 +1,4 @@
-const MYCELIUM_API_URL = "https://mycelium.truffle.vip/graphql";
+const DEFAULT_MYCELIUM_API_URL = "https://mycelium.truffle.vip/graphql";
 
 interface MyceliumOptions {
   accessToken: string;
@@ -43,7 +43,7 @@ export class MyceliumClient {
   constructor(
     public accessToken: string,
     public orgId: string,
-    public apiUrl = MYCELIUM_API_URL,
+    public apiUrl = DEFAULT_MYCELIUM_API_URL,
   ) {}
 
   query = <T = unknown>(
