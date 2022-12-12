@@ -26,9 +26,10 @@ import * as TruffleFunctions from "https://tfl.dev/@truffle/functions@~0.0.4/mod
   - Use `MyceliumClient.query<T = unknown>(queryStr: string, variables?: Record<string, unknown>)` to make a request.
 
 - `EdgeFunctionHandlerParams`
+  - `myceliumClient` uses [graphql-request](https://deno.land/x/graphql_request@v4.1.0) under the hood; it's an instance of `GraphQLClient`.
 ```typescript
 interface EdgeFunctionHandlerParams<RuntimeDataType = unknown> {
-  myceliumClient: MyceliumClient;
+  myceliumClient: GraphQLClient;
   request: Request;
   connInfo: ConnInfo;
   runtimeData: RuntimeDataType;
@@ -40,20 +41,13 @@ interface EdgeFunctionHandlerParams<RuntimeDataType = unknown> {
 This example takes an org user id from the passed runtime data and returns an object with the org user's name.
 
 ```typescript
-import { makeResp, serveTruffleEdgeFunction, gql } from "https://tfl.dev/@truffle/functions@~0.0.4/mod.ts";
+import { makeResp, serveTruffleEdgeFunction } from "https://tfl.dev/@truffle/functions@~0.0.4/mod.ts";
 
 interface MyRuntimeData {
   orgUserId: string;
 }
 
-interface OrgUserQueryResponse {
-  orgUser: {
-    id: string;
-    name: string;
-  }
-}
-
-const ORG_USER_QUERY = gql`
+const ORG_USER_QUERY = `
   query OrgUser($orgUserId: String) {
     orgUser(input: { id: $id }) {
       id
@@ -69,7 +63,7 @@ serveTruffleEdgeFunction<InstallRouteRuntimeData>(
     const { orgUserId } = runtimeData;
 
     // query Mycelium for the org user
-    const { orgUser } = await myceliumClient.query<OrgUserQueryResponse>(
+    const { orgUser } = await myceliumClient.request(
       ORG_USER_QUERY,
       { orgUserId }
     );
