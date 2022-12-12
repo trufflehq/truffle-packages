@@ -1,7 +1,5 @@
 # @truffle/functions
 
-Requires Node >= 18
-
 Utilities for creating Truffle Edge Functions.
 
 ## Importing
