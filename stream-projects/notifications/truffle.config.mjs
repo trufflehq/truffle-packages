@@ -6,7 +6,7 @@ const PACKAGE = "@truffle/notifications";
 
 export default {
   name: PACKAGE,
-  version: "0.1.2",
+  version: "0.1.6",
   apiUrl: "https://mycelium.truffle.vip/graphql",
 
   // staging @dev settings
@@ -132,7 +132,7 @@ export default {
           actionPath: "@truffle/core@latest/_Action/graphql",
           runtimeData: {
             query: gql`
-              mutation EventCronUpsert($input: EventCronUpsertInput) {
+              mutation EventCronUpsert($input: EventCronUpsertInput!) {
                 eventCronUpsert(input: $input) {
                   eventCron {
                     id
@@ -155,7 +155,7 @@ export default {
           actionPath: "@truffle/core@latest/_Action/graphql",
           runtimeData: {
             query: gql`
-              mutation ActionUpsert($input: ActionUpsertInput) {
+              mutation ActionUpsert($input: ActionUpsertInput!) {
                 actionUpsert(input: $input) {
                   action {
                     id
