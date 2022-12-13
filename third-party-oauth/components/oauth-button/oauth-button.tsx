@@ -2,7 +2,10 @@ import {
   ImageByAspectRatio,
   jumper,
   React,
+  signal,
   useMemo,
+  useSelector,
+  useSignal,
   useStyleSheet,
 } from "../../deps.ts";
 import { getOAuthUrl, OAuthSourceType } from "../../shared/mod.ts";
@@ -25,6 +28,7 @@ interface NewWindowProps {
       height: number;
     };
   };
+  isNative?: boolean;
 }
 
 function getSourceTypeTitle(sourceType: OAuthSourceType) {
@@ -59,6 +63,7 @@ export default function OAuthButton(
   },
 ) {
   useStyleSheet(stylesheet);
+  const extensionInfo$ = useSignal(jumper.call("context.getInfo"));
 
   const oauthUrlPromise = useMemo(() => {
     return getOAuthUrl(sourceType, truffleAccessToken, orgId);
@@ -66,6 +71,13 @@ export default function OAuthButton(
 
   // listen for the new window to send us an accessToken, then post back to parent iframe
   usePostTruffleAccessTokenToParent();
+
+  const isNative = useSelector(() => {
+    const info = extensionInfo$.get();
+
+    return info?.platform === "native-ios" ||
+      info?.platform === "native-android";
+  });
 
   return (
     <Button
@@ -86,6 +98,7 @@ export default function OAuthButton(
           },
           target: "_blank",
           onClose,
+          isNative,
         });
       }}
     >
@@ -103,10 +116,8 @@ export default function OAuthButton(
 }
 
 function openWindow(
-  { url, options, onClose }: NewWindowProps,
+  { url, options, onClose, isNative }: NewWindowProps,
 ) {
-  // TODO: method to get current platform (detect if native app, etc...)
-  const isNative = window?.ReactNativeWebView;
   const openWindowFn = isNative ? openWindowNative : openWindowBrowser;
   const target = "_blank";
 
