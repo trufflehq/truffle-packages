@@ -47,8 +47,6 @@ function getSourceTypeIcon(sourceType: OAuthSourceType) {
     : "";
 }
 
-const extensionInfo$ = signal(jumper.call("context.getInfo"));
-
 export default function OAuthButton(
   {
     sourceType = "youtube",
