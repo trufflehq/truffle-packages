@@ -31,10 +31,7 @@ export { default as scss } from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.t
 export { default as globalContext } from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 export * as jose from "https://npm.tfl.dev/jose-browser-runtime";
 export { CombinedError } from "https://npm.tfl.dev/urql@2";
-export {
-  signal,
-  useSignal,
-} from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
+export { useSignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
 export {
   useSelector,
 } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
