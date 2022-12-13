@@ -118,10 +118,6 @@ export default function OAuthButton(
 function openWindow(
   { url, options, onClose, isNative }: NewWindowProps,
 ) {
-  // TODO: method to get current platform (detect if native app, etc...)
-  // const isNative = isNative(); // window?.ReactNativeWebView;
-  // window?.ReactNativeWebView?.postMessage(JSON.stringify(embedConnection));
-
   const openWindowFn = isNative ? openWindowNative : openWindowBrowser;
   const target = "_blank";
 
