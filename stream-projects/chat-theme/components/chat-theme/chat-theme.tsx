@@ -8,6 +8,10 @@ import WatchPartyTheme, {
   onCleanup as onWatchPartyCleanup,
 } from "../watch-party-theme/watch-party-theme.tsx";
 
+import DrLupoStJudeTheme, {
+  onCleanup as onDrLupoStJudeThemeCleanup,
+} from "../drlupo-stjude/drlupo-stjude-theme.tsx";
+
 const ALERT_CONNECTION_LIMIT = 5;
 
 export interface ThemeProps {
@@ -27,13 +31,18 @@ export const ALERT_CHAT_THEMES: ThemeMap = {
     Component: WatchPartyTheme,
     onCleanup: onWatchPartyCleanup,
   },
+  "drlupo-stjude": {
+    Component: DrLupoStJudeTheme,
+    onCleanup: onDrLupoStJudeThemeCleanup,
+  },
 };
 
 function ChatTheme(
-  { themes = ALERT_CHAT_THEMES, alertTypes = ["watch-party"] }: {
-    themes?: ThemeMap;
-    alertTypes?: string[];
-  },
+  { themes = ALERT_CHAT_THEMES, alertTypes = ["watch-party", "drlupo-stjude"] }:
+    {
+      themes?: ThemeMap;
+      alertTypes?: string[];
+    },
 ) {
   const onCleanupFn = useRef<(() => void) | undefined>();
   const { sourceType$ } = useSourceType$();
@@ -68,6 +77,7 @@ function ChatTheme(
         {() => {
           const sourceType = useSelector(() => sourceType$.get());
           const latestAlert = useSelector(() => latestAlert$.get());
+          console.log("latestAlert", latestAlert);
           if (!latestAlert) return <></>;
           const Component = themes[latestAlert?.type].Component;
           return <Component alert={latestAlert} sourceType={sourceType} />;

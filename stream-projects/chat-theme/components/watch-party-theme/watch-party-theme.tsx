@@ -1,6 +1,6 @@
 import { jumper, React, useEffect, useStyleSheet } from "../../deps.ts";
-import DiscoBall from "../disco-ball/disco-ball.tsx";
-import Sparkles from "../sparkles/sparkles.tsx";
+import DiscoBall from "./disco-ball/disco-ball.tsx";
+import Sparkles from "./sparkles/sparkles.tsx";
 import stylesheet from "./watch-party-theme.scss.js";
 
 const setJumperYoutubeStyles = () => {

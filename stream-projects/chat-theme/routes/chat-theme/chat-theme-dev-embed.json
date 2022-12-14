@@ -4,14 +4,7 @@
     "defaultLayoutConfigSteps": [
       {
         "action": "querySelector",
-        "value": "#chatframe"
-      },
-      {
-        "action": "getIframeDocument"
-      },
-      {
-        "action": "querySelector",
-        "value": "#chat"
+        "value": "body"
       },
       {
         "action": "appendSubject"
