@@ -15,30 +15,36 @@ export default scss`
   width: 100%;
   overflow: hidden;
 
+  .scroll {
+    position: absolute;
+    bottom: 8px;
+    left: calc(50% - 20px);
+    font-size: 12px;
+    padding: 6px;
+    background: #2196f3;
+    border-radius: 50%;
+    z-index: 2000;
+    color: #FFF;
+    cursor: pointer;
+  }
+
   .messages {
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    flex-direction: column-reverse;
     height: 100%;
-    /* background: var(--mm-color-bg-tertiary); */
     background: #181818; /* yt chat bg */
     color: #FFF;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    z-index: 2;
+    box-sizing: border-box;
+    position: relative;
+    padding-bottom: 8px;
 
-    > .inner {
-      display: flex;
-      flex-direction: column-reverse;
-      height: 100%;
-      overflow-y: scroll; /* has to be scroll, not auto */
-      -webkit-overflow-scrolling: touch;
-      width: 100%;
-      overflow-x: hidden;
-      box-sizing: border-box;
-      z-index: 2;
-      box-sizing: border-box;
-      position: relative;
-      padding-bottom: 8px;
-
-      > .message {
+      .message {
         display: block;
         font-size: 13px;
         line-height: 16px;
@@ -85,7 +91,6 @@ export default scss`
           color: #efeff1;
         }
       }
-    }
   }
 }
 

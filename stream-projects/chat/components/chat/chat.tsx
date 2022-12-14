@@ -1,15 +1,20 @@
 import {
+  arrowDownIconPath,
   classKebab,
   // urql
   For,
   // ExtensionInfo,
   getClient as _getClient,
+  Icon,
   ObservableArray,
   // extension
   ObservableObject,
   // react
   React,
   Switch,
+  useObservable,
+  useRef,
+  useSelector,
   useStyleSheet,
 } from "../../deps.ts";
 
@@ -21,32 +26,66 @@ const VERIFIED_CHECK_IMG_URL =
   "https://cdn.bio/assets/images/features/browser_extension/yt_check_white.svg";
 
 export default function Chat(
-  { messages$ }: { messages$: ObservableArray<NormalizedChatMessage[]> },
+  { messages$, hasScrollToBottom = false }: {
+    messages$: ObservableArray<NormalizedChatMessage[]>;
+    hasScrollToBottom?: boolean;
+  },
 ) {
+  const messagesRef = useRef<HTMLDivElement>(null);
+  const chatRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const isScrolling$ = useObservable(false);
   useStyleSheet(styleSheet);
 
-  // TODO: use this to render a scroll to bottom button
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const scrollTop = (e.target as HTMLDivElement).scrollTop;
     const isPinnedToBottom = scrollTop < 0;
     if (isPinnedToBottom) {
       console.log("not bottom");
+      isScrolling$.set(true);
     } else {
       console.log("pinned to bottom");
+      isScrolling$.set(false);
     }
   };
 
+  const isScrolling = useSelector(() => isScrolling$.get());
+
+  // This detects if the browser has overflow-anchor support and will pin the scroll
+  // to the bottom for flex-direction: column-reverse. Need this on safari right now.
+  const hasOverflowAnchorSupport = window.CSS.supports("overflow-anchor: auto");
+
+  messages$.onChange(() => {
+    const isScrolling = isScrolling$.get();
+
+    if (!hasOverflowAnchorSupport && !isScrolling) {
+      window.requestAnimationFrame(() => {
+        scrollToBottom();
+      });
+    }
+  });
+
+  function scrollToBottom() {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }
+
   return (
-    <div className="c-chat">
+    <div className="c-chat" ref={chatRef}>
       <ThemeComponent />
-      <div className="messages">
-        <div className="inner" onScroll={handleScroll}>
-          <For<NormalizedChatMessage, {}>
-            each={messages$}
-            item={ChatMessage}
-            optimized
-          />
-        </div>
+      {isScrolling && hasScrollToBottom
+        ? (
+          <div className="scroll" onClick={scrollToBottom}>
+            <Icon icon={arrowDownIconPath} color="#FFFFFF" size={20} />
+          </div>
+        )
+        : null}
+      <div className="messages" ref={messagesRef} onScroll={handleScroll}>
+        <div className="bottom" ref={bottomRef} />
+        <For<NormalizedChatMessage, {}>
+          each={messages$}
+          item={ChatMessage}
+          optimized
+        />
       </div>
     </div>
   );
@@ -92,7 +131,9 @@ function TextMessage(
     <div key={id} className="message">
       <span className="author">
         <span className="badges">
-          {badges?.map((badge) => <BadgeRenderer src={badge.src} tooltip={badge.tooltip} />)}
+          {badges?.map((badge) => (
+            <BadgeRenderer src={badge.src} tooltip={badge.tooltip} />
+          ))}
         </span>
         <span
           className={`name ${
@@ -105,7 +146,14 @@ function TextMessage(
           }}
         >
           {authorName}
-          {isVerified ? <BadgeRenderer src={VERIFIED_CHECK_IMG_URL} tooltip={"Verified"} /> : null}
+          {isVerified
+            ? (
+              <BadgeRenderer
+                src={VERIFIED_CHECK_IMG_URL}
+                tooltip={"Verified"}
+              />
+            )
+            : null}
         </span>
       </span>
       <span className="separator">

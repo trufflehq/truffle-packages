@@ -34,11 +34,12 @@ function HomePage() {
   return (
     <>
       <YoutubeChat
-        visibleBanners={[
-          <TestBanner />,
-          <TestBanner />,
-        ]}
+        // visibleBanners={[
+        //   <TestBanner />,
+        //   <TestBanner />,
+        // ]}
         hasChatInput
+        hasScrollToBottom
         inputControls={
           <>
             <button>click me</button>

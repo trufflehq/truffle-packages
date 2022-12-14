@@ -24,6 +24,7 @@ export {
   useState,
 } from "https://npm.tfl.dev/react";
 export { default as ImageByAspectRatio } from "https://tfl.dev/@truffle/ui@~0.1.0/components/legacy/image-by-aspect-ratio/image-by-aspect-ratio.tsx";
+export { arrowDownIconPath } from "https://tfl.dev/@truffle/ui@~0.1.0/legacy/icons.ts";
 export { default as scss } from "https://tfl.dev/@truffle/utils@~0.0.17/css/css.ts";
 export { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP
 export { default as classKebab } from "https://tfl.dev/@truffle/utils@~0.0.17/legacy/class-kebab.ts";
@@ -82,3 +83,4 @@ export type { OAuthResponse } from "https://tfl.dev/@truffle/third-party-oauth@^
 export type {
   OAuthSourceType,
 } from "https://tfl.dev/@truffle/third-party-oauth@^2.0.0/shared/mod.ts";
+export { default as Icon } from "https://tfl.dev/@truffle/ui@~0.1.0/components/legacy/icon/icon.tsx";
