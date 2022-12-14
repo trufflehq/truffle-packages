@@ -34,7 +34,7 @@ export default scss`
     height: 100%;
     background: #181818; /* yt chat bg */
     color: #FFF;
-    overflow-y: auto; /* has to be scroll, not auto */
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     width: 100%;
     overflow-x: hidden;
