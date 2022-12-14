@@ -286,6 +286,7 @@ function useYoutubeMessageAddedSubscription() {
   const unsubscribeRef = useRef<() => void>();
   useObserve(() => {
     const youtubeChannelId = youtubeChannelId$.get();
+    console.log('youtubeChannelId', youtubeChannelId)
     const youtubeVideoId = youtubeVideoId$.get();
     const emoteMap = emoteMap$.get();
     if ((youtubeVideoId || youtubeChannelId) && emoteMap?.size) {
@@ -343,8 +344,9 @@ function useYoutubeMessageAddedSubscription() {
 }
 
 export default function YoutubeChat(
-  { hasChatInput = false, inputControls, onSend, visibleBanners }: {
+  { hasChatInput = false, hasScrollToBottom = false, inputControls, onSend, visibleBanners }: {
     hasChatInput?: boolean;
+    hasScrollToBottom?: boolean;
     inputControls?: React.ReactNode;
     onSend?: (message: string) => void;
     visibleBanners?: React.ReactNode[];
@@ -429,7 +431,7 @@ export default function YoutubeChat(
           </div>
         )
         : null}
-      <Chat messages$={messages$} />
+      <Chat messages$={messages$} hasScrollToBottom={hasScrollToBottom} />
       {hasChatInput
         ? (
           <div className="input">
