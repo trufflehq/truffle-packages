@@ -52,7 +52,7 @@ export default function Chat(
   const isScrolling = useSelector(() => isScrolling$.get());
 
   // This detects if the browser has overflow-anchor support and will pin the scroll
-  // to the bottom for flex-direction: column-reverse. Need this on safari right now
+  // to the bottom for flex-direction: column-reverse. Need this on safari right now.
   const hasOverflowAnchorSupport = window.CSS.supports("overflow-anchor: auto");
 
   messages$.onChange(() => {
