@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
   useStyleSheet,
-} from "../../deps.ts";
+} from "../../../deps.ts";
 import stylesheet from "./sparkles.scss.js";
 
 const STARTING_SPARKLES = 20;

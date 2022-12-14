@@ -1,4 +1,4 @@
-import { React, useEffect, useRef, useStyleSheet } from "../../deps.ts";
+import { React, useEffect, useRef, useStyleSheet } from "../../../deps.ts";
 import stylesheet from "./disco-ball.scss.js";
 // https://codepen.io/msaetre/pen/eYwqrb
 
