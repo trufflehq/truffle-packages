@@ -53,6 +53,7 @@ const setJumperYoutubeStyles = () => {
             background-image: url(https://cdn.bio/assets/images/features/browser_extension/chat-themes/watch-party/watch-party-logosvg.svg);
             background-size: 100%;
             background-repeat: no-repeat;
+            z-index: 0;
           }        
           `,
         },
