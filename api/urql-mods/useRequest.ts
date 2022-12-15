@@ -4,7 +4,7 @@ import {
   createRequest,
   GraphQLRequest,
   TypedDocumentNode,
-} from "https://npm.tfl.dev/@urql/core@2";
+} from "https://npm.tfl.dev/@urql/core@^3.0.0";
 
 /** Creates a request from a query and variables but preserves reference equality if the key isn't changing */
 export function useRequest<Data = any, Variables = object>(

@@ -3,7 +3,7 @@ import {
   createClient,
   defaultExchanges,
   Exchange,
-} from "https://npm.tfl.dev/urql@2";
+} from "https://npm.tfl.dev/@urql/core@^3.0.0";
 
 import {
   getPackageContext,

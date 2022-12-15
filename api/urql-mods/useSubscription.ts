@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { DocumentNode } from "https://npm.tfl.dev/graphql";
-import { onEnd, pipe, subscribe } from "https://npm.tfl.dev/wonka";
+import { onEnd, pipe, subscribe } from "https://npm.tfl.dev/wonka@^6.0.0";
 import {
   useCallback,
   useEffect,
@@ -15,7 +15,7 @@ import {
   Operation,
   OperationContext,
   TypedDocumentNode,
-} from "https://npm.tfl.dev/@urql/core@2";
+} from "https://npm.tfl.dev/@urql/core@^3.0.0";
 
 import { getClient } from "../urql-client.ts";
 import { useRequest } from "./useRequest.ts";

@@ -13,20 +13,12 @@ export { default as jumper } from "https://tfl.dev/@truffle/utils@~0.0.17/jumper
 
 export {
   gql,
-  pollingQueryObservable,
   query,
-  queryObservable,
   useMutation,
   usePollingQuery,
   useQuery,
 } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 export { signal } from "https://tfl.dev/@truffle/state@~0.0.5/mod.ts";
 export { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
-
-export {
-  createSubject,
-  Obs,
-  op,
-} from "https://tfl.dev/@truffle/utils@~0.0.2/obs/subject.ts";
 
 export { default as Icon } from "https://tfl.dev/@truffle/ui@~0.1.0/components/legacy/icon/icon.tsx";

@@ -1,4 +1,4 @@
-import { gql, makeOperation } from "https://npm.tfl.dev/urql@2";
+import { gql, makeOperation } from "https://npm.tfl.dev/urql/core@^2.0.0";
 import { authExchange } from "https://npm.tfl.dev/@urql/exchange-auth@0";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 import { getAccessToken, setAccessTokenCookie } from "./auth.ts";

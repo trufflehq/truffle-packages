@@ -1,3 +1,5 @@
+// LEGACY, DO NOT USE
+
 import * as Rx from "https://npm.tfl.dev/rxjs?bundle";
 // TODO: figure out an alternative to this package. it's 10kb
 // and probably doesn't need to be (it pulls in from some packages that are

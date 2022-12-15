@@ -8,7 +8,7 @@ import {
   Source,
   subscribe,
   takeWhile,
-} from "https://npm.tfl.dev/wonka";
+} from "https://npm.tfl.dev/wonka@^6.0.0";
 import {
   useCallback,
   useEffect,
@@ -25,7 +25,7 @@ import {
   OperationResult,
   RequestPolicy,
   TypedDocumentNode,
-} from "https://npm.tfl.dev/@urql/core@2";
+} from "https://npm.tfl.dev/@urql/core@^3.0.0";
 
 import { getClient } from "../urql-client.ts";
 import { useRequest } from "./useRequest.ts";
