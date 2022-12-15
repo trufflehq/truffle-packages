@@ -10,10 +10,6 @@ export function useHandleTruffleOAuth(
         const parsedMessage: OAuthResponse = JSON.parse(e.data ?? "{}");
         if (parsedMessage?.type === MESSAGES.SET_ACCESS_TOKEN) {
           if (parsedMessage?.truffleAccessToken) {
-            console.log(
-              "connection accessToken",
-              parsedMessage.truffleAccessToken,
-            );
             onSetAccessToken(parsedMessage);
           }
         }
