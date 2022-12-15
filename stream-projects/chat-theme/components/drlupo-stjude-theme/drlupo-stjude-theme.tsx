@@ -1,11 +1,5 @@
-import {
-  jumper,
-  React,
-  useEffect,
-  useStyleSheet,
-} from "../../deps.ts";
+import { jumper, React, useEffect, useStyleSheet } from "../../deps.ts";
 import stylesheet from "./drlupo-stjude-theme.scss.js";
-
 
 const setJumperYoutubeChatStyles = () => {
   const style = {
@@ -60,7 +54,7 @@ const setJumperYoutubeChatStyles = () => {
             height: 24px;
             position: absolute;
             top: 12px;
-            right: 40px;
+            right: 64px;
             background-image: url(https://cdn.bio/assets/images/features/browser_extension/chat-themes/drlupo-stjude/logo.svg);
             background-size: 100%;
             background-repeat: no-repeat;
@@ -88,11 +82,8 @@ export const onChatCleanup = () => {
   });
 };
 
-
-
 export function DrLupoStJudeChatTheme() {
   useStyleSheet(stylesheet);
-
 
   useEffect(() => {
     setJumperYoutubeChatStyles();
