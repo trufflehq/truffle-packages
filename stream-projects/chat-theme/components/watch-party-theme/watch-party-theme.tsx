@@ -14,7 +14,7 @@ const setJumperYoutubeStyles = () => {
     left: 0,
     bottom: 0,
     "pointer-events": "none",
-    "z-index": "1",
+    "z-index": "-1",
   };
   jumper.call("layout.applyLayoutConfigSteps", {
     layoutConfigSteps: [
