@@ -16,6 +16,8 @@ export default function ChantsEmbed({
       height: "36px",
       padding: "6px 0 2px 0",
       overflow: "hidden",
+      position: "relative",
+      'z-index': "1"
       // display: "block",
     };
     // set styles for this iframe within YouTube's site

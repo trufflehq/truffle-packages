@@ -26,7 +26,7 @@
 [@truffle/create-react-project@`0.5.8`](./examples/create-react-project) - Truffle project React template  
 [@truffle/mashing-minigame@`0.2.12`](./examples/mashing-minigame) - Round-based minigame example  
 [@truffle/mutation-observer@`0.4.2`](./examples/mutation-observer) - Mutation Observer example  
-[@truffle/chants@`0.0.5`](./examples/chants) - Chants  
+[@truffle/chants@`0.0.6`](./examples/chants) - Adding an effectful but lightweight extension of emoji spam in live chat.  
 [@truffle/events-demo-backend@`0.0.12`](./examples/events-demo-backend) - [Events](../../events) demo  
 [@dev/chessmaster@`0.6.3`](./examples/chessmaster) - A package to facilitate a streamer vs chat chess game using https://lichess.org.  
 [@truffle/demo-discord-bot@`0.0.1`](./examples/discord-bot-demo) - Discord bot using Truffle API  

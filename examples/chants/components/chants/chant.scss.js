@@ -7,7 +7,7 @@ export default scss`
 
 .chant-container {
   background-size: 1800% 1800% !important;
-  background: rgba(#FFFF, 0.5);
+  background: rgba(#FFFF, 0.8);
 
   width: 80px;
   height: 36px;
