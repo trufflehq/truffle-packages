@@ -1,6 +1,14 @@
 import { scss } from '../../deps.ts'
 
 export default scss`
+html, body {
+  color-scheme: only light; /* otherwise dark mode inverts images and text too much */
+}
+
+:root {
+  color-scheme: only light;
+}
+
 .c-watch-party-chat-theme {
   display: flex;
   flex-direction: column;

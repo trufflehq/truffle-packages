@@ -22,6 +22,7 @@ const setJumperYoutubeChatStyles = () => {
           id: "drlupo-stjude-chat-styles",
           css: `
           :root {
+            color-scheme: only light;
             /* chat bg */
             --yt-live-chat-product-picker-hover-color: #141456 !important;
             --yt-live-chat-background-color: #141456 !important;
@@ -42,6 +43,7 @@ const setJumperYoutubeChatStyles = () => {
 
           yt-icon-button.yt-live-chat-item-list-renderer {
             background: #FF1A5B !important;
+            color-scheme: only light;
           }
 
           #item-scroller.yt-live-chat-item-list-renderer::-webkit-scrollbar-track {
@@ -227,8 +229,8 @@ export function DrLupoStJudePageTheme() {
   useStyleSheet(stylesheet);
 
   useEffect(() => {
-      initializeMutationObserverCleanupTracking();
-      setJumperYoutubePageStyles();
+    initializeMutationObserverCleanupTracking();
+    setJumperYoutubePageStyles();
   }, []);
 
   return (

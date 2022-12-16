@@ -24,6 +24,7 @@ const setJumperYoutubeChatStyles = () => {
           id: "watch-party-styles",
           css: `
           :root {
+            color-scheme: only light;
             --yt-live-chat-product-picker-hover-color: #232255 !important;
             --yt-live-chat-background-color: #232255 !important;
             --yt-live-chat-primary-text-color: #ffffff !important;
