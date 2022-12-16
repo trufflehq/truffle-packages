@@ -6,7 +6,8 @@ import ReactDOM from "https://npm.tfl.dev/react-dom/client";
 import "https://npm.tfl.dev/construct-style-sheets-polyfill@3.1.0";
 
 import reactToWebComponent from "./react-to-web-component.ts";
-import wcContainerContext from "./wc-container-context.ts";
+// always keep at ^1.0.0
+import wcContainerContext from "https://tfl.dev/@truffle/shared-contexts@^1.0.0/contexts/distribute/react-wc-container.ts";
 
 import { addFormat, urlToTagName } from "../shared.ts";
 
