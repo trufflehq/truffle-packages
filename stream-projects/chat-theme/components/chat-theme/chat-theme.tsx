@@ -1,31 +1,23 @@
-import { Memo, React, useComputed, useRef, useSelector } from "../../deps.ts";
-import {
-  Alert,
-  useAlertSubscription$,
-  useSourceType$,
-} from "../../shared/mod.ts";
-import WatchPartyTheme, {
-  onCleanup as onWatchPartyCleanup,
+import { React } from "../../deps.ts";
+import { ThemeMap } from "../../shared/mod.ts";
+import WatchPartyChatTheme, {
+  onChatThemeCleanup as onWatchPartyChatThemeCleanup,
 } from "../watch-party-theme/watch-party-theme.tsx";
 
-const ALERT_CONNECTION_LIMIT = 5;
-
-export interface ThemeProps {
-  alert?: Alert; // passing the alert down in case the theme stores state in the alert data
-  sourceType?: "youtube" | "twitch";
-}
-
-export type ThemeMap = {
-  [x: string]: {
-    Component: (props: ThemeProps) => JSX.Element;
-    onCleanup?: () => void;
-  };
-};
+import {
+  DrLupoStJudeChatTheme,
+  onChatCleanup as onDrLupoStJudeChatThemeCleanup,
+} from "../drlupo-stjude-theme/drlupo-stjude-theme.tsx";
+import { AlertTheme } from "../alert-theme/alert-theme.tsx";
 
 export const ALERT_CHAT_THEMES: ThemeMap = {
   "watch-party": {
-    Component: WatchPartyTheme,
-    onCleanup: onWatchPartyCleanup,
+    Component: WatchPartyChatTheme,
+    onCleanup: onWatchPartyChatThemeCleanup,
+  },
+  "drlupo-stjude": {
+    Component: DrLupoStJudeChatTheme,
+    onCleanup: onDrLupoStJudeChatThemeCleanup,
   },
 };
 
@@ -35,46 +27,7 @@ function ChatTheme(
     alertTypes?: string[];
   },
 ) {
-  const onCleanupFn = useRef<(() => void) | undefined>();
-  const { sourceType$ } = useSourceType$();
-  const { alertConnection$ } = useAlertSubscription$({
-    limit: ALERT_CONNECTION_LIMIT,
-    status: "ready",
-    types: alertTypes,
-  });
-
-  const latestAlert$ = useComputed(() =>
-    alertConnection$.data?.get()?.alertConnection.nodes.find((alert) =>
-      alert?.status === "ready"
-    )
-  );
-
-  // call the onCleanup function when the alert type changes to
-  // cleanup any leftover jumper modifications or stylesheets
-  // NOTE: this doesn't really work if YT removes the iframe since this
-  // cleanup fn won't get called. We need some sort of way for the injection
-  // script to track this and somehow cleanup the steps/stylesheet mods from these
-  // chat themes
-  latestAlert$.type.onChange((type) => {
-    onCleanupFn.current?.();
-    if (type) {
-      onCleanupFn.current = themes[type]?.onCleanup;
-    }
-  });
-
-  return (
-    <div>
-      <Memo>
-        {() => {
-          const sourceType = useSelector(() => sourceType$.get());
-          const latestAlert = useSelector(() => latestAlert$.get());
-          if (!latestAlert) return <></>;
-          const Component = themes[latestAlert?.type].Component;
-          return <Component alert={latestAlert} sourceType={sourceType} />;
-        }}
-      </Memo>
-    </div>
-  );
+  return <AlertTheme themes={themes} alertTypes={alertTypes} />;
 }
 
 export default ChatTheme;

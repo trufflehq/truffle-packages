@@ -1,7 +1,7 @@
 import { scss } from '../../deps.ts'
 
 export default scss`
-.c-watch-party-theme {
+.c-watch-party-chat-theme {
   display: flex;
   flex-direction: column;
   height: 100%;

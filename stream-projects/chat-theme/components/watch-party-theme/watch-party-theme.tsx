@@ -1,9 +1,9 @@
 import { jumper, React, useEffect, useStyleSheet } from "../../deps.ts";
-import DiscoBall from "../disco-ball/disco-ball.tsx";
-import Sparkles from "../sparkles/sparkles.tsx";
+import DiscoBall from "./disco-ball/disco-ball.tsx";
+import Sparkles from "./sparkles/sparkles.tsx";
 import stylesheet from "./watch-party-theme.scss.js";
 
-const setJumperYoutubeStyles = () => {
+const setJumperYoutubeChatStyles = () => {
   const style = {
     width: "100%",
     height: "100%",
@@ -64,7 +64,7 @@ const setJumperYoutubeStyles = () => {
   });
 };
 
-export const onCleanup = () => {
+export const onChatThemeCleanup = () => {
   jumper.call("layout.applyLayoutConfigSteps", {
     layoutConfigSteps: [
       {
@@ -78,18 +78,18 @@ export const onCleanup = () => {
   });
 };
 
-export default function WatchPartyTheme(
+export default function WatchPartyChatTheme(
   { sourceType = "youtube" }: { sourceType?: "youtube" | "twitch" },
 ) {
   useStyleSheet(stylesheet);
   useEffect(() => {
     if (sourceType === "youtube") {
-      setJumperYoutubeStyles();
+      setJumperYoutubeChatStyles();
     }
   }, []);
 
   return (
-    <div className="c-watch-party-theme">
+    <div className="c-watch-party-chat-theme">
       <Sparkles>
         <div className="background" />
       </Sparkles>
