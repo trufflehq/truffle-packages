@@ -1,6 +1,14 @@
 import scss from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
 
 export default scss`
+html, body {
+  color-scheme: only light; /* otherwise dark mode inverts images and text too much */
+}
+
+:root {
+  color-scheme: only light;
+}
+
 .c-chants {
   display: flex;
 }

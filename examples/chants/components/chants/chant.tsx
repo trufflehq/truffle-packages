@@ -117,6 +117,10 @@ function Chants(
           value: {
             id: "chants-header-style",
             css: `
+            :root {
+              color-scheme: only light;
+            }
+
             [data-truffle-id="${id}"] {
               background: ${state.headerBackground.get()};
               background-size: 1800% 1800%;
