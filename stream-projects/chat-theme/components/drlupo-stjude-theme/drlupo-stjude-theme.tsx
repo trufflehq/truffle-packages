@@ -227,8 +227,8 @@ export function DrLupoStJudePageTheme() {
   useStyleSheet(stylesheet);
 
   useEffect(() => {
-    initializeMutationObserverCleanupTracking();
-    setJumperYoutubePageStyles();
+      initializeMutationObserverCleanupTracking();
+      setJumperYoutubePageStyles();
   }, []);
 
   return (
