@@ -159,6 +159,14 @@ const setJumperYoutubePageStyles = () => {
             --paper-dialog-background-color: #0B0B1F !important;
           }
 
+          .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled {
+            background: #FF1A5B !important;
+          }
+          
+          .yt-spec-button-shape-next--filled {
+            background: #FF1A5B !important;
+          }
+
           yt-chip-cloud-chip-renderer[chip-style=STYLE_DEFAULT][selected] {
             background-color: #FF1A5B !important;
           }
