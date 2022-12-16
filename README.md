@@ -39,7 +39,7 @@
 [@truffle/raid@`1.0.4`](./stream-projects/raid) - Stream Raids  
 [@truffle/better-chat@`0.0.13`](./stream-projects/better-chat) - Youtube chat mutation observer  
 [@truffle/notifications@`0.1.6`](./stream-projects/notifications) - Send notifications to your users when you go live.  
-[@truffle/chat-theme@`0.0.16`](./stream-projects/chat-theme) - Theme for chat
+[@truffle/chat-theme@`0.0.18`](./stream-projects/chat-theme) - Theme for chat
 
 <!-- END PACKAGES -->
 
