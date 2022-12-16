@@ -194,8 +194,20 @@ const setJumperYoutubePageStyles = () => {
         },
       },
     ],
+    mutatedElementId: "drlupo-stjude-page-styles",
   });
 };
+
+function initializeMutationObserverCleanupTracking() {
+  jumper.call("layout.listenForElements", {
+    listenElementLayoutConfigSteps: [
+      { action: "querySelector", value: "ytd-watch-metadata" },
+    ],
+    observerConfig: { childList: true, subtree: true },
+    targetQuerySelector: "something-else-that-will-never-match",
+    shouldCleanupMutatedElements: true,
+  }, () => {});
+}
 
 export const onPageCleanup = () => {
   jumper.call("layout.applyLayoutConfigSteps", {
@@ -215,6 +227,7 @@ export function DrLupoStJudePageTheme() {
   useStyleSheet(stylesheet);
 
   useEffect(() => {
+    initializeMutationObserverCleanupTracking();
     setJumperYoutubePageStyles();
   }, []);
 
