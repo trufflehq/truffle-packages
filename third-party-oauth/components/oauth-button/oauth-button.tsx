@@ -76,7 +76,7 @@ export default function OAuthButton(
     const info = extensionInfo$.get();
 
     return info?.platform === "native-ios" ||
-      info?.platform === "native-android";
+      info?.platform === "native-android" || Boolean(window?.ReactNativeWebView);
   });
 
   return (

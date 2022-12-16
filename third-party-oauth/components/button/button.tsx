@@ -92,8 +92,10 @@ export default function Button({
   const [isLoading, setIsLoading] = useState(false);
   const _isDisabled = isDisabled || (shouldHandleLoading && isLoading);
 
-  const clickHandler = async () => {
+  const clickHandler = async (e: React.MouseEvent) => {
     if (_isDisabled) return;
+    e.stopPropagation();
+    e.preventDefault();
 
     if (shouldHandleLoading) {
       setIsLoading(true);
