@@ -42,6 +42,10 @@ const setJumperYoutubeChatStyles = () => {
             --yt-spec-text-primary: #ffffff !important;
           }
 
+          html, [light] {
+            --yt-live-chat-text-input-field-color: #ffffff !important;
+          }
+
           .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled {
             background: #FF1A5B !important;
           }
@@ -53,6 +57,11 @@ const setJumperYoutubeChatStyles = () => {
 
           #item-scroller.yt-live-chat-item-list-renderer::-webkit-scrollbar-track {
             background: #15153C !important;
+          }
+
+          #item-scroller.yt-live-chat-item-list-renderer::-webkit-scrollbar-thumb {
+            background: #1E1E63 !important;
+            border: 2px solid #15153C !important;
           }
 
           #action-buttons.yt-live-chat-header-renderer::before {
@@ -153,6 +162,22 @@ const setJumperYoutubePageStyles = () => {
             --paper-dialog-background-color: #0B0B1F !important;
             --ytd-searchbox-legacy-button-color: #15153C !important;
             --ytd-searchbox-legacy-button-hover-color: #15153C !important;
+          }
+
+          html, [light] {
+            --yt-spec-wordmark-text: #ffffff !important;
+            --yt-spec-text-primary: #ffffff !important;
+            --ytd-searchbox-legacy-border-color: #0B0B1F !important;
+            --ytd-searchbox-legacy-border-shadow-color: #15153C !important;
+            --ytd-searchbox-legacy-button-hover-border-color: #15153C !important;
+            --ytd-searchbox-legacy-button-border-color: #15153C !important;
+            --yt-spec-general-background-a: #15153C !important;
+
+            --iron-icon-fill-color: #ffffff !important;
+            /* --iron-icon-stroke-color: #ffffff !important; */
+            --yt-spec-text-secondary: #F0ECEC	!important;
+            --light-theme-base-color: #ffffff !important;
+            --ytd-searchbox-text-color: #ffffff !important;
           }
 
           html[darker-dark-theme] {
