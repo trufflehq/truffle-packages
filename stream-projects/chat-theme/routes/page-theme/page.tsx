@@ -3,7 +3,7 @@ import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/rea
 import PageTheme from "../../components/page-theme/page-theme.tsx";
 
 function PageThemePage() {
-  return <PageTheme />;
+  return <PageTheme alertTypes={['drlupo-stjude', 'scuffed-world-tour-theme']} />;
 }
 
 export default toDist(PageThemePage, import.meta.url);
