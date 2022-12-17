@@ -3,7 +3,7 @@ import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/rea
 import ChatTheme from "../../components/chat-theme/chat-theme.tsx";
 
 function ChatThemePage() {
-  return <ChatTheme alertTypes={['drlupo-stjude', 'watch-party']} />;
+  return <ChatTheme alertTypes={['drlupo-stjude', 'watch-party', 'scuffed-world-tour-theme']} />;
 }
 
 export default toDist(ChatThemePage, import.meta.url);

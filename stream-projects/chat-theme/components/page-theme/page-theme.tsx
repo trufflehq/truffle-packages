@@ -5,12 +5,20 @@ import {
   DrLupoStJudePageTheme,
   onPageCleanup as onDrLupoStJudePageThemeCleanup,
 } from "../drlupo-stjude-theme/drlupo-stjude-theme.tsx";
+import {
+  ScuffedWorldTourPageTheme,
+  onPageCleanup as onScuffedWorldTourThemeCleanup,
+} from "../scuffed-world-tour-theme/scuffed-world-tour-theme.tsx";
 import { AlertTheme } from "../alert-theme/alert-theme.tsx";
 
 export const ALERT_PAGE_THEMES: ThemeMap = {
   "drlupo-stjude": {
     Component: DrLupoStJudePageTheme,
     onCleanup: onDrLupoStJudePageThemeCleanup,
+  },
+  "scuffed-world-tour-theme": {
+    Component: ScuffedWorldTourPageTheme,
+    onCleanup: onScuffedWorldTourThemeCleanup,
   },
 };
 
