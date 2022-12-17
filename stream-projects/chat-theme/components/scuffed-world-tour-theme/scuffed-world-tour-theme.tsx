@@ -19,7 +19,7 @@ const setJumperYoutubeChatStyles = () => {
       {
         action: "setStyleSheet",
         value: {
-          id: "drlupo-stjude-chat-styles",
+          id: "scuffed-world-tour-chat-styles",
           css: `
           :root {
             color-scheme: only light;
@@ -54,6 +54,12 @@ const setJumperYoutubeChatStyles = () => {
           #item-scroller.yt-live-chat-item-list-renderer::-webkit-scrollbar-track {
             background: #222222 !important;
           }
+
+          #item-scroller.yt-live-chat-item-list-renderer::-webkit-scrollbar-thumb {
+            background: #343434 !important;
+            border: 2px solid #222222 !important;
+          }
+
           yt-live-chat-header-renderer {
             position: relative !important;
             z-index: 1 !important;
@@ -97,7 +103,7 @@ const setJumperYoutubeChatStyles = () => {
           }
 
           yt-live-chat-text-message-renderer {
-            background: rgba(255, 255, 255, 0.1) !important;
+            background: rgba(34,34,34, 0.5) !important;
           }
           
           `,
@@ -115,7 +121,7 @@ export const onChatCleanup = () => {
       {
         action: "setStyleSheet",
         value: {
-          id: "drlupo-stjude-chat-styles",
+          id: "scuffed-world-tour-chat-styles",
           css: ``,
         },
       },
@@ -187,6 +193,22 @@ const setJumperYoutubePageStyles = () => {
             --paper-dialog-background-color: #222222 !important;
             --ytd-searchbox-legacy-button-color: #343434 !important;
             --ytd-searchbox-legacy-button-hover-color: #343434 !important;
+          }
+
+          html, [light] {
+            --yt-spec-wordmark-text: #ffffff !important;
+            --yt-spec-text-primary: #ffffff !important;
+            --ytd-searchbox-legacy-border-color: #222222 !important;
+            --ytd-searchbox-legacy-border-shadow-color: #343434 !important;
+            --ytd-searchbox-legacy-button-hover-border-color: #343434 !important;
+            --ytd-searchbox-legacy-button-border-color: #343434 !important;
+            --yt-spec-general-background-a: #343434 !important;
+
+            --iron-icon-fill-color: #ffffff !important;
+            /* --iron-icon-stroke-color: #ffffff !important; */
+            --yt-spec-text-secondary: #F0ECEC	!important;
+            --light-theme-base-color: #ffffff !important;
+            --ytd-searchbox-text-color: #ffffff !important;
           }
 
           html[darker-dark-theme] {
