@@ -31,11 +31,11 @@ const setJumperYoutubeChatStyles = () => {
 
             /* context chat styles */
             --yt-live-chat-header-background-color: #343434 !important;
-            --yt-live-chat-action-panel-background-color: #343434 !important;
+            --yt-live-chat-action-panel-background-color: #222222 !important;
             --yt-live-chat-message-highlight-background-color: #343434 !important;
             --yt-live-chat-ninja-message-background-color: #343434 !important;
             --yt-live-chat-vem-background-color: #343434 !important;
-            --yt-live-chat-banner-gradient-scrim: #343434 !important;
+            --yt-live-chat-banner-gradient-scrim: linear-gradient(rgba(0, 0, 0, 0.95), transparent) !important;
             --yt-spec-menu-background: #343434 !important;
             --yt-spec-raised-background: #343434 !important;
             
@@ -84,7 +84,7 @@ const setJumperYoutubeChatStyles = () => {
             z-index: 1 !important;
           }
 
-          yt-live-chat-message-input-renderer::before {
+          /*yt-live-chat-message-input-renderer::before {
             content: "";
             width: 100%;
             height: 100%;
@@ -96,7 +96,7 @@ const setJumperYoutubeChatStyles = () => {
             z-index: -1;
             background-image: url(https://cdn.bio/assets/images/features/browser_extension/chat-themes/scuffed-world-tour/chat_bottombar_bg.png);
             background-size: 100%;
-          }
+          }*/
 
           #items {
             background: rgba(0,0,0,0.5) !important;
@@ -164,7 +164,7 @@ const setJumperYoutubePageStyles = () => {
             /* dialog bg */
             --paper-dialog-background-color: #222222 !important;
             
-            --yt-spec-brand-background-primary: #343434 !important;
+            --yt-spec-brand-background-primary: #222222 !important;
 
             /* hide chat bg */
             --yt-spec-touch-response: #343434 !important;
@@ -264,7 +264,7 @@ const setJumperYoutubePageStyles = () => {
             z-index: 1 !important;
           }
 
-          ytd-toggle-button-renderer::after {
+          /*ytd-toggle-button-renderer::after {
             content: "";
             width: 100%;
             height: 100%;
@@ -276,7 +276,7 @@ const setJumperYoutubePageStyles = () => {
             z-index: -1;
             background-image: url(https://cdn.bio/assets/images/features/browser_extension/chat-themes/scuffed-world-tour/chat_bottombar_bg.png);
             background-size: 100%;
-          }
+          }*/
           `,
         },
       },

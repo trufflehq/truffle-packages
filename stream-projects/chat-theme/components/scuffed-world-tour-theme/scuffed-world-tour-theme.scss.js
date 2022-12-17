@@ -1,4 +1,4 @@
-import { scss } from '../../deps.ts'
+import { scss } from "../../deps.ts";
 
 export default scss`
 html, body {
@@ -29,7 +29,7 @@ html, body {
     bottom: 0;
     height: 100%;
     width: 100%;
-    background: rgba(255,255,255, 0.1);
+    /*background: rgba(255,255,255, 0.1);*/
 
     &:after {
       content: '';
@@ -48,4 +48,4 @@ html, body {
   }
 }
 
-`
+`;
