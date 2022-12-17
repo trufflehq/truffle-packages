@@ -35,7 +35,7 @@ const setJumperYoutubeChatStyles = () => {
             --yt-live-chat-message-highlight-background-color: #15153C !important;
             --yt-live-chat-ninja-message-background-color: #15153C !important;
             --yt-live-chat-vem-background-color: #15153C !important;
-            --yt-live-chat-banner-gradient-scrim: #15153C !important;
+            --yt-live-chat-banner-gradient-scrim: linear-gradient(rgba(0, 0, 0, 0.95), transparent) !important;
             --yt-spec-menu-background: #15153C !important;
             --yt-spec-raised-background: #15153C !important;
             
