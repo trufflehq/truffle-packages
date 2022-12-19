@@ -1,4 +1,4 @@
-import { gql, makeOperation } from "https://npm.tfl.dev/urql/core@^3.0.0";
+import { gql, makeOperation } from "https://npm.tfl.dev/@urql/core@^3.0.0";
 import { authExchange } from "https://npm.tfl.dev/@urql/exchange-auth@^1.0.0";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 import { getAccessToken, setAccessTokenCookie } from "./auth.ts";
@@ -57,7 +57,7 @@ export function getAuthExchange() {
       );
 
       if (hasAuthError) {
-        console.log("Auth error, retrying");
+        console.log("Auth error, retrying", error);
         setAccessTokenCookie("");
       }
 

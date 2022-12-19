@@ -47,7 +47,7 @@ export type {
   OperationContext,
   TypedDocumentNode,
 } from "https://npm.tfl.dev/urql@2";
-export { pipe, subscribe } from "https://npm.tfl.dev/wonka@^6.0.0"";
+export { pipe, subscribe } from "https://npm.tfl.dev/wonka@^6.0.0";
 export {
   Computed,
   For,

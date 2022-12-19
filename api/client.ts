@@ -1,8 +1,5 @@
 import { useEffect } from "https://npm.tfl.dev/react";
-import { pipe, take, toObservable } from "https://npm.tfl.dev/wonka@^6.0.0"";
 import { setPackageContext } from "https://tfl.dev/@truffle/global-context@^1.0.0/package-context.ts";
-
-import { Observable } from "https://npm.tfl.dev/rxjs?bundle";
 
 import {
   useMutation as _useMutation,
@@ -13,7 +10,6 @@ import {
 import { getClient as _getClient, makeClient } from "./urql-client.ts";
 
 // NOTE: want to keep the exports minimal so we don't have to always support all of urql
-import { createRequest, OperationContext } from "https://npm.tfl.dev/@urql/core@^3.0.0";
 export { createRequest, gql } from "https://npm.tfl.dev/@urql/core@^3.0.0";
 
 export const useMutation = _useMutation;

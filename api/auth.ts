@@ -8,11 +8,12 @@ import { signal } from "https://tfl.dev/@truffle/state@~0.0.12/signals/signal.ts
 import { _clearCache } from "./client.ts";
 import { TRUFFLE_ACCESS_TOKEN_KEY } from "./auth-exchange.ts";
 import { default as globalContext } from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
+import {
+  getPackageContext,
+  setPackageContext,
+} from "https://tfl.dev/@truffle/global-context@^1.0.0/package-context.ts";
 
 const ACCESS_TOKEN_COOKIE = "accessToken";
-
-const onAccessTokenChangeListeners = {};
-const accessToken$ = signal(getAccessToken());
 
 if (!isSsr) {
   jumper.call(
@@ -21,7 +22,7 @@ if (!isSsr) {
     ({ accessToken }) => {
       setAccessTokenCookie(accessToken);
       _clearCache();
-      Object.values(onAccessTokenChangeListeners).forEach((listener) =>
+      Object.values(getOnAccessTokenChangeListeners()).forEach((listener) =>
         listener?.(accessToken)
       );
     },
@@ -29,7 +30,7 @@ if (!isSsr) {
 
   // TODO: legacy, rm 4/2023
   jumper.call("comms.onMessage", (message: string) => {
-    getAccessToken().then(accessToken$.set);
+    getAccessToken().then(getAccessToken$().set);
     if (message === "user.accessTokenUpdated") {
       _clearCache();
     }
@@ -41,11 +42,11 @@ export function onAccessTokenChange(
   callback: (accessToken: string) => unknown,
 ): { unsubscribe: () => void } {
   const id = `${Date.now()}${Math.random()}`;
-  onAccessTokenChangeListeners[id] = callback;
+  getOnAccessTokenChangeListeners()[id] = callback;
 
   return {
     unsubscribe: () => {
-      delete onAccessTokenChangeListeners[id];
+      delete getOnAccessTokenChangeListeners()[id];
     },
   };
 }
@@ -68,8 +69,29 @@ export async function getAccessToken(): Promise<string> {
   return accessTokenFromJumper || getCookie(ACCESS_TOKEN_COOKIE);
 }
 
-export function getAccessToken$() {  
-  return accessToken$;
+// TODO: simplify process of get/set from context
+export function getOnAccessTokenChangeListeners() {
+  const context = getPackageContext("@truffle/api@0");
+  if (!context.onAccessTokenChangeListeners) {
+    setPackageContext("@truffle/api@0", {
+      ...context,
+      onAccessTokenChangeListeners: {},
+    });
+  }
+
+  return context.onAccessTokenChangeListeners;
+}
+
+export function getAccessToken$() {
+  const context = getPackageContext("@truffle/api@0");
+  if (!context.accessToken$) {
+    setPackageContext("@truffle/api@0", {
+      ...context,
+      accessToken$: signal(getAccessToken()),
+    });
+  }
+
+  return context.accessToken$;
 }
 
 export function setAccessToken(
@@ -100,7 +122,7 @@ export function setAccessToken(
 }
 
 export function setAccessTokenCookie(accessToken: string) {
-  accessToken$.set(accessToken);
+  getAccessToken$().set(accessToken);
   setCookie(ACCESS_TOKEN_COOKIE, accessToken, {});
 }
 
