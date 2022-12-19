@@ -167,7 +167,11 @@ class JumperInstance {
 }
 
 const jumper = new JumperInstance();
-if (!isSsr) {
+if (!isSsr && !window._isTruffleJumperListening) {
+  // HACK: only want 1 jumper listening even if this file somehow ends up
+  // loaded by browser/bundle multiple times.
+  // TODO: restructure jumper to automatically listen and only do so once per layer
+  window._isTruffleJumperListening = true;
   jumper.listen();
 }
 
