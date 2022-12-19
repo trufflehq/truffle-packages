@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from "https://npm.tfl.dev/react";
-import { pipe, toPromise } from "https://npm.tfl.dev/wonka";
+import { pipe, toPromise } from "https://npm.tfl.dev/wonka@^6.0.0";
 
 import {
   CombinedError,
@@ -14,7 +14,7 @@ import {
   OperationContext,
   OperationResult,
   TypedDocumentNode,
-} from "https://npm.tfl.dev/@urql/core@2";
+} from "https://npm.tfl.dev/@urql/core@^3.0.0";
 
 import { getClient } from "../urql-client.ts";
 import { initialState } from "./state.ts";

@@ -24,8 +24,8 @@ export {
   pipe,
   subscribe,
   takeWhile,
-} from "https://npm.tfl.dev/wonka";
-export type { Source } from "https://npm.tfl.dev/wonka";
+} from "https://npm.tfl.dev/wonka@^6.0.0";
+export type { Source } from "https://npm.tfl.dev/wonka@^6.0.0";
 export type {
   Client,
   CombinedError,

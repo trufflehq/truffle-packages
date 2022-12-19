@@ -1,4 +1,4 @@
-import { subscriptionExchange } from "https://npm.tfl.dev/urql@2";
+import { subscriptionExchange } from "https://npm.tfl.dev/@urql/core@^3.0.0";
 import { createClient as createWSClient } from "https://npm.tfl.dev/graphql-ws@5";
 import config from "https://tfl.dev/@truffle/config@^1.0.0/index.ts";
 import isSsr from "https://tfl.dev/@truffle/utils@~0.0.22/ssr/is-ssr.ts";

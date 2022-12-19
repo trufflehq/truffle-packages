@@ -12,7 +12,7 @@ export type {
   ObservableObjectOrArray,
   ObservablePrimitive,
 } from "https://npm.tfl.dev/@legendapp/state@~0.19.0";
-export { pipe, subscribe } from "https://npm.tfl.dev/wonka@4.0.15";
+export { pipe, subscribe } from "https://npm.tfl.dev/wonka@^6.0.0";
 export type {
   CombinedError,
   TypedDocumentNode,

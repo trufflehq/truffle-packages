@@ -3,7 +3,7 @@ import {
   createClient,
   defaultExchanges,
   Exchange,
-} from "https://npm.tfl.dev/urql@2";
+} from "https://npm.tfl.dev/@urql/core@^3.0.0";
 
 import {
   getPackageContext,
@@ -17,9 +17,12 @@ import { getSubscriptionExchange } from "./subscription-exchange.ts";
 
 export function getClient() {
   const context = getPackageContext("@truffle/api@0");
-  setPackageContext("@truffle/api@0", {
-    client: context.client || makeClient(),
-  });
+  if (!context.client) {
+    setPackageContext("@truffle/api@0", {
+      ...context,
+      client: makeClient(),
+    });
+  }
   return context.client as Client;
 }
 

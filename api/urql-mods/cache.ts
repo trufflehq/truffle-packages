@@ -1,5 +1,5 @@
-import { pipe, subscribe } from "https://npm.tfl.dev/wonka";
-import { Client, OperationResult } from "https://npm.tfl.dev/@urql/core@2";
+import { pipe, subscribe } from "https://npm.tfl.dev/wonka@^6.0.0";
+import { Client, OperationResult } from "https://npm.tfl.dev/@urql/core@^3.0.0";
 
 type CacheEntry = OperationResult | Promise<unknown> | undefined;
 

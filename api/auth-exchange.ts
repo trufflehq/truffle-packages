@@ -1,5 +1,5 @@
-import { gql, makeOperation } from "https://npm.tfl.dev/urql@2";
-import { authExchange } from "https://npm.tfl.dev/@urql/exchange-auth@0";
+import { gql, makeOperation } from "https://npm.tfl.dev/@urql/core@^3.0.0";
+import { authExchange } from "https://npm.tfl.dev/@urql/exchange-auth@^1.0.0";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
 import { getAccessToken, setAccessTokenCookie } from "./auth.ts";
 
@@ -38,7 +38,7 @@ export function getAuthExchange() {
             ...fetchOptions,
             headers: {
               ...fetchOptions.headers,
-              "x-access-token": authState.accessToken,
+              "x-access-token": authState.accessToken || "",
               "x-org-id": context.orgId || "",
             },
           },
@@ -57,7 +57,7 @@ export function getAuthExchange() {
       );
 
       if (hasAuthError) {
-        console.log("Auth error, retrying");
+        console.log("Auth error, retrying", error);
         setAccessTokenCookie("");
       }
 
@@ -75,7 +75,7 @@ export function getAuthExchange() {
 
         const response = await mutate(LOGIN_ANON_MUTATION);
         accessToken = response?.data?.userLoginAnon?.accessToken;
-        setAccessTokenCookie(accessToken);
+        if (accessToken) setAccessTokenCookie(accessToken);
       }
       return { accessToken };
     },
