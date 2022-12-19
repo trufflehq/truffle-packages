@@ -1,5 +1,5 @@
 import { React } from ".././../deps.ts";
-import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.17/google-font-loader/mod.ts";
+import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.3/google-font-loader/mod.ts";
 const DEFAULT_FONT_FAMILY = "Poppins";
 const SECONDARY_FONT_FAMILY = "Roboto";
 
@@ -11,7 +11,8 @@ function ThemeComponent({
   colorBgOverlay = "rgba(0, 0, 0, 0.4)",
   colorPrimary = "#71DBDB",
   colorSecondary = "#FF9DC6",
-  gradient = "linear-gradient(281.86deg, #71DBDB 2.63%, #ADACDD 50.48%, #FF9DC6 94.5%)",
+  gradient =
+    "linear-gradient(281.86deg, #71DBDB 2.63%, #ADACDD 50.48%, #FF9DC6 94.5%)",
   colorError = "#EE7171",
   colorPositive = "#60CC8C",
   colorOpt1 = "#5C9EDC",

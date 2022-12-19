@@ -1,7 +1,7 @@
 // @deno-types="https://npm.tfl.dev/v86/@types/react@~18.0/index.d.ts"
 import React, { useEffect } from "https://npm.tfl.dev/react";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
-import jumper from "https://tfl.dev/@truffle/utils@~0.0.17/jumper/jumper.ts";
+import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
 import {
   enableLegendStateReact,
   observer,
@@ -9,7 +9,7 @@ import {
   useSelector,
 } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 import { useSignal } from "https://tfl.dev/@truffle/state@~0.0.2/signals/hooks.ts";
-import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.17/google-font-loader/mod.ts";
+import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.3/google-font-loader/mod.ts";
 
 enableLegendStateReact();
 

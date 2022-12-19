@@ -4,7 +4,7 @@ import ThemeComponent from "../../../components/theme-component/theme-component.
 import stylesheet from "./page.scss.js";
 import ErrorRenderer from "../../../components/error-renderer/error-renderer.tsx";
 import LoginManager from "../../../components/login-manager/login-manager.tsx";
-import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.17/google-font-loader/mod.ts";
+import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.3/google-font-loader/mod.ts";
 
 interface AuthCallbackHashParams extends URLSearchParams {
   access_token?: string;
@@ -19,17 +19,19 @@ const hashParams: AuthCallbackHashParams = new Proxy(
   },
 );
 
-const OAUTH_ERROR_MESSAGE: Record<string, { title: string; message: string }> = {
-  // passed if the user hits cancel at the OAuth consent screen
-  "access_denied": {
-    title: "Access error",
-    message: "You must grant Truffle access to read your YouTube account to continue.",
-  },
-  undefined: {
-    title: "Error",
-    message: "Error during login",
-  },
-};
+const OAUTH_ERROR_MESSAGE: Record<string, { title: string; message: string }> =
+  {
+    // passed if the user hits cancel at the OAuth consent screen
+    "access_denied": {
+      title: "Access error",
+      message:
+        "You must grant Truffle access to read your YouTube account to continue.",
+    },
+    undefined: {
+      title: "Error",
+      message: "Error during login",
+    },
+  };
 
 function AuthCallbackPage() {
   useStyleSheet(stylesheet);

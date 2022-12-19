@@ -9,7 +9,7 @@ export {
   useStyleSheet,
 } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts";
 export { default as scss } from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
-export { default as jumper } from "https://tfl.dev/@truffle/utils@~0.0.17/jumper/jumper.ts";
+export { default as jumper } from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
 
 export {
   gql,

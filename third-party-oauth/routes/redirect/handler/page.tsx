@@ -7,7 +7,7 @@ import {
   JetPackSnuffle,
   sendTruffleAccessTokenToOpener,
 } from "../../../components/login-manager/login-manager.tsx";
-import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.17/google-font-loader/mod.ts";
+import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.3/google-font-loader/mod.ts";
 
 interface AuthCallbackHashParams extends URLSearchParams {
   truffleAccessToken?: string;
