@@ -133,10 +133,8 @@ async function truffleConnectionLogin(
     await decodeState(state) || {};
 
   // login as this OrgUser
-  setAccessToken(truffleAccessToken);
-  if (orgId) {
-    setOrgId(orgId);
-  }
+  if (truffleAccessToken) setAccessToken(truffleAccessToken);
+  if (orgId) setOrgId(orgId);
 
   // attempt to login via connection
   // - if a connection doesn't exist, it'll add the connection for existing OrgUser

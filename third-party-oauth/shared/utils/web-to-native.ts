@@ -5,7 +5,7 @@ export function postTruffleAccessTokenToNative(
   truffleAccessToken?: string,
   orgId?: string,
 ) {
-  setAccessToken(truffleAccessToken, { orgId });
+  if (truffleAccessToken) setAccessToken(truffleAccessToken, { orgId });
   jumper.call("browser.closeWindow");
 
   // FIXME: legacy, rm after 12/15/2022
