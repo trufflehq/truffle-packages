@@ -1,6 +1,6 @@
 export default {
   name: "@truffle/api",
-  version: "0.2.38",
+  version: "0.2.43",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   description: "Hooks and functions for interacting with Truffle's backend",
   // apiUrl: "https://mycelium.staging.bio/graphql",

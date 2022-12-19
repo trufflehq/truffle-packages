@@ -38,7 +38,7 @@ export function getAuthExchange() {
             ...fetchOptions,
             headers: {
               ...fetchOptions.headers,
-              "x-access-token": authState.accessToken,
+              "x-access-token": authState.accessToken || "",
               "x-org-id": context.orgId || "",
             },
           },
@@ -75,7 +75,7 @@ export function getAuthExchange() {
 
         const response = await mutate(LOGIN_ANON_MUTATION);
         accessToken = response?.data?.userLoginAnon?.accessToken;
-        setAccessTokenCookie(accessToken);
+        if (accessToken) setAccessTokenCookie(accessToken);
       }
       return { accessToken };
     },
