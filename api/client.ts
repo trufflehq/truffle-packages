@@ -1,5 +1,8 @@
 import { useEffect } from "https://npm.tfl.dev/react";
-import { setPackageContext } from "https://tfl.dev/@truffle/global-context@^1.0.0/package-context.ts";
+import {
+  getPackageContext,
+  setPackageContext,
+} from "https://tfl.dev/@truffle/global-context@^1.0.0/package-context.ts";
 
 import {
   useMutation as _useMutation,
@@ -50,7 +53,9 @@ export function usePollingQuery<V = object, D = any>(
 
 // private method for now, potentially don't want to support this forever
 export function _clearCache() {
+  const context = getPackageContext("@truffle/api@0");
   setPackageContext("@truffle/api@0", {
+    ...context,
     client: makeClient(),
   });
 }

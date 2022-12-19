@@ -54,11 +54,8 @@ export function onAccessTokenChange(
 export async function getAccessToken(): Promise<string> {
   // we need to rely on jumper first bc we can't trust that third party cookies will be set.
   // for ssr this is a little trickier... ssr obj can't use jumper. so for ssr we
-  let accessTokenFromJumper = !isSsr &&
-    await jumper.call("user.getAccessToken", {
-      // we'll eventually have different accessTokens per orgId
-      orgId: getOrgId(),
-    });
+  let accessTokenFromJumper = isSsr ? "" : // we'll eventually have different accessTokens per orgId
+    await jumper.call("user.getAccessToken", { orgId: getOrgId() });
   // TODO: legacy, rm 4/2023
   if (!accessTokenFromJumper && !isSsr) {
     accessTokenFromJumper = await jumper.call("storage.get", {
@@ -85,9 +82,15 @@ export function getOnAccessTokenChangeListeners() {
 export function getAccessToken$() {
   const context = getPackageContext("@truffle/api@0");
   if (!context.accessToken$) {
+    const accessToken$ = signal("");
+    // accessToken$.set may be called elsewhere before getAccessToken resolves here.
+    // so we need to make sure we're not replacing a valid accessToken with undef
+    getAccessToken().then((accessToken) => {
+      if (accessToken) accessToken$.set(accessToken);
+    });
     setPackageContext("@truffle/api@0", {
       ...context,
-      accessToken$: signal(getAccessToken()),
+      accessToken$,
     });
   }
 
