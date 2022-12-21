@@ -22,8 +22,12 @@ import { Badge, NormalizedChatMessage } from "../../shared/mod.ts";
 import ThemeComponent from "../theme-component/theme-component.tsx";
 import styleSheet from "./chat.scss.js";
 import { default as BadgeRenderer } from "../badges/badge.tsx";
+
 const VERIFIED_CHECK_IMG_URL =
   "https://cdn.bio/assets/images/features/browser_extension/yt_check_white.svg";
+// as long as they're reasonably close to the bottom, we can treat it like they're at the bottom
+// (to account for rubberbanding). can potentially lower this #
+const SCROLL_BOTTOM_BUFFER = 30;
 
 export default function Chat(
   { messages$, hasScrollToBottom = false }: {
@@ -38,7 +42,7 @@ export default function Chat(
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const scrollTop = (e.target as HTMLDivElement).scrollTop;
-    const isPinnedToBottom = scrollTop < 0;
+    const isPinnedToBottom = scrollTop < -1 * SCROLL_BOTTOM_BUFFER;
     if (isPinnedToBottom) {
       console.log("not bottom");
       isScrolling$.set(true);

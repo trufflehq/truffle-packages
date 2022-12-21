@@ -1,6 +1,6 @@
 export default {
   name: "@truffle/chat",
-  version: "0.0.59",
+  version: "0.0.61",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   // apiUrl: 'http://10.0.0.120:50420/graphql',
   description: "Chat client for 3rd party chats",
