@@ -33,7 +33,6 @@ export default function Chat(
 ) {
   const messagesRef = useRef<HTMLDivElement>(null);
   const chatRef = useRef<HTMLDivElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
   const isScrolling$ = useObservable(false);
   useStyleSheet(styleSheet);
 
@@ -66,7 +65,13 @@ export default function Chat(
   });
 
   function scrollToBottom() {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    // ios sucks and there's a weird bug with flex-direction: column-reverse
+    // where messagesRef.current.scrollTop will technically scroll to the bottom,
+    // but the element won't repaint, so it'll look like chat is stuck until you
+    // use your finger to scroll. any combination of transforms, window.getComputedStyle,
+    // etc... to try to get it to repaint did not work, however this does...
+    messagesRef.current.scrollTop = -1;
+    messagesRef.current.scrollTop = 0;
   }
 
   return (
@@ -80,7 +85,6 @@ export default function Chat(
         )
         : null}
       <div className="messages" ref={messagesRef} onScroll={handleScroll}>
-        <div className="bottom" ref={bottomRef} />
         <For<NormalizedChatMessage, {}>
           each={messages$}
           item={ChatMessage}
