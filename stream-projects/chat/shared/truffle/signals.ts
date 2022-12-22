@@ -75,14 +75,6 @@ export const ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS = gql<
   } ${ORG_USER_CHAT_INFO_FIELDS} ${CONNECTION_FIELDS}
 `;
 
-// export function useOrgUserWithChatInfoAndConnections$() {
-//   const orgUserWithChatInfoAndConnection$ = useQuerySignal(
-//     ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS,
-//   );
-
-//   return { orgUserWithChatInfoAndConnection$ };
-// }
-
 export function useOrgUserWithChatInfoAndConnections$() {
   const orgUserWithChatInfoAndConnection$ = useObservable<{ orgUser: OrgUserWithChatInfoConnection }>(undefined!);
 

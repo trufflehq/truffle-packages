@@ -44,6 +44,7 @@ export function useQuerySignal<T extends object>(
 }
 
 /*
+* FIXME - replace once we upgrade the legend version of @truffle/state
 * This is a custom hook that wraps the useQuery hook from urql.
 */
 export function useUrqlQuerySignal<T extends object>(
@@ -64,6 +65,7 @@ export function useUrqlQuerySignal<T extends object>(
 }
 
 /**
+ * FIXME - replace once we upgrade the legend version of @truffle/state
  * Hook to update a signal only when the parent signal changes
  *
  * @param signal$ signal to update
@@ -81,6 +83,7 @@ export function useUpdateSignalOnChange<T extends object>(
 }
 
 /**
+ * FIXME - replace once we upgrade the legend version of @truffle/state
  * Update a signal only if the value has changed
  *
  * @param signal$ signal to update
