@@ -17,7 +17,9 @@ import {
   useMutation,
   useObservable,
   useObserve,
+  useComputed,
   useRef,
+  useEffect,
   useSelector,
   useStyleSheet,
   uuidv4,
@@ -37,6 +39,7 @@ import {
   useOrgUserWithChatInfoAndConnections$,
   useTruffleEmoteMap$,
   useYoutubeStreamInfo$,
+  getOrgId,
 } from "../../shared/mod.ts";
 
 import { DEFAULT_CHAT_COLORS, getStringHash } from "./utils.ts";
@@ -364,14 +367,29 @@ export default function YoutubeChat(
   const [, executeSendYtMessageMutation] = useMutation(
     SEND_YT_MESSAGE_MUTATION,
   );
-  const { orgUserWithChatInfoAndConnection$ } =
+  const { orgUserWithChatInfoAndConnection$, refetchOrgUserWithChatInfoAndConnection } =
     useOrgUserWithChatInfoAndConnections$();
+  const isChatDisabled$ = useComputed(() =>  !orgUserWithChatInfoAndConnection$.orgUser.name.get());
+  const chatStatusMessage$ = useComputed(() => !orgUserWithChatInfoAndConnection$.orgUser.name.get() ? "Must login to send chat messages" : "" );
+  
   const orgUser = useSelector(() =>
     orgUserWithChatInfoAndConnection$.orgUser.get()
   );
+
   console.log("orgUser", orgUser);
   const youtubeChannelId = useSelector(() => youtubeChannelId$.get());
   const isLoginPromptOpen = useSelector(() => isLoginPromptOpen$.get());
+  const isChatDisabled = useSelector(() => isChatDisabled$.get());
+  const chatStatusMessage = useSelector(() => chatStatusMessage$.get());
+
+  useEffect(() => {
+    // invalidate the orgUser
+    jumper.call('user.onAccessTokenChange', { orgId: getOrgId() }, ({ accessToken }) => {
+      console.log('invalidating orgUser')
+      refetchOrgUserWithChatInfoAndConnection({ requestPolicy: "network-only" });
+    });
+  }, [])
+
   function sendMessage(
     { text, emoteMap, chatInput$ }: {
       text: string;
@@ -395,25 +413,7 @@ export default function YoutubeChat(
     // clear the chat input after sending the message
     chatInput$.set("");
 
-    // TODO - add some error handling if the server fails to send the message
     try {
-      // FIXME - this mutation isn't currently working with our existing YT OAuth flow.
-      // we'll either need to convert this over to the YT TV OAuth flow or post the message via jumper
-      // to a yt chat frame/webview
-      // const result = await executeSendYtMessageMutation({
-      //   text,
-      //   youtubeChannelId,
-      // });
-
-      // if (result.error) {
-      //   console.error("error sending message", result.error);
-
-      //   if (result.error.graphQLErrors[0].extensions?.code === 401) {
-      //     // prompt OAuth flow
-      //     console.log("MISSING OAUTH PERMISSIONS");
-      //     isLoginPromptOpen$.set(true);
-      //   }
-      // }
       onSend?.(text);
     } catch (err) {
       console.error("error sending message", err);
@@ -442,6 +442,8 @@ export default function YoutubeChat(
                   sendMessage={sendMessage}
                   maxMessageLength={YT_MAX_MESSAGE_LENGTH}
                   inputControls={inputControls}
+                  statusMessage={chatStatusMessage}
+                  isDisabled={isChatDisabled}
                 />
               )
               : <div className="empty">Missing Youtube channel ID</div>}

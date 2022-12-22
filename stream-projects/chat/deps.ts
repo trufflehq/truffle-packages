@@ -46,6 +46,10 @@ export type {
   CombinedError,
   OperationContext,
   TypedDocumentNode,
+  UseQueryState
+} from "https://npm.tfl.dev/urql@2";
+export {
+  useQuery,
 } from "https://npm.tfl.dev/urql@2";
 export { pipe, subscribe } from "https://npm.tfl.dev/wonka@^6.0.0";
 export {

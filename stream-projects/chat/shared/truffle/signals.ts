@@ -12,7 +12,7 @@ import {
 } from "./utils.ts";
 import { OrgUserWithChatInfoConnection } from "./types.ts";
 import { CONNECTION_FIELDS, ORG_USER_CHAT_INFO_FIELDS } from "./fragments.ts";
-import { useQuerySignal } from "../mod.ts";
+import { useQuerySignal, useUrqlQuerySignal, useUpdateSignalOnChange } from "../mod.ts";
 export function useExtensionInfo$() {
   const extensionInfo$ = useObservable(jumper.call("context.getInfo"));
 
@@ -63,8 +63,7 @@ export function useTruffleEmoteMap$() {
 
 export const ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS = gql<
   { orgUser: OrgUserWithChatInfoConnection }
->`
-  query {
+>`query {
     orgUser {
       ...OrgUserChatInfoFields
       connectionConnection (sourceTypes: ["youtube"]) {
@@ -76,10 +75,23 @@ export const ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS = gql<
   } ${ORG_USER_CHAT_INFO_FIELDS} ${CONNECTION_FIELDS}
 `;
 
+// export function useOrgUserWithChatInfoAndConnections$() {
+//   const orgUserWithChatInfoAndConnection$ = useQuerySignal(
+//     ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS,
+//   );
+
+//   return { orgUserWithChatInfoAndConnection$ };
+// }
+
 export function useOrgUserWithChatInfoAndConnections$() {
-  const orgUserWithChatInfoAndConnection$ = useQuerySignal(
+  const orgUserWithChatInfoAndConnection$ = useObservable<{ orgUser: OrgUserWithChatInfoConnection }>(undefined!);
+
+  const { signal$: orgUserWithChatInfoAndConnectionData$, reexecuteQuery: refetchOrgUserWithChatInfoAndConnection } = useUrqlQuerySignal(
     ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS,
   );
-
-  return { orgUserWithChatInfoAndConnection$ };
+  useUpdateSignalOnChange(orgUserWithChatInfoAndConnection$, orgUserWithChatInfoAndConnectionData$.data);
+  return {
+    orgUserWithChatInfoAndConnection$,
+    refetchOrgUserWithChatInfoAndConnection,
+  };
 }
