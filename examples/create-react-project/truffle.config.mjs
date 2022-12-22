@@ -1,8 +1,8 @@
 export default {
   name: "@truffle/create-react-project",
-  version: "0.5.8",
-  // apiUrl: "https://mycelium.truffle.vip/graphql",
-  apiUrl: "https://mycelium.staging.bio/graphql",
+  version: "0.5.30",
+  apiUrl: "https://mycelium.truffle.vip/graphql",
+  // apiUrl: "https://mycelium.staging.bio/graphql",
   description: "Truffle project React template",
   // apiUrl: "http://localhost:50420/graphql",
   embeds: [
