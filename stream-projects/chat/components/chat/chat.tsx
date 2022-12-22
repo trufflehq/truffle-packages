@@ -58,12 +58,16 @@ export default function Chat(
   // to the bottom for flex-direction: column-reverse. Need this on safari right now.
   const hasOverflowAnchorSupport = window.CSS.supports("overflow-anchor: auto");
 
+  // TODO: we may want to move this to useLayoutEffect
   messages$.onChange(() => {
     const isScrolling = isScrolling$.get();
 
     if (!hasOverflowAnchorSupport && !isScrolling) {
       window.requestAnimationFrame(() => {
         scrollToBottom();
+        // HACK: waiting for requestAnimationFrame doesn't seem like enough to guarantee it has rendered
+        // some messages seem to take a little longer
+        setTimeout(() => scrollToBottom(), 10);
       });
     }
   });
