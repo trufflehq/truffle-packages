@@ -1,0 +1,190 @@
+$dialogBg: var(--bg-mod-inverse-5);
+
+:host {
+
+  .c-browser-extension-item-dialog {
+    --error-red: #ED6565;
+
+    .c-dialog {
+
+      >.backdrop {
+        opacity: 40% !important;
+        backdrop-filter: none !important;
+        background-color: #000000 !important;
+      }
+
+      >.dialog {
+        background-color: $dialogBg  !important;
+
+        >.top {
+          border-bottom: none !important;
+
+          >.inner {
+            >.top-right {
+              margin-top: 12px;
+            }
+          }
+        }
+
+        >.content {
+          padding-bottom: 16px !important;
+        }
+
+        >.actions {
+          gap: 12px;
+
+          >.button {
+            flex: 1;
+          }
+        }
+      }
+    }
+
+    &.left {
+
+      .body {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        >.info {
+
+          >div {
+            margin-bottom: 2px;
+          }
+
+          >.primary-text {
+            font-weight: 500;
+            font-size: 16px;
+          }
+
+          >.value-text {
+            font-weight: 600;
+            font-size: 14px;
+          }
+
+          >.secondary-text {
+            font-weight: 400;
+            font-size: 14px;
+            color: var(--inherit-base-text);
+
+            &.alert {
+              color: var(--error-red);
+            }
+          }
+        }
+      }
+
+      .close-button {
+        margin-right: 16px;
+      }
+
+      .action {
+        flex-grow: 1;
+
+        >button {
+          border-radius: 4px;
+        }
+      }
+    }
+
+    &.center {
+
+      .c-dialog {
+
+        >.dialog {
+          background-color: $dialogBg  !important;
+
+          >.top {
+            border-bottom: none !important;
+            background: var(--highlight-gradient, var(--primary-base));
+            color: var(--priimary-base-text);
+
+            >.inner {
+              padding: 0 16px;
+              color: var(--bg-base) !important;
+
+              >.top-right {
+                margin-top: 0;
+
+                >.close-button {
+                  >.c-icon {
+                    >svg {
+                      >path {
+                        fill: var(--bg-base) !important;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+      }
+
+      .body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        >.header-text {
+          font-weight: 500;
+          font-size: 16px;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          margin-bottom: 16px;
+        }
+
+        >.children {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 100px;
+          height: 100px;
+          margin-bottom: 16px;
+        }
+
+        >.controls {
+          display: flex;
+          width: 100%;
+          text-align: left;
+        }
+
+        >.error {
+          margin-top: 8px;
+          color: var(--error-red);
+        }
+
+        >.primary-text {
+          margin-bottom: 2px;
+          font-weight: 600;
+          font-size: 16px;
+          color: var(--bg-mod-inverse-5-text);
+        }
+
+        >.secondary-text {
+          font-weight: 400;
+          font-size: 14px;
+          color: var(--bg-mod-inverse-5-text-80);
+
+          &.alert {
+            color: var(--error-red);
+          }
+        }
+
+        >.close-button {
+          align-self: flex-end;
+          margin-right: -16px;
+        }
+      }
+
+      .action {
+        flex-grow: 1;
+      }
+    }
+
+  }
+}
