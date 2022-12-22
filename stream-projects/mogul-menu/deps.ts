@@ -14,6 +14,8 @@ export {
   useSubscription,
 } from "https://tfl.dev/@truffle/api@~0.2.0/mod.ts";
 
+export { ErrorBoundary } from "https://npm.tfl.dev/react-error-boundary@^3.1.4";
+
 export type { TruffleGQlConnection } from "https://tfl.dev/@truffle/api@^0.2.0/types/mod.ts";
 
 export { default as _ } from "https://cdn.skypack.dev/lodash?dts";
@@ -44,7 +46,10 @@ export {
 } from "https://tfl.dev/@truffle/utils@~0.0.3/legacy/format/format.ts";
 export type { DeepPick } from "https://npm.tfl.dev/ts-deep-pick";
 export { default as jumper } from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
-export { getCookie, setCookie } from "https://tfl.dev/@truffle/utils@~0.0.3/cookie/cookie.ts";
+export {
+  getCookie,
+  setCookie,
+} from "https://tfl.dev/@truffle/utils@~0.0.3/cookie/cookie.ts";
 export {
   default as cssVars,
   hexOpacity,
@@ -100,7 +105,10 @@ export {
   useObserve,
   useSelector,
 } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
-export { computed, observable } from "https://npm.tfl.dev/@legendapp/state@~0.19.0";
+export {
+  computed,
+  observable,
+} from "https://npm.tfl.dev/@legendapp/state@~0.19.0";
 export type {
   Observable,
   ObservableArray,
@@ -122,6 +130,10 @@ export {
   useUrqlQuerySignal,
 } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
 export type { TruffleQuerySignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
-export type { Client, CombinedError, OperationContext } from "https://npm.tfl.dev/urql@2";
+export type {
+  Client,
+  CombinedError,
+  OperationContext,
+} from "https://npm.tfl.dev/urql@2";
 export { previewSrc as getPreviewSrc } from "https://tfl.dev/@truffle/raid@~0.0.4/shared/util/stream-plat.ts";
 export { default as YoutubeChat } from "https://tfl.dev/@truffle/chat@~0.0.3/components/youtube-chat/youtube-chat.tsx";

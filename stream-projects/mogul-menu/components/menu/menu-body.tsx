@@ -1,4 +1,4 @@
-import { React, useStyleSheet } from "../../deps.ts";
+import { ErrorBoundary, React, useStyleSheet } from "../../deps.ts";
 import styleSheet from "./menu.scss.js";
 import DraggableMenu from "./draggable-menu/draggable-menu.tsx";
 import NativeMenu from "./native-menu/native-menu.tsx";
@@ -25,18 +25,30 @@ function WebMenu(props: MogulMenuProps) {
   return (
     <DraggableMenu {...props}>
       <div className="inner">
-        <div className="bottom">
-          <TabBar />
-          <ExtensionIcon />
-        </div>
-        <div className="body">
-          <DialogContainer />
-          <PageStack />
-          <ActionBannerContainer />
-          <SnackBarContainer />
-          <Tabs tabs={props.tabs} />
-        </div>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <div className="bottom">
+            <TabBar />
+            <ExtensionIcon />
+          </div>
+          <div className="body">
+            <DialogContainer />
+            <PageStack />
+            <ActionBannerContainer />
+            <SnackBarContainer />
+            <Tabs tabs={props.tabs} />
+          </div>
+        </ErrorBoundary>
       </div>
     </DraggableMenu>
+  );
+}
+
+function ErrorFallback({ error }) {
+  return (
+    <div style={{ padding: "16px" }}>
+      <p>Something went wrong:</p>
+      <pre>{error.message}</pre>
+      <button onClick={() => window.location.reload()}>Try again</button>
+    </div>
   );
 }
