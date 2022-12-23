@@ -88,10 +88,3 @@ export async function getTruffleChatEmoteMapByYoutubeChannelId(
 
   return emoteMap;
 }
-
-
-export function getOrgId() {
-  const context = globalContext.getStore() || {};
-
-  return context.orgId;
-}

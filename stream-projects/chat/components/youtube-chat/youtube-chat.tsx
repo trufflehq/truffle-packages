@@ -23,6 +23,8 @@ import {
   useSelector,
   useStyleSheet,
   uuidv4,
+
+  getOrgId,
 } from "../../deps.ts";
 
 import {
@@ -39,7 +41,6 @@ import {
   useOrgUserWithChatInfoAndConnections$,
   useTruffleEmoteMap$,
   useYoutubeStreamInfo$,
-  getOrgId,
 } from "../../shared/mod.ts";
 
 import { DEFAULT_CHAT_COLORS, getStringHash } from "./utils.ts";
@@ -364,14 +365,11 @@ export default function YoutubeChat(
   const isLoginPromptOpen$ = useObservable(false);
   const { messages$, emoteMap$, youtubeChannelId$ } =
     useYoutubeMessageAddedSubscription();
-  const [, executeSendYtMessageMutation] = useMutation(
-    SEND_YT_MESSAGE_MUTATION,
-  );
   const { orgUserWithChatInfoAndConnection$, refetchOrgUserWithChatInfoAndConnection } =
     useOrgUserWithChatInfoAndConnections$();
   const isChatDisabled$ = useComputed(() =>  !orgUserWithChatInfoAndConnection$.orgUser.name.get());
   const chatStatusMessage$ = useComputed(() => !orgUserWithChatInfoAndConnection$.orgUser.name.get() ? "Must login to send chat messages" : "" );
-  
+
   const orgUser = useSelector(() =>
     orgUserWithChatInfoAndConnection$.orgUser.get()
   );
