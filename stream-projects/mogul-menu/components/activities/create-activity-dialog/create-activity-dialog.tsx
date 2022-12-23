@@ -1,5 +1,9 @@
 import { Icon, React, useStyleSheet } from "../../../deps.ts";
-import { CRYSTAL_BALL_ICON, DISCO_BALL_PATH, PARACHUTE_ICON_PATH } from "../../../shared/mod.ts";
+import {
+  CRYSTAL_BALL_ICON,
+  DISCO_BALL_PATH,
+  PARACHUTE_ICON_PATH,
+} from "../../../shared/mod.ts";
 import Button from "../../base/button/button.tsx";
 import Dialog from "../../base/dialog/dialog.tsx";
 import { useDialog } from "../../base/dialog-container/dialog-service.ts";
@@ -126,7 +130,12 @@ export function CreateActivityTile({
           backgroundColor: color,
         }}
       >
-        <Icon icon={icon} color="var(--mm-color-bg-secondary)" viewBox={iconViewBox} size="28px" />
+        <Icon
+          icon={icon}
+          color="var(--mm-color-bg-secondary)"
+          viewBox={iconViewBox}
+          size="28px"
+        />
       </div>
       <div className="title">
         {activityType}

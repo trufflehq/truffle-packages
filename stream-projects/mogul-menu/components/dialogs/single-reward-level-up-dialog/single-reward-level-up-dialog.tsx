@@ -52,7 +52,8 @@ export default function SingleRewardLevelUpDialog({
         </div>
         <DefaultDialogContentFragment
           primaryText={<>{reward?.source?.name} unlocked!</>}
-          secondaryText={reward?.source?.data?.description ?? reward?.description}
+          secondaryText={reward?.source?.data?.description ??
+            reward?.description}
         />
       </Dialog>
     </div>

@@ -123,7 +123,9 @@ export default function ItemDialog({
         <style>
           {`
         .z-browser-extension-item-dialog {
-          --highlight-gradient: ${highlightBg ?? "var(--tfl-color-primary-fill)"};
+          --highlight-gradient: ${
+            highlightBg ?? "var(--tfl-color-primary-fill)"
+          };
         }
       `}
         </style>

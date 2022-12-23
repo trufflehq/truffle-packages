@@ -20,12 +20,16 @@ export const setClosed = (): CloseMenuAction => ({
   payload: {},
 });
 
-export const updateDimensions = (mods?: Partial<DimensionModifiers>): UpdateDimensionsAction => ({
+export const updateDimensions = (
+  mods?: Partial<DimensionModifiers>,
+): UpdateDimensionsAction => ({
   type: "@@MENU_UPDATE_DIMENSIONS",
   payload: mods,
 });
 
-export const enqueueSnackBar = (snackbar: React.ReactNode): EnqueueSnackbarAction => ({
+export const enqueueSnackBar = (
+  snackbar: React.ReactNode,
+): EnqueueSnackbarAction => ({
   type: "@@MENU_ENQUEUE_SNACKBAR",
   payload: {
     snackbar,
@@ -37,7 +41,9 @@ export const popSnackBar = (): PopSnackbarAction => ({
   payload: {},
 });
 
-export const updateMenuPosition = (position: MenuPosition): UpdateMenuPosition => ({
+export const updateMenuPosition = (
+  position: MenuPosition,
+): UpdateMenuPosition => ({
   type: "@@MENU_UPDATE_POSITION",
   payload: {
     position,

@@ -1,9 +1,17 @@
-import { classKebab, getSrcByImageObj, React, useStyleSheet } from "../../deps.ts";
+import {
+  classKebab,
+  getSrcByImageObj,
+  React,
+  useStyleSheet,
+} from "../../deps.ts";
 
 import Button from "../base/button/button.tsx";
 import RedeemableDialog from "../dialogs/redeemable-dialog/redeemable-dialog.tsx";
 import { useDialog } from "../base/dialog-container/dialog-service.ts";
-import { useActivePowerupConnection, useOwnedCollectibleConnection } from "../../shared/mod.ts";
+import {
+  useActivePowerupConnection,
+  useOwnedCollectibleConnection,
+} from "../../shared/mod.ts";
 import {
   ActivePowerup,
   ActivePowerupRedeemData,
@@ -27,7 +35,8 @@ export default function Collectible(props: CollectibleProps) {
   const canRedeem = collectible.type === "redeemable" &&
     ["user", "none"].includes(collectible.targetType);
 
-  const { reexecuteOwnedCollectibleConnQuery } = useOwnedCollectibleConnection();
+  const { reexecuteOwnedCollectibleConnQuery } =
+    useOwnedCollectibleConnection();
   const { reexecuteActivePowerupConnQuery } = useActivePowerupConnection();
   const { pushDialog } = useDialog();
 
@@ -80,9 +89,15 @@ export default function Collectible(props: CollectibleProps) {
             border={true}
             size="small"
           >
-            {activePowerup ? <span style={{ color: "var(--mm-color-positive)" }}>Active</span> : (
-              collectible?.data?.redeemButtonText ?? "Redeem"
-            )}
+            {activePowerup
+              ? (
+                <span style={{ color: "var(--mm-color-positive)" }}>
+                  Active
+                </span>
+              )
+              : (
+                collectible?.data?.redeemButtonText ?? "Redeem"
+              )}
           </Button>
         </div>
       )}

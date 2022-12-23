@@ -1,5 +1,8 @@
 import { React, useStyleSheet } from "../../../deps.ts";
-import { ACTIVITY_TIMEOUT_SECONDS, PARACHUTE_ICON_PATH } from "../../../shared/mod.ts";
+import {
+  ACTIVITY_TIMEOUT_SECONDS,
+  PARACHUTE_ICON_PATH,
+} from "../../../shared/mod.ts";
 import Button from "../../../components/base/button/button.tsx";
 import ActivityBannerFragment, {
   ActivityBannerInfo,
@@ -8,7 +11,9 @@ import { ActivityBannerProps } from "../activity-banner.tsx";
 import { RaidAlert } from "../../../types/mod.ts";
 import stylesheet from "./raid-banner.scss.js";
 
-export default function RaidBanner({ activity }: ActivityBannerProps<RaidAlert>) {
+export default function RaidBanner(
+  { activity }: ActivityBannerProps<RaidAlert>,
+) {
   useStyleSheet(stylesheet);
   const startTime = new Date(activity?.time);
 
@@ -21,7 +26,9 @@ export default function RaidBanner({ activity }: ActivityBannerProps<RaidAlert>)
       icon={{
         path: PARACHUTE_ICON_PATH,
       }}
-      action={activity?.data?.url ? <JoinRaidButton url={activity.data.url} /> : null}
+      action={activity?.data?.url
+        ? <JoinRaidButton url={activity.data.url} />
+        : null}
     >
       <ActivityBannerInfo text={activity?.message} />
     </ActivityBannerFragment>

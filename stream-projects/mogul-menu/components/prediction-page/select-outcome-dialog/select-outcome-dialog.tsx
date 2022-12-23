@@ -19,7 +19,9 @@ import styleSheet from "./select-outcome-dialog.scss.js";
 export default function SelectOutcomeDialog(
   { prediction$ }: { prediction$: Observable<Poll> },
 ) {
-  const [, executeChoosePredictionWinnerMutation] = useMutation(CHOOSE_PREDICTION_WINNER_MUTATION);
+  const [, executeChoosePredictionWinnerMutation] = useMutation(
+    CHOOSE_PREDICTION_WINNER_MUTATION,
+  );
   const { popDialog } = useDialog();
   const error$ = useSignal("");
   useStyleSheet(styleSheet);
@@ -72,12 +74,17 @@ export default function SelectOutcomeDialog(
               <div
                 tabIndex={0}
                 className={`option ${
-                  classKebab({ isSelected: option.index === selectedOption?.index })
+                  classKebab({
+                    isSelected: option.index === selectedOption?.index,
+                  })
                 }`}
                 onKeyDown={(e) => onKeyPress(e, option)}
                 onClick={() => onSelect(option)}
               >
-                <div className="color" style={{ backgroundColor: getOptionColor(option.index) }} />
+                <div
+                  className="color"
+                  style={{ backgroundColor: getOptionColor(option.index) }}
+                />
                 <div className="text">
                   {option.text}
                   {option.index === selectedOption?.index && <WinnerIcon />}
@@ -87,7 +94,11 @@ export default function SelectOutcomeDialog(
           </div>
           <div className="footer">
             {error ? <div className="error">{error}</div> : null}
-            <Button isDisabled={!hasSelectedOption} style="primary" onClick={onSubmit}>
+            <Button
+              isDisabled={!hasSelectedOption}
+              style="primary"
+              onClick={onSubmit}
+            >
               Submit
             </Button>
           </div>

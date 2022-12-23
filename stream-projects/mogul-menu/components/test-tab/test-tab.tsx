@@ -1,4 +1,10 @@
-import { React, useEffect, useSelector, useSignal, useState } from "../../deps.ts";
+import {
+  React,
+  useEffect,
+  useSelector,
+  useSignal,
+  useState,
+} from "../../deps.ts";
 import { useCurrentTab, useTabButton, useTabSlug } from "../tabs/mod.ts";
 import { getMenuPosition, useMenu } from "../menu/mod.ts";
 import { useSnackBar } from "../snackbar/mod.ts";
@@ -79,7 +85,9 @@ export default function TestTab() {
   const actionBannerHandler = () => {
     const actionBannerId = displayActionBanner(
       <ActionBanner
-        action={<Button onClick={() => removeActionBanner(actionBannerId)}></Button>}
+        action={
+          <Button onClick={() => removeActionBanner(actionBannerId)}></Button>
+        }
       >
         Finish setting up your account
       </ActionBanner>,
@@ -173,7 +181,9 @@ export default function TestTab() {
         <Input label="Value" value$={userKVInput$} />
         <div>Value: {userKVValue$.get()}</div>
         <div>
-          <Button onClick={() => setUserKV(userKVInput$.get())}>Set user KV</Button>
+          <Button onClick={() => setUserKV(userKVInput$.get())}>
+            Set user KV
+          </Button>
         </div>
       </div>
     </div>

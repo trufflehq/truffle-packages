@@ -1,4 +1,11 @@
-import { classKebab, Icon, React, useEffect, useRef, useStyleSheet } from "../../deps.ts";
+import {
+  classKebab,
+  Icon,
+  React,
+  useEffect,
+  useRef,
+  useStyleSheet,
+} from "../../deps.ts";
 import { usePageStack } from "./mod.ts";
 import FocusTrap from "../focus-trap/focus-trap.tsx";
 import styleSheet from "./page.scss.js";
@@ -23,7 +30,9 @@ export default function Page(props: PageProps) {
   // be at least one element in the child tree that's focusable, which isn't the case if it's not
   // rendering the Page header.
   return (
-    shouldShowHeader ? <FocusedTrappedPage {...props} /> : <PageBase {...props} />
+    shouldShowHeader
+      ? <FocusedTrappedPage {...props} />
+      : <PageBase {...props} />
   );
 }
 

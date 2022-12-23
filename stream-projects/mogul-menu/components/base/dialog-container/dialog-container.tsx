@@ -6,7 +6,9 @@ export default function DialogContainer() {
   useStyleSheet(styleSheet);
 
   const topDialog = useSelector(() =>
-    dialogStack$.get().length ? dialogStack$.get()[dialogStack$.get().length - 1] : null
+    dialogStack$.get().length
+      ? dialogStack$.get()[dialogStack$.get().length - 1]
+      : null
   );
 
   const handleEscape = (ev: KeyboardEvent) => {

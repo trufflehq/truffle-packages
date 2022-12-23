@@ -57,8 +57,9 @@ export default function OAuthConnectionPage(
           <div className="title">
             Let's get started
           </div>
-          Connect your Youtube account to start earning channel points, unlocking rewards, and
-          participating in polls and predictions through Truffle
+          Connect your Youtube account to start earning channel points,
+          unlocking rewards, and participating in polls and predictions through
+          Truffle
         </div>
         <OAuthButton sourceType={sourceType} />
         <a

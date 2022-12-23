@@ -1,5 +1,10 @@
 import { TRUFFLE_FIREBASE_CONFIG } from "./config.ts";
-import { getFirebaseApp, initializeFirebaseApp, useEffect, useState } from "../../../deps.ts";
+import {
+  getFirebaseApp,
+  initializeFirebaseApp,
+  useEffect,
+  useState,
+} from "../../../deps.ts";
 
 export function useFirebase() {
   const [firebaseApp, setFirebaseApp] = useState();

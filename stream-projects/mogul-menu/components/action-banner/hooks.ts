@@ -10,12 +10,15 @@ export function initActionBanners() {
   const displayActionBanner = (actionBanner: React.ReactNode, key?: string) => {
     const id = uniqueId();
 
-    const actionBanners = Object.keys(actionBannerMap).reduce<ActionBanner[]>((acc, id) => {
-      const act = actionBannerMap[id];
-      acc.push(act);
+    const actionBanners = Object.keys(actionBannerMap).reduce<ActionBanner[]>(
+      (acc, id) => {
+        const act = actionBannerMap[id];
+        acc.push(act);
 
-      return acc;
-    }, []);
+        return acc;
+      },
+      [],
+    );
 
     if (actionBanners?.find((obj) => obj?.key === key)) {
       return;
@@ -49,7 +52,9 @@ export function initActionBanners() {
 }
 
 export function useActionBanner() {
-  const actionBannerContext: ActionBannerContext = useContext<ActionBannerContext>(
+  const actionBannerContext: ActionBannerContext = useContext<
+    ActionBannerContext
+  >(
     ActionBannerContext,
   );
   return actionBannerContext;

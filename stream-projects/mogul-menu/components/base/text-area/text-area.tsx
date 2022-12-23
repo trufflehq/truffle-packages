@@ -9,7 +9,8 @@ import {
 } from "../../../deps.ts";
 import stylesheet from "./text-area.scss.js";
 
-export interface TextAreaProps extends React.InputHTMLAttributes<HTMLTextAreaElement> {
+export interface TextAreaProps
+  extends React.InputHTMLAttributes<HTMLTextAreaElement> {
   value$: Observable<string>;
   error$?: Observable<string>;
   placeholder?: string;
@@ -31,7 +32,9 @@ export default function TextArea(
       }`}
     >
       {label && (
-        <LabelPrimitive.Root htmlFor="textarea" className="label">{label}</LabelPrimitive.Root>
+        <LabelPrimitive.Root htmlFor="textarea" className="label">
+          {label}
+        </LabelPrimitive.Root>
       )}
       <legend.textarea
         style={css}

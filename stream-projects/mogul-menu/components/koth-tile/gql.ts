@@ -1,7 +1,10 @@
 import { gql } from "../../deps.ts";
 import { KothOrgConfig, KOTHOrgUser } from "../../types/mod.ts";
 
-export const KOTH_USER_QUERY = gql<{ orgUser: Required<KOTHOrgUser> }, { userId: string }>`
+export const KOTH_USER_QUERY = gql<
+  { orgUser: Required<KOTHOrgUser> },
+  { userId: string }
+>`
   query KOTHUserQuery($userId: ID!) {
     orgUser(input: { userId: $userId }) {
       name

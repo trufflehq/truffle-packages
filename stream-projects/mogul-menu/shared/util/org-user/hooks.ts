@@ -1,4 +1,9 @@
-import { TruffleQuerySignal, useMutation, useQuery, useQuerySignal } from "../../../deps.ts";
+import {
+  TruffleQuerySignal,
+  useMutation,
+  useQuery,
+  useQuerySignal,
+} from "../../../deps.ts";
 import { OrgUser, OrgUserChatSettings } from "../../../types/mod.ts";
 import { invalidateExtensionUser } from "../jumper/util.ts";
 import {
@@ -24,7 +29,13 @@ export function useSaveOrgUserSettings(
       username,
       nameColor,
     }, {
-      additionalTypenames: ["MeUser", "User", "OrgUser", "Connection", "ConnectionConnection"],
+      additionalTypenames: [
+        "MeUser",
+        "User",
+        "OrgUser",
+        "Connection",
+        "ConnectionConnection",
+      ],
     });
 
     invalidateExtensionUser();

@@ -16,9 +16,12 @@ import { menuStateReducer } from "./reducer.ts";
 export function useMenuReducer(initialState: MenuState) {
   const [state, dispatch] = useReducer(menuStateReducer, initialState);
 
-  const memoizedStore = useMemo<[MenuState, React.Dispatch<MenuActions>]>(() => [state, dispatch], [
-    state,
-  ]);
+  const memoizedStore = useMemo<[MenuState, React.Dispatch<MenuActions>]>(
+    () => [state, dispatch],
+    [
+      state,
+    ],
+  );
 
   return { state: memoizedStore[0], dispatch: memoizedStore[1] };
 }
@@ -34,9 +37,12 @@ export function useMenu() {
     },
     setIsOpen: () => dispatch(setOpen()),
     setIsClosed: () => dispatch(setClosed()),
-    updateDimensions: (mods?: Partial<DimensionModifiers>) => dispatch(updateDimensions(mods)),
-    enqueueSnackBar: (snackbar: React.ReactNode) => dispatch(enqueueSnackBar(snackbar)),
+    updateDimensions: (mods?: Partial<DimensionModifiers>) =>
+      dispatch(updateDimensions(mods)),
+    enqueueSnackBar: (snackbar: React.ReactNode) =>
+      dispatch(enqueueSnackBar(snackbar)),
     popSnackBar: () => dispatch(popSnackBar()),
-    updateMenuPosition: (position: MenuPosition) => dispatch(updateMenuPosition(position)),
+    updateMenuPosition: (position: MenuPosition) =>
+      dispatch(updateMenuPosition(position)),
   };
 }

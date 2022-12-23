@@ -1,12 +1,18 @@
 import { React, useSelector, useStyleSheet } from "../../../deps.ts";
-import { hasPermission, PARACHUTE_ICON_PATH, useOrgUserWithRoles$ } from "../../../shared/mod.ts";
+import {
+  hasPermission,
+  PARACHUTE_ICON_PATH,
+  useOrgUserWithRoles$,
+} from "../../../shared/mod.ts";
 import { ActivityListItemProps } from "../activities-tab/activities-tab.tsx";
 import ActivityListItem from "../activity-list-item/activity-list-item.tsx";
 import stylesheet from "./raid-list-item.scss.js";
 import { RaidAlert } from "../../../types/mod.ts";
 import { usePageStack } from "../../page-stack/mod.ts";
 import RaidPreviewPage from "../raid-preview-page/raid-preview-page.tsx";
-export default function RaidListItem({ activity, createdBy }: ActivityListItemProps<RaidAlert>) {
+export default function RaidListItem(
+  { activity, createdBy }: ActivityListItemProps<RaidAlert>,
+) {
   useStyleSheet(stylesheet);
   const orgUserWithRoles$ = useOrgUserWithRoles$();
 

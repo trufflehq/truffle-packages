@@ -6,7 +6,10 @@ import Tabs from "../tabs/tabs.tsx";
 import TabBar from "../tab-bar/tab-bar.tsx";
 import PageStack from "../page-stack/page-stack.tsx";
 import { SnackBarContainer } from "../snackbar/mod.ts";
-import { useInvalidateAllQueriesListener, useIsNative } from "../../shared/mod.ts";
+import {
+  useInvalidateAllQueriesListener,
+  useIsNative,
+} from "../../shared/mod.ts";
 import ExtensionIcon from "./extension-icon/extension-icon.tsx";
 import { useOnboarding } from "../onboarding/mod.ts";
 import { ActionBannerContainer } from "../action-banner/mod.ts";

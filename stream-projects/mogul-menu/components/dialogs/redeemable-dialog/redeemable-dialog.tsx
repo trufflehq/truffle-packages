@@ -9,7 +9,10 @@ import ChatHighlightDialog from "../chat-highlight-dialog/chat-highlight-dialog.
 import UsernameGradientDialog from "../username-gradient-dialog/username-gradient-dialog.tsx";
 import RecipeDialog from "../recipe-dialog/recipe-dialog.tsx";
 import StreamAlertRedeemDialog from "../stream-alert-redeem-dialog/stream-alert-redeem-dialog.tsx";
-import { useActivePowerupConnection, useOwnedCollectibleConnection } from "../../../shared/mod.ts";
+import {
+  useActivePowerupConnection,
+  useOwnedCollectibleConnection,
+} from "../../../shared/mod.ts";
 import { Collectible } from "../../../types/mod.ts";
 
 export interface RedeemableDialog {
@@ -39,29 +42,38 @@ export default function RedeemableDialog(props: RedeemableDialog) {
 
   const { popDialog: onExit } = useDialog();
 
-  const redeemablePowerupId = redeemableCollectible?.source?.data?.redeemData?.powerupId;
+  const redeemablePowerupId = redeemableCollectible?.source?.data?.redeemData
+    ?.powerupId;
 
   const { activePowerupConnectionData } = useActivePowerupConnection();
-  const activePowerups = activePowerupConnectionData?.activePowerupConnection?.nodes;
+  const activePowerups = activePowerupConnectionData?.activePowerupConnection
+    ?.nodes;
   const activePowerup = _.find(activePowerups ?? [], {
     powerup: { id: redeemablePowerupId },
   });
 
   const { ownedCollectibleConnectionData } = useOwnedCollectibleConnection();
 
-  const collectibles = ownedCollectibleConnectionData?.ownedCollectibleConnection?.nodes?.map((
-    ownedCollectible,
-  ) => ownedCollectible?.collectible);
+  const collectibles = ownedCollectibleConnectionData
+    ?.ownedCollectibleConnection?.nodes?.map((
+      ownedCollectible,
+    ) => ownedCollectible?.collectible);
 
-  const isCollectiblePack = redeemableCollectible?.source?.data?.redeemType === "collectiblePack";
-  const ownedCollectible = _.find(collectibles, { id: redeemableCollectible.sourceId })
+  const isCollectiblePack =
+    redeemableCollectible?.source?.data?.redeemType === "collectiblePack";
+  const ownedCollectible = _.find(collectibles, {
+    id: redeemableCollectible.sourceId,
+  })
     ?.ownedCollectible;
-  const isOpenedCollectiblePack = isCollectiblePack && ownedCollectible?.count &&
+  const isOpenedCollectiblePack = isCollectiblePack &&
+    ownedCollectible?.count &&
     ownedCollectible?.count < 1;
-  const isChatHighlightPowerup = redeemableCollectible?.source?.data?.redeemData?.category ===
-    "chatMessageHighlight";
-  const isUsernameGradientPowerup = redeemableCollectible?.source?.data?.redeemData?.category ===
-    "chatUsernameGradient";
+  const isChatHighlightPowerup =
+    redeemableCollectible?.source?.data?.redeemData?.category ===
+      "chatMessageHighlight";
+  const isUsernameGradientPowerup =
+    redeemableCollectible?.source?.data?.redeemData?.category ===
+      "chatUsernameGradient";
   const isRecipe = redeemableCollectible?.source?.data?.redeemType === "recipe";
   const isRedeemed = redeemableCollectible?.source?.ownedCollectible?.count < 1;
   const isStreamAlertCollectible =
@@ -117,7 +129,9 @@ export function RedeemedCollectibleDialog({
         $title={$title}
         highlightBg={highlightBg}
         headerText={headerText}
-        primaryText={`${redeemableCollectible?.source?.name ?? ""} has already been redeemed`}
+        primaryText={`${
+          redeemableCollectible?.source?.name ?? ""
+        } has already been redeemed`}
         secondaryTextStyle=""
         buttons={[
           {

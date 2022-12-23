@@ -52,12 +52,16 @@ const CHANNEL_POINTS_SRC =
 function usePollingChannelPoints$(
   { interval = 10000 }: { interval?: number },
 ) {
-  const channelPoints$ = useSignal<{ channelPoints: { orgUserCounter: ChannelPoints } }>(
+  const channelPoints$ = useSignal<
+    { channelPoints: { orgUserCounter: ChannelPoints } }
+  >(
     undefined!,
   );
 
-  const { signal$: channelPointsData$, reexecuteQuery: reexecuteChannelPointsQuery } =
-    usePollingQuerySignal({ interval, query: CHANNEL_POINTS_QUERY });
+  const {
+    signal$: channelPointsData$,
+    reexecuteQuery: reexecuteChannelPointsQuery,
+  } = usePollingQuerySignal({ interval, query: CHANNEL_POINTS_QUERY });
 
   // only update the channelPoints$ if the channel points data has changed
   useUpdateSignalOnChange(channelPoints$, channelPointsData$.data);
@@ -67,11 +71,15 @@ function usePollingChannelPoints$(
 export default function PredictionPage({ pollId }: { pollId?: string }) {
   useStyleSheet(styleSheet);
 
-  return pollId ? <PredictionByIdPage pollId={pollId} /> : <ActivePredictionPage />;
+  return pollId
+    ? <PredictionByIdPage pollId={pollId} />
+    : <ActivePredictionPage />;
 }
 
 function ActivePredictionPage() {
-  const { signal$: predictionConnection$ } = useSubscriptionSignal(POLL_CONNECTION_SUBSCRIPTION);
+  const { signal$: predictionConnection$ } = useSubscriptionSignal(
+    POLL_CONNECTION_SUBSCRIPTION,
+  );
   const prediction$ = predictionConnection$.data.pollConnection.nodes?.[0];
   const hasFetched$ = useSignal(false);
   const isFetching$ = useSignal(false);
@@ -96,7 +104,9 @@ function ActivePredictionPage() {
 }
 
 function PredictionByIdPage({ pollId }: { pollId: string }) {
-  const { signal$: prediction$ } = useSubscriptionSignal(POLL_SUBSCRIPTION, { id: pollId });
+  const { signal$: prediction$ } = useSubscriptionSignal(POLL_SUBSCRIPTION, {
+    id: pollId,
+  });
 
   const hasFetched$ = useSignal(false);
   const isFetching$ = useSignal(false);
@@ -183,7 +193,9 @@ function PredictionPageBase(
 
 function PredictionHeader(
   { channelPoints$ }: {
-    channelPoints$: Observable<{ channelPoints: { orgUserCounter: ChannelPoints } }>;
+    channelPoints$: Observable<
+      { channelPoints: { orgUserCounter: ChannelPoints } }
+    >;
   },
 ) {
   return (
@@ -198,9 +210,14 @@ function PredictionHeader(
       </div>
       <div
         className="amount"
-        title={formatNumber(channelPoints$.channelPoints.orgUserCounter.count.get())}
+        title={formatNumber(
+          channelPoints$.channelPoints.orgUserCounter.count.get(),
+        )}
       >
-        {abbreviateNumber(channelPoints$.channelPoints.orgUserCounter.count.get() || 0, 1)}
+        {abbreviateNumber(
+          channelPoints$.channelPoints.orgUserCounter.count.get() || 0,
+          1,
+        )}
       </div>
     </div>
   );
@@ -212,7 +229,9 @@ function PredictionFooter({
   prediction$: Observable<Poll>;
 }) {
   const [, executeDeletePollMutation] = useMutation(DELETE_POLL_MUTATION);
-  const [, executeRefundPredictionMutation] = useMutation(REFUND_PREDICTION_MUTATION);
+  const [, executeRefundPredictionMutation] = useMutation(
+    REFUND_PREDICTION_MUTATION,
+  );
   const [, executeEndPredictionMutation] = useMutation(END_PREDICTION_MUTATION);
   const error$ = useSignal("");
   const { popPage } = usePageStack();
@@ -296,7 +315,9 @@ function PredictionFooter({
   const { isRefund } = useSelector(() => getIsRefund({ prediction$ }));
   const { winningOption } = useSelector(() => getWinningInfo({ prediction$ }));
   const { totalVotes } = useSelector(() => getTotalVotes({ prediction$ }));
-  const { hasPredictionEnded } = useSelector(() => getTimeInfo({ prediction$ }));
+  const { hasPredictionEnded } = useSelector(() =>
+    getTimeInfo({ prediction$ })
+  );
 
   return (
     <div className="c-predictions-page_footer">

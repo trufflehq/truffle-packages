@@ -1,6 +1,9 @@
 import { useEffect } from "../../../deps.ts";
 
-export function useGoogleFontLoader(callback: () => string[], dependencies: string[] = []) {
+export function useGoogleFontLoader(
+  callback: () => string[],
+  dependencies: string[] = [],
+) {
   useEffect(() => {
     const fontFamilies = callback();
     if (!fontFamilies?.length) {

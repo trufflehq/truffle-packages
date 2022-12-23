@@ -10,7 +10,8 @@ import {
 } from "../../../deps.ts";
 import stylesheet from "./input.scss.js";
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   value$: Observable<string>;
   error$?: Observable<string>;
   placeholder?: string;
@@ -31,8 +32,11 @@ export default function Input(
         })
       }`}
     >
-      {label && <LabelPrimitive.Root htmlFor="input" className="label">{label}
-      </LabelPrimitive.Root>}
+      {label && (
+        <LabelPrimitive.Root htmlFor="input" className="label">
+          {label}
+        </LabelPrimitive.Root>
+      )}
       <legend.input
         style={css}
         placeholder={placeholder}

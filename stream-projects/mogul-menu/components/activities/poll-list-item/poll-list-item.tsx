@@ -1,4 +1,10 @@
-import { React, useEffect, useSelector, useSignal, useStyleSheet } from "../../../deps.ts";
+import {
+  React,
+  useEffect,
+  useSelector,
+  useSignal,
+  useStyleSheet,
+} from "../../../deps.ts";
 import {
   BAR_CHART_ICON_PATH,
   getPollInfo,
@@ -37,17 +43,21 @@ function BasePollListItem({ activity }: ActivityListItemProps<Poll>) {
 }
 
 export function PollListItemDescription({ poll }: { poll: Poll }) {
-  const { hasPollEnded, pollEndTime, isRefund, hasWinningOption } = getPollInfo(poll);
+  const { hasPollEnded, pollEndTime, isRefund, hasWinningOption } = getPollInfo(
+    poll,
+  );
 
   const pollMsLeft$ = useSignal(0);
   useEffect(() => {
-    const pollMsLeft = new Date(pollEndTime || Date.now()).getTime() - Date.now();
+    const pollMsLeft = new Date(pollEndTime || Date.now()).getTime() -
+      Date.now();
     pollMsLeft$.set(pollMsLeft);
   }, [pollEndTime]);
 
   // need to set the interval here because we need to update the timer every second when the prediction is still active
   useInterval(() => {
-    const pollMsLeft = new Date(pollEndTime || Date.now()).getTime() - Date.now();
+    const pollMsLeft = new Date(pollEndTime || Date.now()).getTime() -
+      Date.now();
     pollMsLeft$.set(pollMsLeft);
   }, !hasPollEnded ? ACTIVE_POLL_INTERVAL : INACTIVE_POLL_INTERVAL);
 

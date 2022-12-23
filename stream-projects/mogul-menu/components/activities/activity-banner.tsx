@@ -10,7 +10,10 @@ import {
 } from "../../deps.ts";
 import stylesheet from "./activity-banner.scss.js";
 import ThemeComponent from "../../components/base/theme-component/theme-component.tsx";
-import { isActiveActivity, useActivitySubscription$ } from "../../shared/mod.ts";
+import {
+  isActiveActivity,
+  useActivitySubscription$,
+} from "../../shared/mod.ts";
 import { setJumperClosed, setJumperOpen } from "./jumper.ts";
 import { isActivityBannerOpen$ } from "./signals.ts";
 import { ActivityAlert, Alert, Poll, StringKeys } from "../../types/mod.ts";
@@ -22,7 +25,9 @@ export interface ActivityBannerProps<ActivityType> {
 }
 
 type BannerMap<BannerTypes> = {
-  [K in keyof BannerTypes]: (props: ActivityBannerProps<BannerTypes[K]>) => JSX.Element;
+  [K in keyof BannerTypes]: (
+    props: ActivityBannerProps<BannerTypes[K]>,
+  ) => JSX.Element;
 };
 
 export interface ActivityBannerManagerProps<BannerTypes> {
@@ -67,12 +72,17 @@ export function ActivityBannerManager<
 >(props: ActivityBannerManagerProps<BannerTypes>) {
   const { isStandalone = true } = props;
   const bannerSourceTypes = Object.keys(props.banners) as SourceType[];
-  const { activityAlertConnection$ } = useActivitySubscription$<ActivityType, SourceType>({
+  const { activityAlertConnection$ } = useActivitySubscription$<
+    ActivityType,
+    SourceType
+  >({
     status: "ready",
     limit: ACTIVITY_CONNECTION_LIMIT,
   });
 
-  const lastActivityAlert$ = useSignal<ActivityAlert<ActivityType, SourceType> | undefined>(
+  const lastActivityAlert$ = useSignal<
+    ActivityAlert<ActivityType, SourceType> | undefined
+  >(
     undefined!,
   );
   const hasClosed$ = useSignal(false);
@@ -107,11 +117,16 @@ export function ActivityBannerManager<
     // accessing the selector will not cause the useObserve hook to run
     const activityAlert = activityAlert$.get();
 
-    if (activityAlert && hasActivityChanged.get() && isActiveActivity(activityAlert)) {
+    if (
+      activityAlert && hasActivityChanged.get() &&
+      isActiveActivity(activityAlert)
+    ) {
       openBanner();
       lastActivityAlert$.set(activityAlert);
       hasClosed$.set(false);
-    } else if (activityAlert && !isActiveActivity(activityAlert) && !hasClosed$.get()) {
+    } else if (
+      activityAlert && !isActiveActivity(activityAlert) && !hasClosed$.get()
+    ) {
       hasClosed$.set(true);
       closeBanner();
     }

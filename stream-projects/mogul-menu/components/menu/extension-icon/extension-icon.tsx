@@ -1,4 +1,10 @@
-import { classKebab, getSrcByImageObj, React, Ripple, useStyleSheet } from "../../../deps.ts";
+import {
+  classKebab,
+  getSrcByImageObj,
+  React,
+  Ripple,
+  useStyleSheet,
+} from "../../../deps.ts";
 import { getHasNotification, useTabs } from "../../tabs/mod.ts";
 import { getMenuIconImageObj, useMenu } from "../mod.ts";
 import stylesheet from "./extension-icon.scss.js";
@@ -18,7 +24,9 @@ export default function ExtensionIcon() {
     <div
       className={`c-extension-icon ${classKebab({ hasNotification })}`}
       style={{
-        backgroundImage: iconImageObj ? `url(${getSrcByImageObj(iconImageObj)})` : undefined,
+        backgroundImage: iconImageObj
+          ? `url(${getSrcByImageObj(iconImageObj)})`
+          : undefined,
       }}
       onClick={onExtensionIconClick}
     >

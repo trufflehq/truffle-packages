@@ -6,7 +6,13 @@ export function useSeasonPassData() {
     query: SEASON_PASS_QUERY,
     requestPolicy: "network-only",
     context: useMemo(
-      () => ({ additionalTypenames: ["OrgUserCounter", "SeasonPass", "SeasonPassProgression"] }),
+      () => ({
+        additionalTypenames: [
+          "OrgUserCounter",
+          "SeasonPass",
+          "SeasonPassProgression",
+        ],
+      }),
       [],
     ),
   });

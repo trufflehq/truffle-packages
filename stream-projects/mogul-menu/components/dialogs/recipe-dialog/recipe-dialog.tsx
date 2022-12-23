@@ -5,7 +5,9 @@ import Dialog from "../../base/dialog/dialog.tsx";
 import { RedeemableDialog } from "../redeemable-dialog/redeemable-dialog.tsx";
 import DefaultDialogContentFragment from "../content-fragments/default/default-dialog-content-fragment.tsx";
 
-export default function RecipeDialog({ redeemableCollectible }: RedeemableDialog) {
+export default function RecipeDialog(
+  { redeemableCollectible }: RedeemableDialog,
+) {
   const { popDialog } = useDialog();
 
   const openCraftTable = () => {

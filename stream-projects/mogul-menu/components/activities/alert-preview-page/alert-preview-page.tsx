@@ -75,12 +75,16 @@ export default function AlertPreviewPage(
 ) {
   useStyleSheet(stylesheet);
   const [, executeEndAlertMutation] = useMutation(END_ALERT_MUTATION_QUERY);
-  const [, executeDeleteAlertMutation] = useMutation(DELETE_ALERT_MUTATION_QUERY);
+  const [, executeDeleteAlertMutation] = useMutation(
+    DELETE_ALERT_MUTATION_QUERY,
+  );
   const { pushDialog, popDialog } = useDialog();
   const previewSrc$ = useSignal("");
 
   const alertError$ = useSignal("");
-  const { signal$: alert$ } = useSubscriptionSignal(ALERT_SUBSCRIPTION, { id: alertId });
+  const { signal$: alert$ } = useSubscriptionSignal(ALERT_SUBSCRIPTION, {
+    id: alertId,
+  });
   const { popPage } = usePageStack();
   const onEndAlert = async () => {
     const result = await executeEndAlertMutation({ id: alertId });
@@ -114,8 +118,12 @@ export default function AlertPreviewPage(
   };
 
   const title = useSelector(() => alert$.data.alert.data.title?.get());
-  const description = useSelector(() => alert$.data.alert.data.description?.get());
-  const isReady = useSelector(() => alert$.data.alert.status?.get() === "ready");
+  const description = useSelector(() =>
+    alert$.data.alert.data.description?.get()
+  );
+  const isReady = useSelector(() =>
+    alert$.data.alert.status?.get() === "ready"
+  );
 
   useObserve(() => {
     const src = getPreviewSrc(alert$.data.alert.data.url?.get());
@@ -129,7 +137,9 @@ export default function AlertPreviewPage(
 
   const previewSrc = useSelector(() => previewSrc$.get());
   const alertError = useSelector(() => alertError$.get());
-  const alertCreatedAt = useSelector(() => new Date(alert$.data.alert.time?.get()));
+  const alertCreatedAt = useSelector(() =>
+    new Date(alert$.data.alert.time?.get())
+  );
   return (
     <Page
       title={pageTitle}

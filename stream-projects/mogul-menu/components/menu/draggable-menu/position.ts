@@ -75,14 +75,19 @@ export function getAbsoluteMenuPosition(
  * @param dimensions
  * @returns
  */
-export function getMenuSize(menuPosition: MenuPosition | undefined, dimensions: Dimensions) {
+export function getMenuSize(
+  menuPosition: MenuPosition | undefined,
+  dimensions: Dimensions,
+) {
   const verticalPosition = getPositionPrefix(menuPosition);
 
   return {
-    x: dimensions.base.x + dimensions.modifiers.right + dimensions.modifiers.left,
+    x: dimensions.base.x + dimensions.modifiers.right +
+      dimensions.modifiers.left,
     y: verticalPosition === "top"
       ? Math.abs(dimensions.modifiers.bottom - dimensions.modifiers.top)
-      : dimensions.base.y + dimensions.modifiers.bottom - dimensions.modifiers.top,
+      : dimensions.base.y + dimensions.modifiers.bottom -
+        dimensions.modifiers.top,
   };
 }
 

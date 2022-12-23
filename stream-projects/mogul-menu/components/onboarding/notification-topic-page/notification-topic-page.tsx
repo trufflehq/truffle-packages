@@ -5,7 +5,9 @@ import { Page } from "../../page-stack/mod.ts";
 
 import styleSheet from "./notifications-topic-page.scss.js";
 
-export default function NotificationTopicPage({ onContinue }: { onContinue: () => void }) {
+export default function NotificationTopicPage(
+  { onContinue }: { onContinue: () => void },
+) {
   useStyleSheet(styleSheet);
   return (
     <Page isFullSize shouldDisableEscape shouldShowHeader={false}>

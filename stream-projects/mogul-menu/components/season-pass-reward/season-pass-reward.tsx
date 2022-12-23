@@ -1,4 +1,10 @@
-import { classKebab, getSrcByImageObj, React, useRef, useStyleSheet } from "../../deps.ts";
+import {
+  classKebab,
+  getSrcByImageObj,
+  React,
+  useRef,
+  useStyleSheet,
+} from "../../deps.ts";
 import { UnlockedIcon } from "../unlocked-icon/unlocked-icon.tsx";
 import { LockedIcon } from "../locked-icon/locked-icon.tsx";
 

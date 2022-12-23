@@ -43,10 +43,14 @@ export default function ChannelPointsActionsDialog() {
   const [{ data: orgUserCounterTypeData }] = useQuery({
     query: ORG_USER_COUNTER_TYPE_QUERY,
   });
-  const channelPointsOrgUserCounterType = orgUserCounterTypeData?.orgUserCounterType;
+  const channelPointsOrgUserCounterType = orgUserCounterTypeData
+    ?.orgUserCounterType;
 
-  const [{ data: economyActionConnectionData }] = useQuery({ query: ECONOMY_ACTIONS_QUERY });
-  const economyActionConnection = economyActionConnectionData.economyActionConnection;
+  const [{ data: economyActionConnectionData }] = useQuery({
+    query: ECONOMY_ACTIONS_QUERY,
+  });
+  const economyActionConnection =
+    economyActionConnectionData.economyActionConnection;
 
   const channelPointsEconomyActions = _.reverse(
     economyActionConnection?.nodes?.filter((economyAction) =>

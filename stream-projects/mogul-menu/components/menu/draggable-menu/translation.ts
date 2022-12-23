@@ -4,7 +4,10 @@ import { Dimensions } from "../../../types/mod.ts";
 /**
  * Returns true if the menu was dragged over the X axis
  */
-export function isVerticalTranslation(lastPosition?: MenuPosition, newPosition?: MenuPosition) {
+export function isVerticalTranslation(
+  lastPosition?: MenuPosition,
+  newPosition?: MenuPosition,
+) {
   const lastPositionPrefix = getPositionPrefix(lastPosition);
   const newPositionPrefix = getPositionPrefix(newPosition);
   const hasPositions = lastPosition && newPosition;
@@ -14,7 +17,10 @@ export function isVerticalTranslation(lastPosition?: MenuPosition, newPosition?:
 /**
  * Returns true if the menu was dragged over the Y axis
  */
-export function isHorizontalTranslation(lastPosition?: MenuPosition, newPosition?: MenuPosition) {
+export function isHorizontalTranslation(
+  lastPosition?: MenuPosition,
+  newPosition?: MenuPosition,
+) {
   const lastPositionSuffix = getPositionSuffix(lastPosition);
   const newPositionSuffix = getPositionSuffix(newPosition);
 

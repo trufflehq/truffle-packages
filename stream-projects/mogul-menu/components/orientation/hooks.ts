@@ -66,6 +66,11 @@ export function useOrientationHandler() {
 
     window.addEventListener("orientationchange", handleOrientationChange);
 
-    return () => window?.removeEventListener("orientationchange", handleOrientationChange, true);
+    return () =>
+      window?.removeEventListener(
+        "orientationchange",
+        handleOrientationChange,
+        true,
+      );
   }, []);
 }

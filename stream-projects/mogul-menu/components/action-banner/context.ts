@@ -3,8 +3,13 @@ import { ActionBannerMap } from "./types.ts";
 
 export interface ActionBannerContext {
   actionBannerMap: ActionBannerMap;
-  displayActionBanner: (actionBanner: React.ReactNode, key?: string) => string | undefined;
+  displayActionBanner: (
+    actionBanner: React.ReactNode,
+    key?: string,
+  ) => string | undefined;
   removeActionBanner: (id: string) => void;
 }
 
-export const ActionBannerContext = createContext<ActionBannerContext>(undefined!);
+export const ActionBannerContext = createContext<ActionBannerContext>(
+  undefined!,
+);

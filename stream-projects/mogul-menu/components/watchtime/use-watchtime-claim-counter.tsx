@@ -32,20 +32,27 @@ export default function useWatchtimeClaimCounter({ sourceType }: {
   const [_watchtimeClaimResult, executeWatchtimeClaimMutation] = useMutation(
     WATCH_TIME_CLAIM_MUTATION,
   );
-  const channelPointsClaimEconomyAction$ = useQuerySignal(ECONOMY_ACTION_QUERY, {
-    economyTriggerId: CHANNEL_POINTS_CLAIM_TRIGGER_ID,
-  });
+  const channelPointsClaimEconomyAction$ = useQuerySignal(
+    ECONOMY_ACTION_QUERY,
+    {
+      economyTriggerId: CHANNEL_POINTS_CLAIM_TRIGGER_ID,
+    },
+  );
 
   const lastClaimTimeMsFromCookie = getCookie(LAST_CLAIM_TIME_MS_COOKIE);
   const lastClaimTimeMs = lastClaimTimeMsFromCookie
-    ? !isNaN(lastClaimTimeMsFromCookie) ? parseInt(lastClaimTimeMsFromCookie) : Date.now()
+    ? !isNaN(lastClaimTimeMsFromCookie)
+      ? parseInt(lastClaimTimeMsFromCookie)
+      : Date.now()
     : Date.now();
 
   // TODO: figure out a better way to do this... (waiting for initial data)
   const baseClaimCountdownMs$ = useSignal(DEFAULT_TIMER_MS);
   useObserve(() => {
-    const channelPointsClaimEconomyAction = channelPointsClaimEconomyAction$.get()?.economyAction;
-    const claimCountdownSeconds = channelPointsClaimEconomyAction?.data?.cooldownSeconds;
+    const channelPointsClaimEconomyAction = channelPointsClaimEconomyAction$
+      .get()?.economyAction;
+    const claimCountdownSeconds = channelPointsClaimEconomyAction?.data
+      ?.cooldownSeconds;
 
     if (claimCountdownSeconds) {
       const baseClaimCountdownMs = claimCountdownSeconds * 1000;
@@ -92,10 +99,15 @@ export default function useWatchtimeClaimCounter({ sourceType }: {
 
     jumper.call("comms.postMessage", GLOBAL_JUMPER_MESSAGES.INVALIDATE_USER);
     jumper.call("comms.postMessage", MOGUL_MENU_JUMPER_MESSAGES.RESET_TIMER);
-    jumper.call("comms.postMessage", MOGUL_MENU_JUMPER_MESSAGES.INVALIDATE_CHANNEL_POINTS);
+    jumper.call(
+      "comms.postMessage",
+      MOGUL_MENU_JUMPER_MESSAGES.INVALIDATE_CHANNEL_POINTS,
+    );
 
     if (sourceType) {
-      const economyTransactions = await executeWatchtimeClaimMutation({ sourceType }, {
+      const economyTransactions = await executeWatchtimeClaimMutation({
+        sourceType,
+      }, {
         additionalTypenames: [
           "OrgUserCounter",
           "OwnedCollectible",

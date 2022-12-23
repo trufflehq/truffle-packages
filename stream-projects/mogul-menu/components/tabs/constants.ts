@@ -22,19 +22,22 @@ export const DEFAULT_TABS = [
   {
     text: "Activities",
     slug: "activities",
-    imgUrl: "https://cdn.bio/assets/images/features/browser_extension/activities.svg",
+    imgUrl:
+      "https://cdn.bio/assets/images/features/browser_extension/activities.svg",
     $el: ActivitiesTab,
   },
   {
     text: "Collection",
     slug: "collection",
-    imgUrl: "https://cdn.bio/assets/images/features/browser_extension/collection.svg",
+    imgUrl:
+      "https://cdn.bio/assets/images/features/browser_extension/collection.svg",
     $el: CollectionTab,
   },
   {
     text: "Shop",
     slug: "shop",
-    imgUrl: "https://cdn.bio/assets/images/features/browser_extension/store.svg",
+    imgUrl:
+      "https://cdn.bio/assets/images/features/browser_extension/store.svg",
     $el: ChannelPointsShopTab,
   },
 ];
@@ -42,13 +45,15 @@ export const DEFAULT_TABS = [
 export const SEASON_PASS_TAB = {
   text: "Battle Pass",
   slug: "battle-pass",
-  imgUrl: "https://cdn.bio/assets/images/features/browser_extension/gamepad.svg",
+  imgUrl:
+    "https://cdn.bio/assets/images/features/browser_extension/gamepad.svg",
   $el: SeasonPassTab,
 };
 
 export const CHAT_TAB = {
   text: "Chat",
   slug: "chat",
-  imgUrl: "https://cdn.bio/assets/images/features/browser_extension/support-chat-light.svg",
+  imgUrl:
+    "https://cdn.bio/assets/images/features/browser_extension/support-chat-light.svg",
   $el: ChatTab,
 };

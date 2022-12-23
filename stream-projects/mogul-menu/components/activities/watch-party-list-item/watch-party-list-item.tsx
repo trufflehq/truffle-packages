@@ -1,5 +1,9 @@
 import { React, useSelector, useStyleSheet } from "../../../deps.ts";
-import { DISCO_BALL_PATH, hasPermission, useOrgUserWithRoles$ } from "../../../shared/mod.ts";
+import {
+  DISCO_BALL_PATH,
+  hasPermission,
+  useOrgUserWithRoles$,
+} from "../../../shared/mod.ts";
 import { ActivityListItemProps } from "../activities-tab/activities-tab.tsx";
 import ActivityListItem from "../activity-list-item/activity-list-item.tsx";
 import stylesheet from "./watch-party-list-item.scss.js";

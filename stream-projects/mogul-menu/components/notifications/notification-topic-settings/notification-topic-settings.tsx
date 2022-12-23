@@ -33,7 +33,8 @@ export default function NotificationTopicSettings() {
             <Switch
               showIsLoading
               value={topic.isSubscribed}
-              onChange={(enabled: boolean) => subscriptionSwitchToggleHandler(topic, enabled)}
+              onChange={(enabled: boolean) =>
+                subscriptionSwitchToggleHandler(topic, enabled)}
             />
           </div>
         </div>

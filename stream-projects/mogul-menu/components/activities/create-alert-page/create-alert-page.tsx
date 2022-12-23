@@ -75,7 +75,9 @@ export default function CreateAlertPage(
     description: "",
   });
 
-  const [, executeCreateAlertMutation] = useMutation(CREATE_ALERT_MUTATION_QUERY);
+  const [, executeCreateAlertMutation] = useMutation(
+    CREATE_ALERT_MUTATION_QUERY,
+  );
   const { popPage } = usePageStack();
   const enqueueSnackBar = useSnackBar();
 

@@ -1,4 +1,9 @@
-import { ProgressPrimitive, React, useState, useStyleSheet } from "../../../deps.ts";
+import {
+  ProgressPrimitive,
+  React,
+  useState,
+  useStyleSheet,
+} from "../../../deps.ts";
 import { useInterval } from "./hooks.ts";
 import styleSheet from "./progress-bar.scss.js";
 
@@ -16,12 +21,18 @@ function Progress({ children, max, value }: ProgressProps) {
 }
 
 function ProgressIndicator(
-  { value, color = "var(--tfl-color-primary-fill)" }: { value: number; color?: string },
+  { value, color = "var(--tfl-color-primary-fill)" }: {
+    value: number;
+    color?: string;
+  },
 ) {
   return (
     <ProgressPrimitive.ProgressIndicator
       className="c-progress-indicator"
-      style={{ transform: `translateX(-${100 - value}%)`, backgroundColor: color }}
+      style={{
+        transform: `translateX(-${100 - value}%)`,
+        backgroundColor: color,
+      }}
     />
   );
 }

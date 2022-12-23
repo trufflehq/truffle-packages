@@ -3,7 +3,10 @@ import { FileRel } from "./file.types.ts";
 
 export type CollectibleType = "emote" | "redeemable" | "ticket";
 export type CollectibleTargetType = "article";
-export type CollectibleCategory = "flair" | "chatMessageHighlight" | "chatUsernameGradient";
+export type CollectibleCategory =
+  | "flair"
+  | "chatMessageHighlight"
+  | "chatUsernameGradient";
 export type CollectibleRedeemType =
   | "powerup"
   | "discordRole"
@@ -39,7 +42,9 @@ export interface Collectible<T> {
   ownedCollectible: OwnedCollectible<T>;
 }
 
-export type CollectibleConnection = TruffleGQlConnection<Collectible<CollectibleRedeemData>>;
+export type CollectibleConnection = TruffleGQlConnection<
+  Collectible<CollectibleRedeemData>
+>;
 
 interface ChatHighlightColor {
   name: string;

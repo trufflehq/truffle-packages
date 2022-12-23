@@ -32,7 +32,8 @@ export function useOwnedCollectibleConnection() {
     ),
   });
   return {
-    ownedCollectibleConnectionData: ownedCollectibleConnectionData as OwnedCollectibleData,
+    ownedCollectibleConnectionData:
+      ownedCollectibleConnectionData as OwnedCollectibleData,
     reexecuteOwnedCollectibleConnQuery,
   };
 }

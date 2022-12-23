@@ -9,7 +9,8 @@ const CP_SPENT_ORG_USER_COUNTER_TYPE_QUERY = gql`
     }
   } 
 `;
-const CHANNEL_POINTS_SPENT_LEADERBOARD_DISPLAY_KV_KEY = `mogulMenu:cpSpentLeaderboardDisplay`;
+const CHANNEL_POINTS_SPENT_LEADERBOARD_DISPLAY_KV_KEY =
+  `mogulMenu:cpSpentLeaderboardDisplay`;
 
 export default function CPSpentTile(
   { orgUserWithRoles$ }: { orgUserWithRoles$: OrgUserQuerySignal },

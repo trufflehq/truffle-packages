@@ -43,7 +43,8 @@ export default function ChannelPointsShop() {
   const [{ data: channelPointsData }] = useQuery({
     query: CHANNEL_POINTS_QUERY,
   });
-  const channelPoints: OrgUserCounter = channelPointsData?.channelPoints?.orgUserCounter;
+  const channelPoints: OrgUserCounter = channelPointsData?.channelPoints
+    ?.orgUserCounter;
 
   const onHowToEarnClick = () => {
     pushDialog(<ChannelPointsActionsDialog />);
@@ -115,7 +116,8 @@ interface CollectibleItemProps {
 }
 
 function CollectibleItem(props: CollectibleItemProps) {
-  const { channelPoints, collectibleItem, channelPointsImageObj, buttonBg } = props;
+  const { channelPoints, collectibleItem, channelPointsImageObj, buttonBg } =
+    props;
 
   const { pushDialog } = useDialog();
 

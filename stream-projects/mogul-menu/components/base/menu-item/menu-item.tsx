@@ -1,4 +1,10 @@
-import { Icon, React, useEffect, useRef, useStyleSheet } from "../../../deps.ts";
+import {
+  Icon,
+  React,
+  useEffect,
+  useRef,
+  useStyleSheet,
+} from "../../../deps.ts";
 import styleSheet from "./menu-item.scss.js";
 
 // used in the settings page

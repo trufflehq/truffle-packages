@@ -11,7 +11,11 @@ import {
   useSubscriptionSignal,
 } from "../../deps.ts";
 import { KOTHOrgUser } from "../../types/mod.ts";
-import { CROWN_ICON, hasPermission, OrgUserQuerySignal } from "../../shared/mod.ts";
+import {
+  CROWN_ICON,
+  hasPermission,
+  OrgUserQuerySignal,
+} from "../../shared/mod.ts";
 import { KOTH_ORG_CONFIG_SUBSCRIPTION, KOTH_USER_QUERY } from "./gql.ts";
 import ActivePowerups from "../active-powerups/active-powerups.tsx";
 import Tile, { RemoveButton } from "../tile/tile.tsx";
@@ -28,12 +32,17 @@ mutation {
 }
 `;
 
-export default function KothTile({ orgUserWithRoles$ }: { orgUserWithRoles$: OrgUserQuerySignal }) {
+export default function KothTile(
+  { orgUserWithRoles$ }: { orgUserWithRoles$: OrgUserQuerySignal },
+) {
   useStyleSheet(styleSheet);
-  const { signal$: orgKothConfig$ } = useSubscriptionSignal(KOTH_ORG_CONFIG_SUBSCRIPTION);
+  const { signal$: orgKothConfig$ } = useSubscriptionSignal(
+    KOTH_ORG_CONFIG_SUBSCRIPTION,
+  );
 
   const kothUser$ = useComputed(async () => {
-    const kothUserId = orgKothConfig$.data?.get()?.org?.orgConfig.data.kingOfTheHill?.userId;
+    const kothUserId = orgKothConfig$.data?.get()?.org?.orgConfig.data
+      .kingOfTheHill?.userId;
 
     if (!kothUserId) return;
 
@@ -63,7 +72,10 @@ export default function KothTile({ orgUserWithRoles$ }: { orgUserWithRoles$: Org
   );
 }
 
-function arePropsEqual(prevProps: OrgUserTileProps, nextProps: OrgUserTileProps) {
+function arePropsEqual(
+  prevProps: OrgUserTileProps,
+  nextProps: OrgUserTileProps,
+) {
   return prevProps?.kothOrgUser?.user?.id === nextProps?.kothOrgUser?.user?.id;
 }
 
@@ -82,7 +94,9 @@ function OrgUserTile(
     hasDeletePermission?: boolean;
   },
 ) {
-  const [_deleteKothResult, executeDeleteKothResult] = useMutation(DELETE_KOTH_MUTATION);
+  const [_deleteKothResult, executeDeleteKothResult] = useMutation(
+    DELETE_KOTH_MUTATION,
+  );
   const onDelete = async () => {
     await executeDeleteKothResult();
   };
@@ -103,7 +117,9 @@ function OrgUserTile(
           <div className="info">
             <div className="username">{kothOrgUser?.name}</div>
             <div className="powerups">
-              {activePowerups ? <ActivePowerups activePowerups={activePowerups} /> : null}
+              {activePowerups
+                ? <ActivePowerups activePowerups={activePowerups} />
+                : null}
             </div>
           </div>
         </div>

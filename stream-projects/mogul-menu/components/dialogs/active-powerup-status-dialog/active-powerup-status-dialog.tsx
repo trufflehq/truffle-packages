@@ -28,7 +28,8 @@ export function ActiveRedeemableDialog({
     DELETE_ACTIVE_POWERUP_MUTATION,
   );
 
-  const durationSeconds = redeemableCollectible.source?.data?.redeemData?.durationSeconds;
+  const durationSeconds = redeemableCollectible.source?.data?.redeemData
+    ?.durationSeconds;
 
   const creationDate = new Date(activePowerup.creationDate);
   const expirationDate = new Date(

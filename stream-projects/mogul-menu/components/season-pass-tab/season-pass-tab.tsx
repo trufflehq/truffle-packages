@@ -9,7 +9,8 @@ export default function SeasonPassTab() {
   useStyleSheet(styleSheet);
   const { pushDialog } = useDialog();
 
-  const xpSrc = "https://cdn.bio/assets/images/features/browser_extension/xp.svg";
+  const xpSrc =
+    "https://cdn.bio/assets/images/features/browser_extension/xp.svg";
 
   const onHowToEarnClick = () => {
     pushDialog(<XpActionsDialog xpSrc={xpSrc} />);

@@ -1,5 +1,8 @@
 import { TabsActions, TabsState } from "./types.ts";
-export const tabsReducer = (state: TabsState, { type, payload }: TabsActions) => {
+export const tabsReducer = (
+  state: TabsState,
+  { type, payload }: TabsActions,
+) => {
   switch (type) {
     case "@@UPDATE_TAB": {
       const newState = {

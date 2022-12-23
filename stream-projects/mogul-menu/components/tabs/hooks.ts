@@ -1,4 +1,11 @@
-import { useContext, useEffect, useMemo, useReducer, useRef, useState } from "../../deps.ts";
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "../../deps.ts";
 import { tabsReducer } from "./reducer.ts";
 import { TabDefinition, TabsActions, TabsState, TabState } from "./types.ts";
 import { useIsNative, useSeasonPassData } from "../../shared/mod.ts";

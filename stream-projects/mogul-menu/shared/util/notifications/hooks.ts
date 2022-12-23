@@ -27,7 +27,9 @@ import { useUserKV } from "../kv/hooks.ts";
 import { HAS_SEEN_NOTIFICATION_SETUP_BANNER } from "./constants.ts";
 
 export function useNotificationTopics() {
-  const [{ data: notificationTopicData, fetching }] = useQuery({ query: NOTIFICATION_TOPIC_QUERY });
+  const [{ data: notificationTopicData, fetching }] = useQuery({
+    query: NOTIFICATION_TOPIC_QUERY,
+  });
   const notificationTopics: NotificationTopic[] = useMemo(
     () => notificationTopicData?.notificationTopicConnection?.nodes,
     [notificationTopicData],
@@ -70,18 +72,28 @@ export function useFcmNotificationMediumConfig(token: string | undefined) {
     }), []),
   });
 
-  const isTokenRegistered = useMemo(() => Boolean(fcmTokenData?.notificationMediumUserConfig), [
-    fcmTokenData,
-  ]);
+  const isTokenRegistered = useMemo(
+    () => Boolean(fcmTokenData?.notificationMediumUserConfig),
+    [
+      fcmTokenData,
+    ],
+  );
 
-  const [_upsertResult, upsertFcmToken] = useMutation(UPSERT_FCM_TOKEN_MUTATION);
-  const [_deleteResult, deleteFcmToken] = useMutation(DELETE_FCM_TOKEN_MUTATION);
+  const [_upsertResult, upsertFcmToken] = useMutation(
+    UPSERT_FCM_TOKEN_MUTATION,
+  );
+  const [_deleteResult, deleteFcmToken] = useMutation(
+    DELETE_FCM_TOKEN_MUTATION,
+  );
 
   const registerToken = async () => {
     if (token) {
       const context = await jumper.call("context.getInfo");
       console.log("registering fcmToken with mycelium");
-      await upsertFcmToken({ token, platform: context?.platform ?? "extension-chrome" });
+      await upsertFcmToken({
+        token,
+        platform: context?.platform ?? "extension-chrome",
+      });
     }
   };
 
@@ -97,9 +109,10 @@ export function useFcmNotificationMediumConfig(token: string | undefined) {
 
 export function useDesktopNotificationSetting() {
   const { fcmToken } = useFcmTokenManager();
-  const { isTokenRegistered, registerToken, unregisterToken } = useFcmNotificationMediumConfig(
-    fcmToken,
-  );
+  const { isTokenRegistered, registerToken, unregisterToken } =
+    useFcmNotificationMediumConfig(
+      fcmToken,
+    );
 
   useEffect(() => {
     console.log("fcm token", fcmToken);
@@ -147,10 +160,14 @@ export function useHasSeenNotificationBanner() {
   // if you want to force this banner to show up again for users, change this "truthyValue"
   const truthyValue = "1";
 
-  const { value$, setUserKV } = useUserKV(HAS_SEEN_NOTIFICATION_SETUP_BANNER, true);
+  const { value$, setUserKV } = useUserKV(
+    HAS_SEEN_NOTIFICATION_SETUP_BANNER,
+    true,
+  );
   const hasSeenBanner$ = useComputed(() => value$.get() === truthyValue);
 
-  const setHasSeen = (hasSeen: boolean) => setUserKV(hasSeen ? truthyValue : null);
+  const setHasSeen = (hasSeen: boolean) =>
+    setUserKV(hasSeen ? truthyValue : null);
 
   return { hasSeenBanner$, setHasSeen };
 }

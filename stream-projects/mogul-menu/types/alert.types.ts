@@ -4,7 +4,10 @@ import { OrgUser } from "./org-user.types.ts";
 export type AlertStatus = "ready" | "shown";
 export type AlertType = "raid-stream" | "activity" | "watch-party";
 
-export interface Alert<SourceType extends string, AlertDataType = Record<string, any>> {
+export interface Alert<
+  SourceType extends string,
+  AlertDataType = Record<string, any>,
+> {
   __typename: "Alert";
   id: string;
   userId: string;
@@ -30,10 +33,12 @@ export type WatchPartyAlert = Alert<"watch-party", {
   description?: string;
 }>;
 
-export interface ActivityAlert<ActivityType, SourceType extends string> extends Alert<SourceType> {
+export interface ActivityAlert<ActivityType, SourceType extends string>
+  extends Alert<SourceType> {
   activity: ActivityType;
 }
 
-export type ActivityConnection<ActivityType, SourceType extends string> = TruffleGQlConnection<
-  ActivityAlert<ActivityType, SourceType>
->;
+export type ActivityConnection<ActivityType, SourceType extends string> =
+  TruffleGQlConnection<
+    ActivityAlert<ActivityType, SourceType>
+  >;

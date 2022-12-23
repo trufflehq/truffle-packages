@@ -135,7 +135,10 @@ export default function ConfirmPurchaseDialog({
 }
 
 function NotifyPurchaseDialog(
-  { collectibleItem, buttonBg }: { collectibleItem: Product; buttonBg?: string },
+  { collectibleItem, buttonBg }: {
+    collectibleItem: Product;
+    buttonBg?: string;
+  },
 ) {
   const { popDialog } = useDialog();
   const { setActiveTab } = useCurrentTab();
@@ -171,7 +174,8 @@ function NotifyPurchaseDialog(
               imageRel={file?.fileObj}
               primaryText={
                 <div>
-                  <strong>{collectibleItem?.source?.name ?? ""}</strong> added to your collection!
+                  <strong>{collectibleItem?.source?.name ?? ""}</strong>{" "}
+                  added to your collection!
                 </div>
               }
             />

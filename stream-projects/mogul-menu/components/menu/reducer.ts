@@ -1,7 +1,10 @@
 import { MenuActions, MenuState } from "./types.ts";
 import { getClosedModifiers, getIsOpen, getOpenModifiers } from "./getters.ts";
 
-export const menuStateReducer = (state: MenuState, { type, payload }: MenuActions) => {
+export const menuStateReducer = (
+  state: MenuState,
+  { type, payload }: MenuActions,
+) => {
   switch (type) {
     case "@@MENU_DEMENSION_OPEN": {
       return {
@@ -26,7 +29,9 @@ export const menuStateReducer = (state: MenuState, { type, payload }: MenuAction
           ...state.dimensions,
           modifiers: {
             ...state.dimensions.modifiers,
-            ...(isOpen ? state.dimensions.modifiers : getClosedModifiers(state)),
+            ...(isOpen
+              ? state.dimensions.modifiers
+              : getClosedModifiers(state)),
           },
         },
       };

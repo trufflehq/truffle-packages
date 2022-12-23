@@ -53,10 +53,11 @@ function usePollingChannel$(
     undefined!,
   );
 
-  const { signal$: channelData$, reexecuteQuery: reexecuteChannelQuery } = usePollingQuerySignal({
-    interval,
-    query: CHANNEL_QUERY,
-  });
+  const { signal$: channelData$, reexecuteQuery: reexecuteChannelQuery } =
+    usePollingQuerySignal({
+      interval,
+      query: CHANNEL_QUERY,
+    });
 
   // only update the channel$ if the channel data has changed
   useUpdateSignalOnChange(channel$, channelData$.data);
@@ -90,9 +91,15 @@ function getChannelStatusBySelectionValue(
 }
 export default function AdminSettingsPage() {
   useStyleSheet(styleSheet);
-  const [, executeChannelUpsertMutation] = useMutation(CHANNEL_UPSERT_MUTATION_QUERY);
-  const { channel$ } = usePollingChannel$({ interval: CHANNEL_POLLING_INTERVAL });
-  const selectionValueInput$ = useSignal<ChannelStatusSelectionValue | undefined>(undefined!);
+  const [, executeChannelUpsertMutation] = useMutation(
+    CHANNEL_UPSERT_MUTATION_QUERY,
+  );
+  const { channel$ } = usePollingChannel$({
+    interval: CHANNEL_POLLING_INTERVAL,
+  });
+  const selectionValueInput$ = useSignal<
+    ChannelStatusSelectionValue | undefined
+  >(undefined!);
   const error$ = useSignal("");
   const extensionInfo$ = useExtensionInfo$();
 
@@ -102,20 +109,26 @@ export default function AdminSettingsPage() {
   );
   const sourceType$ = useComputed(() => {
     const extensionInfo = extensionInfo$.get();
-    return extensionInfo?.pageInfo ? getChannelSourceType(extensionInfo.pageInfo) : "youtube";
+    return extensionInfo?.pageInfo
+      ? getChannelSourceType(extensionInfo.pageInfo)
+      : "youtube";
   });
   const isLive$ = useComputed(() => channel$.channel?.isLive.get());
 
   const onValueChange = async (selectionValue: ChannelStatusSelectionValue) => {
     selectionValueInput$.set(selectionValue);
     const channel = channel$.get();
-    const upstreamSelectionValue = getChannelStatusSelectionValue({ channel: channel?.channel });
+    const upstreamSelectionValue = getChannelStatusSelectionValue({
+      channel: channel?.channel,
+    });
     const hasChannelStatusChanged = selectionValue && upstreamSelectionValue &&
       selectionValue !== upstreamSelectionValue;
 
     // if the selection value doesn't match the upstream channel status, update the channel status
     if (hasChannelStatusChanged) {
-      const { isLive, isManual } = getChannelStatusBySelectionValue({ selectionValue });
+      const { isLive, isManual } = getChannelStatusBySelectionValue({
+        selectionValue,
+      });
       error$.set("");
       try {
         const channelUpsertResult = await executeChannelUpsertMutation({
@@ -127,7 +140,10 @@ export default function AdminSettingsPage() {
         });
 
         if (channelUpsertResult.error) {
-          console.error("error updating channel status", channelUpsertResult.error);
+          console.error(
+            "error updating channel status",
+            channelUpsertResult.error,
+          );
           error$.set(channelUpsertResult.error.graphQLErrors[0]?.message);
           return;
         }
@@ -150,7 +166,12 @@ export default function AdminSettingsPage() {
           value={selectionValue}
           onValueChange={onValueChange}
         >
-          <ChannelStatusRadioButton value="auto" id="auto" label="Auto" isLive={isLive} />
+          <ChannelStatusRadioButton
+            value="auto"
+            id="auto"
+            label="Auto"
+            isLive={isLive}
+          />
           <ChannelStatusRadioButton
             value="manual-online"
             id="manual-online"
@@ -170,7 +191,12 @@ export default function AdminSettingsPage() {
 }
 
 function ChannelStatusRadioButton(
-  { value, id, label, isLive }: { value: string; id: string; label: string; isLive: boolean },
+  { value, id, label, isLive }: {
+    value: string;
+    id: string;
+    label: string;
+    isLive: boolean;
+  },
 ) {
   return (
     <div className="c-channel-status-radio-button">
@@ -179,7 +205,9 @@ function ChannelStatusRadioButton(
       </RadioGroup.Item>
       <LabelPrimitive.Root htmlFor={id} className="label">
         {`${label} : `}
-        <span className={`status ${classKebab({ isLive, isOffline: !isLive })}`}>
+        <span
+          className={`status ${classKebab({ isLive, isOffline: !isLive })}`}
+        >
           {isLive ? "Online" : "Offline"}
         </span>
       </LabelPrimitive.Root>

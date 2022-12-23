@@ -7,7 +7,10 @@ import {
   useState,
   useStyleSheet,
 } from "../../../deps.ts";
-import { useOrgUserChatSettings, useSaveOrgUserSettings } from "../../../shared/mod.ts";
+import {
+  useOrgUserChatSettings,
+  useSaveOrgUserSettings,
+} from "../../../shared/mod.ts";
 import { Page } from "../../page-stack/mod.ts";
 import Button from "../../base/button/button.tsx";
 import Input from "../../base/input/input.tsx";
@@ -52,7 +55,9 @@ export default function ChatSettingsPage(
           <div className="welcome">
             {orgUser?.name ? `Welcome, ${orgUser.name}!` : "Welcome!"}
           </div>
-          <div className="info">Go ahead, change your chat username if you'd like</div>
+          <div className="info">
+            Go ahead, change your chat username if you'd like
+          </div>
         </div>
         <div className="settings">
           <div className="username">

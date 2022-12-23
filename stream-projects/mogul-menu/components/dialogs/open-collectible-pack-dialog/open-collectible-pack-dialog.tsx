@@ -4,7 +4,10 @@ import Button from "../../base/button/button.tsx";
 import { useDialog } from "../../base/dialog-container/dialog-service.ts";
 import { RedeemableDialog } from "../redeemable-dialog/redeemable-dialog.tsx";
 import { ActivePowerupRedeemData, Collectible } from "../../../types/mod.ts";
-import { invalidateExtensionUser, useCollectibleConnection } from "../../../shared/mod.ts";
+import {
+  invalidateExtensionUser,
+  useCollectibleConnection,
+} from "../../../shared/mod.ts";
 import Dialog from "../../base/dialog/dialog.tsx";
 import DefaultDialogContentFragment from "../content-fragments/default/default-dialog-content-fragment.tsx";
 
@@ -19,13 +22,16 @@ const REDEEM_COLLECTIBLE_MUTATION = gql`
   }
 `;
 
-export default function OpenCollectiblePackDialog({ redeemableCollectible }: RedeemableDialog) {
+export default function OpenCollectiblePackDialog(
+  { redeemableCollectible }: RedeemableDialog,
+) {
   const { pushDialog, popDialog } = useDialog();
 
   const { collectibleConnectionData } = useCollectibleConnection();
-  const collectibles: Collectible<ActivePowerupRedeemData>[] = collectibleConnectionData
-    ?.collectibleConnection
-    ?.nodes;
+  const collectibles: Collectible<ActivePowerupRedeemData>[] =
+    collectibleConnectionData
+      ?.collectibleConnection
+      ?.nodes;
 
   const collectible = redeemableCollectible?.source;
   const [_redeemResult, executeRedeemMutation] = useMutation(
@@ -94,7 +100,9 @@ export default function OpenCollectiblePackDialog({ redeemableCollectible }: Red
 
 // shown after opening a collectible pack
 function OpenedPackCollectibleDialog(
-  { packCollectible }: { packCollectible?: Collectible<ActivePowerupRedeemData> },
+  { packCollectible }: {
+    packCollectible?: Collectible<ActivePowerupRedeemData>;
+  },
 ) {
   const { popDialog } = useDialog();
   const { setActiveTab } = useCurrentTab();

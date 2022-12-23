@@ -1,4 +1,9 @@
-import { abbreviateNumber, ImageByAspectRatio, React, useStyleSheet } from "../../../deps.ts";
+import {
+  abbreviateNumber,
+  ImageByAspectRatio,
+  React,
+  useStyleSheet,
+} from "../../../deps.ts";
 import { CRYSTAL_BALL_ICON, getPollInfo } from "../../../shared/mod.ts";
 import { ActivityListItemProps } from "../activities-tab/activities-tab.tsx";
 import { usePageStack } from "../../page-stack/mod.ts";

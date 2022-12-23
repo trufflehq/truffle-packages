@@ -3,7 +3,9 @@ import { ActivatePowerupDialog } from "../activate-powerup-dialog/activate-power
 import { RedeemableDialog } from "../redeemable-dialog/redeemable-dialog.tsx";
 import styleSheet from "./stream-alert-redeem-dialog.scss.js";
 
-export default function StreamAlertRedeemDialog({ redeemableCollectible }: RedeemableDialog) {
+export default function StreamAlertRedeemDialog(
+  { redeemableCollectible }: RedeemableDialog,
+) {
   useStyleSheet(styleSheet);
 
   const [message, setMessage] = useState("");

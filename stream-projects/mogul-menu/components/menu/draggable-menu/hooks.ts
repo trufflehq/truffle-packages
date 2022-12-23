@@ -1,10 +1,18 @@
 import { jumper, useEffect, useRef } from "../../../deps.ts";
-import { getDimensions, getMenuPosition, MenuPosition, useMenu } from "../mod.ts";
+import {
+  getDimensions,
+  getMenuPosition,
+  MenuPosition,
+  useMenu,
+} from "../mod.ts";
 import { DragInfo } from "../../draggable/draggable.tsx";
 import { getTranslationMods } from "./translation.ts";
 import { createMenuIframeStyle } from "./iframe-styles.ts";
 import { getAbsoluteMenuPosition, getMenuSize, getWindowSize } from "./mod.ts";
-import { getMenuPositionFromCoordinates, persistMenuPosition } from "./position.ts";
+import {
+  getMenuPositionFromCoordinates,
+  persistMenuPosition,
+} from "./position.ts";
 /**
  * This hook is used to translate the position of the child element inside
  * the draggable component based on the menu position. This allows us to reposition the child element
@@ -13,7 +21,11 @@ import { getMenuPositionFromCoordinates, persistMenuPosition } from "./position.
  * @param updateOnTranslate fn to update the dragInfo position state inside the Draggable component
  */
 export function useTranslate(
-  updateOnTranslate: (x: number, y: number, callback?: (dragInfo: DragInfo) => void) => void,
+  updateOnTranslate: (
+    x: number,
+    y: number,
+    callback?: (dragInfo: DragInfo) => void,
+  ) => void,
 ) {
   const lastPositionRef = useRef<MenuPosition>(undefined!);
   const { state: menuState, updateDimensions } = useMenu();
@@ -24,7 +36,11 @@ export function useTranslate(
     const lastPosition = lastPositionRef.current;
     if (menuPosition) {
       lastPositionRef.current = menuPosition;
-      const { xMod, yMod } = getTranslationMods(lastPosition, menuPosition, dimensions);
+      const { xMod, yMod } = getTranslationMods(
+        lastPosition,
+        menuPosition,
+        dimensions,
+      );
 
       const updateStorage = (dragInfo: DragInfo) => {
         persistMenuPosition(menuPosition, {

@@ -9,7 +9,8 @@ import {
 } from "../../deps.ts";
 import styleSheet from "./tile.scss.js";
 
-const TRASH_ICON_URL = "https://cdn.bio/assets/images/features/browser_extension/trash-red.svg";
+const TRASH_ICON_URL =
+  "https://cdn.bio/assets/images/features/browser_extension/trash-red.svg";
 const EYE_OPEN_ICON_URL =
   "https://cdn.bio/assets/images/features/browser_extension/eye-open-red.svg";
 const EYE_CLOSED_ICON_URL =

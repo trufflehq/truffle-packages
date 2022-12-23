@@ -10,7 +10,10 @@ export default function LinkButton({
   className?: string;
 }) {
   return (
-    <div className={`mm-text-link ${className}`} onClick={() => onClick?.()}>
+    <div
+      className={`mm-text-link ${className}`}
+      onClick={() => onClick?.()}
+    >
       {children}
     </div>
   );

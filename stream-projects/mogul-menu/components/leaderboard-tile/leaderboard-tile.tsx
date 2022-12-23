@@ -11,11 +11,18 @@ import {
   useSubscriptionSignal,
 } from "../../deps.ts";
 import { User } from "../../types/mod.ts";
-import { OrgUserCounter, OrgUserCounterConnection } from "../../types/org-user-counter.types.ts";
+import {
+  OrgUserCounter,
+  OrgUserCounterConnection,
+} from "../../types/org-user-counter.types.ts";
 import { LEADERBOARD_COUNTER_QUERY } from "./gql.ts";
 import Tile, { HideShowButton } from "../tile/tile.tsx";
 
-import { hasPermission, OrgUserQuerySignal, TROPHY_ICON } from "../../shared/mod.ts";
+import {
+  hasPermission,
+  OrgUserQuerySignal,
+  TROPHY_ICON,
+} from "../../shared/mod.ts";
 
 import styleSheet from "./leaderboard-tile.scss.js";
 
@@ -91,7 +98,9 @@ export const LeaderboardTile: React.FC<LeaderboardTileProps> = observer(({
     ORG_LEADERBOARD_DISPLAY_SUBSCRIPTION,
     { key: displayKey },
   );
-  const [, executeLeaderboardKVUpsert] = useMutation(LEADERBOARD_DISPLAY_UPSERT_MUTATION);
+  const [, executeLeaderboardKVUpsert] = useMutation(
+    LEADERBOARD_DISPLAY_UPSERT_MUTATION,
+  );
 
   const hasTogglePermission = useSelector(() =>
     hasPermission({
@@ -137,13 +146,16 @@ export const LeaderboardTile: React.FC<LeaderboardTileProps> = observer(({
   );
 });
 
-const MemoizedLeaderboardTile = React.memo(LeaderboardTileBase, (prev, next) => {
-  const prevUserIds = prev.top3.map((ouc) => ouc.orgUser.user.id);
-  const nextUserIds = next.top3.map((ouc) => ouc.orgUser.user.id);
+const MemoizedLeaderboardTile = React.memo(
+  LeaderboardTileBase,
+  (prev, next) => {
+    const prevUserIds = prev.top3.map((ouc) => ouc.orgUser.user.id);
+    const nextUserIds = next.top3.map((ouc) => ouc.orgUser.user.id);
 
-  return JSON.stringify(prevUserIds) === JSON.stringify(nextUserIds) &&
-    prev.shouldDisplay === next.shouldDisplay;
-});
+    return JSON.stringify(prevUserIds) === JSON.stringify(nextUserIds) &&
+      prev.shouldDisplay === next.shouldDisplay;
+  },
+);
 
 function LeaderboardTileBase(
   { headerText, top3, hasTogglePermission, shouldDisplay, onToggle }: {
@@ -211,7 +223,9 @@ interface LeaderboardAvatarProps {
   color: string;
 }
 
-function LeaderboardAvatar({ user, name, place, color }: LeaderboardAvatarProps) {
+function LeaderboardAvatar(
+  { user, name, place, color }: LeaderboardAvatarProps,
+) {
   return (
     <div className="contestant">
       <div
@@ -237,6 +251,9 @@ function LeaderboardAvatar({ user, name, place, color }: LeaderboardAvatarProps)
   );
 }
 
-const MemoizedLeaderboardAvatar = React.memo(LeaderboardAvatar, (prev, next) => {
-  return prev.user.id === next.user.id;
-});
+const MemoizedLeaderboardAvatar = React.memo(
+  LeaderboardAvatar,
+  (prev, next) => {
+    return prev.user.id === next.user.id;
+  },
+);

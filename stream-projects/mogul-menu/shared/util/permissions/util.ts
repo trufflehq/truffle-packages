@@ -14,14 +14,16 @@ import {
 // { chat: { id: '<chat id>', isStrict: true }, message: { isAll: true }
 // if match isn't found, break out of loop (don't allow global, or message: { isAll: true })
 
-export function hasPermission({ filters = {}, row, rowType, actions, modelUserIdKey, orgUser }: {
-  filters?: Filters;
-  row?: Record<string, unknown>;
-  rowType?: string;
-  actions?: PermissionAction[];
-  modelUserIdKey?: string;
-  orgUser: OrgUser;
-}) {
+export function hasPermission(
+  { filters = {}, row, rowType, actions, modelUserIdKey, orgUser }: {
+    filters?: Filters;
+    row?: Record<string, unknown>;
+    rowType?: string;
+    actions?: PermissionAction[];
+    modelUserIdKey?: string;
+    orgUser: OrgUser;
+  },
+) {
   const roles = _.orderBy(orgUser?.roleConnection?.nodes, "rank");
 
   const isSuperAdmin = _.find(roles, { isSuperAdmin: true });
@@ -50,20 +52,30 @@ export function hasPermission({ filters = {}, row, rowType, actions, modelUserId
   }));
 
   const globalPermissions = _.filter(_.flatten(_.map(roles, (role) => {
-    return _.filter(role.permissionConnection.nodes, ({ filters }) => filters.global);
+    return _.filter(
+      role.permissionConnection.nodes,
+      ({ filters }) => filters.global,
+    );
   }))) as Permission[];
 
   const userPermissions = rankedPermissions.concat(globalPermissions);
 
-  const hasPermissions = _.every(actions, (action) =>
-    _.find(userPermissions, (permission) => {
-      return permission.action === action && permission.value != null; // anything that's true or false
-    })?.value);
+  const hasPermissions = _.every(
+    actions,
+    (action) =>
+      _.find(userPermissions, (permission) => {
+        return permission.action === action && permission.value != null; // anything that's true or false
+      })?.value,
+  );
 
   return hasPermissions;
 }
 
-function getPermissionMatchesByRoleAndMinRank(filters: Filters, role: Role, minRank: number) {
+function getPermissionMatchesByRoleAndMinRank(
+  filters: Filters,
+  role: Role,
+  minRank: number,
+) {
   const filterPermissionsWithId = _.filter(
     role.permissionConnection.nodes,
     (rolePermissions) =>
@@ -75,7 +87,8 @@ function getPermissionMatchesByRoleAndMinRank(filters: Filters, role: Role, minR
         // on 2nd time through, ignore rank 0 (first in list). 3rd time through ignore 0 and 1, etc...
         // *however* we still want to ignore db-set permissions that are for a specific id
         // eg {"filters":{"chat":{"id":"4bf95890-77f4-11eb-8016-86bf0688df28","rank":0},"chatMessage":{"isAll":true,"rank":1}}
-        const shouldIgnoreRank = rank < minRank && !rolePermissions.filters[type]?.id;
+        const shouldIgnoreRank = rank < minRank &&
+          !rolePermissions.filters[type]?.id;
         return isIdMatch || isAllMatch || shouldIgnoreRank;
       }),
   );
@@ -91,19 +104,28 @@ function getPermissionMatchesByRoleAndMinRank(filters: Filters, role: Role, minR
   return _.flatten([filterPermissionsWithId, filterPermissionsWithoutId]);
 }
 
-export function filterByOrgUser({ filters, rows, rowType, actions, modelUserIdKey, orgUser }: {
-  filters: Filters;
-  rows: Record<string, unknown>[];
-  rowType: string;
-  actions: PermissionAction[];
-  modelUserIdKey?: string;
-  orgUser: OrgUser;
-}) {
+export function filterByOrgUser(
+  { filters, rows, rowType, actions, modelUserIdKey, orgUser }: {
+    filters: Filters;
+    rows: Record<string, unknown>[];
+    rowType: string;
+    actions: PermissionAction[];
+    modelUserIdKey?: string;
+    orgUser: OrgUser;
+  },
+) {
   return _.filter(rows, (row) => {
     if (!row) {
       return;
     }
 
-    return hasPermission({ filters, row, rowType, actions, modelUserIdKey, orgUser });
+    return hasPermission({
+      filters,
+      row,
+      rowType,
+      actions,
+      modelUserIdKey,
+      orgUser,
+    });
   });
 }

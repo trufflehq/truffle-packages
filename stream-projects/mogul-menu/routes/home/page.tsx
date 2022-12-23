@@ -11,7 +11,8 @@ const iconImageObj = {
     height: 756,
     length: 759469,
   },
-  prefix: "file/094ee050-61d3-11eb-ae77-b305acd7f0af/f38e1f40-fe27-11ec-8613-c8d0b98b6415",
+  prefix:
+    "file/094ee050-61d3-11eb-ae77-b305acd7f0af/f38e1f40-fe27-11ec-8613-c8d0b98b6415",
   ext: "png",
   contentType: "image/png",
   type: "image",

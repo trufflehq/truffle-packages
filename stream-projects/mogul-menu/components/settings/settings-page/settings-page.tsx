@@ -1,5 +1,9 @@
 import { React, semver, useExtensionInfo, useSelector } from "../../../deps.ts";
-import { hasPermission, isGoogleChrome, useOrgUserWithRoles$ } from "../../../shared/mod.ts";
+import {
+  hasPermission,
+  isGoogleChrome,
+  useOrgUserWithRoles$,
+} from "../../../shared/mod.ts";
 import MenuItem from "../../base/menu-item/menu-item.tsx";
 import { Page, usePageStack } from "../../page-stack/mod.ts";
 import Version from "../../version/version.tsx";
@@ -25,7 +29,8 @@ export default function SettingsPage() {
 
   // make sure the extension supports notifications (version 3.3.4)
   const { extensionInfo } = useExtensionInfo();
-  const supportsNotifications = extensionInfo && semver.satisfies(extensionInfo.version, ">=3.3.4");
+  const supportsNotifications = extensionInfo &&
+    semver.satisfies(extensionInfo.version, ">=3.3.4");
 
   return (
     <Page title="Settings">
@@ -49,7 +54,10 @@ export default function SettingsPage() {
       }
       {hasAdminPermissions
         ? (
-          <MenuItem icon="badge" onClick={() => pushPage(<AdminSettingsPage />)}>
+          <MenuItem
+            icon="badge"
+            onClick={() => pushPage(<AdminSettingsPage />)}
+          >
             Admin Settings
           </MenuItem>
         )

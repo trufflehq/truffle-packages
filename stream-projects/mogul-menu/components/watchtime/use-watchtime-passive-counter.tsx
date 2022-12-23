@@ -1,4 +1,11 @@
-import { _, getCookie, setCookie, useMutation, useObserve, useSignal } from "../../deps.ts";
+import {
+  _,
+  getCookie,
+  setCookie,
+  useMutation,
+  useObserve,
+  useSignal,
+} from "../../deps.ts";
 import { WATCH_TIME_INCREMENT_MUTATION } from "./gql.ts";
 import useTimer from "./use-timer.tsx";
 
@@ -14,12 +21,15 @@ const LAST_CLAIM_TIME_MS_COOKIE = "extensionLastClaimTimeMs";
 export default function useWatchtimePassiveCounter(
   { sourceType }: { sourceType: string },
 ) {
-  const [_incrementWatchtimeResult, executeIncrementWatchtimeMutation] = useMutation(
-    WATCH_TIME_INCREMENT_MUTATION,
-  );
+  const [_incrementWatchtimeResult, executeIncrementWatchtimeMutation] =
+    useMutation(
+      WATCH_TIME_INCREMENT_MUTATION,
+    );
   const initialTimeMsFromCookie = getCookie(INITIAL_TIME_MS_COOKIE);
   const initialTimeMs = initialTimeMsFromCookie
-    ? !isNaN(initialTimeMsFromCookie) ? parseInt(initialTimeMsFromCookie) : Date.now()
+    ? !isNaN(initialTimeMsFromCookie)
+      ? parseInt(initialTimeMsFromCookie)
+      : Date.now()
     : Date.now();
 
   const lastUpdateTime$ = useSignal(0);
@@ -41,7 +51,8 @@ export default function useWatchtimePassiveCounter(
     const now = Date.now();
     const msSinceLastUpdate = now - lastUpdateTime$.get();
 
-    const shouldUpdateWatchtime = msSinceLastUpdate >= UPDATE_WATCH_TIME_FREQ_MS;
+    const shouldUpdateWatchtime =
+      msSinceLastUpdate >= UPDATE_WATCH_TIME_FREQ_MS;
     if (shouldUpdateWatchtime) {
       lastUpdateTime$.set(now);
       refreshCookie(INITIAL_TIME_MS_COOKIE);

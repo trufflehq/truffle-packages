@@ -4,7 +4,10 @@ import { usePageStack } from "../page-stack/mod.ts";
 
 import styleSheet from "./collectibles.scss.js";
 import { useCurrentTab } from "../tabs/mod.ts";
-import { useActivePowerupConnection, useOwnedCollectibleConnection } from "../../shared/mod.ts";
+import {
+  useActivePowerupConnection,
+  useOwnedCollectibleConnection,
+} from "../../shared/mod.ts";
 import {
   ActivePowerup,
   ActivePowerupRedeemData,
@@ -37,8 +40,9 @@ export default function Collectibles() {
 
   const { ownedCollectibleConnectionData } = useOwnedCollectibleConnection();
 
-  const ownedCollectibleConnection: OwnedCollectibleConnection = ownedCollectibleConnectionData
-    ?.ownedCollectibleConnection;
+  const ownedCollectibleConnection: OwnedCollectibleConnection =
+    ownedCollectibleConnectionData
+      ?.ownedCollectibleConnection;
 
   const sortedCollectibles = _.orderBy(
     ownedCollectibleConnection?.nodes,
@@ -66,7 +70,8 @@ export default function Collectibles() {
 
   const { activePowerupConnectionData } = useActivePowerupConnection();
 
-  const activePowerups = activePowerupConnectionData?.activePowerupConnection?.nodes ?? [];
+  const activePowerups =
+    activePowerupConnectionData?.activePowerupConnection?.nodes ?? [];
 
   const isEmpty = !ownedCollectibleConnection?.nodes?.length;
 
@@ -83,22 +88,25 @@ export default function Collectibles() {
             <div key={idx} className="type-section">
               <div className="type">{type}</div>
               <div className="collectibles">
-                {_.map(collectibles, (collectible: ICollectible<ActivePowerupRedeemData>, idx) => {
-                  const powerupId = collectible?.data?.redeemData?.powerupId;
-                  const activePowerup = _.find(activePowerups, {
-                    powerup: { id: powerupId },
-                  });
+                {_.map(
+                  collectibles,
+                  (collectible: ICollectible<ActivePowerupRedeemData>, idx) => {
+                    const powerupId = collectible?.data?.redeemData?.powerupId;
+                    const activePowerup = _.find(activePowerups, {
+                      powerup: { id: powerupId },
+                    });
 
-                  return (
-                    shouldShowCollectible(activePowerups, collectible) && (
-                      <Collectible
-                        key={idx}
-                        collectible={collectible}
-                        activePowerup={activePowerup}
-                      />
-                    )
-                  );
-                })}
+                    return (
+                      shouldShowCollectible(activePowerups, collectible) && (
+                        <Collectible
+                          key={idx}
+                          collectible={collectible}
+                          activePowerup={activePowerup}
+                        />
+                      )
+                    );
+                  },
+                )}
               </div>
             </div>
           );

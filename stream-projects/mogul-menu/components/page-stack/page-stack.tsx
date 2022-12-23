@@ -10,7 +10,9 @@ export default function PageStack({
   const { pageStack$, popPage, getTopPage } = usePageStack();
   useStyleSheet(styleSheet);
 
-  const isPageStackEmpty = useSelector(() => !pageStack$.get() || pageStack$.get()!.length === 0);
+  const isPageStackEmpty = useSelector(() =>
+    !pageStack$.get() || pageStack$.get()!.length === 0
+  );
 
   const handleEscape = (ev: KeyboardEvent) => {
     const top = getTopPage();

@@ -10,10 +10,5 @@
       "dom"
     ],
     "strict": false
-  },
-  "fmt": {
-    "options": {
-      "lineWidth": 100
-    }
   }
 }

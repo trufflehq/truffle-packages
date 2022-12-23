@@ -1,7 +1,10 @@
 import { getPositionPrefix, MenuPosition } from "../mod.ts";
 import { Vector } from "../../draggable/draggable.tsx";
 import { DimensionModifiers } from "../../draggable/draggable.tsx";
-export type PositionModifiers = Pick<DimensionModifiers, "top" | "right" | "bottom" | "left">;
+export type PositionModifiers = Pick<
+  DimensionModifiers,
+  "top" | "right" | "bottom" | "left"
+>;
 
 /**
  * Returns the clip path when the menu is in

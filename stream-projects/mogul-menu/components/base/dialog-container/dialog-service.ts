@@ -23,6 +23,10 @@ export function useDialog() {
   };
 }
 
-function isDialogStackItem(item: DialogStackItem | React.ReactNode): item is DialogStackItem {
-  return Boolean((item as DialogStackItem).element && (item as DialogStackItem).isModal);
+function isDialogStackItem(
+  item: DialogStackItem | React.ReactNode,
+): item is DialogStackItem {
+  return Boolean(
+    (item as DialogStackItem).element && (item as DialogStackItem).isModal,
+  );
 }

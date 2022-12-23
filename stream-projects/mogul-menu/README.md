@@ -4,13 +4,14 @@ The main menu used in the Truffle.TV browser extension.
 
 ### Installation
 
-To get started you will need a Truffle Development org and API key. If you don't have one, reach out
-in the [Truffle Dev Platform Discord](https://discord.gg/SkA6QXBQ) and we'll get you setup if you're
-interested in contributing.
+To get started you will need a Truffle Development org and API key. If you don't
+have one, reach out in the
+[Truffle Dev Platform Discord](https://discord.gg/SkA6QXBQ) and we'll get you
+setup if you're interested in contributing.
 
 - Run through the first step in the
-  [Get Started guide](https://docs.truffle.vip/the-basics/get-started) to get setup with
-  `truffle-cli`.
+  [Get Started guide](https://docs.truffle.vip/the-basics/get-started) to get
+  setup with `truffle-cli`.
 
 - Fork this package to your development org:
 
@@ -33,7 +34,8 @@ export default {
 ### Development
 
 - Start the local dev server with `truffle-cli dev`.
-- Event though `truffle-dev-server` technically runs on Node 18, we still recommend using the
+- Event though `truffle-dev-server` technically runs on Node 18, we still
+  recommend using the
   [Deno VSCode Extension](https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno)
   during development to help with url imports, intellisense, and formatting.
 
@@ -47,8 +49,8 @@ export default {
   - `shared/gql/` shared GraphQL fragments
   - `shared/util/` shared hooks, functions, and other utilities
 - `types/`
-  - Shared types for components and the Truffle API. Plan on bringing this over to the `shared/`
-    folder.
+  - Shared types for components and the Truffle API. Plan on bringing this over
+    to the `shared/` folder.
 - `truffle.config.mjs` the Truffle package config.
 - `truffle.secret.mjs` package API key.
 

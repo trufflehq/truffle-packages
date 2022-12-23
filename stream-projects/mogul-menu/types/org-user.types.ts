@@ -1,4 +1,8 @@
-import { ConnectionSourceType, DeepPick, TruffleGQlConnection } from "../deps.ts";
+import {
+  ConnectionSourceType,
+  DeepPick,
+  TruffleGQlConnection,
+} from "../deps.ts";
 import { User } from "./user.types.ts";
 
 export interface OrgUser {

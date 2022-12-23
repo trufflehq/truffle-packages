@@ -45,7 +45,8 @@ export default function HomeTab() {
 
   const channelPointsSrc =
     "https://cdn.bio/assets/images/features/browser_extension/channel-points-default.svg";
-  const xpSrc = "https://cdn.bio/assets/images/features/browser_extension/xp.svg";
+  const xpSrc =
+    "https://cdn.bio/assets/images/features/browser_extension/xp.svg";
 
   const handleOpenNotificationDialog = () => {
     pushDialog(<BrowserExtensionNotificationDialog />);
@@ -124,8 +125,16 @@ export default function HomeTab() {
             hasBattlePass={hasBattlePass}
           />
         </IsLive>
-        {typeof window !== "undefined" && window.location.href.includes("new.ludwig.social")
-          ? <a className="mobile-beta" href="https://bit.ly/3WfPtSn" target="_blank"></a>
+        {typeof window !== "undefined" &&
+            window.location.href.includes("new.ludwig.social")
+          ? (
+            <a
+              className="mobile-beta"
+              href="https://bit.ly/3WfPtSn"
+              target="_blank"
+            >
+            </a>
+          )
           : ""}
         <BattlepassLeaderboardTile orgUserWithRoles$={orgUserWithRoles$} />
         <PredictionTile orgUserWithRoles$={orgUserWithRoles$} />

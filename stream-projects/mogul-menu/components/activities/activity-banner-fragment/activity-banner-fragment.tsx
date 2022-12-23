@@ -1,7 +1,15 @@
-import { Icon, ImageByAspectRatio, React, useStyleSheet } from "../../../deps.ts";
+import {
+  Icon,
+  ImageByAspectRatio,
+  React,
+  useStyleSheet,
+} from "../../../deps.ts";
 import ProgressBar from "../../base/progress-bar/progress-bar.tsx";
 import stylesheet from "./activity-banner-fragment.scss.js";
-import { CHEVRON_RIGHT_ICON_PATH, CLOSE_ICON_PATH } from "../../../shared/mod.ts";
+import {
+  CHEVRON_RIGHT_ICON_PATH,
+  CLOSE_ICON_PATH,
+} from "../../../shared/mod.ts";
 import { isActivityBannerOpen$ } from "../signals.ts";
 
 export interface IconConfig {
@@ -9,7 +17,9 @@ export interface IconConfig {
   path?: string;
 }
 
-export function ActivityBannerIcon({ icon, color }: { icon: IconConfig; color: string }) {
+export function ActivityBannerIcon(
+  { icon, color }: { icon: IconConfig; color: string },
+) {
   useStyleSheet(stylesheet);
   return (
     <div className="c-activity-banner-icon">
@@ -119,7 +129,11 @@ export default function ActivityBannerFragment(
       {hasElapsedTime
         ? (
           <div className="progress">
-            <ProgressBar startDate={startTime} endDate={endTime} color={color} />
+            <ProgressBar
+              startDate={startTime}
+              endDate={endTime}
+              color={color}
+            />
           </div>
         )
         : null}

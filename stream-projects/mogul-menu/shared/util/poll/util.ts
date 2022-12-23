@@ -30,7 +30,9 @@ export function getPollInfo(poll: Poll) {
   const totalVotes = _.sumBy(poll.counter.options, "count");
   const winningOptionIndex = poll?.data?.winningOptionIndex;
   const winningOption = typeof winningOptionIndex !== "undefined"
-    ? poll?.counter.options?.find((option) => option?.index === winningOptionIndex)
+    ? poll?.counter.options?.find((option) =>
+      option?.index === winningOptionIndex
+    )
     : undefined;
   const hasWinningOption = Boolean(winningOption);
   const winningVotes = typeof winningOptionIndex !== "undefined"

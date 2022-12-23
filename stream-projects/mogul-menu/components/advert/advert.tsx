@@ -43,7 +43,9 @@ export default function Advert(props: AdvertProps) {
           <div className="tagline">{tagline}</div>
         </div>
         <div className="actions">
-          <Button style={buttonStyle} onClick={hrefHandler ?? buttonOnClick}>{buttonText}</Button>
+          <Button style={buttonStyle} onClick={hrefHandler ?? buttonOnClick}>
+            {buttonText}
+          </Button>
         </div>
       </div>
     </div>

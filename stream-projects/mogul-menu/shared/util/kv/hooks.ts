@@ -11,7 +11,9 @@ export function useUserKV<T>(key: string, fallbackValue?: T) {
 
   const [_, executeKVUpsertMutation] = useMutation(USER_KV_MUTATION);
   const setUserKV = (value: string) =>
-    executeKVUpsertMutation({ key, value }, { additionalTypenames: ["OrgUser"] });
+    executeKVUpsertMutation({ key, value }, {
+      additionalTypenames: ["OrgUser"],
+    });
 
   return { value$, setUserKV };
 }

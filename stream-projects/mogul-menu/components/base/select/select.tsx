@@ -1,4 +1,10 @@
-import { Icon, React, useEffect, useState, useStyleSheet } from "../../../deps.ts";
+import {
+  Icon,
+  React,
+  useEffect,
+  useState,
+  useStyleSheet,
+} from "../../../deps.ts";
 import styleSheet from "./select.scss.js";
 
 // the Option component should be used as the children for this component

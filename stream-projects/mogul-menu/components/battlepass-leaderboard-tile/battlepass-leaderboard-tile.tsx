@@ -4,7 +4,8 @@ import { OrgUserQuerySignal } from "../../shared/mod.ts";
 import { BATTLEPASS_ORG_USER_COUNTER_TYPE_QUERY } from "./gql.ts";
 import { LeaderboardTile } from "../leaderboard-tile/leaderboard-tile.tsx";
 
-const BATTLE_PASS_LEADERBOARD_DISPLAY_KV_KEY = `mogulMenu:battlepassLeaderboardDisplay`;
+const BATTLE_PASS_LEADERBOARD_DISPLAY_KV_KEY =
+  `mogulMenu:battlepassLeaderboardDisplay`;
 export default function BattlepassLeaderboardTile(
   { orgUserWithRoles$ }: { orgUserWithRoles$: OrgUserQuerySignal },
 ) {
@@ -12,8 +13,9 @@ export default function BattlepassLeaderboardTile(
     query: BATTLEPASS_ORG_USER_COUNTER_TYPE_QUERY,
   });
 
-  const orgUserCounterTypeId: OrgUserCounterType["seasonPass"]["orgUserCounterTypeId"] =
-    battlepassOUCTypeData?.seasonPass?.orgUserCounterTypeId;
+  const orgUserCounterTypeId:
+    OrgUserCounterType["seasonPass"]["orgUserCounterTypeId"] =
+      battlepassOUCTypeData?.seasonPass?.orgUserCounterTypeId;
 
   if (!orgUserCounterTypeId) return <></>;
 

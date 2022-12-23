@@ -63,7 +63,9 @@ interface PollInput {
 
 const CreatePredictionPage = observer(function CreatePredictionPage() {
   useStyleSheet(stylesheet);
-  const [, executeCreatePredictionMutation] = useMutation(CREATE_PREDICTION_QUERY);
+  const [, executeCreatePredictionMutation] = useMutation(
+    CREATE_PREDICTION_QUERY,
+  );
   const { popPage } = usePageStack();
   const enqueueSnackBar = useSnackBar();
   const predictionError$ = useSignal("");
@@ -77,7 +79,8 @@ const CreatePredictionPage = observer(function CreatePredictionPage() {
     const result = await executeCreatePredictionMutation({
       question: predictionForm$.question.get(),
       options: predictionForm$.options.get(),
-      durationSeconds: parseInt(predictionForm$.durationMinutes.get()) * SECONDS_PER_MINUTE,
+      durationSeconds: parseInt(predictionForm$.durationMinutes.get()) *
+        SECONDS_PER_MINUTE,
     });
 
     if (result.error?.graphQLErrors?.length) {
@@ -91,7 +94,9 @@ const CreatePredictionPage = observer(function CreatePredictionPage() {
   const canSubmit = useComputed(() => {
     const hasQuestion = Boolean(predictionForm$.question.get().length);
     const hasDuration = parseInt(predictionForm$.durationMinutes.get()) > 0;
-    const hasOptions = predictionForm$.options.get().every((option) => option.text.length);
+    const hasOptions = predictionForm$.options.get().every((option) =>
+      option.text.length
+    );
 
     return hasQuestion && hasDuration && hasOptions;
   });
@@ -114,7 +119,9 @@ const CreatePredictionPage = observer(function CreatePredictionPage() {
       }
     >
       <div className="c-create-prediction-page">
-        {predictionError$.get() && <div className="error">{predictionError$.get()}</div>}
+        {predictionError$.get() && (
+          <div className="error">{predictionError$.get()}</div>
+        )}
         <Input label="Question" value$={predictionForm$.question} />
         <CreatePollOptions predictionForm$={predictionForm$} />
         <SubmissionPeriod durationMinutes$={predictionForm$.durationMinutes} />
@@ -123,7 +130,9 @@ const CreatePredictionPage = observer(function CreatePredictionPage() {
   );
 });
 
-function SubmissionPeriod({ durationMinutes$ }: { durationMinutes$: Observable<string> }) {
+function SubmissionPeriod(
+  { durationMinutes$ }: { durationMinutes$: Observable<string> },
+) {
   const error$ = useSignal("");
 
   useObserve(() => {
@@ -183,7 +192,9 @@ function DurationInput({ value$, error$, suffix = "min" }: DurationInputProps) {
   );
 }
 
-function CreatePollOptions({ predictionForm$ }: { predictionForm$: Observable<PollInput> }) {
+function CreatePollOptions(
+  { predictionForm$ }: { predictionForm$: Observable<PollInput> },
+) {
   const onAddOption = (e?: React.MouseEvent) => {
     e?.stopPropagation();
     predictionForm$.options.set((existingOptions) =>

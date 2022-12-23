@@ -33,7 +33,13 @@ export default function NotificationsEnablePage(
         </div>
         <div className="actions">
           <Button style="bg-tertiary" onClick={negativeHandler}>No</Button>
-          <Button shouldHandleLoading style="primary" onClick={affirmativeHandler}>Yes</Button>
+          <Button
+            shouldHandleLoading
+            style="primary"
+            onClick={affirmativeHandler}
+          >
+            Yes
+          </Button>
         </div>
       </div>
     </Page>

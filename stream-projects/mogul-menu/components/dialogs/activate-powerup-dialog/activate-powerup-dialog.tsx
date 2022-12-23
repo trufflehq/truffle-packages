@@ -30,7 +30,10 @@ export function ActivatePowerupDialog({
   isActivateButtonDisabled = false,
   additionalData = {},
 }: {
-  redeemableCollectible: { description?: string; source: Collectible<ActivePowerupRedeemData> };
+  redeemableCollectible: {
+    description?: string;
+    source: Collectible<ActivePowerupRedeemData>;
+  };
   children?: React.ReactNode;
   isActivateButtonDisabled?: boolean;
   additionalData?: Record<string, unknown>;
@@ -51,7 +54,12 @@ export function ActivatePowerupDialog({
           additionalData,
         },
         {
-          additionalTypenames: ["OwnedCollectible", "ActivePowerup", "Org", "OrgConfig"],
+          additionalTypenames: [
+            "OwnedCollectible",
+            "ActivePowerup",
+            "Org",
+            "OrgConfig",
+          ],
         },
       );
 

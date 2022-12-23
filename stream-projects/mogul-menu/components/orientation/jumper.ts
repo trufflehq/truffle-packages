@@ -29,7 +29,10 @@ export function changeFrameOrientation(
 }
 
 // FIXME: add support for sourceType so we can support youtube & twitch specific styles
-function getMenuStyleSteps(orientation: "landscape" | "portrait", isCollapsed: boolean) {
+function getMenuStyleSteps(
+  orientation: "landscape" | "portrait",
+  isCollapsed: boolean,
+) {
   return [
     { action: "useSubject" }, // start with our iframe
     {
@@ -49,7 +52,10 @@ function getMenuStyleSteps(orientation: "landscape" | "portrait", isCollapsed: b
 export const YOUTUBE_PORTRAIT_LAYOUT_CONFIG_STEPS = [
   ...getMenuStyleSteps("portrait", false),
   { action: "querySelector", value: "body" },
-  { action: "addClassNames", value: ["truffle-portrait", "truffle-portrait-open"] },
+  {
+    action: "addClassNames",
+    value: ["truffle-portrait", "truffle-portrait-open"],
+  },
   {
     action: "removeClassNames",
     value: [
@@ -71,7 +77,10 @@ export const YOUTUBE_PORTRAIT_LAYOUT_CONFIG_STEPS = [
 export const YOUTUBE_COLLAPSED_PORTRAIT_LAYOUT_CONFIG_STEPS = [
   ...getMenuStyleSteps("portrait", true),
   { action: "querySelector", value: "body" },
-  { action: "addClassNames", value: ["truffle-portrait", "truffle-portrait-closed"] },
+  {
+    action: "addClassNames",
+    value: ["truffle-portrait", "truffle-portrait-closed"],
+  },
   {
     action: "removeClassNames",
     value: [
@@ -94,7 +103,10 @@ export const YOUTUBE_COLLAPSED_LANDSCAPE_LAYOUT_CONFIG_STEPS = [
   ...getMenuStyleSteps("landscape", true),
 
   { action: "querySelector", value: "body" },
-  { action: "addClassNames", value: ["truffle-landscape", "truffle-landscape-collapsed"] },
+  {
+    action: "addClassNames",
+    value: ["truffle-landscape", "truffle-landscape-collapsed"],
+  },
   {
     action: "removeClassNames",
     value: [
@@ -117,7 +129,10 @@ export const YOUTUBE_LANDSCAPE_LAYOUT_CONFIG_STEPS = [
   ...getMenuStyleSteps("landscape", false),
 
   { action: "querySelector", value: "body" },
-  { action: "addClassNames", value: ["truffle-landscape", "truffle-landscape-open"] },
+  {
+    action: "addClassNames",
+    value: ["truffle-landscape", "truffle-landscape-open"],
+  },
   {
     action: "removeClassNames",
     value: [

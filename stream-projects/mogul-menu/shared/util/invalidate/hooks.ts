@@ -13,7 +13,8 @@ import {
 export function useInvalidateAllQueriesListener() {
   const { reexecuteUserInfoQuery } = useUserInfo();
   const { reexecuteActivePowerupConnQuery } = useActivePowerupConnection();
-  const { reexecuteOwnedCollectibleConnQuery } = useOwnedCollectibleConnection();
+  const { reexecuteOwnedCollectibleConnQuery } =
+    useOwnedCollectibleConnection();
   const { refetchOrgUserConnections } = useOrgUserConnectionsQuery();
   const { reexecuteSeasonPassQuery } = useSeasonPassData();
 

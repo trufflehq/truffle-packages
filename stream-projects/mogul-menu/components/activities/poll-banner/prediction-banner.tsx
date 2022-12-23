@@ -1,5 +1,9 @@
 import { jumper, React } from "../../../deps.ts";
-import { CRYSTAL_BALL_ICON, getPollInfo, MOGUL_MENU_JUMPER_MESSAGES } from "../../../shared/mod.ts";
+import {
+  CRYSTAL_BALL_ICON,
+  getPollInfo,
+  MOGUL_MENU_JUMPER_MESSAGES,
+} from "../../../shared/mod.ts";
 import ChannelPointsIcon from "../../../components/channel-points-icon/channel-points-icon.tsx";
 import ActivityBannerFragment, {
   ActivityBannerInfo,
@@ -26,7 +30,10 @@ export default function PredictionBanner({ poll }: { poll: Poll }) {
 
   const onContinue = () => {
     // emit a message through jumper to tell the  menu to open to the prediction page
-    jumper.call("comms.postMessage", MOGUL_MENU_JUMPER_MESSAGES.OPEN_PREDICTION);
+    jumper.call(
+      "comms.postMessage",
+      MOGUL_MENU_JUMPER_MESSAGES.OPEN_PREDICTION,
+    );
   };
 
   return (
@@ -45,8 +52,18 @@ export default function PredictionBanner({ poll }: { poll: Poll }) {
       {!hasPredictionEnded
         ? <CurrentPrediction pollQuestion={pollQuestion} />
         : (winningOption && hasVoted)
-        ? <PredictionEndedVoted amount={didWin ? myWinningShare : myPlacedVotes} didWin={didWin} />
-        : <PredictionEndedNoVote pollQuestion={pollQuestion} winningOption={winningOption} />}
+        ? (
+          <PredictionEndedVoted
+            amount={didWin ? myWinningShare : myPlacedVotes}
+            didWin={didWin}
+          />
+        )
+        : (
+          <PredictionEndedNoVote
+            pollQuestion={pollQuestion}
+            winningOption={winningOption}
+          />
+        )}
     </ActivityBannerFragment>
   );
 }
@@ -62,7 +79,9 @@ function PredictionEndedVoted(
   // w/ live queries sometimes amount is NaN - haven't figure out yet.
   // also haven't figured out if it happens here or server-side
   // (i think server-side, which would mean str NaN)
-  const isAmountNaN = typeof amount === "string" ? amount === "NaN" : isNaN(amount);
+  const isAmountNaN = typeof amount === "string"
+    ? amount === "NaN"
+    : isNaN(amount);
   return (
     <ActivityBannerInfo
       text={amount && isAmountNaN ? message : `${message} ${amount}`}
@@ -73,7 +92,10 @@ function PredictionEndedVoted(
 }
 
 function PredictionEndedNoVote(
-  { pollQuestion, winningOption }: { pollQuestion: string; winningOption?: PollOption },
+  { pollQuestion, winningOption }: {
+    pollQuestion: string;
+    winningOption?: PollOption;
+  },
 ) {
   return (
     <ActivityBannerInfo text={pollQuestion}>

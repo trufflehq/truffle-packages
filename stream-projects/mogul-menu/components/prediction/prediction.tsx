@@ -16,7 +16,11 @@ import {
   useStyleSheet,
 } from "../../deps.ts";
 import { VOTE_MUTATION } from "./gql.ts";
-import { COIN_ICON_PATH, getOptionColor, useInterval } from "../../shared/mod.ts";
+import {
+  COIN_ICON_PATH,
+  getOptionColor,
+  useInterval,
+} from "../../shared/mod.ts";
 import { Poll, PollOption } from "../../types/mod.ts";
 import Time from "../time/time.tsx";
 import Input from "../base/input/input.tsx";
@@ -34,7 +38,9 @@ interface VoteInput {
 }
 
 // winning info
-export function getWinningInfo({ prediction$ }: { prediction$: Observable<Poll> }) {
+export function getWinningInfo(
+  { prediction$ }: { prediction$: Observable<Poll> },
+) {
   const winningOptionIndex = prediction$.data?.winningOptionIndex?.get();
   const winningOption = winningOptionIndex !== undefined
     ? prediction$.counter.options.get()?.[winningOptionIndex]
@@ -51,8 +57,12 @@ export function getWinningInfo({ prediction$ }: { prediction$: Observable<Poll> 
 }
 
 // total number of votes info
-export function getTotalVotes({ prediction$ }: { prediction$: Observable<Poll> }) {
-  return { totalVotes: _.sumBy(prediction$.counter?.options.get() ?? [], "count") };
+export function getTotalVotes(
+  { prediction$ }: { prediction$: Observable<Poll> },
+) {
+  return {
+    totalVotes: _.sumBy(prediction$.counter?.options.get() ?? [], "count"),
+  };
 }
 
 // myVote info
@@ -64,20 +74,33 @@ function getMyVoteInfo({ prediction$ }: { prediction$: Observable<Poll> }) {
   const votedOptionIndex = myVote?.optionIndex;
   const isWinner = votedOptionIndex === winningOptionIndex;
   const myVotes = myVote?.count || 0;
-  const winnings = isWinner && winningVotes ? Math.floor((myVotes / winningVotes) * totalVotes) : 0;
+  const winnings = isWinner && winningVotes
+    ? Math.floor((myVotes / winningVotes) * totalVotes)
+    : 0;
   const hasSelectedWinningOption = winningOptionIndex === votedOptionIndex;
 
-  return { votedOptionIndex, isWinner, myVotes, winnings, hasSelectedWinningOption };
+  return {
+    votedOptionIndex,
+    isWinner,
+    myVotes,
+    winnings,
+    hasSelectedWinningOption,
+  };
 }
 
 // prediction refund info
-export function getIsRefund({ prediction$ }: { prediction$: Observable<Poll> }) {
+export function getIsRefund(
+  { prediction$ }: { prediction$: Observable<Poll> },
+) {
   return { isRefund: prediction$.data.isRefund?.get() ?? false };
 }
 
 // prediction time info
-export function getTimeInfo({ prediction$ }: { prediction$: Observable<Poll> }) {
-  const pollMsLeft = new Date(prediction$.endTime.get() || Date.now()).getTime() -
+export function getTimeInfo(
+  { prediction$ }: { prediction$: Observable<Poll> },
+) {
+  const pollMsLeft =
+    new Date(prediction$.endTime.get() || Date.now()).getTime() -
     Date.now();
 
   const hasPredictionEnded = pollMsLeft <= 0;
@@ -95,7 +118,9 @@ function getPredictionInfo({ prediction$ }: { prediction$: Observable<Poll> }) {
   const { totalVotes } = getTotalVotes({ prediction$ });
   const { winnings, hasSelectedWinningOption } = getMyVoteInfo({ prediction$ });
   const { isRefund } = getIsRefund({ prediction$ });
-  const { pollMsLeft, hasPredictionEnded, endTime } = getTimeInfo({ prediction$ });
+  const { pollMsLeft, hasPredictionEnded, endTime } = getTimeInfo({
+    prediction$,
+  });
 
   return {
     hasPredictionEnded,
@@ -162,7 +187,11 @@ export default function Prediction(
           {() => <PredictionResults prediction$={prediction$} />}
         </Memo>
       </div>
-      <PredictionOptions prediction$={prediction$} currVote$={currVote$} vote={vote} />
+      <PredictionOptions
+        prediction$={prediction$}
+        currVote$={currVote$}
+        vote={vote}
+      />
     </div>
   );
 }
@@ -177,12 +206,14 @@ function PredictionStatus({ prediction$ }: { prediction$: Observable<Poll> }) {
   // need to set the interval here because we need to update the timer every second when the prediction is still active
   const pollMsLeft$ = useSignal(0);
   useObserve(() => {
-    const pollMsLeft = new Date(prediction$.endTime.get() || Date.now()).getTime() -
+    const pollMsLeft =
+      new Date(prediction$.endTime.get() || Date.now()).getTime() -
       Date.now();
     pollMsLeft$.set(pollMsLeft);
   });
   useInterval(() => {
-    const pollMsLeft = new Date(prediction$.endTime.get() || Date.now()).getTime() -
+    const pollMsLeft =
+      new Date(prediction$.endTime.get() || Date.now()).getTime() -
       Date.now();
     pollMsLeft$.set(pollMsLeft);
   }, !hasPredictionEnded ? ACTIVE_POLL_INTERVAL : INACTIVE_POLL_INTERVAL);
@@ -196,7 +227,10 @@ function PredictionStatus({ prediction$ }: { prediction$: Observable<Poll> }) {
         : null}
       {(hasPredictionEnded && winningOption)
         ? (
-          <div className="winner" style={{ color: getOptionColor(winningOption.index) }}>
+          <div
+            className="winner"
+            style={{ color: getOptionColor(winningOption.index) }}
+          >
             {winningOption.text}
           </div>
         )
@@ -215,8 +249,12 @@ function PredictionStatus({ prediction$ }: { prediction$: Observable<Poll> }) {
 }
 
 function PredictionResults({ prediction$ }: { prediction$: Observable<Poll> }) {
-  const { winningOption, numWinningVoters } = useSelector(() => getWinningInfo({ prediction$ }));
-  const { hasSelectedWinningOption, winnings } = useSelector(() => getMyVoteInfo({ prediction$ }));
+  const { winningOption, numWinningVoters } = useSelector(() =>
+    getWinningInfo({ prediction$ })
+  );
+  const { hasSelectedWinningOption, winnings } = useSelector(() =>
+    getMyVoteInfo({ prediction$ })
+  );
   const { isRefund } = useSelector(() => getIsRefund({ prediction$ }));
   const { totalVotes } = useSelector(() => getTotalVotes({ prediction$ }));
 
@@ -312,7 +350,9 @@ function PredictionOption(
     vote: () => void;
   },
 ) {
-  const { hasPredictionEnded } = useSelector(() => getTimeInfo({ prediction$ }));
+  const { hasPredictionEnded } = useSelector(() =>
+    getTimeInfo({ prediction$ })
+  );
   const { totalVotes } = useSelector(() => getTotalVotes({ prediction$ }));
 
   const count = option$.count.get() || 0;
@@ -323,7 +363,8 @@ function PredictionOption(
   const hasVotedOnOtherOption = useSelector(() => {
     const votedOptionIndex = prediction$.myVote?.get()?.optionIndex;
 
-    return votedOptionIndex !== undefined && votedOptionIndex !== option$.index.get();
+    return votedOptionIndex !== undefined &&
+      votedOptionIndex !== option$.index.get();
   });
 
   const isVotedOption = useSelector(() => {
@@ -344,7 +385,9 @@ function PredictionOption(
         <div className="stats">
           <div className="percentage">
             <div>
-              {totalVotes ? formatPercentage((option$.count.get() || 0) / totalVotes) : "0%"}
+              {totalVotes
+                ? formatPercentage((option$.count.get() || 0) / totalVotes)
+                : "0%"}
             </div>
           </div>
           <PollOptionStat label="total points">
@@ -372,14 +415,18 @@ function PredictionOption(
       </div>
       {prediction$.myVote?.get() && isVotedOption && (
         <div className="my-vote">
-          {`${abbreviateNumber(prediction$.myVote?.get()?.count, 0)} channel points spent`}
+          {`${
+            abbreviateNumber(prediction$.myVote?.get()?.count, 0)
+          } channel points spent`}
         </div>
       )}
     </div>
   );
 }
 
-function PollOptionStat({ label, children }: { label: string; children: React.ReactNode }) {
+function PollOptionStat(
+  { label, children }: { label: string; children: React.ReactNode },
+) {
   return (
     <>
       <div className="value">{children}</div>
@@ -429,7 +476,9 @@ function VoteAmountInput(
   });
 
   const optionAmount = useSelector(() => optionAmount$.get());
-  const isActive = useSelector(() => !!optionAmount || currVote$.index.get() === index);
+  const isActive = useSelector(() =>
+    !!optionAmount || currVote$.index.get() === index
+  );
 
   const onClick = async () => {
     await props.onClick();
@@ -438,9 +487,13 @@ function VoteAmountInput(
   return (
     <>
       <div
-        className={`c-vote-amount-input ${classKebab({ isDisabled: isDisabled })}`}
+        className={`c-vote-amount-input ${
+          classKebab({ isDisabled: isDisabled })
+        }`}
         style={{
-          "--border-color": optionAmount ? getOptionColor(index) : "var(--mm-color-bg-tertiary)",
+          "--border-color": optionAmount
+            ? getOptionColor(index)
+            : "var(--mm-color-bg-tertiary)",
         } as React.CSSProperties}
       >
         <ChannelPointsCoinIcon />
@@ -462,7 +515,9 @@ function VoteAmountInput(
           shouldHandleLoading
           css={{
             // override border color in the button component
-            "--border-color": isActive ? getOptionColor(index) : "var(--mm-color-bg-tertiary)",
+            "--border-color": isActive
+              ? getOptionColor(index)
+              : "var(--mm-color-bg-tertiary)",
           } as React.CSSProperties}
         >
           Vote

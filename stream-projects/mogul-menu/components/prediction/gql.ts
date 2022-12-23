@@ -31,7 +31,9 @@ query ActivePredictionPoll {
 } ${POLL_WITH_VOTES_FRAGMENT}
 `;
 
-export const POLL_CONNECTION_SUBSCRIPTION = gql<{ pollConnection: PollConnection }>`
+export const POLL_CONNECTION_SUBSCRIPTION = gql<
+  { pollConnection: PollConnection }
+>`
 subscription ActivePredictionPoll {
   pollConnection(first: 1, input: { type: prediction }) {
     nodes {
@@ -64,7 +66,9 @@ mutation PollVote($additionalData: JSON!, $voteCount: Float!) {
 }
 `;
 
-export const CHANNEL_POINTS_QUERY = gql<{ channelPoints: { orgUserCounter: ChannelPoints } }>`
+export const CHANNEL_POINTS_QUERY = gql<
+  { channelPoints: { orgUserCounter: ChannelPoints } }
+>`
   query ChannelPointsQuery {
     channelPoints: orgUserCounterType(input: { slug: "channel-points" }) {
       orgUserCounter {

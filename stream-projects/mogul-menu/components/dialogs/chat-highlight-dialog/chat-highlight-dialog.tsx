@@ -9,10 +9,13 @@ interface ColorOption {
   rgba: string;
   name: string;
 }
-export default function ChatHighlightDialog({ redeemableCollectible }: RedeemableDialog) {
+export default function ChatHighlightDialog(
+  { redeemableCollectible }: RedeemableDialog,
+) {
   useStyleSheet(styleSheet);
 
-  const colors: ColorOption[] = redeemableCollectible?.source?.data?.redeemData?.colors;
+  const colors: ColorOption[] = redeemableCollectible?.source?.data?.redeemData
+    ?.colors;
   const [selectedValue, setSelectedValue] = useState<string>();
   const additionalData = { rgba: selectedValue };
 

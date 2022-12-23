@@ -32,7 +32,9 @@ export interface ActivityListItemProps<ActivityType> {
 }
 
 type ListItemMap<ActivityTypes> = {
-  [K in keyof ActivityTypes]: (props: ActivityListItemProps<ActivityTypes[K]>) => JSX.Element;
+  [K in keyof ActivityTypes]: (
+    props: ActivityListItemProps<ActivityTypes[K]>,
+  ) => JSX.Element;
 };
 
 export const DEFAULT_LIST_ITEMS = {
@@ -60,11 +62,15 @@ export function ActivitiesTabManager<
   const orgUserWithRoles$ = useOrgUserWithRoles$();
 
   const { pushDialog } = useDialog();
-  const activityListItems = (props.activityListItems ?? DEFAULT_LIST_ITEMS) as ListItemMap<
-    ActivityListItemTypes
-  >;
+  const activityListItems =
+    (props.activityListItems ?? DEFAULT_LIST_ITEMS) as ListItemMap<
+      ActivityListItemTypes
+    >;
 
-  const { activityAlertConnection$ } = useActivitySubscription$<ActivityType, SourceType>({
+  const { activityAlertConnection$ } = useActivitySubscription$<
+    ActivityType,
+    SourceType
+  >({
     limit: ACTIVITY_CONNECTION_LIMIT,
     type: "activity",
   });
@@ -93,8 +99,8 @@ export function ActivitiesTabManager<
         <Memo>
           {() => {
             const activityAlerts = useSelector(() =>
-              activityAlertConnection$.data.alertConnection.nodes.get()?.filter((alert) =>
-                alert?.activity && isActiveActivity(alert)
+              activityAlertConnection$.data.alertConnection.nodes.get()?.filter(
+                (alert) => alert?.activity && isActiveActivity(alert),
               )
             );
 
@@ -124,8 +130,8 @@ export function ActivitiesTabManager<
         <Memo>
           {() => {
             const activityAlerts = useSelector(() =>
-              activityAlertConnection$.data.alertConnection.nodes.get()?.filter((alert) =>
-                alert?.activity && !isActiveActivity(alert)
+              activityAlertConnection$.data.alertConnection.nodes.get()?.filter(
+                (alert) => alert?.activity && !isActiveActivity(alert),
               )
             );
 
@@ -174,7 +180,9 @@ function ActivityGroup<
     ? (
       <div className="list-group">
         {activityAlerts?.map((alert) => {
-          const ActivityListItem = alert.sourceType ? activityListItems[alert.sourceType] : null;
+          const ActivityListItem = alert.sourceType
+            ? activityListItems[alert.sourceType]
+            : null;
           {/* This was necessary to make the TS compiler happy, for some reason it wasn't liking the JSX format <Component activity={activityAlert.activity} />*/}
           return ActivityListItem &&
             React.createElement(ActivityListItem, {

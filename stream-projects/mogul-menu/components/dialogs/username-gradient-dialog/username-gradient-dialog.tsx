@@ -10,10 +10,13 @@ interface GradientOption {
   value: string;
   name: string;
 }
-export default function UsernameGradientDialog({ redeemableCollectible }: RedeemableDialog) {
+export default function UsernameGradientDialog(
+  { redeemableCollectible }: RedeemableDialog,
+) {
   useStyleSheet(styleSheet);
 
-  const gradients: GradientOption[] = redeemableCollectible?.source?.data?.redeemData?.colors;
+  const gradients: GradientOption[] = redeemableCollectible?.source?.data
+    ?.redeemData?.colors;
   const [selectedValue, setSelectedValue] = useState<string>();
   const additionalData = { value: selectedValue };
 

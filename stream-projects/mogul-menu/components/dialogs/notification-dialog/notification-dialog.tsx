@@ -1,7 +1,12 @@
 import React from "https://npm.tfl.dev/react";
 import _ from "https://npm.tfl.dev/lodash?no-check";
 
-import { getSrcByImageObj, gql, useQuery, useStyleSheet } from "../../../deps.ts";
+import {
+  getSrcByImageObj,
+  gql,
+  useQuery,
+  useStyleSheet,
+} from "../../../deps.ts";
 import ImageByAspectRatio from "https://tfl.dev/@truffle/ui@~0.2.0/components/legacy/image-by-aspect-ratio/image-by-aspect-ratio.tsx";
 import Dialog from "../../base/dialog/dialog.tsx";
 import { useDialog } from "../../base/dialog-container/dialog-service.ts";
@@ -32,7 +37,8 @@ export default function NotificationDialog({
 }) {
   useStyleSheet(styleSheet);
   const [{ data: transactionsData }] = useQuery({ query: TRANSACTIONS_QUERY });
-  const transactions = transactionsData?.economyTransactionConnection?.nodes ?? [];
+  const transactions = transactionsData?.economyTransactionConnection?.nodes ??
+    [];
 
   const channelPointsSrc = channelPointsImageObj
     ? getSrcByImageObj(channelPointsImageObj)
@@ -74,8 +80,12 @@ export default function NotificationDialog({
                           transaction?.amount?.slug
                         ] ?? xpSrc}
                         aspectRatio={1}
-                        widthPx={transaction?.amount?.slug === "channel-points" ? 20 : 24}
-                        height={transaction?.amount?.slug === "channel-points" ? 20 : 24}
+                        widthPx={transaction?.amount?.slug === "channel-points"
+                          ? 20
+                          : 24}
+                        height={transaction?.amount?.slug === "channel-points"
+                          ? 20
+                          : 24}
                       />
                     )}
                   </div>

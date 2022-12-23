@@ -1,4 +1,9 @@
-import { ActivityAlert, Poll, RaidAlert, WatchPartyAlert } from "../../../types/mod.ts";
+import {
+  ActivityAlert,
+  Poll,
+  RaidAlert,
+  WatchPartyAlert,
+} from "../../../types/mod.ts";
 import { getPollInfo, secondsSince } from "../mod.ts";
 
 export const ACTIVITY_TIMEOUT_SECONDS = 100;
@@ -30,7 +35,9 @@ export function isActiveActivity<ActivityType, SourceType extends string>(
 }
 
 export function isPollActivityActive(poll: Poll) {
-  const { hasPollEnded, hasWinningOption, isRefund, pollEndTime } = getPollInfo(poll);
+  const { hasPollEnded, hasWinningOption, isRefund, pollEndTime } = getPollInfo(
+    poll,
+  );
 
   return hasPollEnded && (hasWinningOption || isRefund)
     ? secondsSince(new Date(pollEndTime)) < ACTIVITY_TIMEOUT_SECONDS
@@ -50,7 +57,8 @@ export function isAlertActivity(
   RaidAlert | WatchPartyAlert,
   "alert" | "raid-stream" | "watch-party"
 > {
-  return activityAlert?.sourceType === "alert" || activityAlert?.sourceType === "raid-stream" ||
+  return activityAlert?.sourceType === "alert" ||
+    activityAlert?.sourceType === "raid-stream" ||
     activityAlert?.sourceType === "watch-party";
 }
 

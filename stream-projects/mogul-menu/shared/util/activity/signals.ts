@@ -1,7 +1,10 @@
 import { gql, useSubscriptionSignal } from "../../../deps.ts";
 import { ActivityConnection } from "../../../types/alert.types.ts";
 
-export function useActivitySubscription$<ActivityType, SourceType extends string>(
+export function useActivitySubscription$<
+  ActivityType,
+  SourceType extends string,
+>(
   { status, type, limit }: { status?: string; type?: string; limit?: number },
 ) {
   const ACTIVITY_CONNECTION_SUBSCRIPTION = gql<

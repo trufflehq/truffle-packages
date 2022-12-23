@@ -68,7 +68,8 @@ const sizeStyles = {
   },
 };
 
-interface ButtonProps extends Omit<React.HTMLAttributes<HTMLButtonElement>, "style" | "error"> {
+interface ButtonProps
+  extends Omit<React.HTMLAttributes<HTMLButtonElement>, "style" | "error"> {
   className?: string;
   children?: React.ReactNode;
   shouldHandleLoading?: boolean;

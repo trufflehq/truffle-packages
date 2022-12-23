@@ -17,11 +17,14 @@ export default function ActivePowerups({
         _.take(
           _.filter(
             activePowerups,
-            ({ powerup }: ActivePowerup) => powerup?.componentRels?.[0]?.props?.imageSrc,
+            ({ powerup }: ActivePowerup) =>
+              powerup?.componentRels?.[0]?.props?.imageSrc,
           ),
           1,
         ),
-        (activePowerup: ActivePowerup) => <Powerup powerup={activePowerup?.powerup} size={size} />,
+        (activePowerup: ActivePowerup) => (
+          <Powerup powerup={activePowerup?.powerup} size={size} />
+        ),
       )}
     </div>
   );

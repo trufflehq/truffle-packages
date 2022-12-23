@@ -1,7 +1,11 @@
 import { React } from "../../deps.ts";
 import { File } from "../../types/mod.ts";
 import { DimensionModifiers } from "../draggable/draggable.tsx";
-export type MenuPosition = "top-right" | "top-left" | "bottom-right" | "bottom-left";
+export type MenuPosition =
+  | "top-right"
+  | "top-left"
+  | "bottom-right"
+  | "bottom-left";
 
 export interface MenuState {
   isNative: boolean;

@@ -55,8 +55,12 @@ export default function PredictionTile(
   const { setIsOpen } = useMenu();
   const { pushPage } = usePageStack();
   const { pushDialog, popDialog } = useDialog();
-  const [_deletePollResult, executeDeletePollResult] = useMutation(DELETE_POLL_MUTATION);
-  const { signal$: predictionConnection$ } = useSubscriptionSignal(POLL_CONNECTION_SUBSCRIPTION);
+  const [_deletePollResult, executeDeletePollResult] = useMutation(
+    DELETE_POLL_MUTATION,
+  );
+  const { signal$: predictionConnection$ } = useSubscriptionSignal(
+    POLL_CONNECTION_SUBSCRIPTION,
+  );
 
   const prediction$ = predictionConnection$.data.pollConnection.nodes[0];
 
@@ -84,7 +88,9 @@ export default function PredictionTile(
     );
   };
 
-  const { hasPredictionEnded, timeSinceWinnerSelection } = getTimeInfo({ prediction$ });
+  const { hasPredictionEnded, timeSinceWinnerSelection } = getTimeInfo({
+    prediction$,
+  });
   const { winningOption } = getWinningInfo({ prediction$ });
   const hasResultsExpired = useSelector(() =>
     Boolean(winningOption) && timeSinceWinnerSelection
@@ -95,13 +101,15 @@ export default function PredictionTile(
   // need to set the interval here because we need to update the timer every second when the prediction is still active
   const pollMsLeft$ = useSignal(0);
   useObserve(() => {
-    const pollMsLeft = new Date(prediction$.endTime.get() || Date.now()).getTime() -
+    const pollMsLeft =
+      new Date(prediction$.endTime.get() || Date.now()).getTime() -
       Date.now();
     pollMsLeft$.set(pollMsLeft);
   });
 
   useInterval(() => {
-    const pollMsLeft = new Date(prediction$.endTime.get() || Date.now()).getTime() -
+    const pollMsLeft =
+      new Date(prediction$.endTime.get() || Date.now()).getTime() -
       Date.now();
 
     pollMsLeft$.set(pollMsLeft);

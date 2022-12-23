@@ -1,4 +1,10 @@
-import { formatCountdown, React, signal, useSelector, useStyleSheet } from "../../deps.ts";
+import {
+  formatCountdown,
+  React,
+  signal,
+  useSelector,
+  useStyleSheet,
+} from "../../deps.ts";
 import styleSheet from "./watchtime.scss.js";
 import { getCreatorName, useMenu } from "../menu/mod.ts";
 import Button from "../../components/base/button/button.tsx";
@@ -40,7 +46,9 @@ export default function Watchtime(props: WatchtimeProps) {
   const { claim, claimCountdownMs$, canClaim$ } = useWatchtimeClaimCounter({
     sourceType: "youtube",
   });
-  const { timeWatchedMs$ } = useWatchtimePassiveCounter({ sourceType: "youtube" });
+  const { timeWatchedMs$ } = useWatchtimePassiveCounter({
+    sourceType: "youtube",
+  });
 
   const canClaim = useSelector(() => canClaim$.get());
 
@@ -68,10 +76,18 @@ export default function Watchtime(props: WatchtimeProps) {
         </div>
         <div className="grid">
           <TimerDisplay timerMs$={timeWatchedMs$} title="Time watched" />
-          <Button isDisabled={!canClaim} className="claim" style="gradient" onClick={claim}>
-            {canClaim
-              ? "Claim Reward"
-              : <TimerDisplay timerMs$={claimCountdownMs$} title="Claim reward in" />}
+          <Button
+            isDisabled={!canClaim}
+            className="claim"
+            style="gradient"
+            onClick={claim}
+          >
+            {canClaim ? "Claim Reward" : (
+              <TimerDisplay
+                timerMs$={claimCountdownMs$}
+                title="Claim reward in"
+              />
+            )}
           </Button>
         </div>
       </div>
@@ -79,7 +95,9 @@ export default function Watchtime(props: WatchtimeProps) {
   );
 }
 
-function TimerDisplay({ timerMs$, title }: { timerMs$: signal<number>; title: string }) {
+function TimerDisplay(
+  { timerMs$, title }: { timerMs$: signal<number>; title: string },
+) {
   const timerMs = useSelector(() => timerMs$.get());
 
   return (

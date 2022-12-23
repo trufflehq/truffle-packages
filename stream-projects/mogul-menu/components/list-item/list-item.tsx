@@ -14,7 +14,9 @@ export default function ListItem(
   useStyleSheet(stylesheet);
   return (
     <div
-      className={`c-list-item ${className ?? ""} ${classKebab({ isClickable: !!onClick })}`}
+      className={`c-list-item ${className ?? ""} ${
+        classKebab({ isClickable: !!onClick })
+      }`}
       onClick={onClick}
     >
       <div

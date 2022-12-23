@@ -1,10 +1,17 @@
-import { ImageByAspectRatio, Observable, React, useSelector, useStyleSheet } from "../../deps.ts";
+import {
+  ImageByAspectRatio,
+  Observable,
+  React,
+  useSelector,
+  useStyleSheet,
+} from "../../deps.ts";
 import Dialog from "../base/dialog/dialog.tsx";
 import Button from "../base/button/button.tsx";
 import { useDialog } from "../base/dialog-container/dialog-service.ts";
 import styleSheet from "./delete-dialog.scss.js";
 
-const TRASH_ICON_URL = "https://cdn.bio/assets/images/features/browser_extension/trash-red.svg";
+const TRASH_ICON_URL =
+  "https://cdn.bio/assets/images/features/browser_extension/trash-red.svg";
 
 export default function DeleteDialog(
   props: { title: string; onDelete: () => void; error$?: Observable<string> },
@@ -36,7 +43,12 @@ export default function DeleteDialog(
             <Button style="bg-tertiary" className="cancel" onClick={onCancel}>
               Cancel
             </Button>
-            <Button style="primary" className="delete" onClick={props.onDelete} shouldHandleLoading>
+            <Button
+              style="primary"
+              className="delete"
+              onClick={props.onDelete}
+              shouldHandleLoading
+            >
               Yes, delete
             </Button>
           </div>
