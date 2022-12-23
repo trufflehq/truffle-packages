@@ -84,9 +84,6 @@ export function useOrgUserWithChatInfoAndConnections$() {
     ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS,
   );
 
-  const orgUserWithChatInfoAndConnectionData = useSelector(() => orgUserWithChatInfoAndConnectionData$.get())
-  console.log('orgUserWithChatInfoAndConnectionData', orgUserWithChatInfoAndConnectionData)
-
   useUpdateSignalOnChange(orgUserWithChatInfoAndConnection$, orgUserWithChatInfoAndConnectionData$.data);
   return {
     orgUserWithChatInfoAndConnection$,
