@@ -78,6 +78,9 @@ export type {
   ObservableComputed,
   ObservableObject,
 } from "https://npm.tfl.dev/@legendapp/state@~0.21.0";
+export {
+  useUrqlQuerySignal,
+} from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
 export { v4 as uuidv4 } from "https://npm.tfl.dev/uuid";
 export { default as Fuse } from "https://npm.tfl.dev/fuse.js";
 export { default as shorthash } from "https://npm.tfl.dev/shorthash2";

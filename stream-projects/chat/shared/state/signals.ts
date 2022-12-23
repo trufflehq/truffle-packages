@@ -43,27 +43,6 @@ export function useQuerySignal<T extends object>(
   return signal$;
 }
 
-/*
-* FIXME - replace once we upgrade the legend version of @truffle/state
-* This is a custom hook that wraps the useQuery hook from urql.
-*/
-export function useUrqlQuerySignal<T extends object>(
-  query: TypedDocumentNode<T, any>,
-  variables?: any,
-) {
-  const signal$ = useObservable<UseQueryState<T, object>>(undefined!);
-
-  const source = useCallback(() => useQuery<T>({ query, variables }), [
-    query,
-    variables,
-  ]);
-  const [result, reexecuteQuery] = source();
-
-  signal$.set(result);
-
-  return { signal$, reexecuteQuery };
-}
-
 /**
  * FIXME - replace once we upgrade the legend version of @truffle/state
  * Hook to update a signal only when the parent signal changes

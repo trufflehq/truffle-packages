@@ -4,6 +4,8 @@ import {
   pageHashParams,
   useComputed,
   useObservable,
+  useSelector,
+  useUrqlQuerySignal
 } from "../../deps.ts";
 import {
   getTruffleChatEmoteMapByYoutubeChannelId,
@@ -12,7 +14,7 @@ import {
 } from "./utils.ts";
 import { OrgUserWithChatInfoConnection } from "./types.ts";
 import { CONNECTION_FIELDS, ORG_USER_CHAT_INFO_FIELDS } from "./fragments.ts";
-import { useQuerySignal, useUrqlQuerySignal, useUpdateSignalOnChange } from "../mod.ts";
+import { useQuerySignal, useUpdateSignalOnChange } from "../mod.ts";
 export function useExtensionInfo$() {
   const extensionInfo$ = useObservable(jumper.call("context.getInfo"));
 
@@ -36,7 +38,7 @@ export function useYoutubeStreamInfo$() {
     // return "UCrPseYLGpNygVi34QpGNqpA"; // lud
     // return "UCXBE_QQSZueB8082ml5fslg"; // tim
     // return "UCZaVG6KWBuquVXt63G6xopg"; // riley
-    // return "UCvQczq3aHiHRBGEx-BKdrcg"; // myth
+    return "UCvQczq3aHiHRBGEx-BKdrcg"; // myth
     // return "UCG6zBb8GZKo1XZW4eHdg-0Q"; // pcrow
     // return "UCNF0LEQ2abMr0PAX3cfkAMg"; // lupo
     return youtubeChannelId ?? paramYoutubeChannelId;
@@ -81,6 +83,10 @@ export function useOrgUserWithChatInfoAndConnections$() {
   const { signal$: orgUserWithChatInfoAndConnectionData$, reexecuteQuery: refetchOrgUserWithChatInfoAndConnection } = useUrqlQuerySignal(
     ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS,
   );
+
+  const orgUserWithChatInfoAndConnectionData = useSelector(() => orgUserWithChatInfoAndConnectionData$.get())
+  console.log('orgUserWithChatInfoAndConnectionData', orgUserWithChatInfoAndConnectionData)
+
   useUpdateSignalOnChange(orgUserWithChatInfoAndConnection$, orgUserWithChatInfoAndConnectionData$.data);
   return {
     orgUserWithChatInfoAndConnection$,
