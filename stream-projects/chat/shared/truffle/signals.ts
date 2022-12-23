@@ -5,7 +5,7 @@ import {
   useComputed,
   useObservable,
   useSelector,
-  useUrqlQuerySignal
+  useUrqlQuerySignal,
 } from "../../deps.ts";
 import {
   getTruffleChatEmoteMapByYoutubeChannelId,
@@ -68,7 +68,7 @@ export const ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS = gql<
 >`query {
     orgUser {
       ...OrgUserChatInfoFields
-      connectionConnection (sourceTypes: ["youtube"]) {
+      connectionConnection (input: { sourceTypes: ["youtube"] }) {
         nodes {
           ...ConnectionFields
         }
@@ -78,13 +78,21 @@ export const ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS = gql<
 `;
 
 export function useOrgUserWithChatInfoAndConnections$() {
-  const orgUserWithChatInfoAndConnection$ = useObservable<{ orgUser: OrgUserWithChatInfoConnection }>(undefined!);
+  const orgUserWithChatInfoAndConnection$ = useObservable<
+    { orgUser: OrgUserWithChatInfoConnection }
+  >(undefined!);
 
-  const { signal$: orgUserWithChatInfoAndConnectionData$, reexecuteQuery: refetchOrgUserWithChatInfoAndConnection } = useUrqlQuerySignal(
+  const {
+    signal$: orgUserWithChatInfoAndConnectionData$,
+    reexecuteQuery: refetchOrgUserWithChatInfoAndConnection,
+  } = useUrqlQuerySignal(
     ORG_USER_WITH_CHAT_INFO_AND_CONNECTIONS,
   );
 
-  useUpdateSignalOnChange(orgUserWithChatInfoAndConnection$, orgUserWithChatInfoAndConnectionData$.data);
+  useUpdateSignalOnChange(
+    orgUserWithChatInfoAndConnection$,
+    orgUserWithChatInfoAndConnectionData$.data,
+  );
   return {
     orgUserWithChatInfoAndConnection$,
     refetchOrgUserWithChatInfoAndConnection,
