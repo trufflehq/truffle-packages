@@ -88,7 +88,7 @@ export default function Chat(
       {isScrolling && hasScrollToBottom
         ? (
           <div className="scroll" onClick={scrollToBottom}>
-            <Icon icon={arrowDownIconPath} color="#FFFFFF" size={20} />
+            <div className="icon"><Icon icon={arrowDownIconPath} color="#FFFFFF" size={20} /></div>
           </div>
         )
         : null}

@@ -87,6 +87,9 @@ export default scss`
 
     >.icon {
       margin-right: 8px;
+      // in ios safari click events seem to stop propagating at the web component level vs going up to other
+      // web components / root (different behavior from every other browser including mac safari)
+      pointer-events: none;
     }
 
     >.title {
