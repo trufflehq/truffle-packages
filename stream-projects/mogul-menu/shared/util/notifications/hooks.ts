@@ -21,7 +21,7 @@ import {
   NOTIFICATION_TOPIC_QUERY,
   UPSERT_NOTIFICATION_SUBSCRIPTION_MUTATION,
 } from "../../gql/notifications.gql.ts";
-import { useFcmTokenManager } from "../../mod.ts";
+import { useFcmTokenManager, useIsNative } from "../../mod.ts";
 import { isGoogleChrome } from "../general.ts";
 import { useUserKV } from "../kv/hooks.ts";
 import { HAS_SEEN_NOTIFICATION_SETUP_BANNER } from "./constants.ts";
@@ -138,16 +138,17 @@ export function useDesktopNotificationSetting() {
 
 export function useFirstTimeNotificationBanner() {
   const actionBannerIdRef = useRef("");
-  const { hasSeenBanner$ } = useHasSeenNotificationBanner();
+  const { isNotificationBannerVisible$ } = useIsNotificationBannerVisible();
 
   const { displayActionBanner, removeActionBanner } = useActionBanner();
+  const isNative = useIsNative();
 
   useObserve(() => {
-    if (hasSeenBanner$.get()) {
+    if (!isNotificationBannerVisible$.get()) {
       removeActionBanner(actionBannerIdRef.current);
 
-      // notifications only supported on Google Chrome atm
-    } else if (isGoogleChrome) {
+      // notifications only supported on Google Chrome & native atm
+    } else if (isGoogleChrome || isNative) {
       actionBannerIdRef.current = displayActionBanner(
         // we're using `React.createElement` here because this code is not in a tsx file
         React.createElement(SetupNotificationsBanner, { actionBannerIdRef }),
@@ -156,18 +157,20 @@ export function useFirstTimeNotificationBanner() {
   });
 }
 
-export function useHasSeenNotificationBanner() {
+export function useIsNotificationBannerVisible() {
   // if you want to force this banner to show up again for users, change this "truthyValue"
   const truthyValue = "1";
 
-  const { value$, setUserKV } = useUserKV(
+  const { value$, fetching$, setUserKV } = useUserKV(
     HAS_SEEN_NOTIFICATION_SETUP_BANNER,
     true,
   );
-  const hasSeenBanner$ = useComputed(() => value$.get() === truthyValue);
+  const isNotificationBannerVisible$ = useComputed(() =>
+    !fetching$.get() && value$.get() !== truthyValue
+  );
 
   const setHasSeen = (hasSeen: boolean) =>
-    setUserKV(hasSeen ? truthyValue : null);
+    setUserKV(hasSeen ? truthyValue : "");
 
-  return { hasSeenBanner$, setHasSeen };
+  return { isNotificationBannerVisible$, setHasSeen };
 }

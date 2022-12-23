@@ -14,6 +14,7 @@ import { useSignal } from "./hooks.ts";
 
 /*
 * This is a custom hook that wraps the useQuery hook from urql.
+* TODO: consolidate with useQuerySignal. Problem with useQuerySignal is it doesn't return `fetching`
 */
 export function useUrqlQuerySignal<T extends object>(
   query: TypedDocumentNode<T, any>,
@@ -47,7 +48,9 @@ export function useQuerySignal<T extends object>(
   query: TypedDocumentNode<T, any>,
   variables?: any,
 ) {
-  const signal$ = apiSignal<T & { error: CombinedError | undefined }>(undefined!);
+  const signal$ = apiSignal<T & { error: CombinedError | undefined }>(
+    undefined!,
+  );
   pipe(
     getClient().query(query, variables),
     subscribe((res) => {

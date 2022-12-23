@@ -1,7 +1,7 @@
 import { React, useStyleSheet } from "../../../deps.ts";
 import {
   useDesktopNotificationSetting,
-  useHasSeenNotificationBanner,
+  useIsNotificationBannerVisible,
 } from "../../../shared/mod.ts";
 import Button from "../../base/button/button.tsx";
 import { Page } from "../../page-stack/mod.ts";
@@ -13,7 +13,7 @@ export default function NotificationsEnablePage(
 ) {
   useStyleSheet(styleSheet);
   const { setDesktopNotificationPref } = useDesktopNotificationSetting();
-  const { setHasSeen } = useHasSeenNotificationBanner();
+  const { setHasSeen } = useIsNotificationBannerVisible();
 
   const affirmativeHandler = async () => {
     await setDesktopNotificationPref(true);

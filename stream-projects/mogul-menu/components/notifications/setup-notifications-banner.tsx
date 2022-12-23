@@ -1,5 +1,5 @@
 import { React } from "../../deps.ts";
-import { useHasSeenNotificationBanner } from "../../shared/mod.ts";
+import { useIsNotificationBannerVisible } from "../../shared/mod.ts";
 import ActionBanner from "../action-banner/action-banner.tsx";
 import { useActionBanner } from "../action-banner/mod.ts";
 import Button from "../base/button/button.tsx";
@@ -11,7 +11,7 @@ export default function SetupNotificationsBanner(
 ) {
   const { pushPage } = usePageStack();
   const { removeActionBanner } = useActionBanner();
-  const { setHasSeen } = useHasSeenNotificationBanner();
+  const { setHasSeen } = useIsNotificationBannerVisible();
 
   const affirmativeClickHandler = () => {
     setHasSeen(true);
