@@ -198,16 +198,6 @@ export const YOUTUBE_LANDSCAPE_VIDEO_PLAYER_STYLESHEET = `
   height: 100% !important;
 }
 
-/* disable fullscreen styles */
-.player-controls-bottom .fullscreen-icon {
-  display: none !important;
-}
-
-/* disable settings cog, breaks the layout atm */
-.player-controls-top .player-settings-icon {
-  display: none !important;
-}
-
 `;
 
 export const YOUTUBE_LANDSCAPE_STYLESHEET = `
