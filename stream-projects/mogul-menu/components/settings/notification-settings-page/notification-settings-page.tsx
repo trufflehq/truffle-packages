@@ -16,7 +16,7 @@ export default function NotificationSettingsPage() {
       <div className="notifications-page-body">
         <div className="push-notifications">
           <div className="title mm-text-header-caps">
-            Desktop notifications
+            Receive notifications
             <div className="input">
               <Switch
                 showIsLoading

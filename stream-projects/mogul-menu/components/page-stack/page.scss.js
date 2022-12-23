@@ -8,7 +8,6 @@ $ease-function: cubic-bezier(.4,.71,.18,.99);
   height: 100%;
   position: absolute;
   background: var(--background);
-  animation: animatebottom 0.4s $ease-function;
   z-index: 5;
   display: flex;
   flex-direction: column;
@@ -23,6 +22,10 @@ $ease-function: cubic-bezier(.4,.71,.18,.99);
       transform: translateY(0);
       opacity:1
     }
+  }
+
+  &.is-animated {
+    animation: animatebottom 0.4s $ease-function;
   }
 
   &.is-full-size {

@@ -33,12 +33,15 @@ export function useUserInfo() {
 export function useOrgUserConnectionsQuery() {
   const orgUser$ = useSignal<{ orgUser: OrgUserConnections }>(undefined!);
 
-  const { signal$: orgUserData$, reexecuteQuery: refetchOrgUserConnections } = useUrqlQuerySignal(
-    ORG_USER_CONNECTIONS_QUERY,
-  );
+  const { signal$: orgUserData$, reexecuteQuery: refetchOrgUserConnections } =
+    useUrqlQuerySignal(
+      ORG_USER_CONNECTIONS_QUERY,
+    );
   useUpdateSignalOnChange(orgUser$, orgUserData$.data);
+
   return {
     orgUser$,
+    orgUserData$,
     refetchOrgUserConnections,
   };
 }

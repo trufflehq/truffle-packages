@@ -2,7 +2,7 @@ import { jumper, signal, useSelector } from "../../../deps.ts";
 
 const extensionInfo$ = signal(jumper.call("context.getInfo"));
 
-export function isNative() {
+export function useIsNative() {
   const isNative = useSelector(() => {
     const info = extensionInfo$.get();
 

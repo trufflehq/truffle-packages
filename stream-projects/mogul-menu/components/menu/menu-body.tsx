@@ -6,25 +6,31 @@ import Tabs from "../tabs/tabs.tsx";
 import TabBar from "../tab-bar/tab-bar.tsx";
 import PageStack from "../page-stack/page-stack.tsx";
 import { SnackBarContainer } from "../snackbar/mod.ts";
-import { isNative, useInvalidateAllQueriesListener } from "../../shared/mod.ts";
+import {
+  useInvalidateAllQueriesListener,
+  useIsNative,
+} from "../../shared/mod.ts";
 import ExtensionIcon from "./extension-icon/extension-icon.tsx";
 import { useOnboarding } from "../onboarding/mod.ts";
 import { ActionBannerContainer } from "../action-banner/mod.ts";
 import DialogContainer from "../base/dialog-container/dialog-container.tsx";
 import { MogulMenuProps } from "./menu.tsx";
+import MenuLoading from "../menu-loading/menu-loading.tsx";
 
 export default function BrowserExtensionMenuBody(props: MogulMenuProps) {
   useStyleSheet(styleSheet);
   useInvalidateAllQueriesListener();
   useOnboarding();
+  const isNative = useIsNative();
 
-  return isNative() ? <NativeMenu {...props} /> : <WebMenu {...props} />;
+  return isNative ? <NativeMenu {...props} /> : <WebMenu {...props} />;
 }
 
 function WebMenu(props: MogulMenuProps) {
   return (
     <DraggableMenu {...props}>
       <div className="inner">
+        <MenuLoading />
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <div className="bottom">
             <TabBar />

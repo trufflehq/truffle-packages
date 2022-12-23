@@ -5,7 +5,6 @@ import {
   DEFAULT_MENU_ICON_HEIGHT,
   DEFAULT_MENU_ICON_WIDTH,
 } from "./constants.ts";
-import { isNative } from "../../shared/mod.ts";
 
 import { MenuPosition } from "./types.ts";
 
@@ -38,7 +37,7 @@ export function getCreatorName(state: MenuState) {
 }
 
 export function getMenuPosition(state: MenuState) {
-  return state.isNative ?  "top-left" : state.menuPosition;
+  return state.isNative ? "top-left" : state.menuPosition;
 }
 
 export function getModifiersByPosition(position?: MenuPosition) {

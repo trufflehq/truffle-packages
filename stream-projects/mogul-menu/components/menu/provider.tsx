@@ -1,6 +1,6 @@
 import { React } from "../../deps.ts";
 import { File } from "../../types/mod.ts";
-import { isNative } from "../../shared/mod.ts";
+import { useIsNative } from "../../shared/mod.ts";
 import { MenuState } from "./types.ts";
 import { useMenuReducer } from "./hooks.ts";
 import { MenuContext } from "./context.ts";
@@ -24,9 +24,9 @@ export const INITIAL_DIMENSIONS = {
 };
 
 export const getInitialMenuState = (): MenuState => ({
-  isNative: isNative() ?? false,
-  menuState: isNative() ? "open" : "closed",
-  menuPosition: isNative() ? "top-left" : undefined,
+  isNative: useIsNative() ?? false,
+  menuState: useIsNative() ? "open" : "closed",
+  menuPosition: useIsNative() ? "top-left" : undefined,
   snackBars: [],
   creatorName: "",
   dimensions: INITIAL_DIMENSIONS,
@@ -41,6 +41,12 @@ export function MenuProvider({
   iconImageObj?: File;
   creatorName: string;
 }) {
-  const menuState = useMenuReducer({ ...getInitialMenuState(), iconImageObj, creatorName });
-  return <MenuContext.Provider value={menuState}>{children}</MenuContext.Provider>;
+  const menuState = useMenuReducer({
+    ...getInitialMenuState(),
+    iconImageObj,
+    creatorName,
+  });
+  return (
+    <MenuContext.Provider value={menuState}>{children}</MenuContext.Provider>
+  );
 }

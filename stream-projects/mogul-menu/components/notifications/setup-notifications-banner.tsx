@@ -29,11 +29,11 @@ export default function SetupNotificationsBanner(
       action={
         <>
           <Button onClick={negativeClickHandler}>No</Button>
-          <Button onClick={affirmativeClickHandler}>Yes! Set them up</Button>
+          <Button onClick={affirmativeClickHandler}>Yes!</Button>
         </>
       }
     >
-      <>Would you like to receive desktop notifications?</>
+      <>Want notifications?</>
     </ActionBanner>
   );
 }

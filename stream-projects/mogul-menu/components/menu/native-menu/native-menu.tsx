@@ -21,6 +21,7 @@ import "https://npm.tfl.dev/swiped-events@1.1.6/dist/swiped-events.min.js";
 import { ActionBannerContainer } from "../../action-banner/mod.ts";
 import DialogContainer from "../../base/dialog-container/dialog-container.tsx";
 import { MogulMenuProps } from "../menu.tsx";
+import MenuLoading from "../../menu-loading/menu-loading.tsx";
 import {
   BASE_MENU_STYLES,
   changeFrameOrientation,
@@ -95,12 +96,21 @@ export default function NativeMenu(props: MogulMenuProps) {
   const isCollapsed = useSelector(() => isCollapsed$.get());
 
   return (
-    <div className={`c-native-menu ${classKebab({ isCollapsed, isOpen: !isCollapsed })}`}>
+    <div
+      className={`c-native-menu ${
+        classKebab({ isCollapsed, isOpen: !isCollapsed })
+      }`}
+    >
       <div className={`menu ${orientation}`}>
         {isCollapsed
           ? orientation === "landscape"
             ? <LandscapeCollapsedButton onOpen={onOpen} />
-            : <PortraitCollapsedButton onOpen={onOpen} iconImageObj={props.iconImageObj} />
+            : (
+              <PortraitCollapsedButton
+                onOpen={onOpen}
+                iconImageObj={props.iconImageObj}
+              />
+            )
           : null}
         <ExpandedMenu {...props} />
       </div>
@@ -137,6 +147,7 @@ function PortraitCollapsedButton(
   );
 }
 
+// TODO: consolidate more of this with WebMenu (main div structure)
 function ExpandedMenu(props: MogulMenuProps) {
   const onCollapse = () => {
     isCollapsed$.set(true);
@@ -150,6 +161,7 @@ function ExpandedMenu(props: MogulMenuProps) {
 
   return (
     <div className={`inner ${classKebab({ isCollapsed })}`}>
+      <MenuLoading />
       {orientation === "landscape" && (
         <div className="collapse">
           <div className="icon">

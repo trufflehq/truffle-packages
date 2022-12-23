@@ -14,7 +14,7 @@ import {
   useStyleSheet,
 } from "../../../deps.ts";
 import { isGoogleChrome } from "../../../shared/mod.ts";
-import { isNative } from "../../../shared/mod.ts";
+import { useIsNative } from "../../../shared/mod.ts";
 import { Page, usePageStack } from "../../page-stack/mod.ts";
 import ChatSettingsPage from "../chat-settings-page/chat-settings-page.tsx";
 import NotificationTopicPage from "../notification-topic-page/notification-topic-page.tsx";
@@ -28,7 +28,7 @@ export default function OAuthConnectionPage(
 ) {
   useStyleSheet(stylesheet);
 
-  const imgProps = isNative()
+  const imgProps = useIsNative()
     ? {
       height: 221,
       isStretch: true,
@@ -40,7 +40,12 @@ export default function OAuthConnectionPage(
       height: 300,
     };
   return (
-    <Page isFullSize shouldDisableEscape shouldShowHeader={false}>
+    <Page
+      isFullSize
+      shouldDisableEscape
+      shouldShowHeader={false}
+      isAnimated={false}
+    >
       <div className="c-oauth-connection-page">
         <div className="onboard-image">
           <ImageByAspectRatio
@@ -52,8 +57,9 @@ export default function OAuthConnectionPage(
           <div className="title">
             Let's get started
           </div>
-          Connect your Youtube account to start earning channel points, unlocking rewards, and
-          participating in polls and predictions through Truffle
+          Connect your Youtube account to start earning channel points,
+          unlocking rewards, and participating in polls and predictions through
+          Truffle
         </div>
         <OAuthButton sourceType={sourceType} />
         <a
@@ -95,7 +101,9 @@ function OAuthButton(
               <NotificationsEnablePage
                 onContinue={(shouldSetupNotifications) => {
                   if (shouldSetupNotifications) {
-                    pushPage(<NotificationTopicPage onContinue={clearPageStack} />);
+                    pushPage(
+                      <NotificationTopicPage onContinue={clearPageStack} />,
+                    );
                   } else {
                     clearPageStack();
                   }

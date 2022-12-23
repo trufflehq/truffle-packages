@@ -11,7 +11,7 @@ export default scss`
   @include flex-column;
   
   box-sizing: border-box;
-  padding: 0px;
+  padding: 16px;
   
   > .onboard-image {
     display: none;
