@@ -28,6 +28,8 @@ export default function ChatInput(
     numSearchResults = DEFAULT_NUM_SEARCH_RESULTS,
     maxMessageLength = DEFAULT_MAX_MESSAGE_LENGTH,
     inputControls,
+    statusMessage,
+    isDisabled = false,
     shouldShowEmoteTypeAhead = true,
   }: {
     emoteMap$: ObservableComputed<Map<string, Emote>>;
@@ -37,13 +39,17 @@ export default function ChatInput(
     numSearchResults?: number;
     maxMessageLength?: number;
     inputControls?: React.ReactNode;
+    statusMessage?: string;
+    isDisabled?: boolean;
     shouldShowEmoteTypeAhead?: boolean;
   },
 ) {
   useStyleSheet(stylesheet);
   const chatInput$ = useObservable("");
   const numChars$ = useComputed(() => chatInput$.get().length);
-  const isDisabled$ = useComputed(() => numChars$.get() > maxMessageLength);
+  const isMessageLengthExceeded$ = useComputed(() => numChars$.get() > maxMessageLength);
+  const isDisabled$ = useComputed(() => isDisabled || isMessageLengthExceeded$.get());
+
   const text = useSelector(() => chatInput$.get());
   const emoteMap = useSelector(() => emoteMap$.get());
 
@@ -77,10 +83,10 @@ export default function ChatInput(
   };
 
   const numChars = useSelector(() => numChars$.get());
-  const isDisabled = useSelector(() => isDisabled$.get());
+  const isMessageLengthExceeded = useSelector(() => isMessageLengthExceeded$.get());
   return (
     <div className="chat-input">
-      {shouldShowEmoteTypeAhead && !isDisabled
+      {shouldShowEmoteTypeAhead && !isMessageLengthExceeded
         ? (
           <EmoteTypeAhead
             emoteMap$={emoteMap$}
@@ -93,24 +99,32 @@ export default function ChatInput(
         className="input"
         value$={chatInput$}
         onKeyDown={handleKeyPress}
+        disabled={isDisabled}
         css={{
           border: "none",
           color: "#fff",
         }}
       />
+      {
+        statusMessage ? (
+          <div className="status-message">
+            {statusMessage}
+          </div>
+        ) : null
+      }
       <div className="actions">
       {inputControls ? <div className="controls">
         {inputControls}
       </div> : null}
         <div className="send">
-          <div className={`char-count ${classKebab({ isDisabled })}`}>
+          <div className={`char-count ${classKebab({ isMessageLengthExceeded })}`}>
             {numChars}/{maxMessageLength}
           </div>
           <div
-            className={`icon ${classKebab({ isDisabled })}`}
+            className={`icon ${classKebab({ isMessageLengthExceeded, isDisabled })}`}
             tabIndex={0}
             onClick={onClick}
-            title={isDisabled ? "Message is too long" : "Send message"}
+            title={isMessageLengthExceeded ? "Message is too long" : "Send message"}
           >
             <ImageByAspectRatio
               imageUrl={SEND_MESSAGE_ICON_SRC}

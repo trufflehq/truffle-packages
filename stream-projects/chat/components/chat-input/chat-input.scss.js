@@ -14,6 +14,16 @@ export default scss`
   > .c-legend-input {
     width: 100%;
   }
+  
+  .status-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 8px;
+    color: var(--mm-color-text-demphasized);
+    font-size: 12px;
+    font-weight: 400;
+  }
 
   .input {
     font-size: 14px;
@@ -39,13 +49,15 @@ export default scss`
       justify-content: flex-end;
       gap: 12px;
 
+
       > .char-count {
         font-size: 13px;
         font-weight: 400;
         font-family: var(--mm-font-family);
         color: rgba(188, 188, 188, 1);
 
-        &.is-disabled {
+
+        &.is-message-length-exceeded {
           color: var(--error-red);
         }
       }

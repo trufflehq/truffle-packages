@@ -1,4 +1,4 @@
-import { PageIdentifier } from "../../deps.ts";
+import { PageIdentifier, globalContext } from "../../deps.ts";
 import { Emote, EmoteProvider } from "../emotes/mod.ts";
 import { Badge } from "../badges/mod.ts";
 import { ActivePowerupConnection, OrgUserWithChatInfo } from "./types.ts";

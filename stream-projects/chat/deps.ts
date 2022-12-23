@@ -41,11 +41,17 @@ export type {
   PageIdentifier,
 } from "https://tfl.dev/@truffle/utils@~0.0.22/embed/mod.ts";
 
+export { getOrgId } from "https://tfl.dev/@truffle/utils@~0.0.22/site/site.ts";
+
 export type {
   Client,
   CombinedError,
   OperationContext,
   TypedDocumentNode,
+  UseQueryState
+} from "https://npm.tfl.dev/urql@2";
+export {
+  useQuery,
 } from "https://npm.tfl.dev/urql@2";
 export { pipe, subscribe } from "https://npm.tfl.dev/wonka@^6.0.0";
 export {
@@ -72,6 +78,9 @@ export type {
   ObservableComputed,
   ObservableObject,
 } from "https://npm.tfl.dev/@legendapp/state@~0.21.0";
+export {
+  useUrqlQuerySignal,
+} from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
 export { v4 as uuidv4 } from "https://npm.tfl.dev/uuid";
 export { default as Fuse } from "https://npm.tfl.dev/fuse.js";
 export { default as shorthash } from "https://npm.tfl.dev/shorthash2";
