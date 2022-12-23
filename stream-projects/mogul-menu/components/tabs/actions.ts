@@ -1,9 +1,4 @@
-import {
-  TabStateKey,
-  TabStateValue,
-  UpdateActiveTabAction,
-  UpdateTabAction,
-} from "./types.ts";
+import { TabStateKey, TabStateValue, UpdateActiveTabAction, UpdateTabAction } from "./types.ts";
 
 export const updateTabState = (
   tabSlug: string,

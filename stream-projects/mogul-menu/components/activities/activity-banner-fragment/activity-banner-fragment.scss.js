@@ -1,6 +1,5 @@
 import { scss } from "../../../deps.ts";
 
-
 export default scss`
 .c-activity-banner-fragment {
   display: flex;
@@ -77,4 +76,4 @@ export default scss`
 .c-activity-banner-secondary-info {
   color: var(--mm-color-opt-3);
 }
-`
+`;

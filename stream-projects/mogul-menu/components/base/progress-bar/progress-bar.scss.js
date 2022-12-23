@@ -1,4 +1,4 @@
-import { scss } from '../../../deps.ts'
+import { scss } from "../../../deps.ts";
 
 export default scss`
 .c-progress {
@@ -13,4 +13,4 @@ export default scss`
   width: 100%;
   height: 100%;
   transition: transform 660ms cubic-bezier(0.65, 0, 0.35, 1) 250ms;
-}`
+}`;

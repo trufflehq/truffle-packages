@@ -1,1 +1,1 @@
-export * from './powerup-activated-snack-bar.tsx'
+export * from "./powerup-activated-snack-bar.tsx";

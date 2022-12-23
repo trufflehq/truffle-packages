@@ -7,8 +7,7 @@ export function ActionBannerProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { actionBannerMap, displayActionBanner, removeActionBanner } =
-    initActionBanners();
+  const { actionBannerMap, displayActionBanner, removeActionBanner } = initActionBanners();
 
   return (
     <ActionBannerContext.Provider

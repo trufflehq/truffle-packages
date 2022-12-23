@@ -33,7 +33,8 @@ export default function SnackBar({
     <div
       className={`c-snack-bar-el ${style} ${className}`}
       style={{
-        animation: `slideIn linear ${fadeDuration}ms, stayVisible linear ${visibilityDuration}ms ${fadeDuration}ms, slideOut linear ${fadeDuration}ms ${fadeOutDelay}ms`,
+        animation:
+          `slideIn linear ${fadeDuration}ms, stayVisible linear ${visibilityDuration}ms ${fadeDuration}ms, slideOut linear ${fadeDuration}ms ${fadeOutDelay}ms`,
       }}
     >
       <div

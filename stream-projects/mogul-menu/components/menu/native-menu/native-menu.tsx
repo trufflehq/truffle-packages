@@ -97,9 +97,7 @@ export default function NativeMenu(props: MogulMenuProps) {
 
   return (
     <div
-      className={`c-native-menu ${
-        classKebab({ isCollapsed, isOpen: !isCollapsed })
-      }`}
+      className={`c-native-menu ${classKebab({ isCollapsed, isOpen: !isCollapsed })}`}
     >
       <div className={`menu ${orientation}`}>
         {isCollapsed

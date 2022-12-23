@@ -46,7 +46,5 @@ export function MenuProvider({
     iconImageObj,
     creatorName,
   });
-  return (
-    <MenuContext.Provider value={menuState}>{children}</MenuContext.Provider>
-  );
+  return <MenuContext.Provider value={menuState}>{children}</MenuContext.Provider>;
 }

@@ -22,4 +22,4 @@ export default scss`
     gap: 6px;
   }
 }
-`
+`;

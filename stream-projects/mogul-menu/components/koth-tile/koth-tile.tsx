@@ -1,14 +1,14 @@
 import {
   Avatar,
   gql,
+  query,
   React,
+  useComputed,
   useMutation,
   useQuerySignal,
   useSelector,
   useStyleSheet,
   useSubscriptionSignal,
-  query,
-  useComputed
 } from "../../deps.ts";
 import { KOTHOrgUser } from "../../types/mod.ts";
 import { CROWN_ICON, hasPermission, OrgUserQuerySignal } from "../../shared/mod.ts";

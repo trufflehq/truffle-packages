@@ -69,7 +69,7 @@ export default function RaidPreviewPage({ alertId }: { alertId: string }) {
       },
     })
   );
-  
+
   return (
     <AlertPreviewPage
       pageTitle="Raid"

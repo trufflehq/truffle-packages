@@ -15,10 +15,7 @@ import {
   zeroPrefix,
 } from "../../deps.ts";
 
-import {
-  useIsNative,
-  useOwnedCollectibleConnection,
-} from "../../shared/mod.ts";
+import { useIsNative, useOwnedCollectibleConnection } from "../../shared/mod.ts";
 import { useDialog } from "../base/dialog-container/dialog-service.ts";
 
 import UnlockedEmoteDialog from "../dialogs/unlocked-emote-dialog/unlocked-emote-dialog.tsx";
@@ -35,10 +32,7 @@ import Reward from "../season-pass-reward/season-pass-reward.tsx";
 import { LockedIcon } from "../locked-icon/locked-icon.tsx";
 import MultiRewardLevelUpDialog from "../dialogs/multi-reward-level-up-dialog/multi-reward-level-up-dialog.tsx";
 import SingleRewardLevelUpDialog from "../dialogs/single-reward-level-up-dialog/single-reward-level-up-dialog.tsx";
-import {
-  OrgUserCounter,
-  SeasonPass as SeasonPassType,
-} from "../../types/mod.ts";
+import { OrgUserCounter, SeasonPass as SeasonPassType } from "../../types/mod.ts";
 import { useSeasonPassData } from "./hooks.ts";
 
 const ME_QUERY = gql`
@@ -72,8 +66,7 @@ export function getXPBarBySeasonPassAndXp(
 ) {
   const currentXp = xp?.count ? parseInt(xp.count) : 0;
 
-  const floor =
-    _.findLast(seasonPass.levels, ({ minXp }) => currentXp >= minXp) ?? 0;
+  const floor = _.findLast(seasonPass.levels, ({ minXp }) => currentXp >= minXp) ?? 0;
 
   const ceiling = _.find(seasonPass.levels, ({ minXp }) => currentXp < minXp);
 
@@ -126,8 +119,7 @@ export default function SeasonPass(props) {
   } = useSeasonPassData();
 
   const seasonPass: SeasonPassType = seasonPassData?.seasonPass;
-  const { reexecuteOwnedCollectibleConnQuery } =
-    useOwnedCollectibleConnection();
+  const { reexecuteOwnedCollectibleConnQuery } = useOwnedCollectibleConnection();
 
   const currentLevelNum = seasonPass
     ? getLevelBySeasonPassAndXp(seasonPass, seasonPass?.xp)?.levelNum || 0
@@ -461,9 +453,7 @@ export function $level(props) {
   return (
     <div className={`level ${classKebab({ isCurrentLevel })}`} ref={$$levelRef}>
       <div className="number">
-        Level {shouldUseLevelsZeroPrefix
-          ? zeroPrefix(level?.levelNum ?? 0)
-          : level?.levelNum ?? 0}
+        Level {shouldUseLevelsZeroPrefix ? zeroPrefix(level?.levelNum ?? 0) : level?.levelNum ?? 0}
       </div>
       {_.map(tierNums, (tierNum) => {
         const reward = _.find(level?.rewards ?? [], { tierNum });

@@ -29,13 +29,11 @@ export function getVariantBannerStyles(variant: ActivityBannerStyleVariants) {
       return {
         "clip-path": getClipPath(52, 4),
         height: "52px",
-
       };
     case "closed":
       return {
         "clip-path": getClipPath(0, 0),
         height: "0px",
-
       };
     default:
       return {

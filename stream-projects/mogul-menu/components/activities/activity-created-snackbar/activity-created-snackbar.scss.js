@@ -13,4 +13,4 @@ export default scss`
     font-weight: 700;
   }
 }
-`
+`;

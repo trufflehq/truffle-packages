@@ -45,7 +45,7 @@ export function ActiveRedeemableDialog({
         { powerupId: activePowerup.id },
         { additionalTypenames: ["ActivePowerup"] },
       );
-      invalidateExtensionUser()
+      invalidateExtensionUser();
     }
   };
   return (

@@ -1,5 +1,5 @@
 import { React } from "../../../deps.ts";
-import { useActionBanner } from '../mod.ts'
+import { useActionBanner } from "../mod.ts";
 
 export default function ActionBannerContainer() {
   const { actionBannerMap } = useActionBanner();

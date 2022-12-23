@@ -5,7 +5,10 @@ export function useSeasonPassData() {
   const [{ data, fetching, error }, reexecuteSeasonPassQuery] = useQuery({
     query: SEASON_PASS_QUERY,
     requestPolicy: "network-only",
-    context: useMemo(() => ({ additionalTypenames: ["OrgUserCounter", "SeasonPass", "SeasonPassProgression"] }), []),
+    context: useMemo(
+      () => ({ additionalTypenames: ["OrgUserCounter", "SeasonPass", "SeasonPassProgression"] }),
+      [],
+    ),
   });
 
   return { data, fetching, error, reexecuteSeasonPassQuery };

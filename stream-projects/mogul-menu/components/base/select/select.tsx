@@ -1,4 +1,4 @@
-import { Icon, React, useState, useEffect, useStyleSheet } from "../../../deps.ts";
+import { Icon, React, useEffect, useState, useStyleSheet } from "../../../deps.ts";
 import styleSheet from "./select.scss.js";
 
 // the Option component should be used as the children for this component
@@ -27,18 +27,18 @@ export default function Select({
   };
 
   const handleEscape = (ev: KeyboardEvent) => {
-    if(ev.key === 'Escape') {
-      setIsShowingDropdown(false)
+    if (ev.key === "Escape") {
+      setIsShowingDropdown(false);
     }
-  }
+  };
 
   useEffect(() => {
-    document.addEventListener('keydown', handleEscape, false)
+    document.addEventListener("keydown", handleEscape, false);
 
     return () => {
-      document.removeEventListener('keydown', handleEscape, false)
-    }
-  }, [])
+      document.removeEventListener("keydown", handleEscape, false);
+    };
+  }, []);
 
   return (
     <div className="c-select">

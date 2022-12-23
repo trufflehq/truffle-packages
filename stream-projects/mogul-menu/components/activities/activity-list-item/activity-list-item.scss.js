@@ -33,4 +33,4 @@ export default scss`
     line-height: 17px;
   }
 }
-`
+`;

@@ -1,10 +1,4 @@
-import {
-  React,
-  useRef,
-  classKebab,
-  getSrcByImageObj,
-  useStyleSheet,
-} from "../../deps.ts";
+import { classKebab, getSrcByImageObj, React, useRef, useStyleSheet } from "../../deps.ts";
 import { UnlockedIcon } from "../unlocked-icon/unlocked-icon.tsx";
 import { LockedIcon } from "../locked-icon/locked-icon.tsx";
 
@@ -24,7 +18,7 @@ export default function Reward({
   onClick?: (
     reward: SeasonPassLevelReward<any>,
     ref: any,
-    tierNum: number
+    tierNum: number,
   ) => void;
   reward: SeasonPassLevelReward<any>;
   tierNum?: number;
@@ -40,10 +34,12 @@ export default function Reward({
 
   return (
     <div
-      className={`c-reward ${classKebab({
-        isSelected,
-        isClickable: Boolean(onClick),
-      })}`}
+      className={`c-reward ${
+        classKebab({
+          isSelected,
+          isClickable: Boolean(onClick),
+        })
+      }`}
       ref={$$ref}
       onClick={(e) => {
         onClick?.(reward, $$ref, tierNum);

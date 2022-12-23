@@ -1,2 +1,2 @@
-export * from './paths.ts'
-export * from './viewboxes.ts'
+export * from "./paths.ts";
+export * from "./viewboxes.ts";

@@ -28,4 +28,4 @@ export default scss`
     flex: 1;
   }
 }
-`
+`;

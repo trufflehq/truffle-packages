@@ -89,4 +89,4 @@ html, body {
     100% { transform: rotate(0); }
   }
 }
-`
+`;

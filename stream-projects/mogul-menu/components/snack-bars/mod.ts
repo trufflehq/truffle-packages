@@ -1,1 +1,1 @@
-export * from './powerup-activated-snack-bar/mod.ts'
+export * from "./powerup-activated-snack-bar/mod.ts";

@@ -142,8 +142,7 @@ export default function Prediction(
           optionIndex: currVote$.index.get(),
           pollId: prediction$.id.get(),
         },
-      },
-      { additionalTypenames: ["OrgUserCounter"] });
+      }, { additionalTypenames: ["OrgUserCounter"] });
 
       // reset the current vote amount and limit them from voting on other options
       currVote$.set({ amount: "", index: currVote$.index.get() });

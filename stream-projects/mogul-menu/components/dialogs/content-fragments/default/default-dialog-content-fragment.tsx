@@ -20,9 +20,7 @@ export default function DefaultDialogContentFragment({
     <div className="c-default-dialog-content-fragment">
       <div className="image">
         {imageUrl && <img src={imageUrl} width={IMAGE_WIDTH_PX} />}
-        {imageRel && (
-          <img src={getSrcByImageObj(imageRel)} width={IMAGE_WIDTH_PX} />
-        )}
+        {imageRel && <img src={getSrcByImageObj(imageRel)} width={IMAGE_WIDTH_PX} />}
       </div>
       <div className="primary-text mm-text-subtitle-1">{primaryText}</div>
       <div className="secondary-text mm-text-body-2">{secondaryText}</div>

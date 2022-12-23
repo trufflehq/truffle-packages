@@ -1,4 +1,4 @@
-import { React, useStyleSheet, _ } from "../../../deps.ts";
+import { _, React, useStyleSheet } from "../../../deps.ts";
 import { EconomyAction } from "../../../types/mod.ts";
 import Dialog from "../../base/dialog/dialog.tsx";
 import styleSheet from "./economy-action-dialog.scss.js";

@@ -3,7 +3,7 @@ import { Collectible } from "./collectible.types.ts";
 
 export interface Product {
   id: string;
-  description?: string
+  description?: string;
   source: Collectible<Record<string, unknown>>;
   productVariants: ProductVariantConnection;
 }
