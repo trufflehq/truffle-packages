@@ -14,31 +14,25 @@ import {
   useStyleSheet,
 } from "../../../deps.ts";
 import { isGoogleChrome } from "../../../shared/mod.ts";
-import { useIsNative } from "../../../shared/mod.ts";
 import { Page, usePageStack } from "../../page-stack/mod.ts";
 import ChatSettingsPage from "../chat-settings-page/chat-settings-page.tsx";
 import NotificationTopicPage from "../notification-topic-page/notification-topic-page.tsx";
 import NotificationsEnablePage from "../notifications-enable-page/notifications-enable-page.tsx";
+import { MeUserWithConnectionConnection } from "../../../types/mod.ts";
 import LocalOAuthFrame from "./local-oauth-frame.tsx";
 
 import stylesheet from "./oauth-connection-page.scss.js";
 
 export default function OAuthConnectionPage(
-  { sourceType = "youtube" }: { sourceType: ConnectionSourceType },
+  { sourceType = "youtube", meWithConnectionConnection }: {
+    sourceType: ConnectionSourceType;
+    meWithConnectionConnection: MeUserWithConnectionConnection;
+  },
 ) {
   useStyleSheet(stylesheet);
 
-  const imgProps = useIsNative()
-    ? {
-      height: 221,
-      isStretch: true,
-      isCentered: true,
-      aspectRatio: 390 / 221,
-    }
-    : {
-      widthPx: 576,
-      height: 300,
-    };
+  // TODO: if hasConnectionAnyOrg(meWithConnectionConnection, sourceType), show "Continue as <Name>"
+
   return (
     <Page
       isFullSize
@@ -50,7 +44,8 @@ export default function OAuthConnectionPage(
         <div className="onboard-image">
           <ImageByAspectRatio
             imageUrl="https://cdn.bio/assets/images/features/browser_extension/extension-onboarding.png"
-            {...imgProps}
+            widthPx={576}
+            heightPx={300}
           />
         </div>
         <div className="info">
@@ -152,4 +147,14 @@ function OAuthButton(
     // For local development
     // <LocalOAuthFrame sourceType={sourceType} accessToken={accessToken} orgId={orgId} />
   );
+}
+
+function hasConnectionAnyOrg(
+  me: MeUserWithConnectionConnection,
+  sourceType: ConnectionSourceType,
+) {
+  return sourceType &&
+    me.connectionConnection?.nodes?.find((connection) =>
+      connection.sourceType === sourceType
+    );
 }

@@ -1,3 +1,5 @@
+import { ConnectionSourceType } from "../deps.ts";
+
 export interface User {
   id?: string;
   name?: string;
@@ -22,4 +24,15 @@ export interface MeUser {
   email?: string;
   phone?: string;
   avatarImage: AvatarImage;
+}
+
+export interface MeUserWithConnectionConnection extends Omit<MeUser, "user"> {
+  connectionConnection: {
+    nodes: {
+      id: string;
+      sourceType: ConnectionSourceType;
+      sourceId: string;
+      orgId: string;
+    }[];
+  };
 }
