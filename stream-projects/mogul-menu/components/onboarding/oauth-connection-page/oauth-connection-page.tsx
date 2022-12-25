@@ -25,8 +25,6 @@ export default function OAuthConnectionPage(
 ) {
   useStyleSheet(stylesheet);
 
-  // TODO: if hasConnectionAnyOrg(meWithConnectionConnection, sourceType), show "Continue as <Name>"
-
   return (
     <Page
       isFullSize
@@ -35,22 +33,19 @@ export default function OAuthConnectionPage(
       isAnimated={false}
     >
       <div className="c-oauth-connection-page">
-        <div className="onboard-image">
-          <ImageByAspectRatio
-            imageUrl="https://cdn.bio/assets/images/features/browser_extension/extension-onboarding.png"
-            widthPx={576}
-            heightPx={300}
-          />
+        <div className="onboard-image" />
+        <div className="title">
+          Let's get started
         </div>
-        <div className="info">
-          <div className="title">
-            Let's get started
-          </div>
+        <div className="description">
           Connect your Youtube account to start earning channel points,
           unlocking rewards, and participating in polls and predictions through
           Truffle
         </div>
-        <OAuthButton sourceType={sourceType} />
+        <div className="button">
+          <OAuthButton sourceType={sourceType} />
+          <div className="loading">Loading...</div>
+        </div>
         <a
           className="policies mm-text-link"
           target={"_blank"}
@@ -106,7 +101,6 @@ function OAuthButton(
       styles={{
         width: "308px",
         height: "42px",
-        margin: "20px auto",
         border: "none",
       }}
     />

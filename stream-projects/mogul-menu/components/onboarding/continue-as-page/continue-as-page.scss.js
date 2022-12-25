@@ -2,13 +2,17 @@ import { scss } from "../../../deps.ts";
 
 export default scss`
 .c-continue-as-page{
-  padding: 32px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-content: center;
   text-align: center;
   flex: 1;
+
+  @media (min-width: 768px) {
+    padding: 32px;
+  }
 
   > .logo {
     width: 96px;
