@@ -32,6 +32,7 @@ export default scss`
         width: 100%;
         height: 40px;
         cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         box-sizing: border-box;
         &.is-selected {
           border-radius: 4px;

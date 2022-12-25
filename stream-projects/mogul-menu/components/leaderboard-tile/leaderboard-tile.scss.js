@@ -23,6 +23,7 @@ export default scss`
 
   &:hover {
     cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
     > .username {
       visibility: visible;

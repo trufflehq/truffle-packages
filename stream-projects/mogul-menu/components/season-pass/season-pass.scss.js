@@ -150,6 +150,7 @@ $yellow: #EBC564;
       color: var(--mm-color-text-bg-primary);
       padding: 10px 16px;
       cursor: pointer;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
       &.is-disabled {
         opacity: 0.6;

@@ -28,6 +28,7 @@ export default scss`
   display: flex;
   align-items: center;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
   > .item {
     all: unset;
@@ -59,6 +60,7 @@ export default scss`
 
   > .label {
     cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
     > .status {
       &.is-live {

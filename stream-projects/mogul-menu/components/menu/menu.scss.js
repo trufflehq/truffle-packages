@@ -168,6 +168,7 @@ html, body {
         top: 48px;
         right: 12px;
         cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       }
 
       > .body {

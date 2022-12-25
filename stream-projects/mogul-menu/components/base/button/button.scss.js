@@ -9,6 +9,7 @@ export default scss`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   padding: var(--padding);
   transition: all linear 50ms;
   font-family: var(--mm-font-family);

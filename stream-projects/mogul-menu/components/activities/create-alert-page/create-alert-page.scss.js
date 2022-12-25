@@ -40,6 +40,7 @@ export default scss`
   > .remove {
     margin-top: 8px;
     cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     text-align: center;
     transition: text-decoration 0.2s ease-in-out;    
     text-decoration: underline;

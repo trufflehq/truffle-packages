@@ -66,6 +66,7 @@ export default scss`
     right: 12px;
     top: 10px;
     cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
 
 }

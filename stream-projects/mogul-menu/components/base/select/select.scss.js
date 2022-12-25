@@ -10,6 +10,7 @@ export default scss`
     padding: 14px 12px;
     border-radius: 4px;
     cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -34,6 +35,7 @@ export default scss`
       &:hover:not(.disabled) {
         background: var(--mm-color-bg-secondary);
         cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       }
 
       &.disabled {

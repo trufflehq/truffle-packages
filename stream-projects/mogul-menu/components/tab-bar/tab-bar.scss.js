@@ -68,6 +68,7 @@ export default scss`
     justify-content: center;
     box-sizing: border-box;
     cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     position: relative;
 
     padding: 0px 12px;
@@ -107,5 +108,6 @@ export default scss`
 // }
 .c-collapsible-tab-button {
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 `;

@@ -6,6 +6,7 @@ export default scss`
   justify-content: space-between;
   padding: 20px 26px;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   transition: all linear 50ms;
   box-sizing: border-box;
   border: 2px solid transparent;  

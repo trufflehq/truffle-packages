@@ -175,6 +175,7 @@ function ThemeComponent({
           text-decoration-line: underline;
           color: var(--mm-color-secondary);
           cursor: pointer;
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
 
         :host .mm-text-micro {
@@ -210,6 +211,10 @@ function ThemeComponent({
         /* Handle on hover */
         ::-webkit-scrollbar-thumb:hover {
           background-color: rgba(255, 255, 255, 0.15);;
+        }
+
+        input, textarea, button, select, a {
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
       `}
       </style>

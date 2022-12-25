@@ -101,6 +101,7 @@ export default scss`
           align-items: center;
 
           cursor: pointer;
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
           box-sizing: border-box;
           padding: 7px 0;

@@ -17,6 +17,7 @@ export default scss`
 
   &.is-clickable {
     cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
     &:hover {
       background-color: var(--mm-color-bg-secondary);

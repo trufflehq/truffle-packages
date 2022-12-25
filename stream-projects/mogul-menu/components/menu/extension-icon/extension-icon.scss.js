@@ -41,6 +41,7 @@ export default scss`
 
 .c-extension-icon {
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background-image: url(https://cdn.bio/assets/images/creators/ludwig/extension_icon.png);
   background-size: 100%;
   background-repeat: no-repeat;

@@ -19,6 +19,7 @@ export default scss`
 
   &:hover {
     cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
     > .text {
       visibility: visible;
@@ -53,6 +54,7 @@ export default scss`
     &.clickable:hover {
       filter: brightness(80%);
       cursor: pointer;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
 
     &.is-hidden {

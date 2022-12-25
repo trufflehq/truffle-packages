@@ -69,6 +69,7 @@ html, body {
       border-radius: 4px;
       font-size: 12px;
       cursor: pointer;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       background-color: var(--mm-gradient);
   
       animation: claim-shake 2s infinite cubic-bezier(.36,.07,.19,.97) both;
