@@ -1,4 +1,5 @@
 import {
+  useComputed,
   useMemo,
   useQuery,
   useSignal,
@@ -39,9 +40,12 @@ export function useOrgUserConnectionsQuery() {
     );
   useUpdateSignalOnChange(orgUser$, orgUserData$.data);
 
+  // want signal to be ready immediately, so can't seem to use orgUserData$.fetching directly
+  const fetching$ = useComputed(() => orgUserData$.get()?.fetching);
+
   return {
     orgUser$,
-    orgUserData$,
+    fetching$,
     refetchOrgUserConnections,
   };
 }

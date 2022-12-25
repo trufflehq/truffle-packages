@@ -6,7 +6,7 @@ import {
   useComputed,
   useExtensionInfo$,
   useObserve,
-  useQuerySignal,
+  useUrqlQuerySignal,
 } from "../../deps.ts";
 import { getOrgId } from "https://tfl.dev/@truffle/utils@~0.0.3/site/site.ts";
 import { MeUserWithConnectionConnection } from "../../types/mod.ts";
@@ -28,16 +28,30 @@ const USER_CONNECTION_CONNECTION_QUERY = gql`
   query { me { name, connectionConnection { nodes { orgId, sourceType, sourceId } } } }
 `;
 
-export function useOnboarding() {
-  const { pushPage } = usePageStack();
-  const extensionInfo$ = useExtensionInfo$();
-
-  const meWithConnectionConnectionResponse$ = useQuerySignal(
+export function useMeWithConnectionConnection() {
+  const { signal$: meWithConnectionConnectionResponse$ } = useUrqlQuerySignal(
     USER_CONNECTION_CONNECTION_QUERY,
   );
   const meWithConnectionConnection$ = useComputed<
     MeUserWithConnectionConnection
-  >(() => meWithConnectionConnectionResponse$.me);
+  >(() => meWithConnectionConnectionResponse$.data?.me);
+
+  // want signal to be ready immediately, so can't seem to use orgUserData$.fetching directly
+  const fetching$ = useComputed(() =>
+    meWithConnectionConnectionResponse$.get()?.fetching
+  );
+
+  return {
+    meWithConnectionConnection$,
+    fetching$,
+  };
+}
+
+export function useOnboarding() {
+  const { pushPage } = usePageStack();
+  const extensionInfo$ = useExtensionInfo$();
+
+  const { meWithConnectionConnection$ } = useMeWithConnectionConnection();
 
   useObserve(() => {
     const extensionInfo = extensionInfo$.get();
