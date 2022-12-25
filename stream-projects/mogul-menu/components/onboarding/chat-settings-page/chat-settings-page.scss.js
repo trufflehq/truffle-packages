@@ -27,6 +27,11 @@ export default scss`
       margin-top: 8px;
       font-size: 36px;
       font-weight: 700;
+      display: none;
+
+      @media (min-width: 768px) {
+        display: block;
+      }
     }
 
     > .welcome {
