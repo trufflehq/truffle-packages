@@ -9,7 +9,7 @@ export default scss`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  padding: 8px 16px;
+  padding: var(--padding);
   transition: all linear 50ms;
   font-family: var(--mm-font-family);
   font-weight: var(--font-weight);

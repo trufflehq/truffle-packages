@@ -66,6 +66,11 @@ const sizeStyles = {
     "--font-size": "14px",
     "--font-weight": "600",
   },
+  large: {
+    "--padding": "12px 20px",
+    "--font-size": "18px",
+    "--font-weight": "700",
+  },
 };
 
 interface ButtonProps

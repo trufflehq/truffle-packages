@@ -13,21 +13,15 @@ import {
   useSelector,
   useStyleSheet,
 } from "../../../deps.ts";
-import { isGoogleChrome } from "../../../shared/mod.ts";
-import { Page, usePageStack } from "../../page-stack/mod.ts";
-import ChatSettingsPage from "../chat-settings-page/chat-settings-page.tsx";
-import NotificationTopicPage from "../notification-topic-page/notification-topic-page.tsx";
-import NotificationsEnablePage from "../notifications-enable-page/notifications-enable-page.tsx";
+import { Page } from "../../page-stack/mod.ts";
 import { MeUserWithConnectionConnection } from "../../../types/mod.ts";
+import { useOnLoggedIn } from "../mod.ts";
 import LocalOAuthFrame from "./local-oauth-frame.tsx";
 
 import stylesheet from "./oauth-connection-page.scss.js";
 
 export default function OAuthConnectionPage(
-  { sourceType = "youtube", meWithConnectionConnection }: {
-    sourceType: ConnectionSourceType;
-    meWithConnectionConnection: MeUserWithConnectionConnection;
-  },
+  { sourceType = "youtube" }: { sourceType: ConnectionSourceType },
 ) {
   useStyleSheet(stylesheet);
 
@@ -83,35 +77,7 @@ function OAuthButton(
   },
 ) {
   const accessToken$ = getAccessToken$();
-  const { clearPageStack, pushPage, popPage } = usePageStack();
-
-  const onLoggedIn = () => {
-    popPage();
-    pushPage(
-      <ChatSettingsPage
-        onContinue={() => {
-          // notifications only supported in Google Chrome atm
-          if (isGoogleChrome) {
-            pushPage(
-              <NotificationsEnablePage
-                onContinue={(shouldSetupNotifications) => {
-                  if (shouldSetupNotifications) {
-                    pushPage(
-                      <NotificationTopicPage onContinue={clearPageStack} />,
-                    );
-                  } else {
-                    clearPageStack();
-                  }
-                }}
-              />,
-            );
-          } else {
-            clearPageStack();
-          }
-        }}
-      />,
-    );
-  };
+  const onLoggedIn = useOnLoggedIn();
 
   // for native app, eventually desktop if we setup jumper for window.open messages
   const { unsubscribe } = onAccessTokenChange(() => {
