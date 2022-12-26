@@ -2,6 +2,7 @@ import { React, semver, useExtensionInfo, useSelector } from "../../../deps.ts";
 import {
   hasPermission,
   isGoogleChrome,
+  useIsNative,
   useOrgUserWithRoles$,
 } from "../../../shared/mod.ts";
 import MenuItem from "../../base/menu-item/menu-item.tsx";
@@ -25,11 +26,12 @@ export default function SettingsPage() {
     })
   );
 
-  // notifications are currently only supported in google chrome
+  // notifications are currently only supported in google chrome and native
 
   // make sure the extension supports notifications (version 3.3.4)
   const { extensionInfo } = useExtensionInfo();
-  const supportsNotifications = extensionInfo &&
+  const isNative = useIsNative();
+  const supportsNotifications = (isGoogleChrome || isNative) && extensionInfo &&
     semver.satisfies(extensionInfo.version, ">=3.3.4");
 
   return (
@@ -41,7 +43,7 @@ export default function SettingsPage() {
         Account details
       </MenuItem>
       {
-        isGoogleChrome && supportsNotifications && (
+        supportsNotifications && (
           <MenuItem
             icon="notifications"
             onClick={() => pushPage(<NotificationSettingsPage />)}

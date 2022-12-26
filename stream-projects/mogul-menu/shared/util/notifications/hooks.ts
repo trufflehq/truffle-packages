@@ -161,6 +161,8 @@ export function useIsNotificationBannerVisible() {
   // if you want to force this banner to show up again for users, change this "truthyValue"
   const truthyValue = "1";
 
+  // TODO: we prob want to use jumper storage.get instead of this so we can get folks
+  // to turn on notifications on new devices too
   const { value$, fetching$, setUserKV } = useUserKV(
     HAS_SEEN_NOTIFICATION_SETUP_BANNER,
     true,
