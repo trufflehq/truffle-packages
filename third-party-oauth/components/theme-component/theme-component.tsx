@@ -1,6 +1,6 @@
 import { React } from ".././../deps.ts";
 import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.3/google-font-loader/mod.ts";
-const DEFAULT_FONT_FAMILY = "Poppins";
+const DEFAULT_FONT_FAMILY = "Inter";
 const SECONDARY_FONT_FAMILY = "Roboto";
 
 // FIXME consolidate this under @truffle/ui when we work on theming/css vars

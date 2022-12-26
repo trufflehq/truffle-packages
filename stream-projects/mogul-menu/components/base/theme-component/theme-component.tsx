@@ -1,6 +1,6 @@
 import { React, useEffect } from "../../../deps.ts";
 import { useGoogleFontLoader } from "./hooks.ts";
-const DEFAULT_FONT_FAMILY = "Poppins";
+const DEFAULT_FONT_FAMILY = "Inter";
 const SECONDARY_FONT_FAMILY = "Roboto";
 
 function ThemeComponent({

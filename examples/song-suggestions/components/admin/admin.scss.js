@@ -1,7 +1,7 @@
 import scss from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
 
 export default scss`
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :host {
   display: flex;
@@ -10,8 +10,8 @@ export default scss`
   height: 100%;
   background: var(--tfl-color-bg-fill);
 
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-  font-family: Poppins;
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  font-family: Inter;
 }
 :host > .p-submission-page {
   display: flex;
@@ -21,7 +21,7 @@ export default scss`
 }
 
 .c-admin {
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -31,7 +31,7 @@ export default scss`
 
   color: var(--tfl-color-on-bg-fill);
   // font-family: var(--tfl-font-family-heading-sans);
-  font-family: Poppins;
+  font-family: Inter;
 
   --tfl-color-alt-bg-fill: #181818;
   --tfl-color-secondary-bg-border: rgba(22, 31, 44, 1);
@@ -184,5 +184,4 @@ export default scss`
     outline: var(--tfl-color-surface-fill-disabled) solid 1px;
   }
 }
-`
-
+`;
