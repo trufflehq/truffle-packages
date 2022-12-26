@@ -71,6 +71,7 @@ html, body {
       cursor: pointer;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       background-color: var(--mm-gradient);
+      color: #000000; // color on gradient, don't have a var atm
   
       animation: claim-shake 2s infinite cubic-bezier(.36,.07,.19,.97) both;
       backface-visibility: hidden;

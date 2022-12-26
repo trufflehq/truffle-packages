@@ -5,9 +5,9 @@ export default scss`
   position: relative;
   display: flex;
   flex-direction: column;
-  background: #181818;
+  background: #000000;
   font-family: var(--mm-font-family);
-  padding: 8px;
+  padding: 8px 16px 12px 16px;
   border-top: 1px solid var(--mm-color-bg-secondary);
   --error-red: #ED6565;
 
@@ -19,7 +19,7 @@ export default scss`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 8px;
+    margin-top: 8px;
     color: var(--mm-color-text-demphasized);
     font-size: 12px;
     font-weight: 400;
@@ -34,7 +34,7 @@ export default scss`
   > .actions { 
     display: flex;
     justify-content: space-between;
-    padding: 8px 16px;
+    margin-top: 8px;
 
     > .controls {
       display: flex;
@@ -48,7 +48,6 @@ export default scss`
       flex: 1;
       justify-content: flex-end;
       gap: 12px;
-
 
       > .char-count {
         font-size: 13px;
@@ -65,6 +64,7 @@ export default scss`
       > .icon {
         cursor: pointer;
         padding: 8px;
+        margin: -8px; // offset the extra padding
         border-radius: 50%;
         box-sizing: border-box;
         border: 2px solid transparent;
@@ -96,7 +96,4 @@ export default scss`
       }
     }
   }
-}
-
-
-`
+}`;

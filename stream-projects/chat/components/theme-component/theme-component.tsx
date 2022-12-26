@@ -4,13 +4,14 @@ const SECONDARY_FONT_FAMILY = "Roboto";
 
 // FIXME - clean this up to be a chat specific stylesheet that devs can customize
 function ThemeComponent({
-  colorBgPrimary = "#050D13",
+  colorBgPrimary = "#000000",
   colorBgSecondary = "#1F1F1F",
   colorBgTertiary = "#292929",
   colorBgOverlay = "rgba(0, 0, 0, 0.4)",
   colorPrimary = "#71DBDB",
   colorSecondary = "#FF9DC6",
-  gradient = "linear-gradient(281.86deg, #71DBDB 2.63%, #ADACDD 50.48%, #FF9DC6 94.5%)",
+  gradient =
+    "linear-gradient(281.86deg, #71DBDB 2.63%, #ADACDD 50.48%, #FF9DC6 94.5%)",
   colorError = "#EE7171",
   colorPositive = "#60CC8C",
   colorOpt1 = "#5C9EDC",

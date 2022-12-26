@@ -26,4 +26,4 @@ export default scss`
     vertical-align: middle;
   }
 }
-`
+`;
