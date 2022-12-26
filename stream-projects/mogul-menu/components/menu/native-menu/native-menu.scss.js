@@ -39,7 +39,7 @@ body {
 
   &.is-collapsed {
     > .menu {
-        > .portrait-collapsed-button {
+      > .portrait-collapsed-button {
         transition: clip-path $clip-path-transition cubic-bezier(.4, .71, .18, .99);
         display: flex;
         justify-content: space-evenly;
@@ -59,6 +59,9 @@ body {
         line-height: 24px;
 
         > .extension-icon {
+          // in ios safari click events seem to stop propagating at the web component level vs going up to other
+          // web components / root (different behavior from every other browser including mac safari)
+          pointer-events: none;
           clip-path: inset(0 0 0 0 round 50%);  
         }
 
@@ -79,6 +82,12 @@ body {
         border: 2px solid rgba(255, 255, 255, 0.36);
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
+
+        > .icon {
+          // in ios safari click events seem to stop propagating at the web component level vs going up to other
+          // web components / root (different behavior from every other browser including mac safari)
+          pointer-events: none;
+        }
       }
 
       &.landscape {
@@ -116,22 +125,18 @@ body {
       }
 
       > .collapse {
-        display: flex;
-        justify-content: flex-end;
-        padding-bottom: 4px;
+        align-self: flex-end;
+        border-radius: 50%;
+        border: 2px solid var(--mm-color-primary);
+        padding: 4px;
+        width: 20px;
+        height: 20px;
+        margin-bottom: 4px;
 
         > .icon {
           // in ios safari click events seem to stop propagating at the web component level vs going up to other
           // web components / root (different behavior from every other browser including mac safari)
           pointer-events: none;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-radius: 50%;
-          border: 2px solid var(--mm-color-primary);
-          padding: 4px;
-          width: 20px;
-          height: 20px;
         }
       }
 

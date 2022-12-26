@@ -121,10 +121,12 @@ export default function NativeMenu(props: MogulMenuProps) {
 function LandscapeCollapsedButton({ onOpen }: { onOpen: () => void }) {
   return (
     <div className="landscape-collapsed-button" onClick={onOpen}>
-      <Icon
-        icon="chevron-left"
-        size="32px"
-      />
+      <div className="icon">
+        <Icon
+          icon="chevron-left"
+          size="32px"
+        />
+      </div>
     </div>
   );
 }
@@ -163,12 +165,11 @@ function ExpandedMenu(props: MogulMenuProps) {
     <div className={`inner ${classKebab({ isCollapsed })}`}>
       <MenuLoading />
       {orientation === "landscape" && (
-        <div className="collapse">
+        <div className="collapse" onClick={onCollapse}>
           <div className="icon">
             <Icon
               icon="close"
               size="20px"
-              onclick={onCollapse}
             />
           </div>
         </div>
