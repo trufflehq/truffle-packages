@@ -29,9 +29,10 @@ export const YOUTUBE_COLLAPSED_LANDSCAPE_MENU_STYLES = {
 
 export const YOUTUBE_EXPANDED_PORTRAIT_MENU_STYLES = {
   ...BASE_MENU_STYLES,
-  height: `calc(100vh - 56.25vw - ${YOUTUBE_HEADER_HEIGHT_PX}px)`,
+  height: `calc(100vh - 56.25vw - ${YOUTUBE_HEADER_HEIGHT_PX}px + 1px)`, // add 1px to be safe if there's any rounding going on
   position: "fixed",
-  top: `calc(${YOUTUBE_HEADER_HEIGHT_PX}px + 100vw * .5625)`,
+  top: "auto",
+  bottom: "0",
   // i can't find where, but somewhere "margin-top: 4px" gets added. this prevents
   "margin-top": "0",
 };

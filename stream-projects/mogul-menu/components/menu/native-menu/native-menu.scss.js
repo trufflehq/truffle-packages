@@ -107,7 +107,6 @@ body {
     transition: clip-path $clip-path-transition cubic-bezier(.4, .71, .18, .99);
     width: 100%;
     height: 100%;
-    border-radius: 2px;
     box-sizing: border-box;
     background: var(--mm-color-bg-primary);
     color: var(--mm-color-text-bg-primary);
