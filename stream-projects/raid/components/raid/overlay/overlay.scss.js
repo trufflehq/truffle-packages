@@ -10,7 +10,7 @@ export default scss`
   display: flex;
   flex-direction: column;
   color: #ffffff;
-  font-family: 'Poppins';
+  font-family: 'Inter';
 
   > .iframe-container {
     height: 50vh;

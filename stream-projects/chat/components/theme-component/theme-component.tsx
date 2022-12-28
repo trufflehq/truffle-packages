@@ -1,5 +1,5 @@
 import { React, useGoogleFontLoader } from "../../deps.ts";
-const DEFAULT_FONT_FAMILY = "Poppins";
+const DEFAULT_FONT_FAMILY = "Inter";
 const SECONDARY_FONT_FAMILY = "Roboto";
 
 // FIXME - clean this up to be a chat specific stylesheet that devs can customize
