@@ -11,7 +11,7 @@ export default scss`
   cursor: pointer;
   padding: 8px 16px;
   transition: all linear 50ms;
-  font-family: var(--mm-font-family);
+  font-family: Inter;
   font-weight: var(--font-weight);
   font-size: var(--font-size);
   outline: 2px solid transparent;
