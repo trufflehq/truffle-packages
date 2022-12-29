@@ -17,7 +17,6 @@ import stylesheet from "./chat-input.scss.js";
 import EmoteTypeAhead from "../emote-typeahead/emote-typeahead.tsx";
 import Input from "../input/input.tsx";
 
-const SEND_MESSAGE_ICON_SRC = "https://cdn.bio/assets/images/features/browser_extension/send.svg";
 const DEFAULT_NUM_SEARCH_RESULTS = 10;
 const DEFAULT_MAX_MESSAGE_LENGTH = 200;
 
@@ -34,7 +33,11 @@ export default function ChatInput(
   }: {
     emoteMap$: ObservableComputed<Map<string, Emote>>;
     sendMessage: (
-      input: { text: string; emoteMap: Map<string, Emote>; chatInput$: Observable<string> },
+      input: {
+        text: string;
+        emoteMap: Map<string, Emote>;
+        chatInput$: Observable<string>;
+      },
     ) => void;
     numSearchResults?: number;
     maxMessageLength?: number;
@@ -47,8 +50,12 @@ export default function ChatInput(
   useStyleSheet(stylesheet);
   const chatInput$ = useObservable("");
   const numChars$ = useComputed(() => chatInput$.get().length);
-  const isMessageLengthExceeded$ = useComputed(() => numChars$.get() > maxMessageLength);
-  const isDisabled$ = useComputed(() => isDisabled || isMessageLengthExceeded$.get());
+  const isMessageLengthExceeded$ = useComputed(() =>
+    numChars$.get() > maxMessageLength
+  );
+  const isDisabled$ = useComputed(() =>
+    isDisabled || isMessageLengthExceeded$.get()
+  );
 
   const text = useSelector(() => chatInput$.get());
   const emoteMap = useSelector(() => emoteMap$.get());
@@ -83,7 +90,9 @@ export default function ChatInput(
   };
 
   const numChars = useSelector(() => numChars$.get());
-  const isMessageLengthExceeded = useSelector(() => isMessageLengthExceeded$.get());
+  const isMessageLengthExceeded = useSelector(() =>
+    isMessageLengthExceeded$.get()
+  );
   return (
     <div className="chat-input">
       {shouldShowEmoteTypeAhead && !isMessageLengthExceeded
@@ -105,33 +114,38 @@ export default function ChatInput(
           color: "#fff",
         }}
       />
-      {
-        statusMessage ? (
+      {statusMessage
+        ? (
           <div className="status-message">
             {statusMessage}
           </div>
-        ) : null
-      }
+        )
+        : null}
       <div className="actions">
-      {inputControls ? <div className="controls">
-        {inputControls}
-      </div> : null}
+        {inputControls
+          ? (
+            <div className="controls">
+              {inputControls}
+            </div>
+          )
+          : null}
         <div className="send">
-          <div className={`char-count ${classKebab({ isMessageLengthExceeded })}`}>
+          <div
+            className={`char-count ${classKebab({ isMessageLengthExceeded })}`}
+          >
             {numChars}/{maxMessageLength}
           </div>
           <div
-            className={`icon ${classKebab({ isMessageLengthExceeded, isDisabled })}`}
+            className={`icon ${
+              classKebab({ isMessageLengthExceeded, isDisabled })
+            }`}
             tabIndex={0}
             onClick={onClick}
-            title={isMessageLengthExceeded ? "Message is too long" : "Send message"}
+            title={isMessageLengthExceeded
+              ? "Message is too long"
+              : "Send message"}
           >
-            <ImageByAspectRatio
-              imageUrl={SEND_MESSAGE_ICON_SRC}
-              aspectRatio={1}
-              widthPx={24}
-              height={24}
-            />
+            <div className="send-icon" />
           </div>
         </div>
       </div>

@@ -67,31 +67,22 @@ export default scss`
         margin: -8px; // offset the extra padding
         border-radius: 50%;
         box-sizing: border-box;
-        border: 2px solid transparent;
         outline: none;
+
+        > .send-icon {
+          // in ios safari click events seem to stop propagating at the web component level vs going up to other
+          // web components / root (different behavior from every other browser including mac safari)
+          pointer-events: none;
+          background: url(https://cdn.bio/assets/images/features/browser_extension/send.svg);
+          background-size: 100%;
+          width: 24px;
+          height: 24px;
+        }
 
         &.is-disabled {
           filter: grayscale(80%);
           pointer-events: disabled;
-          border: 2px solid transparent;
           cursor: not-allowed;
-
-          &:hover {
-            border: 2px solid transparent;
-          }
-        }
-
-        &:hover {
-          // border: 2px solid var(--mm-color-text-bg-primary);
-          border: 2px solid rgba(188, 188, 188, 1);
-        }
-
-        &:focus {
-          border: 2px solid rgba(188, 188, 188, 1);
-        }
-
-        &:active {
-          border: 2px solid var(--mm-color-primary);
         }
       }
     }
