@@ -37,181 +37,67 @@ export const YOUTUBE_EXPANDED_PORTRAIT_MENU_STYLES = {
   "margin-top": "0",
 };
 
+const YOUTUBE_EXPANDED_LANDSCAPE_MENU_WIDTH = "min(43%, 350px)";
+
 export const YOUTUBE_EXPANDED_LANDSCAPE_MENU_STYLES = {
   ...BASE_MENU_STYLES,
-  width: "43%",
+  width: YOUTUBE_EXPANDED_LANDSCAPE_MENU_WIDTH,
   position: "fixed",
   right: "0",
   left: "unset",
 };
 
 export const YOUTUBE_PORTRAIT_STYLESHEET = `
-.truffle-portrait .player-container .video-stream  {
-  top: 0 !important;
-  height: 100% !important;
-  width: 100% !important;
-  bottom: 0 !important;
+.truffle-portrait-open {
+  overflow: hidden; /* no scrolling on body when portrait is open */
 }
 
 .truffle-portrait ytm-mobile-topbar-renderer .mobile-topbar-header-content .topbar-menu-button-avatar-button {
-  display: none !important;
-}
-
-.truffle-portrait ytm-promoted-sparkles-web-renderer {
-  display: none !important;
-}
-
-.truffle-portrait .html5-video-container {
-  height: 100% !important;
-  width: 100% !important;
-}
-
-.truffle-portrait-closed ytm-app {
-  height: 100vh;
-}
-
-.truffle-portrait-closed ytm-app .page-container {
-  height: 100%;
-}
-
-.truffle-portrait-closed ytm-watch {
-  display: flex;
-  flex-direction: column;
-  height: calc(100% - ${YOUTUBE_HEADER_HEIGHT_PX}px); // 48px is the height of the banner
-  overflow: hidden;
-}
-
-
-.truffle-portrait-closed ytm-player-microformat-renderer {
-  display: none; // hide the ad banner
-}
-
-
-.truffle-portrait-closed ytm-single-column-watch-next-results-renderer {
-  flex: 1;
-}
-`;
-
-export const YOUTUBE_LANDSCAPE_RIGHT_COLUMN_STYLESHEET = `
-.truffle-landscape-open ytm-app {
-  height: 100vh;
-  max-height: -webkit-fill-available;
-  overflow: auto;
-}
-
-.truffle-landscape ytm-promoted-sparkles-web-renderer {
-  display: none !important;
-}
-
-.truffle-landscape ytm-app ytm-mobile-topbar-renderer {
-  display: none;
-}
-
-.truffle-landscape #player-thumbnail-overlay {
-  display: none;
-}
-
-.truffle-landscape ytm-app ytm-watch {
-  display: flex !important;
-}
-
-.truffle-landscape-open ytm-app .related-chips-slot-wrapper {
-  display: none;
-}
-
-.truffle-landscape-open ytm-app ytm-item-section-renderer {
-  border-bottom: none;
-}
-
-.truffle-landscape-open ytm-app ytm-single-column-watch-next-results-renderer {
-  max-width: 43%;
-}
-
-.truffle-landscape-collapsed ytm-app ytm-single-column-watch-next-results-renderer {
-  max-width: 5%;
-  position: absolute;
-  right: 0;
-}
-`;
-
-export const YOUTUBE_LANDSCAPE_VIDEO_PLAYER_STYLESHEET = `
-.truffle-landscape .player-container {
-  top: 0 !important;
-  bottom: 0 !important;
-}
-
-/* sets the video player width */
-.truffle-landscape .player-container #player {
-  height: 100vh;
-  max-height: -webkit-fill-available;
-  overflow: hidden !important;
-  bottom: 0;
-  padding-bottom: 0 !important;
-}
-
-.truffle-landscape-open .player-container #player {
-  max-width: 57% !important;
-}
-
-.truffle-landscape-collapsed .player-container #player {
-  max-width: 100% !important;
-}
-
-.truffle-landscape-open .html5-video-player {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* wrapper around the video player */
-.truffle-landscape-open .html5-video-container {
-  height: 0px;
-  width: 100% !important;
-  padding-top: 56.25%; /* 16:9 aspect ratio */
-}
-
-.truffle-landscape-collapsed .html5-video-container {
-  height: 0px;
-  width: 100% !important;
-  padding-top: 56.25%; /* 16:9 aspect ratio */
-}
-
-
-/* video el styles */
-.truffle-landscape-open .player-container .video-stream {
-  left: 0 !important;
-  top: 0px !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-.truffle-landscape-collapsed .player-container .video-stream {
-  left: 0 !important;
-  top: 0px !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* control overlay */
-.truffle-landscape-open #player-control-overlay {
-  max-width: 57% !important;
-  height: 85% !important;
-  height: 100% !important;
-}
-
-`;
+  display: none !important; /* hide search icon */
+}`;
 
 export const YOUTUBE_LANDSCAPE_STYLESHEET = `
-/* landscape styles */
 .truffle-landscape ytm-app {
-  padding-top: 0 !important;
+  display: none !important; /* get rid of any yt ui other than the video container */
 }
 
-/* video player styles */
-${YOUTUBE_LANDSCAPE_VIDEO_PLAYER_STYLESHEET}
+.truffle-landscape .player-container {
+  top: 0 !important; /* move above youtube header */
+  bottom: 0 !important; /* full height */
+  right: 0 !important; /* on tablet landscape, yt tries to put stuff here */
+}
 
-/* right side styles */
-${YOUTUBE_LANDSCAPE_RIGHT_COLUMN_STYLESHEET}
+.truffle-landscape-open .player-container {
+  right: ${YOUTUBE_EXPANDED_LANDSCAPE_MENU_WIDTH} !important; /* space for our menu */
+}
+
+.truffle-landscape #player {
+  /* override the padding-bottom aspect ratio yt uses */
+  height: 100%;
+  max-height: -webkit-fill-available;
+  padding-bottom: 0;
+}
+
+.html5-video-container {
+  /* yt doesn't have this fill width/height since they rely on js-generated px sizes for <video> */
+  /* js-generated doesn't work for us since we add the menu after those sizes are set */
+  width: 100%;
+  height: 100%;
+  display: flex; /* vertically center */
+  align-items: center;
+}
+
+.video-stream {
+  /* yt uses static js-generated px sizes here. we override those with something more flexible */
+  width: 100% !important;
+  height: auto !important;
+  left: 0 !important;
+  top: 0 !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+
+  position: static !important; /* prev absolute. need static to center */
+}
 `;
 
 export const YOUTUBE_MENU_ORIENTATION_STYLESHEET = `
