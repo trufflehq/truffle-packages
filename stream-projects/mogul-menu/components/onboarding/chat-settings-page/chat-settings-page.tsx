@@ -37,7 +37,14 @@ export default function ChatSettingsPage(
   }, [orgUser]);
 
   const onClick = async () => {
-    await saveOrgUserSettings(orgUser, username$.get(), nameColor);
+    try {
+      await saveOrgUserSettings(orgUser, username$.get(), nameColor);
+    } catch {
+      // TODO: sometimes (race condition?) one of orgUser / orgUser.user is undef
+      // for now if that happens, we just won't save their change during onboard
+      // vs completely failing
+      console.error("saving settings failed", orgUser, username$.get());
+    }
     onContinue?.();
   };
 
