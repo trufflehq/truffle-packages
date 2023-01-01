@@ -30,6 +30,11 @@ const OAUTH_ERROR_MESSAGE: Record<string, { title: string; message: string }> =
       message:
         "You must grant Truffle access to read your YouTube account to continue.",
     },
+    "missing_channel": {
+      title: "Access error",
+      message:
+        "This Google account does not have a YouTube channel associated with it.",
+    },
     undefined: {
       title: "Error",
       message: "Error during login",
