@@ -10,7 +10,7 @@ import { OrgUserConnections } from "../../../types/mod.ts";
 import { ORG_USER_CONNECTIONS_QUERY, USER_INFO_QUERY } from "./gql.ts";
 
 export function useUserInfo() {
-  const [{ data: userInfoData }, reexecuteUserInfoQuery] = useQuery({
+  const [{ data: userInfoData, error }, reexecuteUserInfoQuery] = useQuery({
     query: USER_INFO_QUERY,
     requestPolicy: "network-only",
     context: useMemo(
@@ -28,7 +28,7 @@ export function useUserInfo() {
     ),
   });
 
-  return { userInfoData, reexecuteUserInfoQuery };
+  return { userInfoData, reexecuteUserInfoQuery, error };
 }
 
 export function useOrgUserConnectionsQuery() {

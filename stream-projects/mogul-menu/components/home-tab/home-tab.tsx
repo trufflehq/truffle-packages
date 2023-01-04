@@ -1,11 +1,10 @@
 import {
   abbreviateNumber,
-  gql,
+  formatNumber,
   Icon,
   ImageByAspectRatio,
   React,
   useStyleSheet,
-  useSubscription,
 } from "../../deps.ts";
 
 import styleSheet from "./home-tab.scss.js";
@@ -30,11 +29,21 @@ import CPSpentTile from "../cp-spent-tile/cp-spent-tile.tsx";
 
 export default function HomeTab() {
   useStyleSheet(styleSheet);
-  const { userInfoData } = useUserInfo();
+  const { userInfoData, error: userInfoError } = useUserInfo();
   const orgUserWithRoles$ = useOrgUserWithRoles$();
   const name = userInfoData?.orgUser?.name;
   const activePowerups = userInfoData?.activePowerupConnection?.nodes;
-  const channelPoints = userInfoData?.channelPoints?.orgUserCounter;
+
+  let fullChannelPointsStr, channelPointsStr;
+  if (userInfoData?.channelPoints?.orgUserCounter?.count != null) {
+    fullChannelPointsStr = formatNumber(
+      userInfoData.channelPoints.orgUserCounter.count,
+    );
+    channelPointsStr = abbreviateNumber(
+      userInfoData.channelPoints.orgUserCounter.count,
+      2,
+    );
+  }
 
   const xp = userInfoData?.seasonPass?.xp?.count;
   const hasChannelPoints = true;
@@ -75,8 +84,11 @@ export default function HomeTab() {
                       height={20}
                     />
                   </div>
-                  <div className="amount">
-                    {abbreviateNumber(channelPoints?.count || 0, 2)}
+                  <div
+                    className="amount"
+                    title={`${fullChannelPointsStr ?? userInfoError}`}
+                  >
+                    {channelPointsStr ?? "..."}
                   </div>
                 </div>
               )}
