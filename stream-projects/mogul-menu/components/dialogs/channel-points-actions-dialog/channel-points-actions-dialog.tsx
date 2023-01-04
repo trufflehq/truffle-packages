@@ -49,8 +49,8 @@ export default function ChannelPointsActionsDialog() {
   const [{ data: economyActionConnectionData }] = useQuery({
     query: ECONOMY_ACTIONS_QUERY,
   });
-  const economyActionConnection =
-    economyActionConnectionData.economyActionConnection;
+  const economyActionConnection = economyActionConnectionData
+    ?.economyActionConnection;
 
   const channelPointsEconomyActions = _.reverse(
     economyActionConnection?.nodes?.filter((economyAction) =>
