@@ -1,3 +1,6 @@
+// these utils are great - we may want to move into a separate package if we find ourselves using often.
+// @truffle/live-embed imports these
+
 export function isYoutubeVideo(url: string) {
   const regex =
     /(?:[?&]v=|\/embed\/|\/1\/|\/v\/|(https?:\/\/)?(?:www\.)?youtu\.be\/)([^&\n?#]+)/;
@@ -50,15 +53,17 @@ export function getTwitchParents() {
   return domains.reduce(
     (acc, domain, idx) =>
       `${acc}parent=${domain}${idx === domains.length - 1 ? "" : "&"}`,
-    ""
+    "",
   );
 }
 
 export function previewSrc(url: string) {
   if (isYoutubeChannel(url)) {
-    return `https://www.youtube.com/embed/live_stream?channel=${extractYoutubeChannelId(
-      url
-    )}`;
+    return `https://www.youtube.com/embed/live_stream?channel=${
+      extractYoutubeChannelId(
+        url,
+      )
+    }`;
   }
 
   if (isYoutubeVideo(url)) {
@@ -66,15 +71,19 @@ export function previewSrc(url: string) {
   }
 
   if (isTwitchChannel(url)) {
-    return `https://player.twitch.tv/?channel=${extractTwitchChannelName(
-      url
-    )}&${getTwitchParents()}`;
+    return `https://player.twitch.tv/?channel=${
+      extractTwitchChannelName(
+        url,
+      )
+    }&${getTwitchParents()}`;
   }
 
   if (isTwitchVideo(url)) {
-    return `https://player.twitch.tv/?video=${extractTwitchVideoId(
-      url
-    )}&${getTwitchParents()}`;
+    return `https://player.twitch.tv/?video=${
+      extractTwitchVideoId(
+        url,
+      )
+    }&${getTwitchParents()}`;
   }
 
   return null;
