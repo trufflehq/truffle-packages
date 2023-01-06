@@ -156,7 +156,8 @@ function EarnCollectibles() {
   return (
     <div className="c-earn-collectibles">
       <div className="heading mm-text-header-caps">Start earning</div>
-      <WayToEarn
+      {
+        /* <WayToEarn
         icon={<XPIcon />}
         description="Earn XP to unlock rewards in the Battle pass"
         button={
@@ -169,7 +170,8 @@ function EarnCollectibles() {
             How do I earn XP?
           </LinkButton>
         }
-      />
+      /> */
+      }
       <WayToEarn
         icon={<ChannelPointsIcon />}
         description="Earn channel points to buy items in the shop"
