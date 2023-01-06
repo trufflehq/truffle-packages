@@ -9,7 +9,6 @@ export function useActivePowerupConnection() {
     reexecuteActivePowerupConnQuery,
   ] = useQuery({
     query: ACTIVE_POWERUPS_QUERY,
-    requestPolicy: "network-only",
     context: useMemo(
       () => ({
         additionalTypenames: [

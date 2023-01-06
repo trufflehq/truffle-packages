@@ -19,11 +19,12 @@ export const USER_INFO_QUERY = gql`
         count
       }
     }
-    seasonPass {
-      xp: orgUserCounter {
-        count
-      }
-    }
+    # (if re-enabling search for "seasonpassdisabled")
+    # seasonPass {
+    #   xp: orgUserCounter {
+    #     count
+    #   }
+    # }
     activePowerupConnection {
       nodes {
         id

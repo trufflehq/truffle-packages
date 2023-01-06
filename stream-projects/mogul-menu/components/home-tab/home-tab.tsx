@@ -23,7 +23,7 @@ import {
 } from "../../shared/mod.ts";
 import BrowserExtensionNotificationDialog from "../dialogs/notification-dialog/notification-dialog.tsx";
 import { useDialog } from "../base/dialog-container/dialog-service.ts";
-import BattlepassLeaderboardTile from "../battlepass-leaderboard-tile/battlepass-leaderboard-tile.tsx";
+// import BattlepassLeaderboardTile from "../battlepass-leaderboard-tile/battlepass-leaderboard-tile.tsx";
 import IsLive from "../is-live/is-live.tsx";
 import CPSpentTile from "../cp-spent-tile/cp-spent-tile.tsx";
 
@@ -148,7 +148,12 @@ export default function HomeTab() {
             </a>
           )
           : ""}
-        <BattlepassLeaderboardTile orgUserWithRoles$={orgUserWithRoles$} />
+        {
+          /*
+          (if re-enabling search for "seasonpassdisabled")
+          <BattlepassLeaderboardTile orgUserWithRoles$={orgUserWithRoles$} />
+        */
+        }
         <PredictionTile orgUserWithRoles$={orgUserWithRoles$} />
         <CPSpentTile orgUserWithRoles$={orgUserWithRoles$} />
         <KothTile orgUserWithRoles$={orgUserWithRoles$} />

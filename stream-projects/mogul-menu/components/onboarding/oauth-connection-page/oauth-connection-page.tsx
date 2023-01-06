@@ -84,9 +84,9 @@ function OAuthButton(
   // and call onLoggedIn when a user logs in using a 3rd party connection
   // and the user's truffle access token is returned.
   // only necessary because jumper doesn't work with window.open atm
-  useHandleTruffleOAuth((oauthResponse: OAuthResponse) => {
+  useHandleTruffleOAuth(async (oauthResponse: OAuthResponse) => {
     unsubscribe();
-    setAccessToken(oauthResponse.truffleAccessToken);
+    await setAccessToken(oauthResponse.truffleAccessToken);
     onLoggedIn();
   });
   const context = globalContext.getStore();

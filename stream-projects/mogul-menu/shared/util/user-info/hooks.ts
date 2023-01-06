@@ -12,7 +12,6 @@ import { ORG_USER_CONNECTIONS_QUERY, USER_INFO_QUERY } from "./gql.ts";
 export function useUserInfo() {
   const [{ data: userInfoData, error }, reexecuteUserInfoQuery] = useQuery({
     query: USER_INFO_QUERY,
-    requestPolicy: "network-only",
     context: useMemo(
       () => ({
         additionalTypenames: [
@@ -27,6 +26,8 @@ export function useUserInfo() {
       [],
     ),
   });
+
+  console.log("use user info", userInfoData);
 
   return { userInfoData, reexecuteUserInfoQuery, error };
 }

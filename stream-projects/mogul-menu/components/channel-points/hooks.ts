@@ -11,7 +11,6 @@ export function useChannelPoints() {
     reexecuteChannelPointsQuery,
   ] = useQuery({
     query: CHANNEL_POINTS_QUERY,
-    requestPolicy: "network-only",
     context: useMemo(
       () => ({
         additionalTypenames: [

@@ -11,7 +11,6 @@ export function useCollectibleConnection() {
     reexecuteCollectibleConnQuery,
   ] = useQuery({
     query: COLLECTIBLE_GET_ALL_BY_ME_QUERY,
-    requestPolicy: "network-only",
     context: useMemo(
       () => ({
         additionalTypenames: [

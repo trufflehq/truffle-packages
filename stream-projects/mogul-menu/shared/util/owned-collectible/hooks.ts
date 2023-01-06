@@ -18,7 +18,6 @@ export function useOwnedCollectibleConnection() {
     variables: {
       orgId: context?.orgId,
     },
-    requestPolicy: "network-only",
     context: useMemo(
       () => ({
         additionalTypenames: [

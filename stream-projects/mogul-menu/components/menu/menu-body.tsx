@@ -1,4 +1,10 @@
-import { ErrorBoundary, React, useStyleSheet } from "../../deps.ts";
+import {
+  ErrorBoundary,
+  getAccessToken$,
+  React,
+  useSelector,
+  useStyleSheet,
+} from "../../deps.ts";
 import styleSheet from "./menu.scss.js";
 import DraggableMenu from "./draggable-menu/draggable-menu.tsx";
 import NativeMenu from "./native-menu/native-menu.tsx";
@@ -6,10 +12,7 @@ import Tabs from "../tabs/tabs.tsx";
 import TabBar from "../tab-bar/tab-bar.tsx";
 import PageStack from "../page-stack/page-stack.tsx";
 import { SnackBarContainer } from "../snackbar/mod.ts";
-import {
-  useInvalidateAllQueriesListener,
-  useIsNative,
-} from "../../shared/mod.ts";
+import { useIsNative } from "../../shared/mod.ts";
 import ExtensionIcon from "./extension-icon/extension-icon.tsx";
 import { useOnboarding } from "../onboarding/mod.ts";
 import { ActionBannerContainer } from "../action-banner/mod.ts";
@@ -19,9 +22,14 @@ import MenuLoading from "../menu-loading/menu-loading.tsx";
 
 export default function BrowserExtensionMenuBody(props: MogulMenuProps) {
   useStyleSheet(styleSheet);
-  useInvalidateAllQueriesListener();
   useOnboarding();
   const isNative = useIsNative();
+
+  const accessToken$ = getAccessToken$();
+  // HACK: our current method of clearing cache after login (@truffle/api _clearCache)
+  // doesn't force a re-render (https://github.com/urql-graphql/urql/issues/297#issuecomment-1160539288)
+  // so we need to ourselves
+  useSelector(() => accessToken$);
 
   return isNative ? <NativeMenu {...props} /> : <WebMenu {...props} />;
 }

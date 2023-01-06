@@ -94,7 +94,7 @@ export function useCurrentTab() {
 export function useDynamicTabs() {
   const [tabs, setTabs] = useState<TabDefinition[]>();
   const hasSetTabsRef = useRef(false);
-  const seasonPassRes = useSeasonPassData();
+  const seasonPassRes = null; // # (if re-enabling search for "seasonpassdisabled")
   const isNative = useIsNative();
   useEffect(() => {
     const hasSetTabs = hasSetTabsRef.current;

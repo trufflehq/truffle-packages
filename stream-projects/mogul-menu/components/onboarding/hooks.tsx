@@ -11,7 +11,11 @@ import {
 import { getOrgId } from "https://tfl.dev/@truffle/utils@~0.0.3/site/site.ts";
 import { MeUserWithConnectionConnection } from "../../types/mod.ts";
 import { usePageStack } from "../page-stack/mod.ts";
-import { isGoogleChrome, useIsNative } from "../../shared/mod.ts";
+import {
+  invalidateExtensionUser,
+  isGoogleChrome,
+  useIsNative,
+} from "../../shared/mod.ts";
 import { BasePage, ContinueAsPage, OAuthConnectionPage } from "./mod.ts";
 import ChatSettingsPage from "./chat-settings-page/chat-settings-page.tsx";
 import NotificationTopicPage from "./notification-topic-page/notification-topic-page.tsx";
@@ -61,9 +65,9 @@ export function useOnboarding() {
       : "youtube";
 
     // HACK: on staging we want to be able to login w/o having to use oauth
-    const isNonProd =
-      window?._truffleInitialData?.clientConfig?.IS_STAGING_ENV ||
-      window?._truffleInitialData?.clientConfig?.IS_DEV_ENV;
+    const isNonProd = false;
+    // window?._truffleInitialData?.clientConfig?.IS_STAGING_ENV ||
+    // window?._truffleInitialData?.clientConfig?.IS_DEV_ENV;
     const isOAuthDesired = isNonProd ? extensionInfo?.pageInfo : true;
 
     const hasConnectionForThisOrg = hasConnectionByOrgId(
@@ -104,6 +108,11 @@ export function useOnLoggedIn() {
   const isNative = useIsNative();
 
   return () => {
+    // @truffle/api will clear the urql cache to refetch everything when a user is logged in,
+    // but we have a bunch of { requestPolicy: "network-only" } requests
+    // that need to be manually invalidated through this (which we should prob fix):
+    invalidateExtensionUser();
+
     popPage();
     pushPage(
       <ChatSettingsPage
