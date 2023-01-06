@@ -28,8 +28,8 @@ export default function BrowserExtensionMenuBody(props: MogulMenuProps) {
   const accessToken$ = getAccessToken$();
   // HACK: our current method of clearing cache after login (@truffle/api _clearCache)
   // doesn't force a re-render (https://github.com/urql-graphql/urql/issues/297#issuecomment-1160539288)
-  // so we need to ourselves
-  useSelector(() => accessToken$);
+  // so we need to ourselves. accessToken$ won't work either since that's set before jumper calls complete
+  useSelector(() => accessToken$.get());
 
   return isNative ? <NativeMenu {...props} /> : <WebMenu {...props} />;
 }

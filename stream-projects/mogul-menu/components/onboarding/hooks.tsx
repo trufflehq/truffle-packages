@@ -108,11 +108,6 @@ export function useOnLoggedIn() {
   const isNative = useIsNative();
 
   return () => {
-    // @truffle/api will clear the urql cache to refetch everything when a user is logged in,
-    // but we have a bunch of { requestPolicy: "network-only" } requests
-    // that need to be manually invalidated through this (which we should prob fix):
-    invalidateExtensionUser();
-
     popPage();
     pushPage(
       <ChatSettingsPage
