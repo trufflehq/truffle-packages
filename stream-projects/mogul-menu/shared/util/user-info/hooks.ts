@@ -27,8 +27,6 @@ export function useUserInfo() {
     ),
   });
 
-  console.log("use user info", userInfoData);
-
   return { userInfoData, reexecuteUserInfoQuery, error };
 }
 

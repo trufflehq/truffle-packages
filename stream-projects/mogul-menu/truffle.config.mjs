@@ -1,6 +1,6 @@
 export default {
   name: "@truffle/mogul-menu",
-  version: "3.0.133",
+  version: "3.0.135",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   description: "Menu for channel points, predictions, and activities",
   requestedPermissions: [],
