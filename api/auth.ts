@@ -97,31 +97,37 @@ export function getAccessToken$() {
   return context.accessToken$;
 }
 
-export function setAccessToken(
+export async function setAccessToken(
   accessToken: string,
   { orgId }: { orgId?: string } = {},
-) {
+): Promise<void> {
   if (accessToken == null) {
-    return console.warn("Attempting to set nullish accessToken");
+    console.warn("Attempting to set nullish accessToken");
+    return;
   }
 
   setAccessTokenCookie(accessToken);
-  _clearCache();
   // set accessToken in highest possible storage we have, and notify anyone
   // listening for accessToken changes
-  jumper.call("user.setAccessToken", {
-    // we'll eventually have different accessTokens per orgId
-    orgId: orgId || getOrgId(),
-    accessToken,
-  });
-
-  // FIXME: legacy, rm 4/2023 (extension doesn't have user.setAccessToken setup properly in <=3.3.12)
-  jumper.call("storage.set", {
-    key: TRUFFLE_ACCESS_TOKEN_KEY,
-    value: accessToken,
-  });
-  jumper.call("comms.postMessage", "user.accessTokenUpdated");
-  // end legacy
+  try {
+    await Promise.all([
+      jumper.call("user.setAccessToken", {
+        // we'll eventually have different accessTokens per orgId
+        orgId: orgId || getOrgId(),
+        accessToken,
+      }),
+      // FIXME: legacy, rm 4/2023 (extension doesn't have user.setAccessToken setup properly in <=3.3.12)
+      jumper.call("storage.set", {
+        key: TRUFFLE_ACCESS_TOKEN_KEY,
+        value: accessToken,
+      }),
+      jumper.call("comms.postMessage", "user.accessTokenUpdated"),
+      // end legacy
+    ]);
+  } catch {
+    // ignore
+  }
+  _clearCache();
 }
 
 export function setAccessTokenCookie(accessToken: string) {

@@ -52,6 +52,9 @@ export function usePollingQuery<V = object, D = any>(
 }
 
 // private method for now, potentially don't want to support this forever
+// NOTE: this doesn't trigger components to rerender, so after a render it'll work
+// but they'll have stale data until next render
+// https://github.com/urql-graphql/urql/issues/297
 export function _clearCache() {
   const context = getPackageContext("@truffle/api@0");
   setPackageContext("@truffle/api@0", {
