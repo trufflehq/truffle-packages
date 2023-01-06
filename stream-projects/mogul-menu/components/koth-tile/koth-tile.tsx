@@ -33,7 +33,7 @@ mutation {
 `;
 
 export default function KothTile(
-  { orgUserWithRoles$ }: { orgUserWithRoles$: OrgUserQuerySignal },
+  { orgUser$ }: { orgUser$: OrgUserQuerySignal },
 ) {
   useStyleSheet(styleSheet);
   const { signal$: orgKothConfig$ } = useSubscriptionSignal(
@@ -54,7 +54,7 @@ export default function KothTile(
 
   const hasKothDeletePermission = useSelector(() =>
     hasPermission({
-      orgUser: orgUserWithRoles$.orgUser.get!(),
+      orgUser: orgUser$.orgUser.get!(),
       actions: ["update"],
       filters: {
         orgConfig: { isAll: true, rank: 0 },

@@ -14,7 +14,7 @@ import Button from "../../base/button/button.tsx";
 import DeleteDialog from "../../delete-dialog/delete-dialog.tsx";
 import AlertPreviewPage from "../alert-preview-page/alert-preview-page.tsx";
 import { useDialog } from "../../base/dialog-container/dialog-service.ts";
-import { hasPermission, useOrgUserWithRoles$ } from "../../../shared/mod.ts";
+import { hasPermission, useOrgUser$ } from "../../../shared/mod.ts";
 import { AlertPreviewIframe } from "../create-alert-page/create-alert-page.tsx";
 import stylesheet from "./raid-preview-page.scss.js";
 
@@ -58,11 +58,11 @@ export const RAID_SUBSCRIPTION = gql`
 `;
 
 export default function RaidPreviewPage({ alertId }: { alertId: string }) {
-  const orgUserWithRoles$ = useOrgUserWithRoles$();
+  const { orgUser$ } = useOrgUser$();
 
   const hasAlertPermissions = useSelector(() =>
     hasPermission({
-      orgUser: orgUserWithRoles$.orgUser.get!(),
+      orgUser: orgUser$.orgUser.get!(),
       actions: ["update", "delete"],
       filters: {
         alert: { isAll: true, rank: 0 },

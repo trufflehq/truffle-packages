@@ -9,6 +9,10 @@ export const ACTIVE_POWERUPS_QUERY = gql`
         powerup {
           id
           name
+          slug
+          componentRels {
+            props
+          }
         }
       }
     }

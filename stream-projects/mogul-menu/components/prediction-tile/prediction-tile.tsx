@@ -48,7 +48,7 @@ function useListenForOpenPrediction(showPredictionPage: () => void) {
 }
 
 export default function PredictionTile(
-  { orgUserWithRoles$ }: { orgUserWithRoles$: OrgUserQuerySignal },
+  { orgUser$ }: { orgUser$: OrgUserQuerySignal },
 ) {
   useStyleSheet(styleSheet);
   const { isActive } = useCurrentTab();
@@ -66,7 +66,7 @@ export default function PredictionTile(
 
   const hasPollDeletePermission = useSelector(() =>
     hasPermission({
-      orgUser: orgUserWithRoles$.orgUser.get!(),
+      orgUser: orgUser$.orgUser.get!(),
       actions: ["delete"],
       filters: {
         poll: { isAll: true, rank: 0 },

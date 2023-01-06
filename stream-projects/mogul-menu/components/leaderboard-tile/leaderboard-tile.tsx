@@ -73,14 +73,14 @@ function getTop3(leaderboardCounters: OrgUserCounterConnection) {
 }
 
 interface LeaderboardTileProps {
-  orgUserWithRoles$: OrgUserQuerySignal;
+  orgUser$: OrgUserQuerySignal;
   headerText: string;
   orgUserCounterTypeId: string;
   displayKey: string;
 }
 
 export const LeaderboardTile: React.FC<LeaderboardTileProps> = observer(({
-  orgUserWithRoles$,
+  orgUser$,
   headerText,
   orgUserCounterTypeId,
   displayKey,
@@ -104,7 +104,7 @@ export const LeaderboardTile: React.FC<LeaderboardTileProps> = observer(({
 
   const hasTogglePermission = useSelector(() =>
     hasPermission({
-      orgUser: orgUserWithRoles$.orgUser.get!(),
+      orgUser: orgUser$.orgUser.get!(),
       actions: ["update"],
       filters: {
         keyValue: { isAll: true, rank: 0 },

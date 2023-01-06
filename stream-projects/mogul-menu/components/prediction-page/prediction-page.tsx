@@ -22,7 +22,7 @@ import {
   CRYSTAL_BALL_ICON_VIEWBOX,
   DELETE_POLL_MUTATION,
   hasPermission,
-  useOrgUserWithRoles$,
+  useOrgUser$,
 } from "../../shared/mod.ts";
 import { ChannelPoints, Poll } from "../../types/mod.ts";
 import Prediction from "../prediction/prediction.tsx";
@@ -144,12 +144,12 @@ function PredictionPageBase(
   },
 ) {
   const { channelPoints$ } = usePollingChannelPoints$({});
-  const orgUserWithRoles$ = useOrgUserWithRoles$();
+  const { orgUser$ } = useOrgUser$();
   const { popPage } = usePageStack();
 
   const hasPollPermissions = useSelector(() =>
     hasPermission({
-      orgUser: orgUserWithRoles$.orgUser.get!(),
+      orgUser: orgUser$.orgUser.get!(),
       actions: ["update", "delete"],
       filters: {
         poll: { isAll: true, rank: 0 },

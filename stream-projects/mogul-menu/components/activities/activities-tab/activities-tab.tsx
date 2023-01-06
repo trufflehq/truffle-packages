@@ -11,7 +11,7 @@ import {
   hasPermission,
   isActiveActivity,
   useActivitySubscription$,
-  useOrgUserWithRoles$,
+  useOrgUser$,
 } from "../../../shared/mod.ts";
 import Button from "../../base/button/button.tsx";
 import PollListItem from "../poll-list-item/poll-list-item.tsx";
@@ -59,7 +59,7 @@ export function ActivitiesTabManager<
 >(props: ActivitiesTabManagerProps<ActivityListItemTypes>) {
   useStyleSheet(styleSheet);
 
-  const orgUserWithRoles$ = useOrgUserWithRoles$();
+  const { orgUser$ } = useOrgUser$();
 
   const { pushDialog } = useDialog();
   const activityListItems =
@@ -77,7 +77,7 @@ export function ActivitiesTabManager<
 
   const hasPollPermissions = useSelector(() =>
     hasPermission({
-      orgUser: orgUserWithRoles$.orgUser.get!(),
+      orgUser: orgUser$.orgUser.get!(),
       actions: ["create", "update", "delete"],
       filters: {
         poll: { isAll: true, rank: 0 },
@@ -109,7 +109,7 @@ export function ActivitiesTabManager<
                 activityAlerts={activityAlerts}
                 activityListItems={activityListItems}
                 emptyStateMessage="No live activities"
-                orgUserWithRoles$={orgUserWithRoles$}
+                orgUser$={orgUser$}
               />
             );
           }}
@@ -140,7 +140,7 @@ export function ActivitiesTabManager<
                 activityAlerts={activityAlerts}
                 activityListItems={activityListItems}
                 emptyStateMessage="No past activities"
-                orgUserWithRoles$={orgUserWithRoles$}
+                orgUser$={orgUser$}
               />
             );
           }}
@@ -155,11 +155,11 @@ function ActivityGroup<
   SourceType extends StringKeys<ActivityListItemTypes>,
   ActivityType extends ActivityListItemTypes[SourceType],
 >(
-  { activityAlerts, activityListItems, emptyStateMessage, orgUserWithRoles$ }: {
+  { activityAlerts, activityListItems, emptyStateMessage, orgUser$ }: {
     activityAlerts: ActivityAlert<ActivityType, SourceType>[];
     activityListItems: ListItemMap<ActivityListItemTypes>;
     emptyStateMessage: string;
-    orgUserWithRoles$: ObservableObject<
+    orgUser$: ObservableObject<
       { orgUser: OrgUser } & {
         error: CombinedError | undefined;
       }
@@ -168,7 +168,7 @@ function ActivityGroup<
 ) {
   const hasPermissions = useSelector(() =>
     hasPermission({
-      orgUser: orgUserWithRoles$.orgUser.get!(),
+      orgUser: orgUser$.orgUser.get!(),
       actions: ["create", "update", "delete"],
       filters: {
         poll: { isAll: true, rank: 0 },

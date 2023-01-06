@@ -15,6 +15,12 @@ export interface OrgUser {
   socials: Record<string, unknown>;
   user: User;
   roleConnection: RoleConnection;
+  connectionConnection: {
+    nodes: {
+      id: string;
+      sourceType: ConnectionSourceType;
+    }[];
+  };
 }
 
 export interface OrgUserChatSettings
@@ -22,15 +28,6 @@ export interface OrgUserChatSettings
   keyValue: {
     key: string;
     value: string;
-  };
-}
-
-export interface OrgUserConnections extends Omit<OrgUser, "user"> {
-  connectionConnection: {
-    nodes: {
-      id: string;
-      sourceType: ConnectionSourceType;
-    }[];
   };
 }
 

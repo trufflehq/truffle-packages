@@ -3,7 +3,7 @@ import {
   hasPermission,
   isGoogleChrome,
   useIsNative,
-  useOrgUserWithRoles$,
+  useOrgUser$,
 } from "../../../shared/mod.ts";
 import MenuItem from "../../base/menu-item/menu-item.tsx";
 import { Page, usePageStack } from "../../page-stack/mod.ts";
@@ -14,11 +14,11 @@ import NotificationSettingsPage from "../notification-settings-page/notification
 
 export default function SettingsPage() {
   const { pushPage } = usePageStack();
-  const orgUserWithRoles$ = useOrgUserWithRoles$();
+  const { orgUser$ } = useOrgUser$();
 
   const hasAdminPermissions = useSelector(() =>
     hasPermission({
-      orgUser: orgUserWithRoles$.orgUser.get!(),
+      orgUser: orgUser$.orgUser.get!(),
       actions: ["update"],
       filters: {
         channel: { isAll: true, rank: 0 },

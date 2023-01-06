@@ -13,7 +13,7 @@ const CHANNEL_POINTS_SPENT_LEADERBOARD_DISPLAY_KV_KEY =
   `mogulMenu:cpSpentLeaderboardDisplay`;
 
 export default function CPSpentTile(
-  { orgUserWithRoles$ }: { orgUserWithRoles$: OrgUserQuerySignal },
+  { orgUser$ }: { orgUser$: OrgUserQuerySignal },
 ) {
   const [{ data: cpSpentOUCTypeData }] = useQuery({
     query: CP_SPENT_ORG_USER_COUNTER_TYPE_QUERY,
@@ -26,7 +26,7 @@ export default function CPSpentTile(
     <LeaderboardTile
       headerText="Channel Points Spent"
       orgUserCounterTypeId={orgUserCounterTypeId}
-      orgUserWithRoles$={orgUserWithRoles$}
+      orgUser$={orgUser$}
       displayKey={CHANNEL_POINTS_SPENT_LEADERBOARD_DISPLAY_KV_KEY}
     />
   );

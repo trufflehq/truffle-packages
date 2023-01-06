@@ -2,7 +2,7 @@ import { React, useSelector, useStyleSheet } from "../../../deps.ts";
 import {
   DISCO_BALL_PATH,
   hasPermission,
-  useOrgUserWithRoles$,
+  useOrgUser$,
 } from "../../../shared/mod.ts";
 import { ActivityListItemProps } from "../activities-tab/activities-tab.tsx";
 import ActivityListItem from "../activity-list-item/activity-list-item.tsx";
@@ -15,11 +15,11 @@ export default function WatchPartyListItem(
   { activity, createdBy }: ActivityListItemProps<WatchPartyAlert>,
 ) {
   useStyleSheet(stylesheet);
-  const orgUserWithRoles$ = useOrgUserWithRoles$();
+  const { orgUser$ } = useOrgUser$();
 
   const hasAlertPermissions = useSelector(() =>
     hasPermission({
-      orgUser: orgUserWithRoles$.orgUser.get!(),
+      orgUser: orgUser$.orgUser.get!(),
       actions: ["update", "delete"],
       filters: {
         alert: { isAll: true, rank: 0 },

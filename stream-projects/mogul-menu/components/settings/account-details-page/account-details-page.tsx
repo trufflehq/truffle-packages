@@ -7,7 +7,7 @@ import {
   useStyleSheet,
 } from "../../../deps.ts";
 import Button from "../../base/button/button.tsx";
-import { useOrgUserConnectionsQuery } from "../../../shared/mod.ts";
+import { useOrgUser$ } from "../../../shared/mod.ts";
 import { useMenu } from "../../menu/mod.ts";
 import { updateTabState, useTabs } from "../../tabs/mod.ts";
 import { Page, usePageStack } from "../../page-stack/mod.ts";
@@ -21,7 +21,7 @@ import styleSheet from "./account-details-page.scss.js";
 
 export default function AccountDetailsPage() {
   useStyleSheet(styleSheet);
-  const { refetchOrgUserConnections } = useOrgUserConnectionsQuery();
+  const { refetchOrgUser } = useOrgUser$();
 
   const enqueueSnackBar = useSnackBar();
   const { clearPageStack } = usePageStack();
@@ -79,7 +79,7 @@ export default function AccountDetailsPage() {
     // reset the menu state
     dispatch(updateTabState("home", "isActive", true));
     clearPageStack();
-    await refetchOrgUserConnections({ requestPolicy: "network-only" });
+    await refetchOrgUser({ requestPolicy: "network-only" });
   };
 
   return (

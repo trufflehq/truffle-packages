@@ -1,22 +1,37 @@
 import { gql } from "../../../deps.ts";
-import { OrgUserConnections } from "../../../types/mod.ts";
+import { OrgUser } from "../../../types/mod.ts";
 
-export const USER_INFO_QUERY = gql`
-  query UserInfoQuery {
-    me {
-      id
-      name
-    }
+export const ORG_USER_QUERY = gql<{ orgUser: OrgUser }>`
+  query {
     orgUser {
-      name
-    }
-    org {
       id
-      slug
-    }
-    channelPoints: orgUserCounterType(input: { slug: "channel-points" }) {
-      orgUserCounter {
-        count
+      name
+      userId
+      orgId
+      roleIds
+      bio
+      socials
+      connectionConnection(input: { sourceTypes: ["youtube", "twitch"] }) {
+        nodes {
+          id
+          sourceType
+        }
+      }
+      roleConnection {
+        nodes {
+          id
+          name
+          slug
+          rank
+          isSuperAdmin
+          permissionConnection {
+            nodes {
+              filters
+              action
+              value
+            }
+          }
+        }
       }
     }
     # (if re-enabling search for "seasonpassdisabled")
@@ -25,35 +40,5 @@ export const USER_INFO_QUERY = gql`
     #     count
     #   }
     # }
-    activePowerupConnection {
-      nodes {
-        id
-        powerup {
-          id
-          name
-          slug
-          componentRels {
-            props
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const ORG_USER_CONNECTIONS_QUERY = gql<{ orgUser: OrgUserConnections }>`
-  query {
-    orgUser {
-      id
-      name
-      userId
-      orgId
-      connectionConnection(input: { sourceTypes: ["youtube", "twitch"] }) {
-        nodes {
-          id
-          sourceType
-        }
-      }
-    }
   }
 `;

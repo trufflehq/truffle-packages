@@ -7,7 +7,7 @@ import { LeaderboardTile } from "../leaderboard-tile/leaderboard-tile.tsx";
 const BATTLE_PASS_LEADERBOARD_DISPLAY_KV_KEY =
   `mogulMenu:battlepassLeaderboardDisplay`;
 export default function BattlepassLeaderboardTile(
-  { orgUserWithRoles$ }: { orgUserWithRoles$: OrgUserQuerySignal },
+  { orgUser$ }: { orgUser$: OrgUserQuerySignal },
 ) {
   const [{ data: battlepassOUCTypeData }] = useQuery({
     query: BATTLEPASS_ORG_USER_COUNTER_TYPE_QUERY,
@@ -24,7 +24,7 @@ export default function BattlepassLeaderboardTile(
       headerText="Top Battlepass"
       orgUserCounterTypeId={orgUserCounterTypeId}
       displayKey={BATTLE_PASS_LEADERBOARD_DISPLAY_KV_KEY}
-      orgUserWithRoles$={orgUserWithRoles$}
+      orgUser$={orgUser$}
     />
   );
 }

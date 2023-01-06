@@ -12,7 +12,8 @@ import {
   useStyleSheet,
 } from "../../deps.ts";
 import { File, OrgUserCounter, Product } from "../../types/mod.ts";
-import { CHANNEL_POINTS_QUERY, CHANNEL_POINTS_SHOP_QUERY } from "./gql.ts";
+import { CHANNEL_POINTS_SHOP_QUERY } from "./gql.ts";
+import { useChannelPoints } from "../channel-points/hooks.ts";
 import { useDialog } from "../base/dialog-container/dialog-service.ts";
 import ChannelPointsActionsDialog from "../dialogs/channel-points-actions-dialog/channel-points-actions-dialog.tsx";
 import LinkButton from "../base/link-button/link-button.tsx";
@@ -40,10 +41,8 @@ export default function ChannelPointsShop() {
   );
 
   // channel points
-  const [{ data: channelPointsData }] = useQuery({
-    query: CHANNEL_POINTS_QUERY,
-  });
-  const channelPoints: OrgUserCounter = channelPointsData?.channelPoints
+  const { channelPointsData } = useChannelPoints();
+  const channelPoints: OrgUserCounter = channelPointsData?.orgUserCounterType
     ?.orgUserCounter;
 
   const onHowToEarnClick = () => {

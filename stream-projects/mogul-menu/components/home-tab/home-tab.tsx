@@ -4,6 +4,7 @@ import {
   Icon,
   ImageByAspectRatio,
   React,
+  useSelector,
   useStyleSheet,
 } from "../../deps.ts";
 
@@ -17,35 +18,39 @@ import PredictionTile from "../prediction-tile/prediction-tile.tsx";
 import KothTile from "../koth-tile/koth-tile.tsx";
 import SettingsPage from "../settings/settings-page/settings-page.tsx";
 import {
+  useActivePowerupConnection,
   useFirstTimeNotificationBanner,
-  useOrgUserWithRoles$,
-  useUserInfo,
+  useOrgUser$,
 } from "../../shared/mod.ts";
 import BrowserExtensionNotificationDialog from "../dialogs/notification-dialog/notification-dialog.tsx";
 import { useDialog } from "../base/dialog-container/dialog-service.ts";
+import { useChannelPoints } from "../channel-points/hooks.ts";
 // import BattlepassLeaderboardTile from "../battlepass-leaderboard-tile/battlepass-leaderboard-tile.tsx";
 import IsLive from "../is-live/is-live.tsx";
 import CPSpentTile from "../cp-spent-tile/cp-spent-tile.tsx";
 
 export default function HomeTab() {
   useStyleSheet(styleSheet);
-  const { userInfoData, error: userInfoError } = useUserInfo();
-  const orgUserWithRoles$ = useOrgUserWithRoles$();
-  const name = userInfoData?.orgUser?.name;
-  const activePowerups = userInfoData?.activePowerupConnection?.nodes;
+  const { orgUser$ } = useOrgUser$();
+  const { channelPointsData } = useChannelPoints();
+  const { activePowerupConnectionData } = useActivePowerupConnection();
+  const activePowerups =
+    activePowerupConnectionData?.activePowerupConnection?.nodes ?? [];
+  const orgUser = useSelector(orgUser$.get());
+  const name = orgUser?.orgUser?.name;
 
   let fullChannelPointsStr, channelPointsStr;
-  if (userInfoData?.channelPoints?.orgUserCounter?.count != null) {
+  if (channelPointsData?.orgUserCounterType?.orgUserCounter?.count != null) {
     fullChannelPointsStr = formatNumber(
-      userInfoData.channelPoints.orgUserCounter.count,
+      channelPointsData.orgUserCounterType.orgUserCounter.count,
     );
     channelPointsStr = abbreviateNumber(
-      userInfoData.channelPoints.orgUserCounter.count,
+      channelPointsData.orgUserCounterType.orgUserCounter.count,
       2,
     );
   }
 
-  const xp = userInfoData?.seasonPass?.xp?.count;
+  const xp = orgUser?.seasonPass?.xp?.count;
   const hasChannelPoints = true;
   const hasBattlePass = xp !== undefined;
 
@@ -86,7 +91,7 @@ export default function HomeTab() {
                   </div>
                   <div
                     className="amount"
-                    title={`${fullChannelPointsStr ?? userInfoError}`}
+                    title={fullChannelPointsStr}
                   >
                     {channelPointsStr ?? "..."}
                   </div>
@@ -151,12 +156,12 @@ export default function HomeTab() {
         {
           /*
           (if re-enabling search for "seasonpassdisabled")
-          <BattlepassLeaderboardTile orgUserWithRoles$={orgUserWithRoles$} />
+          <BattlepassLeaderboardTile orgUser$={orgUser$} />
         */
         }
-        <PredictionTile orgUserWithRoles$={orgUserWithRoles$} />
-        <CPSpentTile orgUserWithRoles$={orgUserWithRoles$} />
-        <KothTile orgUserWithRoles$={orgUserWithRoles$} />
+        <PredictionTile orgUser$={orgUser$} />
+        <CPSpentTile orgUser$={orgUser$} />
+        <KothTile orgUser$={orgUser$} />
       </div>
     </div>
   );
