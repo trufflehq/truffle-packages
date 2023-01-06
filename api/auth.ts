@@ -106,7 +106,6 @@ export async function setAccessToken(
     return;
   }
 
-  setAccessTokenCookie(accessToken);
   // set accessToken in highest possible storage we have, and notify anyone
   // listening for accessToken changes
   try {
@@ -127,6 +126,7 @@ export async function setAccessToken(
   } catch {
     // ignore
   }
+  setAccessTokenCookie(accessToken);
   _clearCache();
 }
 
