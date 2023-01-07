@@ -1,6 +1,8 @@
 import { MenuActions, MenuState } from "./types.ts";
 import { getClosedModifiers, getIsOpen, getOpenModifiers } from "./getters.ts";
 
+// TODO: get rid of all of this. confusing/complex
+
 export const menuStateReducer = (
   state: MenuState,
   { type, payload }: MenuActions,

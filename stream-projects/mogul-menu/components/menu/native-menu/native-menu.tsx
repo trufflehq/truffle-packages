@@ -82,6 +82,13 @@ export default function NativeMenu(props: MogulMenuProps) {
   useUpdateNativeMenuPosition();
   useOrientationHandler();
   useSwipeHandler();
+  const { setIsOpen } = useMenu();
+  // reducer/state is closed by default on desktop, so have to manually open here
+  // TODO: clean all the menu state logic up. use signals
+  useEffect(() => {
+    setIsOpen();
+  }, []);
+
   const orientation = useSelector(() => orientation$.get());
 
   const onOpen = () => {
