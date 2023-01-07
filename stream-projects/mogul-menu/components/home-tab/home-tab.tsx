@@ -45,7 +45,7 @@ export default function HomeTab() {
       channelPointsData.orgUserCounterType?.orgUserCounter?.count ?? 0,
     );
     channelPointsStr = abbreviateNumber(
-      channelPointsData.orgUserCounterType?.orgUserCounter.count ?? 0,
+      channelPointsData.orgUserCounterType?.orgUserCounter?.count ?? 0,
       2,
     );
   }
