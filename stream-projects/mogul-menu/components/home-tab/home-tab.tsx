@@ -40,12 +40,12 @@ export default function HomeTab() {
   const name = orgUser?.orgUser?.name;
 
   let fullChannelPointsStr, channelPointsStr;
-  if (channelPointsData?.orgUserCounterType?.orgUserCounter?.count != null) {
+  if (channelPointsData?.orgUserCounterType) {
     fullChannelPointsStr = formatNumber(
-      channelPointsData.orgUserCounterType.orgUserCounter.count,
+      channelPointsData.orgUserCounterType?.orgUserCounter?.count ?? 0,
     );
     channelPointsStr = abbreviateNumber(
-      channelPointsData.orgUserCounterType.orgUserCounter.count,
+      channelPointsData.orgUserCounterType?.orgUserCounter.count ?? 0,
       2,
     );
   }
