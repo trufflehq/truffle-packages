@@ -21,7 +21,7 @@ import {
   NOTIFICATION_TOPIC_QUERY,
   UPSERT_NOTIFICATION_SUBSCRIPTION_MUTATION,
 } from "../../gql/notifications.gql.ts";
-import { useFcmTokenManager, useIsNative } from "../../mod.ts";
+import { getIsNative, useFcmTokenManager } from "../../mod.ts";
 import { isGoogleChrome } from "../general.ts";
 import { useUserKV } from "../kv/hooks.ts";
 import { HAS_SEEN_NOTIFICATION_SETUP_BANNER } from "./constants.ts";
@@ -141,7 +141,7 @@ export function useFirstTimeNotificationBanner() {
   const { isNotificationBannerVisible$ } = useIsNotificationBannerVisible();
 
   const { displayActionBanner, removeActionBanner } = useActionBanner();
-  const isNative = useIsNative();
+  const isNative = getIsNative();
 
   useObserve(() => {
     if (!isNotificationBannerVisible$.get()) {

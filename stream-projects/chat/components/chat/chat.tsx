@@ -78,8 +78,10 @@ export default function Chat(
     // but the element won't repaint, so it'll look like chat is stuck until you
     // use your finger to scroll. any combination of transforms, window.getComputedStyle,
     // etc... to try to get it to repaint did not work, however this does...
-    messagesRef.current.scrollTop = -1;
-    messagesRef.current.scrollTop = 0;
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = -1;
+      messagesRef.current.scrollTop = 0;
+    }
   }
 
   return (
@@ -88,7 +90,9 @@ export default function Chat(
       {isScrolling && hasScrollToBottom
         ? (
           <div className="scroll" onClick={scrollToBottom}>
-            <div className="icon"><Icon icon={arrowDownIconPath} color="#FFFFFF" size={20} /></div>
+            <div className="icon">
+              <Icon icon={arrowDownIconPath} color="#FFFFFF" size={20} />
+            </div>
           </div>
         )
         : null}

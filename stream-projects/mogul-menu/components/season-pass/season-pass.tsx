@@ -16,7 +16,7 @@ import {
 } from "../../deps.ts";
 
 import {
-  useIsNative,
+  getIsNative,
   useOwnedCollectibleConnection,
 } from "../../shared/mod.ts";
 import { useDialog } from "../base/dialog-container/dialog-service.ts";
@@ -102,7 +102,7 @@ export default function SeasonPass(props) {
     shouldUseLevelsZeroPrefix,
     premiumAccentColor,
     premiumBgColor = "",
-    numTiles = useIsNative() ? 3 : 4,
+    numTiles = getIsNative() ? 3 : 4,
     xpImageObj,
   } = props;
 

@@ -8,7 +8,7 @@ import {
 } from "../../deps.ts";
 import { tabsReducer } from "./reducer.ts";
 import { TabDefinition, TabsActions, TabsState, TabState } from "./types.ts";
-import { useIsNative, useSeasonPassData } from "../../shared/mod.ts";
+import { getIsNative, useSeasonPassData } from "../../shared/mod.ts";
 import { TabsContext, TabSlugContext } from "./context.ts";
 import { CHAT_TAB, DEFAULT_TABS, SEASON_PASS_TAB } from "./constants.ts";
 
@@ -95,7 +95,7 @@ export function useDynamicTabs() {
   const [tabs, setTabs] = useState<TabDefinition[]>();
   const hasSetTabsRef = useRef(false);
   const seasonPassRes = null; // # (if re-enabling search for "seasonpassdisabled")
-  const isNative = useIsNative();
+  const isNative = getIsNative();
   useEffect(() => {
     const hasSetTabs = hasSetTabsRef.current;
     if (!hasSetTabs) {
@@ -113,7 +113,7 @@ export function useDynamicTabs() {
           tabs.push(SEASON_PASS_TAB);
         }
 
-        if (isNative) {
+        if (isNative || navigator.userAgent?.match(/iP(hone|od|ad)/g)) {
           tabs.splice(1, 0, CHAT_TAB);
         }
 

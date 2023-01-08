@@ -12,9 +12,9 @@ import { getOrgId } from "https://tfl.dev/@truffle/utils@~0.0.3/site/site.ts";
 import { MeUserWithConnectionConnection } from "../../types/mod.ts";
 import { usePageStack } from "../page-stack/mod.ts";
 import {
+  getIsNative,
   invalidateExtensionUser,
   isGoogleChrome,
-  useIsNative,
 } from "../../shared/mod.ts";
 import { BasePage, ContinueAsPage, OAuthConnectionPage } from "./mod.ts";
 import ChatSettingsPage from "./chat-settings-page/chat-settings-page.tsx";
@@ -105,7 +105,7 @@ export function useOnboarding() {
 
 export function useOnLoggedIn() {
   const { clearPageStack, pushPage, popPage } = usePageStack();
-  const isNative = useIsNative();
+  const isNative = getIsNative();
 
   return () => {
     popPage();

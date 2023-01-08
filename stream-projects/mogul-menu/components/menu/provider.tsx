@@ -1,6 +1,6 @@
 import { React } from "../../deps.ts";
 import { File } from "../../types/mod.ts";
-import { useIsNative } from "../../shared/mod.ts";
+import { getIsNative } from "../../shared/mod.ts";
 import { MenuState } from "./types.ts";
 import { useMenuReducer } from "./hooks.ts";
 import { MenuContext } from "./context.ts";
@@ -24,9 +24,9 @@ export const INITIAL_DIMENSIONS = {
 };
 
 export const getInitialMenuState = (): MenuState => ({
-  isNative: useIsNative() ?? false,
-  menuState: useIsNative() ? "open" : "closed",
-  menuPosition: useIsNative() ? "top-left" : undefined,
+  isNative: getIsNative() ?? false,
+  menuState: getIsNative() ? "open" : "closed",
+  menuPosition: getIsNative() ? "top-left" : undefined,
   snackBars: [],
   creatorName: "",
   dimensions: INITIAL_DIMENSIONS,

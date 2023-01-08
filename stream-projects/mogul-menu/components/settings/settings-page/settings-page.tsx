@@ -1,8 +1,8 @@
 import { React, semver, useExtensionInfo, useSelector } from "../../../deps.ts";
 import {
+  getIsNative,
   hasPermission,
   isGoogleChrome,
-  useIsNative,
   useOrgUser$,
 } from "../../../shared/mod.ts";
 import MenuItem from "../../base/menu-item/menu-item.tsx";
@@ -30,7 +30,7 @@ export default function SettingsPage() {
 
   // make sure the extension supports notifications (version 3.3.4)
   const { extensionInfo } = useExtensionInfo();
-  const isNative = useIsNative();
+  const isNative = getIsNative();
   const supportsNotifications = (isGoogleChrome || isNative) && extensionInfo &&
     semver.satisfies(extensionInfo.version, ">=3.3.4");
 
