@@ -7,6 +7,9 @@
   "scripts": {
     "postinstall": "husky install"
   },
+  "workspaces": [
+    "npm/**"
+  ],
   "devDependencies": {
     "husky": "^8.0.1"
   },

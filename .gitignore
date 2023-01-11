@@ -2,3 +2,6 @@ node_modules
 build
 truffle.secret.*
 .DS_Store
+.yarn
+.pnp.cjs
+yarn.lock
