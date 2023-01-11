@@ -1,9 +1,9 @@
 import { gql, useQuery } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 
 const CHANNEL_QUERY = gql`
-  query ($sourceType: String, $sourceId: String) {
-    channel(input: { sourceType: $sourceType, sourceId: $sourceId }) {
-      isLive
+  query ($input: ChannelInput) {
+    channel(input: $input) {
+      id, isLive
     }
   }
 `;
@@ -11,17 +11,18 @@ const CHANNEL_QUERY = gql`
 export default function useIsLive({
   sourceType,
   sourceId,
+  sourceName,
 }: {
   sourceType: string;
   sourceId?: string;
+  sourceName?: string;
 }) {
-  const [{ data: channelData, error }] = useQuery({
+  const [{ data: channelData }] = useQuery({
     query: CHANNEL_QUERY,
-    variables: { sourceType, sourceId },
+    variables: { input: { sourceType, sourceId, sourceName } },
   });
 
-  console.log("cd", channelData, error);
-
   const isLive = channelData?.channel?.isLive;
-  return true; // FIXME isLive;
+  // return true;
+  return isLive;
 }

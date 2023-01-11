@@ -8,12 +8,13 @@ import useIsLive from "../../utils/use-is-live.ts";
 import styleSheet from "./embed.scss.js";
 
 const VISIBLE_STYLE = {
-  width: "400px",
-  height: "400px",
-  background: "#fff",
-  position: "fixed",
-  bottom: 0,
-  "z-index": "999",
+  width: "100%",
+  height: "auto",
+  display: "block", // need to replace hidden style
+  "aspect-ratio": "16 / 9",
+  "min-height": "200px", // in case aspect-ratio isn't supported
+  "margin-bottom": "12px",
+  background: "transparent",
 };
 
 const HIDDEN_STYLE = {
@@ -24,9 +25,12 @@ function Embed() {
   useStyleSheet(styleSheet);
   useGoogleFontLoader(() => ["Roboto"]);
 
-  const isLive = useIsLive({ sourceType: "youtubeLive" });
+  // const isLive = useIsLive({ sourceType: "youtubeLive" });
+  const isLive = useIsLive({ sourceType: "twitch", sourceName: "stanz" });
 
   useEffect(() => {
+    // TODO: emit analytics event
+
     // set styles for this iframe within YouTube's site
     jumper.call("layout.applyLayoutConfigSteps", {
       layoutConfigSteps: [
@@ -37,19 +41,22 @@ function Embed() {
   }, [isLive]);
 
   console.log("isLive", isLive);
-  const creatorName = "Fixme";
+  const creatorName = "Stanz";
+  const url = "https://bit.ly/3IE47yU"; // twitch.tv/stanz
 
   return (
     <div className="c-embed">
-      <div className="title">
+      <a className="title" href={url} target="_blank">
+        <span className="live" />
         {creatorName} is live
-      </div>
-      <button className="action">
+      </a>
+      <a className="button" href={url} target="_blank">
         Watch now
-      </button>
+      </a>
       <iframe
         className="iframe"
-        src={previewSrc("https://twitch.tv/stanz")}
+        frameBorder="0"
+        src={`${previewSrc("https://twitch.tv/stanz")}&muted=true`}
       />
     </div>
   );
