@@ -3,5 +3,5 @@ build
 truffle.secret.*
 .DS_Store
 .yarn
-.pnp.cjs
+.pnp.*
 yarn.lock
