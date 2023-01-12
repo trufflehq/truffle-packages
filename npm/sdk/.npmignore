@@ -13,3 +13,6 @@ tsconfig.json
 .prettierrc
 
 *.tsbuildinfo
+
+# examples
+examples/
