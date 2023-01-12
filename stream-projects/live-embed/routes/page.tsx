@@ -4,7 +4,7 @@ import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/rea
 import Embed from "../components/embed/embed.tsx";
 
 function EmbedPage() {
-  return <Embed />;
+  return <Embed sourceType="twitch" sourceName="stanz" />;
 }
 
 export default toDist(EmbedPage, import.meta.url);
