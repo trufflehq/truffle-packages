@@ -27,7 +27,7 @@ function App() {
       setHasBorder(false)
     } else {
       embed.setStyles({
-        border: "3px solid red"
+        border: "5px solid red"
       })
       setHasBorder(true)
     }

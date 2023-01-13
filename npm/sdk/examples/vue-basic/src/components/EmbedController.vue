@@ -16,7 +16,7 @@ const toggleBorder = () => {
 
   } else {
     embed.setStyles({
-      border: "3px solid red"
+      border: "5px solid red"
     })
     state.hasBorder = true
   }
