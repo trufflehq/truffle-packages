@@ -1,3 +1,4 @@
+// TODO: simplify jumper so we can simplify this file
 import Jumper from "@trufflehq/jumper";
 
 const LOCAL_STORAGE_PREFIX = "truffle";
