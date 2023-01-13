@@ -21,7 +21,7 @@
     "build:esm": "tsc -p tsconfig/tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig/tsconfig.cjs.json",
     "build": "npm run clean && npm run build:esm ; npm run build:cjs",
-    "watch": "npm run watch:esm",
+    "watch": "npm run watch:cjs",
     "watch:esm": "tsc -p tsconfig/tsconfig.esm.json --watch",
     "watch:cjs": "tsc -p tsconfig/tsconfig.cjs.json --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
