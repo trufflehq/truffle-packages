@@ -58,7 +58,18 @@ export class Embed {
       width,
       height,
     });
-    this._setIframeStyles(this._currentStyles);
+  }
+
+  /**
+   * Sets the position of the embed
+   * @param x distance from left (css value)
+   * @param y distance from top (css value)
+   */
+  public setPosition(x: string, y: string) {
+    this.setStyles({
+      left: x,
+      top: y,
+    });
   }
 
   /**
