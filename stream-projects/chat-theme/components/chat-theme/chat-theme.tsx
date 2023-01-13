@@ -9,9 +9,13 @@ import {
   onChatCleanup as onDrLupoStJudeChatThemeCleanup,
 } from "../drlupo-stjude-theme/drlupo-stjude-theme.tsx";
 import {
-  ScuffedWorldTourChatTheme,
   onChatCleanup as onScuffedWorldTourChatThemeCleanup,
+  ScuffedWorldTourChatTheme,
 } from "../scuffed-world-tour-theme/scuffed-world-tour-theme.tsx";
+import {
+  LudwigTarikChatTheme,
+  onChatCleanup as onLudwigTarikChatThemeCleanup,
+} from "../ludwig-tarik-theme/ludwig-tarik-theme.tsx";
 import { AlertTheme } from "../alert-theme/alert-theme.tsx";
 
 export const ALERT_CHAT_THEMES: ThemeMap = {
@@ -26,6 +30,10 @@ export const ALERT_CHAT_THEMES: ThemeMap = {
   "scuffed-world-tour-theme": {
     Component: ScuffedWorldTourChatTheme,
     onCleanup: onScuffedWorldTourChatThemeCleanup,
+  },
+  "ludwig-tarik-theme": {
+    Component: LudwigTarikChatTheme,
+    onCleanup: onLudwigTarikChatThemeCleanup,
   },
 };
 

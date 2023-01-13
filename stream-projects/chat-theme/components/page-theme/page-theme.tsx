@@ -6,9 +6,13 @@ import {
   onPageCleanup as onDrLupoStJudePageThemeCleanup,
 } from "../drlupo-stjude-theme/drlupo-stjude-theme.tsx";
 import {
-  ScuffedWorldTourPageTheme,
   onPageCleanup as onScuffedWorldTourThemeCleanup,
+  ScuffedWorldTourPageTheme,
 } from "../scuffed-world-tour-theme/scuffed-world-tour-theme.tsx";
+import {
+  LudwigTarikPageTheme,
+  onPageCleanup as onLudwigTarikThemeCleanup,
+} from "../ludwig-tarik-theme/ludwig-tarik-theme.tsx";
 import { AlertTheme } from "../alert-theme/alert-theme.tsx";
 
 export const ALERT_PAGE_THEMES: ThemeMap = {
@@ -19,6 +23,10 @@ export const ALERT_PAGE_THEMES: ThemeMap = {
   "scuffed-world-tour-theme": {
     Component: ScuffedWorldTourPageTheme,
     onCleanup: onScuffedWorldTourThemeCleanup,
+  },
+  "ludwig-tarik-theme": {
+    Component: LudwigTarikPageTheme,
+    onCleanup: onLudwigTarikThemeCleanup,
   },
 };
 
