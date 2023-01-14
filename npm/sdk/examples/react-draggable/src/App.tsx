@@ -60,19 +60,20 @@ function App() {
     <Draggable
     dimensions={dragProps.dimensions}
     defaultPosition={dragProps.defaultPosition}
+    ignoreClassName="no-drag"
     >
       <div className="App" style={appStyles}>
         <div>
           <a href="https://reactjs.org" target="_blank">
-            <img src={reactLogo} className="logo react" alt="React logo" />
+            <img src={reactLogo} className="logo react no-drag" alt="React logo" />
           </a>
           <a href="https://truffle.vip" target="_blank">
-            <img src="https://cdn.bio/assets/images/branding/logomark.svg" className="logo truffle" alt="Truffle logo" />
+            <img src="https://cdn.bio/assets/images/branding/logomark.svg" className="logo truffle no-drag" alt="Truffle logo" />
           </a>
         </div>
         <h1>React + Truffle</h1>
         <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>
+          <button className="no-drag" onClick={() => setCount((count) => count + 1)}>
             count is {count}
           </button>
           <p>
@@ -80,8 +81,8 @@ function App() {
           </p>
         </div>
         <h2>Embed controls</h2>
-        <button onClick={setSize}>Toggle Size</button>
-        <button onClick={setBorder}>Toggle Border</button>
+        <button className="no-drag"  onClick={setSize}>Toggle Size</button>
+        <button className="no-drag"  onClick={setBorder}>Toggle Border</button>
       </div>
     </Draggable>
   )

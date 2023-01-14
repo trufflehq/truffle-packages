@@ -18,7 +18,7 @@ export interface Modifiers {
   right: number;
   bottom: number;
   left: number;
-  transition: string; //css value for the transition property
+  transition?: string; //css value for the transition property
 }
 
 export interface Dimensions {
@@ -30,7 +30,7 @@ function createIframeStyle(dimensions: Dimensions, dragInfo: DragInfo) {
   function createClipPath(
     position: Vector,
     base: Vector,
-    { top, right, bottom, left }: {[side: string]: number},
+    { top, right, bottom, left }: Modifiers,
   ) {
     return `inset(
 					${position.y - top}px
@@ -49,6 +49,7 @@ function createIframeStyle(dimensions: Dimensions, dragInfo: DragInfo) {
       dimensions.modifiers,
     ),
     transition: dimensions.modifiers.transition,
+    cursor: dragInfo.pressed ? "grab" : "auto",
     background: "none",
     position: "fixed",
     top: "0",
@@ -67,8 +68,8 @@ export default function Draggable(
       children: React.ReactNode;
       dimensions: Dimensions;
       defaultPosition: Vector;
-      requiredClassName?: string;
-      ignoreClassName?: string;
+      requiredClassName?: string; //elements must have this classname to be used to drag
+      ignoreClassName?: string; //elements with this classname cannot be used to drag
     },
 ) {
   const [dragInfo, setDragInfo] = useState<DragInfo>(
@@ -118,17 +119,14 @@ export default function Draggable(
       onMouseDown={(e: { target: Element }) => {
         const target = e.target as Element;
         const classes: string = target.className;
-        //prevent dragging by links and any class that has the prevent-drag class
-        console.log(classes);
-        //multiple events are fired for some reason, this ignores all events triggered by a certain classname
-        if (classes.includes(ignoreClassName)) return;
         if (
           requiredClassName && !classes.includes(requiredClassName)
         ) {
           setDragInfo((old: DragInfo) => ({ ...old, draggable: false }));
         }
+        //prevent dragging by links and any class with the ignoreClassName tag
         if (
-          target.tagName === "A" || classes.includes("prevent-drag")
+          target.tagName === "A" || classes.includes(ignoreClassName)
         ) {
           setDragInfo((old: DragInfo) => ({ ...old, draggable: false }));
         }
