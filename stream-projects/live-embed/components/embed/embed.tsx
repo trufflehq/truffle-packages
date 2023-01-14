@@ -3,6 +3,7 @@ import jumper from "https://tfl.dev/@truffle/utils@~0.0.2/jumper/jumper.ts";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 import { previewSrc } from "https://tfl.dev/@truffle/raid@1.0.6/shared/util/stream-plat.ts";
 import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.3/google-font-loader/mod.ts";
+import { gql, useMutation } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 
 import useChannel from "../../utils/use-channel.ts";
 import styleSheet from "./embed.scss.js";
@@ -21,17 +22,31 @@ const HIDDEN_STYLE = {
   display: "none",
 };
 
+const DATAPOINT_INCREMENT_METRIC_MUTATION = gql `
+mutation DatapointIncrementMetric ($input: DatapointIncrementMetric!) {
+  datapointIncrementMetric(input: $input)
+}`
+
 function Embed({ sourceType, sourceName }) {
   useStyleSheet(styleSheet);
   useGoogleFontLoader(() => ["Roboto"]);
 
+  const [_, executeDatapointIncrementMetricMutation] = useMutation(
+    DATAPOINT_INCREMENT_METRIC_MUTATION,
+  );
+
   // const isLive = useIsLive({ sourceType: "youtubeLive" });
   const channel = useChannel({ sourceType, sourceName });
   const { isLive, channelName } = channel || {};
-  console.log({ isLive, channelName });
 
   useEffect(() => {
     // TODO: emit analytics event
+    executeDatapointIncrementMetricMutation({
+      input: {
+        metricSlug: '',
+        count: 1
+      }
+    })
 
     // set styles for this iframe within YouTube's site
     jumper.call("layout.applyLayoutConfigSteps", {

@@ -40,7 +40,7 @@ html, body {
       top: 0;
       right: 0;
       bottom: 0;
-      background-image: url(https://cdn.bio/assets/images/features/browser_extension/chat-themes/scuffed-world-tour/chat_bg_logo.png);
+      background-image: url(https://cdn.bio/assets/images/features/browser_extension/chat-themes/ludwig-tarik/chat_bg_logo.png);
       background-size: 80%;
       background-position: 50%;
       background-repeat: no-repeat;
