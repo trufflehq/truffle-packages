@@ -1,5 +1,7 @@
-import { Memo, React, useSelector } from "../../deps.ts";
+import { Memo, React, useSelector, jumper, useSignal } from "../../deps.ts";
 import { ThemeMap, useAlertThemes$ } from "../../shared/mod.ts";
+
+const IS_THEMING_DISABLED_KEY = 'isThemingDisabled'
 
 export function AlertTheme(
   { themes, alertTypes }: {
@@ -12,6 +14,13 @@ export function AlertTheme(
   },
 ) {
   const { sourceType$, latestAlert$ } = useAlertThemes$({ themes, alertTypes });
+
+  const isThemingDisabled$ = useSignal(jumper.call("storage.get", {
+    key: IS_THEMING_DISABLED_KEY,
+  }).then((value) => value === '1'));
+  const isThemingDisabled = useSelector(() => isThemingDisabled$.get())
+
+  if (isThemingDisabled) return <></>
 
   return (
     <div>

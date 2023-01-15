@@ -1,16 +1,20 @@
 import {
   React,
   setAccessToken,
+  jumper,
   TextField,
   useEffect,
   useState,
   useStyleSheet,
+  useSignal,
+  useSelector,
 } from "../../../deps.ts";
 import Button from "../../base/button/button.tsx";
 import { useOrgUser$ } from "../../../shared/mod.ts";
 import { useMenu } from "../../menu/mod.ts";
 import { updateTabState, useTabs } from "../../tabs/mod.ts";
 import { Page, usePageStack } from "../../page-stack/mod.ts";
+import Switch from "../../base/switch/switch.tsx";
 import {
   invalidateExtensionUser,
   useOrgUserChatSettings,
@@ -18,6 +22,8 @@ import {
 } from "../../../shared/mod.ts";
 import { SnackBar, useSnackBar } from "../../snackbar/mod.ts";
 import styleSheet from "./account-details-page.scss.js";
+
+const IS_THEMING_DISABLED_KEY = 'isThemingDisabled'
 
 export default function AccountDetailsPage() {
   useStyleSheet(styleSheet);
@@ -82,6 +88,11 @@ export default function AccountDetailsPage() {
     await refetchOrgUser({ requestPolicy: "network-only" });
   };
 
+  const isThemingDisabled$ = useSignal(jumper.call("storage.get", {
+    key: IS_THEMING_DISABLED_KEY,
+  }).then((value) => value === '1'));
+  const isThemingDisabled = useSelector(() => isThemingDisabled$.get())
+
   return (
     <Page title="Account details">
       <div className="c-account-details-page-body">
@@ -106,6 +117,20 @@ export default function AccountDetailsPage() {
             }}
             tabIndex={0}
             value={nameColor}
+          />
+        </div>
+        <div className="input">
+          <div className="label mm-text-body-2">Disable themes (refresh page after changing)</div>
+          <Switch
+            value={isThemingDisabled}
+            onChange={(isEnabled: boolean) => {
+              jumper.call("storage.set", {
+                key: IS_THEMING_DISABLED_KEY,
+                value: isEnabled ? '1' : '0',
+              });
+              setHasChanged(true);
+              isThemingDisabled$.set(isEnabled);
+            }}
           />
         </div>
         <div className="actions">

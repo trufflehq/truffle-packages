@@ -1,6 +1,6 @@
 export default {
   name: "@truffle/chat-theme",
-  version: "0.0.42",
+  version: "0.0.45",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   description: "Theme for chat",
 };
