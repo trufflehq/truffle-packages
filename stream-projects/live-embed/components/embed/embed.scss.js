@@ -23,8 +23,7 @@ export default scss`
     border: none;
     padding: 0;
     margin: 0;
-    // TODO: re-add this, but only once we have some sort of hide functionality
-    // pointer-events: none;
+    pointer-events: none;
   }
 
   > .title {

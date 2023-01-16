@@ -52,7 +52,7 @@ function Embed({ sourceType, sourceId, sourceName }) {
 
   // const isLive = useIsLive({ sourceType: "youtubeLive" });
   const channel = useChannel({ sourceType, sourceId, sourceName });
-  let { isLive, channelName } = channel || {};
+  const { isLive, channelName } = channel || {};
 
   const isCollapsed$ = useSignal(false);
   const isCollapsed = useSelector(() => isCollapsed$.get())
@@ -93,6 +93,7 @@ function Embed({ sourceType, sourceId, sourceName }) {
   }
 
   const toggle = (e) => {
+    e?.stopPropagation();
     e?.preventDefault();
     isCollapsed$.set(!isCollapsed$.get());
   }
@@ -105,12 +106,9 @@ function Embed({ sourceType, sourceId, sourceName }) {
     ? `${previewSrc(url)}&muted=true`
     : `${previewSrc(`https://youtube.com/channel/${sourceId}`)}&autoplay=1&mute=1`
 
-    console.log('url', url, previewUrl);
-  
-
   return (
     <div className={`c-embed ${isCollapsed ? 'is-collapsed' : ''}`}>
-      <a className="title" href={url} target="_blank">
+      <a className="title" href={url} target="_blank" onClick={recordClick}>
         <span className="live" />
         {channelName} is live
         <div className="close">
