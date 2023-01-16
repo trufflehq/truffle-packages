@@ -4,9 +4,17 @@ import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format
 import { previewSrc } from "https://tfl.dev/@truffle/raid@1.0.6/shared/util/stream-plat.ts";
 import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.3/google-font-loader/mod.ts";
 import { gql, useMutation } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
+import { useSignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
+import { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
+import Icon from "https://tfl.dev/@truffle/ui@~0.2.0/components/legacy/icon/icon.tsx";
 
 import useChannel from "../../utils/use-channel.ts";
 import styleSheet from "./embed.scss.js";
+
+const CLOSE_ICON_PATH =
+  "M19,6.41 L17.59,5 L12,10.59 L6.41,5 L5,6.41 L10.59,12 L5,17.59 L6.41,19 L12,13.41 L17.59,19 L19,17.59 L13.41,12 L19,6.41 Z";
+const EXPAND_ICON_PATH =
+  "M14 21v-2h3.59l-4.5-4.5 1.41-1.41 4.5 4.5V14h2v7h-7M9.5 10.91L5 6.41V10H3V3h7v2H6.41l4.5 4.5-1.41 1.41z";
 
 const VISIBLE_STYLE = {
   width: "100%",
@@ -18,16 +26,23 @@ const VISIBLE_STYLE = {
   background: "transparent",
 };
 
+const COLLAPSED_STYLE = {
+  ...VISIBLE_STYLE,
+  "aspect-ratio": "unset",
+  "min-height": "32px",
+  height: "32px",
+}
+
 const HIDDEN_STYLE = {
   display: "none",
 };
 
 const DATAPOINT_INCREMENT_METRIC_MUTATION = gql `
-mutation DatapointIncrementMetric ($input: DatapointIncrementMetric!) {
-  datapointIncrementMetric(input: $input)
+mutation DatapointIncrementMetric ($input: DatapointIncrementMetricInput!) {
+  datapointIncrementMetric(input: $input) { isUpdated }
 }`
 
-function Embed({ sourceType, sourceName }) {
+function Embed({ sourceType, sourceId, sourceName }) {
   useStyleSheet(styleSheet);
   useGoogleFontLoader(() => ["Roboto"]);
 
@@ -36,43 +51,85 @@ function Embed({ sourceType, sourceName }) {
   );
 
   // const isLive = useIsLive({ sourceType: "youtubeLive" });
-  const channel = useChannel({ sourceType, sourceName });
-  const { isLive, channelName } = channel || {};
+  const channel = useChannel({ sourceType, sourceId, sourceName });
+  let { isLive, channelName } = channel || {};
+
+  const isCollapsed$ = useSignal(false);
+  const isCollapsed = useSelector(() => isCollapsed$.get())
 
   useEffect(() => {
-    // TODO: emit analytics event
-    executeDatapointIncrementMetricMutation({
-      input: {
-        metricSlug: '',
-        count: 1
-      }
-    })
-
     // set styles for this iframe within YouTube's site
     jumper.call("layout.applyLayoutConfigSteps", {
       layoutConfigSteps: [
         { action: "useSubject" }, // start with our iframe
-        { action: "setStyle", value: isLive ? VISIBLE_STYLE : HIDDEN_STYLE },
+        {
+          action: "setStyle",
+          value: isLive
+            ? isCollapsed ? COLLAPSED_STYLE : VISIBLE_STYLE
+            : HIDDEN_STYLE
+        },
       ],
     });
-  }, [isLive]);
+  }, [isLive, isCollapsed]);
 
-  const url = `https://twitch.tv/${sourceName}`;
+  useEffect(() => {
+    if (isLive) {
+      executeDatapointIncrementMetricMutation({
+        input: {
+          metricSlug: 'live-embed-views',
+          count: 1
+        }
+      })
+    }
+  }, [isLive])
+
+  const recordClick = () => {
+    executeDatapointIncrementMetricMutation({
+      input: {
+        metricSlug: 'live-embed-clicks',
+        count: 1
+      }
+    })
+  }
+
+  const toggle = (e) => {
+    e?.preventDefault();
+    isCollapsed$.set(!isCollapsed$.get());
+  }
+
+  const url = sourceType === 'twitch'
+    ? `https://twitch.tv/${sourceName}`
+    : `https://youtube.com/channel/${sourceId}/live`;
+
+  const previewUrl = sourceType === 'twitch'
+    ? `${previewSrc(url)}&muted=true`
+    : `${previewSrc(`https://youtube.com/channel/${sourceId}`)}&autoplay=1&mute=1`
+
+    console.log('url', url, previewUrl);
+  
 
   return (
-    <div className="c-embed">
+    <div className={`c-embed ${isCollapsed ? 'is-collapsed' : ''}`}>
       <a className="title" href={url} target="_blank">
         <span className="live" />
         {channelName} is live
+        <div className="close">
+          <Icon
+            icon={isCollapsed ? EXPAND_ICON_PATH : CLOSE_ICON_PATH}
+            onclick={toggle}
+            size="18px"
+            color={"#FFFFFF"}
+          />
+        </div>
       </a>
-      <a className="button" href={url} target="_blank">
+      <a className="button" href={url} target="_blank" onClick={recordClick}>
         Watch now
       </a>
-      {isLive && (
+      {isLive && !isCollapsed && (
         <iframe
           className="iframe"
           frameBorder="0"
-          src={`${previewSrc(url)}&muted=true`}
+          src={previewUrl}
         />
       )}
     </div>

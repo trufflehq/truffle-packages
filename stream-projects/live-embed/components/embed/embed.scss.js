@@ -11,6 +11,12 @@ export default scss`
   font-family: Roboto;
   position: relative;
 
+  &.is-collapsed {
+    > .button {
+      display: none;
+    }
+  }
+
   > .iframe {
     width: 100%;
     height: 100%;
@@ -37,12 +43,17 @@ export default scss`
     justify-content: center;
 
     > .live {
-      display: inline-block;
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: #ff0000;
       margin-right: 8px;
+    }
+
+    > .close {
+      position: absolute;
+      right: 8px;
+      top: 6px;
     }
   }
 
