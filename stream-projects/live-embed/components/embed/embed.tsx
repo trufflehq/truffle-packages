@@ -42,7 +42,7 @@ mutation DatapointIncrementMetric ($input: DatapointIncrementMetricInput!) {
   datapointIncrementMetric(input: $input) { isUpdated }
 }`
 
-function Embed({ sourceType, sourceId, sourceName }) {
+function Embed({ sourceType, sourceId, sourceName, forceIsLive }) {
   useStyleSheet(styleSheet);
   useGoogleFontLoader(() => ["Roboto"]);
 
@@ -52,7 +52,8 @@ function Embed({ sourceType, sourceId, sourceName }) {
 
   // const isLive = useIsLive({ sourceType: "youtubeLive" });
   const channel = useChannel({ sourceType, sourceId, sourceName });
-  const { isLive, channelName } = channel || {};
+  let { isLive, channelName } = channel || {};
+  isLive = isLive || forceIsLive;
 
   const isCollapsed$ = useSignal(false);
   const isCollapsed = useSelector(() => isCollapsed$.get())
