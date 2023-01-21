@@ -62,6 +62,10 @@ export async function getAccessToken(): Promise<string> {
       key: TRUFFLE_ACCESS_TOKEN_KEY,
     });
   }
+  // somewhere and some point in time, some of these were set to str "undefined"
+  if (accessTokenFromJumper === "undefined") {
+    setAccessToken("");
+  }
   // end legacy
   return accessTokenFromJumper || getCookie(ACCESS_TOKEN_COOKIE);
 }
@@ -101,11 +105,19 @@ export async function setAccessToken(
   accessToken: string,
   { orgId }: { orgId?: string } = {},
 ): Promise<void> {
-  if (accessToken == null) {
+  if (accessToken == null || accessToken === "undefined") {
     console.warn("Attempting to set nullish accessToken");
     return;
   }
+  await setAccessTokenJumper(accessToken, { orgId });
+  setAccessTokenCookie(accessToken);
+  _clearCache();
+}
 
+export async function setAccessTokenJumper(
+  accessToken: string,
+  { orgId }: { orgId?: string } = {},
+) {
   // set accessToken in highest possible storage we have, and notify anyone
   // listening for accessToken changes
   try {
@@ -126,8 +138,6 @@ export async function setAccessToken(
   } catch {
     // ignore
   }
-  setAccessTokenCookie(accessToken);
-  _clearCache();
 }
 
 export function setAccessTokenCookie(accessToken: string) {

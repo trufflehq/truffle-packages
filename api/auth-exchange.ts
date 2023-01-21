@@ -1,7 +1,11 @@
 import { gql, makeOperation } from "https://npm.tfl.dev/@urql/core@^3.0.0";
 import { authExchange } from "https://npm.tfl.dev/@urql/exchange-auth@^1.0.0";
 import globalContext from "https://tfl.dev/@truffle/global-context@^1.0.0/index.ts";
-import { getAccessToken, setAccessTokenCookie } from "./auth.ts";
+import {
+  getAccessToken,
+  setAccessTokenCookie,
+  setAccessTokenJumper,
+} from "./auth.ts";
 
 export const TRUFFLE_ACCESS_TOKEN_KEY = "mogul-menu:accessToken";
 const LOGIN_ANON_MUTATION = gql
@@ -70,12 +74,15 @@ export function getAuthExchange() {
       // the user may actually exist, but has 3rd party cookies disabled.
       // BUT we have to for now since sporocarp will break if we don't have
       // an accessToken
-      if (!accessToken) {
+      if (!accessToken || accessToken === "undefined") {
         console.log("no user found, creating one");
 
         const response = await mutate(LOGIN_ANON_MUTATION);
         accessToken = response?.data?.userLoginAnon?.accessToken;
-        if (accessToken) setAccessTokenCookie(accessToken);
+        if (accessToken) {
+          setAccessTokenJumper(accessToken);
+          setAccessTokenCookie(accessToken);
+        }
       }
       return { accessToken };
     },
