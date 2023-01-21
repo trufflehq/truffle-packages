@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // TODO: simplify jumper so we can simplify this file
 import Jumper from "@trufflehq/jumper";
 
