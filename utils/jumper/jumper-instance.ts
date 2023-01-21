@@ -1,3 +1,4 @@
+// NOTE: atm we're using @shared-contexts/contexts/jumper/jumper-instance.ts
 import Jumper from "./jumper-base.ts";
 
 const LOCAL_STORAGE_PREFIX = "truffle";
