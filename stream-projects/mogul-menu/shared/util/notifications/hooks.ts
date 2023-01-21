@@ -70,6 +70,7 @@ export function useFcmNotificationMediumConfig(token: string | undefined) {
     context: useMemo(() => ({
       additionalTypenames: ["NotificationMediumUserConfig"],
     }), []),
+    pause: !token,
   });
 
   const isTokenRegistered = useMemo(
