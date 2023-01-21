@@ -17,10 +17,10 @@
 [@truffle/utils@`0.0.40`](./utils) - Browser & Node utilities  
 [@truffle/ui@`0.2.2`](./ui) - Unified UI library (WIP)  
 [@truffle/context@`1.0.0`](./context) - Framework-agnostic context  
-[@truffle/shared-contexts@`1.0.0`](./shared-contexts) - Shared Contexts  
 [@truffle/state@`0.0.12`](./state) - Signals coupled with Legend state for React  
 [@truffle/youtube-js@`0.5.9`](./youtube-js) - Truffle fork of [Youtube.js](https://github.com/LuanRT/YouTube.js)  
-[@truffle/functions@`0.0.6`](./functions) - Utilities for creating Truffle Edge Functions.
+[@truffle/functions@`0.0.6`](./functions) - Utilities for creating Truffle Edge Functions.  
+[@truffle/shared-contexts@`1.0.0`](./shared-contexts) - Shared Contexts
 
 **Examples**  
 [@truffle/mutation-observer@`0.4.2`](./examples/mutation-observer) - Mutation Observer example  
@@ -36,14 +36,14 @@
 
 **Stream Projects**  
 [@truffle/notifications@`0.1.6`](./stream-projects/notifications) - Send notifications to your users when you go live.  
-[@truffle/better-chat@`0.0.13`](./stream-projects/better-chat) - Youtube chat mutation observer  
-[@truffle/mogul-menu@`3.0.146`](./stream-projects/mogul-menu) - Menu for channel points, predictions, and activities  
 [@truffle/do-something@`0.1.4`](./stream-projects/do-something) - Let your audience control you through collectibles!  
 [@truffle/raid@`1.0.6`](./stream-projects/raid) - Stream Raids  
+[@truffle/better-chat@`0.0.13`](./stream-projects/better-chat) - Youtube chat mutation observer  
+[@truffle/chat@`1.0.12`](./stream-projects/chat) - Chat client for 3rd party chats  
 [@truffle/chat-theme@`0.0.34`](./stream-projects/chat-theme) - Theme for chat  
-[@truffle/twitch-on-youtube@`0.5.30`](./stream-projects/twitch-on-youtube) - Twitch on YouTube  
+[@truffle/mogul-menu@`3.0.146`](./stream-projects/mogul-menu) - Menu for channel points, predictions, and activities  
 [@truffle/stream-feedback@`0.5.30`](./stream-projects/stream-feedback) - Stream Feedback  
-[@truffle/chat@`1.0.12`](./stream-projects/chat) - Chat client for 3rd party chats
+[@truffle/twitch-on-youtube@`0.5.30`](./stream-projects/twitch-on-youtube) - Twitch on YouTube
 
 <!-- END PACKAGES -->
 
