@@ -1,6 +1,7 @@
 import { cacheExchange, Client, ClientOptions, dedupExchange, fetchExchange, makeOperation } from "@urql/core";
 import { authExchange } from "@urql/exchange-auth";
 import { DEFAULT_MYCELIUM_API_URL } from "../constants";
+import { getOrgId } from "../org/get-id";
 import { getAccessToken } from "../user/access-token";
 
 export interface MyceliumClientOptions {
@@ -28,13 +29,19 @@ export function createMyceliumClient(options: MyceliumClientOptions = {
       // https://formidable.com/open-source/urql/docs/advanced/authentication/
       authExchange({
         async getAuth({ authState }) {
-          const _authState = authState as AuthState | undefined;
-          if (!_authState?.userAccessToken) {
-            const userAccessToken = options.userAccessToken || await getAccessToken();
-            return { userAccessToken }
+          console.log('getAuth', authState);
+          const _authState = (authState ?? {}) as AuthState;
+          if (!_authState.userAccessToken) {
+            _authState.userAccessToken = options.userAccessToken || await getAccessToken();
           }
 
-          return authState
+          if (!_authState.orgId) {
+            _authState.orgId = options.orgId || await getOrgId();
+          }
+
+          console.log('getAuth setting', _authState)
+
+          return _authState
         },
         addAuthToOperation({ authState, operation }) {
           const _authState = authState as AuthState;

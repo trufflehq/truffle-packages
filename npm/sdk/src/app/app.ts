@@ -11,6 +11,7 @@ export class TruffleApp {
   constructor (clientOptions?: MyceliumClientOptions) {
 
     const updateClient = (clientOptions?: MyceliumClientOptions) => {
+      console.log('updating mycelium client')
       this.gqlClient = createMyceliumClient(clientOptions);
       this.user.gqlClient = this.gqlClient;
     }
@@ -19,14 +20,16 @@ export class TruffleApp {
       // in this case, we're probably initializing the app
       // as the default app, so we want to listen for changes
       // to the authentication state
-      jumper.call(
-        "user.onAccessTokenChange",
-        { orgId: getOrgId() },
-        ({ _accessToken }: { _accessToken: string }) => {
-          console.log('user access token changed!')
-          updateClient(clientOptions);
-        },
-      );
+      getOrgId().then((orgId) => {
+        jumper.call(
+          "user.onAccessTokenChange",
+          { orgId },
+          ({ _accessToken }: { _accessToken: string }) => {
+            console.log('user access token changed!')
+            updateClient(clientOptions);
+          },
+        );
+      })
     
       // TODO: legacy, rm 4/2023
       jumper.call("comms.onMessage", (message: string) => {
@@ -38,6 +41,7 @@ export class TruffleApp {
       // end legacy
     }
 
+    console.log('creating mycelium client')
     this.gqlClient = createMyceliumClient(clientOptions);
     this.user = new TruffleUserClient(this.gqlClient);
   }

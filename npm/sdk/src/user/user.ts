@@ -1,21 +1,76 @@
 import { Client } from "@urql/core";
 import { map, pipe, toObservable } from 'wonka';
+import { GQLConnection } from "../types";
 import { SwitchableObservable } from "../util/switchable-observable";
 
+export interface TruffleImage {
+  cdn: string;
+  prefix: string;
+  ext: string;
+  variations: {
+    postfix: string;
+    width: number;
+    height: number;
+  }[];
+  aspectRatio: number;
+}
 export interface TruffleUser {
   id: string;
   name: string;
+  avatarImage: TruffleImage;
 }
 
-type Observable<T> = ReturnType<typeof toObservable<T>>;
+export interface TrufflePermission {
+  id: string;
+  slug: string;
+  name: string;
+  filters: any;
+  action: string;
+  value: boolean;
+}
+
+export type TrufflePermissionConnection = GQLConnection<TrufflePermission>;
+
+export interface TruffleRole {
+  id: string;
+  slug: string;
+  name: string;
+  permissionConnection: TrufflePermissionConnection;
+}
+
+export type TruffleRoleConnection = GQLConnection<TruffleRole>;
+
+export interface TruffleComponentRel {
+  id: string;
+  props: any;
+}
+
+export interface TrufflePowerup {
+  id: string;
+  slug: string;
+  jsx: string;
+  componentRels: TruffleComponentRel[];
+}
+
+export type TrufflePowerupConnection = GQLConnection<TrufflePowerup>;
+
+export interface TruffleOrgUser {
+  id: string;
+  name: string;
+  roleConnection: TruffleRoleConnection;
+  activePowerupConnection: TrufflePowerupConnection;
+}
+
 export class TruffleUserClient {
 
   public observable: SwitchableObservable<TruffleUser>;
+  public orgUserObservable: SwitchableObservable<TruffleOrgUser>;
   
   private _userObj: TruffleUser | null = null;
 
   constructor (private _gqlClient: Client) {
-    this.observable = new SwitchableObservable(this._getUserObservable())
+    this.observable = new SwitchableObservable(this._getUserObservable());
+    this.orgUserObservable = new SwitchableObservable(this._getOrgUserObservable());
 
     this.observable.subscribe({
       next: (user) => {
@@ -28,6 +83,49 @@ export class TruffleUserClient {
         console.log('truffle user subscription complete');
       }
     })
+
+  }
+
+  private _getOrgUserObservable () {
+    return pipe(
+      this._gqlClient.query<{ orgUser: TruffleOrgUser }>(
+        `query {
+          orgUser {
+            id
+            name
+            roleConnection {
+              nodes {
+                id
+                slug
+                name
+                permissionConnection {
+                  nodes {
+                    id
+                    filters
+                    action
+                    value
+                  }
+                }
+              }
+            }
+            activePowerupConnection {
+              nodes {
+                powerup {
+                  id
+                  slug
+                  jsx
+                  componentRels {
+                    props
+                  }
+                }
+              }
+            }
+          }
+        }`
+      , {}),
+      map((res) => res.data?.orgUser),
+      toObservable,
+    )
   }
 
   private _getUserObservable () {
@@ -37,6 +135,17 @@ export class TruffleUserClient {
           me {
             id
             name
+            avatarImage {
+              cdn
+              prefix
+              ext
+              variations {
+                postfix
+                width
+                height
+              }
+              aspectRatio
+            }
           }
         }`
       , {}),
@@ -68,5 +177,21 @@ export class TruffleUserClient {
    */
   public get name() {
     return this._userObj?.name;
+  }
+
+  /**
+   * The avatar image object.
+   */
+  public get avatarImage () {
+    return this._userObj?.avatarImage;
+  }
+
+  /**
+   * Returns the org user object.
+   */
+  public get orgUser () {
+    return {
+      observable: this.orgUserObservable
+    };
   }
 }
