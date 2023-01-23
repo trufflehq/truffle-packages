@@ -29,17 +29,15 @@ export function createMyceliumClient(options: MyceliumClientOptions = {
       // https://formidable.com/open-source/urql/docs/advanced/authentication/
       authExchange({
         async getAuth({ authState }) {
-          console.log('getAuth', authState);
           const _authState = (authState ?? {}) as AuthState;
+
           if (!_authState.userAccessToken) {
             _authState.userAccessToken = options.userAccessToken || await getAccessToken();
           }
 
           if (!_authState.orgId) {
-            _authState.orgId = options.orgId || await getOrgId();
+            _authState.orgId = options.orgId || await getOrgId(options.url);
           }
-
-          console.log('getAuth setting', _authState)
 
           return _authState
         },
