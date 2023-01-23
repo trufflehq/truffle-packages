@@ -36,6 +36,8 @@ function App() {
 
   return (
     <div className="App">
+      {/* when using a legend state observable, you can use the `.get()` method to get the current value */}
+      {/* the cool thing is that it will automatically update on any changes */}
       <div>Org: {org.name.get()}</div>
       <div>Org ID: {orgId}</div>
       <h2>Welcome, {orgUser.name.get()}</h2>
