@@ -21,12 +21,22 @@ export default scss`
   }
 
   > .button {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: #fff;
     color: #774AF0;
     border-radius: 30px;
-    padding: 10px;
+    padding: 6px 10px;
     text-decoration: none;
+
+    &:hover {
+      background: #fafafa;
+    }
+
+    > .icon {
+      margin-right: 10px;
+    }
   }
 }
 
