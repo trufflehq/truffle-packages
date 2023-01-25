@@ -7,7 +7,7 @@ import {
   useStyleSheet,
   YoutubeChat,
 } from "../../deps.ts";
-import { getYoutubeVideoId } from "https://tfl.dev/@truffle/chat@0.0.15/shared/truffle/utils.ts";
+import { getYoutubeVideoId } from "https://tfl.dev/@truffle/chat@^1.0.0/shared/truffle/utils.ts";
 import ChannelPoints from "../channel-points/channel-points.tsx";
 import styleSheet from "./chat-tab.scss.js";
 import {
