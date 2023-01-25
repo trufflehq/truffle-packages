@@ -1,10 +1,12 @@
 {
   "name": "@trufflehq/sdk",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "The official javascript SDK for Truffle",
   "keywords": [
     "truffle",
-    "truffle.tv"
+    "truffle.tv",
+    "youtube",
+    "twitch"
   ],
   "author": "",
   "license": "MIT",
