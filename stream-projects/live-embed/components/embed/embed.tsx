@@ -3,7 +3,10 @@ import jumper from "https://tfl.dev/@truffle/utils@~0.0.2/jumper/jumper.ts";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 import { previewSrc } from "https://tfl.dev/@truffle/raid@1.0.6/shared/util/stream-plat.ts";
 import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.3/google-font-loader/mod.ts";
-import { gql, useMutation } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
+import {
+  gql,
+  useMutation,
+} from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 import { useSignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
 import { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 import Icon from "https://tfl.dev/@truffle/ui@~0.2.0/components/legacy/icon/icon.tsx";
@@ -31,32 +34,61 @@ const COLLAPSED_STYLE = {
   "aspect-ratio": "unset",
   "min-height": "32px",
   height: "32px",
-}
+};
 
 const HIDDEN_STYLE = {
   display: "none",
 };
 
-const DATAPOINT_INCREMENT_METRIC_MUTATION = gql `
+const DATAPOINT_INCREMENT_METRIC_MUTATION = gql`
 mutation DatapointIncrementMetric ($input: DatapointIncrementMetricInput!) {
   datapointIncrementMetric(input: $input) { isUpdated }
-}`
+}`;
+
+const DATAPOINT_INCREMENT_UNIQUE_MUTATION = gql`
+mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
+  datapointIncrementUnique(input: $input) { isUpdated }
+}`;
+
+const ONE_MINUTE_MS = 60 * 1000;
+const ONE_MONTH_SECONDS = 3600 * 24 * 30;
 
 function Embed({ sourceType, sourceId, sourceName, forceIsLive }) {
   useStyleSheet(styleSheet);
   useGoogleFontLoader(() => ["Roboto"]);
 
-  const [_, executeDatapointIncrementMetricMutation] = useMutation(
-    DATAPOINT_INCREMENT_METRIC_MUTATION,
-  );
+  const [_incrementMetricPayload, executeDatapointIncrementMetricMutation] =
+    useMutation(
+      DATAPOINT_INCREMENT_METRIC_MUTATION,
+    );
+
+  const [_incrementUniquePayload, executeDatapointIncrementUniqueMutation] =
+    useMutation(
+      DATAPOINT_INCREMENT_UNIQUE_MUTATION,
+    );
 
   // const isLive = useIsLive({ sourceType: "youtubeLive" });
   const channel = useChannel({ sourceType, sourceId, sourceName });
   let { isLive, channelName } = channel || {};
+
   isLive = isLive || forceIsLive;
 
   const isCollapsed$ = useSignal(false);
-  const isCollapsed = useSelector(() => isCollapsed$.get())
+  const isCollapsed = useSelector(() => isCollapsed$.get());
+
+  const recordCcv = () => {
+    executeDatapointIncrementUniqueMutation({
+      input: {
+        metricSlug: "live-embed-ccvs",
+        timeScale: "minute",
+        ttlSeconds: ONE_MONTH_SECONDS,
+        // TODO: need to grab currently live videoId somehow
+        // filterValues: {
+        //   video: videoId,
+        // },
+      },
+    });
+  };
 
   useEffect(() => {
     // set styles for this iframe within YouTube's site
@@ -67,7 +99,7 @@ function Embed({ sourceType, sourceId, sourceName, forceIsLive }) {
           action: "setStyle",
           value: isLive
             ? isCollapsed ? COLLAPSED_STYLE : VISIBLE_STYLE
-            : HIDDEN_STYLE
+            : HIDDEN_STYLE,
         },
       ],
     });
@@ -77,38 +109,43 @@ function Embed({ sourceType, sourceId, sourceName, forceIsLive }) {
     if (isLive) {
       executeDatapointIncrementMetricMutation({
         input: {
-          metricSlug: 'live-embed-views',
-          count: 1
-        }
-      })
+          metricSlug: "live-embed-views",
+          count: 1,
+        },
+      });
+      // TODO: stop when no longer live
+      recordCcv();
+      setInterval(recordCcv, ONE_MINUTE_MS);
     }
-  }, [isLive])
+  }, [isLive]);
 
   const recordClick = () => {
     executeDatapointIncrementMetricMutation({
       input: {
-        metricSlug: 'live-embed-clicks',
-        count: 1
-      }
-    })
-  }
+        metricSlug: "live-embed-clicks",
+        count: 1,
+      },
+    });
+  };
 
   const toggle = (e) => {
     e?.stopPropagation();
     e?.preventDefault();
     isCollapsed$.set(!isCollapsed$.get());
-  }
+  };
 
-  const url = sourceType === 'twitch'
+  const url = sourceType === "twitch"
     ? `https://twitch.tv/${sourceName}`
     : `https://youtube.com/channel/${sourceId}/live`;
 
-  const previewUrl = sourceType === 'twitch'
+  const previewUrl = sourceType === "twitch"
     ? `${previewSrc(url)}&muted=true`
-    : `${previewSrc(`https://youtube.com/channel/${sourceId}`)}&autoplay=1&mute=1`
+    : `${
+      previewSrc(`https://youtube.com/channel/${sourceId}`)
+    }&autoplay=1&mute=1`;
 
   return (
-    <div className={`c-embed ${isCollapsed ? 'is-collapsed' : ''}`}>
+    <div className={`c-embed ${isCollapsed ? "is-collapsed" : ""}`}>
       <a className="title" href={url} target="_blank" onClick={recordClick}>
         <span className="live" />
         {channelName} is live
