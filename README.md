@@ -44,7 +44,7 @@
 [@truffle/mogul-menu@`3.0.151`](./stream-projects/mogul-menu) - Menu for channel points, predictions, and activities  
 [@truffle/stream-feedback@`0.5.30`](./stream-projects/stream-feedback) - Stream Feedback  
 [@truffle/twitch-on-youtube@`0.5.42`](./stream-projects/twitch-on-youtube) - Twitch on YouTube  
-[@truffle/live-embed@`0.5.46`](./stream-projects/live-embed) - Shows a twitch live stream on a creator's youtube channel.
+[@truffle/live-embed@`0.5.48`](./stream-projects/live-embed) - Shows a twitch live stream on a creator's youtube channel.
 
 <!-- END PACKAGES -->
 

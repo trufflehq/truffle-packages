@@ -19,3 +19,11 @@ export const ME_USER_QUERY = gql`
     }
   }
 `
+
+export const USER_LOGIN_ANON = gql`
+  mutation SDKUserAnonCreate {
+    userLoginAnon {
+      accessToken
+    }
+  }
+`

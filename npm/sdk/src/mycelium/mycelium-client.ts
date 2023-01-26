@@ -32,7 +32,7 @@ export function createMyceliumClient(options: MyceliumClientOptions = {
           const _authState = (authState ?? {}) as AuthState;
 
           if (!_authState.userAccessToken) {
-            _authState.userAccessToken = options.userAccessToken || await getAccessToken();
+            _authState.userAccessToken = options.userAccessToken || await getAccessToken(options.url);
           }
 
           if (!_authState.orgId) {
