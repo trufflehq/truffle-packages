@@ -20,6 +20,7 @@ function App() {
   // https://github.com/tc39/proposal-observable
   // you can interact with it directly if you want, but we prefer to use legend :p
   const [orgId, setOrgId] = useState<string | undefined>(undefined);
+  // this is how you use spec compliant observables without legend
   useEffect(() => {
     const subscription = orgClient.observable.subscribe({
       next: (org) => {
@@ -47,4 +48,4 @@ function App() {
 }
 
 // we wrap the app component so that it listens to changes on the legend observables
-export default observer(App);
+export default App;
