@@ -48,4 +48,4 @@ function App() {
 }
 
 // we wrap the app component so that it listens to changes on the legend observables
-export default App;
+export default observer(App);
