@@ -42,16 +42,15 @@ export default scss`
 .c-extension-icon {
   cursor: pointer;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  background-image: url(https://cdn.bio/assets/images/creators/ludwig/extension_icon.png);
+  background-color: black;  
   background-size: 100%;
-  background-repeat: no-repeat;
   background-color: rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  display: inline-flex;
+  width: 92px;
+  height: 48px;
+  border-radius: 4px;
   transition: box-shadow 0.25s;
   z-index: 1000000;
 

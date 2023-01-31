@@ -192,7 +192,7 @@ html, body {
       > .bottom {
         display: flex;
         justify-content: flex-end;
-        max-height: 40px;
+        max-height: 48px;
         width: 100%;
       }
     }
