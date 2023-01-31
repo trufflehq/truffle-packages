@@ -50,7 +50,6 @@ export default scss`
   display: inline-flex;
   width: 92px;
   height: 48px;
-  border-radius: 4px;
   transition: box-shadow 0.25s;
   z-index: 1000000;
 

@@ -42,7 +42,7 @@ export default scss`
 .c-tab-bar {
   flex-direction: row-reverse;
   box-sizing: border-box;
-  min-height: 40px;
+  height: 48px;
 
   display: flex;
   overflow-x: overlay;
