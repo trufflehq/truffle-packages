@@ -1,8 +1,8 @@
 import {
     classKebab,
-    getSrcByImageObj,
+    getSrcByImageObj, jumper,
     React,
-    Ripple, useState,
+    Ripple, useEffect, useState,
     useStyleSheet,
 } from "../../../deps.ts";
 import { getHasNotification, useTabs } from "../../tabs/mod.ts";
@@ -18,7 +18,6 @@ export default function ExtensionIcon() {
   const hasNotification = getHasNotification(tabsState);
   const menuOpen = getIsOpen(menuState);
 
-  const [width, setWidth] = useState(92);
 
   const onExtensionIconClick = () => {
     toggleOpen();
@@ -26,6 +25,72 @@ export default function ExtensionIcon() {
 
   useStyleSheet(stylesheet);
   const iconImageObj = getMenuIconImageObj(menuState);
+
+
+  useEffect(() => {
+      console.log("Calling jumper")
+      jumper.call(
+          "layout.listenForElements",
+          {
+              listenElementLayoutConfigSteps: [
+                  {
+                      action: "querySelector",
+                      value: "#movie_player",
+                  },
+              ],
+              observerConfig: { attributes: true, childList: false, subtree: false },
+              targetQuerySelector: "#movie_player",
+              // shouldCleanupMutatedElements: true,
+          },
+          () => {
+              console.log("emitted")
+          }
+      );
+
+      // jumper.call("layout.listenForElements", {
+      //     listenElementLayoutConfigSteps: [
+      //         {
+      //             action: "querySelector",
+      //             value: "ytd-comments#comments ytd-item-section-renderer #contents",
+      //         },
+      //     ],
+      //     observerConfig: { childList: true, subtree: true },
+      //     targetQuerySelector: "ytd-comment-thread-renderer",
+      //     shouldCleanupMutatedElements: true,
+      // }, onEmit);
+  },[])
+
+    // function onEmit(matches) {
+    //     matches.forEach((match) => {
+    //         const { id: elementId, data } = match;
+    //         const authorId = data?.comment?.commentRenderer?.authorEndpoint
+    //             ?.browseEndpoint?.browseId;
+    //         console.log("Youtube comments!", { match, authorId });
+    //
+    //         jumper.call("layout.applyLayoutConfigSteps", {
+    //             layoutConfigSteps: [
+    //                 { action: "querySelector", value: `[data-truffle-id="${elementId}"]` },
+    //                 {
+    //                     action: "setStyle",
+    //                     value: JSON.stringify({ border: `2px solid red` }),
+    //                 },
+    //             ],
+    //             mutatedElementId: elementId,
+    //         });
+    //
+    //         // NOTE: this won't return anything for 99.99% of commenters since we're using our staging data
+    //         // you can manually add a connection for your org and sourceType: 'youtube', sourceId: your YouTube id
+    //         // in the GraphQL API
+    //         // const orgUserResponse = await query(GET_ORG_USER_QUERY, {
+    //         //   input: {
+    //         //     sourceType: "youtube",
+    //         //     sourceId: authorId,
+    //         //     orgId: getOrgId(),
+    //         //   },
+    //         // });
+    //         // const orgUser = orgUserResponse.data.connection?.orgUser;
+    //     });
+    // }
 
   return (
     <div
