@@ -1,4 +1,4 @@
-import { classKebab, jumper, React } from "../../../deps.ts";
+import {classKebab, jumper, React, useEffect, useState} from "../../../deps.ts";
 import { getHasNotification, useTabs } from "../../tabs/mod.ts";
 import {
   getDimensions,
@@ -192,6 +192,36 @@ export default function DraggableMenu({
   const dimensions = getDimensions(menuState);
   const defaultPosition = { x: 0, y: 0 };
 
+  const [hideMenu, setHideMenu] = useState(false);
+
+
+  useEffect(() => {
+    console.log("Calling jumper")
+    jumper.call(
+        "layout.listenForElements",
+        {
+          listenElementLayoutConfigSteps: [
+            {
+              action: "querySelector",
+              value: "#movie_player.ytp-big-mode",
+            },
+          ],
+          observerConfig: { attributes: true, attributeFilter: ["class"], childList: false, subtree: false },
+          targetQuerySelector: "#movie_player.ytp-big-mode",
+          // shouldCleanupMutatedElements: true,
+        },
+        (matches) => {
+          const controlsHidden = matches[0].attributes.class.includes("ytp-autohide");
+
+          // if (hideMenu !== controlsHidden) {
+          setHideMenu(controlsHidden)
+
+          // }
+
+        }
+    );
+  },[])
+
   return (
     <Draggable
       requiredClassName="c-extension-icon"
@@ -205,7 +235,7 @@ export default function DraggableMenu({
       resizeObserver={useWindowResizeObserver}
       initializePosition={initializePosition}
     >
-      <div className={className}>
+      <div hidden={hideMenu} className={className}>
         <div className="menu">{children}</div>
       </div>
     </Draggable>

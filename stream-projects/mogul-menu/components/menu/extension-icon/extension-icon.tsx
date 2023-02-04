@@ -27,25 +27,9 @@ export default function ExtensionIcon() {
   const iconImageObj = getMenuIconImageObj(menuState);
 
 
-  useEffect(() => {
-      console.log("Calling jumper")
-      jumper.call(
-          "layout.listenForElements",
-          {
-              listenElementLayoutConfigSteps: [
-                  {
-                      action: "querySelector",
-                      value: "#movie_player",
-                  },
-              ],
-              observerConfig: { attributes: true, childList: false, subtree: false },
-              targetQuerySelector: "#movie_player",
-              // shouldCleanupMutatedElements: true,
-          },
-          () => {
-              console.log("emitted")
-          }
-      );
+
+
+      // console.log(hideMenu)
 
       // jumper.call("layout.listenForElements", {
       //     listenElementLayoutConfigSteps: [
@@ -58,7 +42,6 @@ export default function ExtensionIcon() {
       //     targetQuerySelector: "ytd-comment-thread-renderer",
       //     shouldCleanupMutatedElements: true,
       // }, onEmit);
-  },[])
 
     // function onEmit(matches) {
     //     matches.forEach((match) => {
@@ -93,50 +76,54 @@ export default function ExtensionIcon() {
     // }
 
   return (
-    <div
-        className={`c-extension-icon ${classKebab({ hasNotification })}`}
-        style={{
-            justifyContent: 'space-between',
-            alignItems: menuOpen ? 'left': 'center',
-            paddingLeft: menuOpen ? 0 : 4,
-            width: menuOpen ? 48 : 92
+      <div
+          className={`c-extension-icon ${classKebab({ hasNotification })}`}
+          style={{
+              justifyContent: 'space-between',
+              alignItems: menuOpen ? 'left': 'center',
+              paddingLeft: menuOpen ? 0 : 4,
+              width: menuOpen ? 48 : 92,
+              border: "solid white",
+              borderWidth: 2
 
-        }}
-        onClick={onExtensionIconClick}
-    >
-        <img
-            src={getSrcByImageObj(iconImageObj)}
-            alt="Creator icon"
-            width={menuOpen ? 48 : 40}
-            height={menuOpen ? 48 : 40}
-            style={{
-                borderRadius: menuOpen ? 0 : 2,
-                pointerEvents: "none"
-            }}
-        />
-        {menuOpen ? null :
-            <img
-                src={hamburgerIcon}
-                alt="Hamburger icon"
-                width={18}
-                height={12}
-                style={{
-                    pointerEvents: "none",
-                    transition: "box-shadow 0.25s"
-                }}
-            />
-        }
+          }}
+          onClick={onExtensionIconClick}
+      >
+          <img
+              src={getSrcByImageObj(iconImageObj)}
+              alt="Creator icon"
+              width={menuOpen ? 48 : 40}
+              height={menuOpen ? 48 : 40}
+              style={{
+                  borderRadius: menuOpen ? 0 : 2,
+                  pointerEvents: "none"
+              }}
+          />
+          {menuOpen ? null :
+              <img
+                  src={hamburgerIcon}
+                  alt="Hamburger icon"
+                  width={18}
+                  height={12}
+                  style={{
+                      pointerEvents: "none",
+                      transition: "box-shadow 0.25s"
+                  }}
+              />
+          }
 
 
 
-        {/*<div*/}
-        {/*    style={{*/}
-        {/*        backgroundImage: iconImageObj*/}
-        {/*            ? `url(${getSrcByImageObj(iconImageObj)})`*/}
-        {/*            : undefined,*/}
-        {/*    }}*/}
-        {/*></div>*/}
-      <Ripple color="var(--mm-color-text-bg-primary)" />
-    </div>
+          {/*<div*/}
+          {/*    style={{*/}
+          {/*        backgroundImage: iconImageObj*/}
+          {/*            ? `url(${getSrcByImageObj(iconImageObj)})`*/}
+          {/*            : undefined,*/}
+          {/*    }}*/}
+          {/*></div>*/}
+          <Ripple color="var(--mm-color-text-bg-primary)" />
+      </div>
+
+
   );
 }
