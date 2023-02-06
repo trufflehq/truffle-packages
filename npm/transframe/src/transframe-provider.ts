@@ -52,7 +52,7 @@ export class TransframeProvider<Frame> {
     if (!isRPCRequest(message)) return;
 
     // if strict mode is enabled, make sure to only handle messages if fromId is defined
-    if (this._options.strictMode && !fromId) return;
+    if (this._options.strictMode && fromId != null) return;
 
     // filter out any callback placeholders and replace them
     // with methods that make rpc calls back to the consumer
