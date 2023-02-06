@@ -27,7 +27,7 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
     this._interface.onMessage(this._messageHandler);
 
     // connect immediately if the option is set
-    if (options?.connectImmediately !== false) {
+    if (this._options?.connectImmediately !== false) {
       this.connect();
     }
   }
