@@ -15,9 +15,6 @@ export class IframeConsumerInterface implements TransframeConsumerInterface {
     this._messageHandlerWrapper = (event) => {
       this._messageHandler(JSON.parse(event.data));
     };
-
-    // TODO: add an option that allows the user to decide whether to connect automatically; `autoConnect`?
-    this.connect();
   }
 
   public get isConnected() {
