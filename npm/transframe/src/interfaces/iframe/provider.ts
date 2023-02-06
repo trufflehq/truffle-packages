@@ -12,8 +12,7 @@ export class IframeProviderInterface implements TransframeProviderInterface<HTML
     this._messageHandler = () => {};
     this._frames = new Map();
     this._messageHandlerWrapper = (event) => {
-      const fromWindow = this._frames.get(event.source as Window);
-      const fromId = fromWindow == null ? undefined : fromWindow;
+      const fromId = this._frames.get(event.source as Window);
 
       this._messageHandler(
         JSON.parse(event.data),
