@@ -5,7 +5,6 @@ import { generateId } from "./util";
 
 export class TransframeConsumer<T extends TransframeSourceApi> {
 
-  // TODO: implement options
   private _options?: TransframeConsumerOptions<T>;
   private _api: TransframeConsumerApi<T>;
 
@@ -26,6 +25,11 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
 
     // set up the message handler
     this._interface.onMessage(this._messageHandler);
+
+    // connect immediately if the option is set
+    if (options?.connectImmediately !== false) {
+      this.connect();
+    }
   }
 
   private _buildApi = () => {
@@ -49,6 +53,10 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
 
   public get isConnected() {
     return this._interface.isConnected;
+  }
+
+  public connect = () => {
+    this._interface.connect();
   }
 
   private _messageHandler = (message: unknown) => {

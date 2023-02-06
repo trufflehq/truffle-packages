@@ -35,8 +35,15 @@ export interface TransframeProviderOptions {
 
 export interface TransframeConsumerOptions<T extends TransframeSourceApi> {
   /**
-   * The api that will be exposed to the consumer.
+   * The source api used by the provider.
    * This is only used for typing.
    */
   api?: T;
+
+  /**
+   * Whether to automatically connect to the provider.
+   * Default is true.
+   * If you set this to false, you will have to call the connect method manually.
+   */
+  connectImmediately?: boolean;
 }
