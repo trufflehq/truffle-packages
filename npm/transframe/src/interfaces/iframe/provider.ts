@@ -1,24 +1,41 @@
 import { RPCReplyFunction } from "../../rpc/types";
 import { TransframeProviderInterface } from "../types";
+import { IframeProviderInterfaceOptions } from "./types";
 
 export class IframeProviderInterface implements TransframeProviderInterface<HTMLIFrameElement> {
-  private _isListening: boolean;
-  private _messageHandler: (message: unknown, reply: RPCReplyFunction, fromId?: string) => void;
-  private _frames: Map<Window, string>;
+  private _isListening: boolean = false;
+  private _messageHandler: (message: unknown, reply: RPCReplyFunction, fromId?: string) => void = () => {};
+  private _frameIdMap: Map<Window, string> = new Map();
   private _messageHandlerWrapper: (event: MessageEvent) => void;
+  private _options?: IframeProviderInterfaceOptions;
 
-  constructor() {
-    this._isListening = false;
-    this._messageHandler = () => {};
-    this._frames = new Map();
+  constructor(options?: IframeProviderInterfaceOptions) {
+    this._options = options;
     this._messageHandlerWrapper = (event) => {
-      const fromId = this._frames.get(event.source as Window);
 
+      // only process messages from the allowed origins
+      if (!this._options?.allowedOrigins?.includes(event.origin)) {
+        return;
+      }
+
+      // according to typescript, this can be null?
+      const eventSource = event.source;
+      if (!eventSource) {
+        throw new Error("Somehow the event source is null");
+      }
+
+      // get the id of the frame that sent the message
+      const fromId = this._frameIdMap.get(event.source as Window);
+
+      // the user will use this to reply to the consumer
+      const replyFn: RPCReplyFunction = (message) => {
+        eventSource.postMessage(JSON.stringify(message), event.origin as any);
+      };
+
+      // call the message handler set by the user
       this._messageHandler(
         JSON.parse(event.data),
-        (message) => {
-          event.source!.postMessage(JSON.stringify(message), event.origin as any);
-        },
+        replyFn,
         fromId
       );
     };
@@ -46,7 +63,7 @@ export class IframeProviderInterface implements TransframeProviderInterface<HTML
     if (!frame?.contentWindow) {
       throw new Error("Frame must have a contentWindow");
     }
-    this._frames.set(frame.contentWindow, id);
+    this._frameIdMap.set(frame.contentWindow, id);
   }
 
 }
