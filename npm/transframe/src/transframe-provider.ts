@@ -1,0 +1,93 @@
+import { TransframeProviderInterface } from "./interfaces/types";
+import { RPCReplyFunction } from "./rpc/types";
+import { createRpcCallbackCall, createRpcResponse, isRPCCallbackPlaceholder, isRPCRequest } from "./rpc/util";
+import { TransframeProviderOptions } from "./types";
+import { generateId } from "./util";
+
+export class TransframeProvider<Frame> {
+
+  private _options: TransframeProviderOptions;
+
+  constructor (
+    private _interface: TransframeProviderInterface<Frame>,
+    options: TransframeProviderOptions
+  ) {
+    this._options = options;
+
+    // set up the message handler
+    this._interface.onMessage(this._messageHandler);
+
+    // listen immediately if the user wants to;
+    // default to true
+    if (this._options.listenImmediately ?? true) {
+      this.listen();
+    }
+  }
+
+  public registerFrame = (frame: Frame, id?: string) => {
+    id ??= generateId();
+    this._interface.registerFrame(frame, id);
+    return id;
+  }
+
+  public listen = () => {
+    this._interface.listen();
+  }
+
+  public get isListening() {
+    return this._interface.isListening;
+  }
+
+  public close = () => {
+    this._interface.close();
+  }
+
+  private _messageHandler = async (
+    message: unknown,
+    reply: RPCReplyFunction,
+    fromId?: string
+  ) => {
+    
+    // if the message is not an RPC request, ignore it
+    if (!isRPCRequest(message)) return;
+
+    // filter out any callback placeholders and replace them
+    // with methods the make rpc calls back to the consumer
+    message.payload = (message.payload as unknown[]).map((param) => {
+      if (isRPCCallbackPlaceholder(param)) {
+        const callbackId = param.callbackId;
+
+        // create a callback function that will send a message
+        // back to the consumer
+        const callback = (...args: unknown[]) => {
+          const callbackCall = createRpcCallbackCall(callbackId, args);
+          reply(callbackCall);
+        };
+
+        // replace the placeholder with the callback function
+        return callback;
+      } else {
+        return param;
+      }
+    });
+
+    const method = this._options.api[message.method];
+    // TODO: change the api interface to accept a consumer id
+    const result = await method(fromId, ...message.payload as unknown[]);
+
+    // create the response and send it back
+    const response = createRpcResponse({
+      requestId: message.requestId,
+      result,
+    });
+    reply(response);
+  }
+
+}
+
+/**
+ * TODO: create helper functions to create a provider for each interface type
+ */
+export function createProvider(options: TransframeProviderOptions) {
+  // return new TransframeProvider(options);
+}
