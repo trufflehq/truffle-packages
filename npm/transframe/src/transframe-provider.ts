@@ -51,8 +51,11 @@ export class TransframeProvider<Frame> {
     // if the message is not an RPC request, ignore it
     if (!isRPCRequest(message)) return;
 
+    // if strict mode is enabled, make sure to only handle messages if fromId is defined
+    if (this._options.strictMode && !fromId) return;
+
     // filter out any callback placeholders and replace them
-    // with methods the make rpc calls back to the consumer
+    // with methods that make rpc calls back to the consumer
     message.payload = (message.payload as unknown[]).map((param) => {
       if (isRPCCallbackPlaceholder(param)) {
         const callbackId = param.callbackId;
@@ -72,7 +75,6 @@ export class TransframeProvider<Frame> {
     });
 
     const method = this._options.api[message.method];
-    // TODO: change the api interface to accept a consumer id
     const result = await method(fromId, ...message.payload as unknown[]);
 
     // create the response and send it back
@@ -83,11 +85,4 @@ export class TransframeProvider<Frame> {
     reply(response);
   }
 
-}
-
-/**
- * TODO: create helper functions to create a provider for each interface type
- */
-export function createProvider(options: TransframeProviderOptions) {
-  // return new TransframeProvider(options);
 }
