@@ -29,12 +29,12 @@ export class IframeProviderInterface implements TransframeProviderInterface<HTML
 
       // the user will use this to reply to the consumer
       const replyFn: RPCReplyFunction = (message) => {
-        eventSource.postMessage(JSON.stringify(message), event.origin as any);
+        eventSource.postMessage(message, event.origin as any);
       };
 
       // call the message handler set by the user
       this._messageHandler(
-        JSON.parse(event.data),
+        event.data,
         replyFn,
         fromId
       );

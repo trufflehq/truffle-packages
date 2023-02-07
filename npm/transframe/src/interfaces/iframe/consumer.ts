@@ -13,7 +13,7 @@ export class IframeConsumerInterface implements TransframeConsumerInterface {
     this._isConnected = false;
     this._messageHandler = () => {};
     this._messageHandlerWrapper = (event) => {
-      this._messageHandler(JSON.parse(event.data));
+      this._messageHandler(event.data);
     };
   }
 
@@ -44,11 +44,11 @@ export class IframeConsumerInterface implements TransframeConsumerInterface {
       // if they specified a list of allowed origins, only send the message to those origins;
       // we don't know which origin the provider is on, so we have to send it to all of them
       this._options.allowedOrigins.forEach((origin) => {
-        providerWindow.postMessage(JSON.stringify(message), origin);
+        providerWindow.postMessage(message, origin);
       });
     } else {
       // if they didn't specify a list of allowed origins, send the message to all origins
-      providerWindow.postMessage(JSON.stringify(message), "*");
+      providerWindow.postMessage(message, "*");
     }
   }
 
