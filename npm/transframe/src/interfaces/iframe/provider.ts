@@ -14,7 +14,7 @@ export class IframeProviderInterface implements TransframeProviderInterface<HTML
     this._messageHandlerWrapper = (event) => {
 
       // only process messages from the allowed origins
-      if (!this._options?.allowedOrigins?.includes(event.origin)) {
+      if (this._options?.allowedOrigins && !this._options.allowedOrigins.includes(event.origin)) {
         return;
       }
 
