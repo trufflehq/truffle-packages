@@ -59,7 +59,7 @@ export class IframeProviderInterface implements TransframeProviderInterface<HTML
     this._messageHandler = callback;
   }
 
-  public registerFrame(frame: HTMLIFrameElement | null | undefined, id: string) {
+  public registerFrame(frame: HTMLIFrameElement, id: string) {
     if (!frame?.contentWindow) {
       throw new Error("Frame must have a contentWindow");
     }
