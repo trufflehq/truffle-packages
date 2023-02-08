@@ -42,6 +42,10 @@ export class TransframeProvider<Frame> {
     this._interface.close();
   }
 
+  public get api() {
+    return this._options.api;
+  }
+
   private _messageHandler = async (
     message: unknown,
     reply: RPCReplyFunction,
