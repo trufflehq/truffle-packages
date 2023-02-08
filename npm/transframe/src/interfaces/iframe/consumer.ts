@@ -13,6 +13,11 @@ export class IframeConsumerInterface implements TransframeConsumerInterface {
     this._isConnected = false;
     this._messageHandler = () => {};
     this._messageHandlerWrapper = (event) => {
+      // only process messages from the allowed origins
+      if (this._options?.allowedOrigins && !this._options.allowedOrigins.includes(event.origin)) {
+        return;
+      }
+
       this._messageHandler(event.data);
     };
   }
