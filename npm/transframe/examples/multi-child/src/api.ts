@@ -25,5 +25,8 @@ export const api = createProviderApi({
   registerGlobalCallback (fromId, callback) {
     println(`Registering global callback for ${fromId}`);
     globalCallbacks.push(callback);
+  },
+  throwError() {
+    throw new Error("This is an error!");
   }
 });

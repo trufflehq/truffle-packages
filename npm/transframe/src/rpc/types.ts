@@ -53,6 +53,11 @@ export interface RPCResponse extends RPCMessage {
    * The result of the request
    */
   result: unknown;
+
+  /**
+   * Whether or not the request errored
+   */
+  error: boolean;
 }
 
 

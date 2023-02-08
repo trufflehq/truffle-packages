@@ -73,18 +73,31 @@ export class TransframeProvider<Frame> {
 
         // replace the placeholder with the callback function
         return callback;
+
       } else {
+        // if it's not a callback placeholder, just return the original param
         return param;
       }
     });
 
-    const method = this._options.api[message.method];
-    const result = await method(fromId, ...message.payload as unknown[]);
+    // call the method and get the result
+    const method = this._options.api[message.method] as (...args: unknown[]) => Promise<unknown>;
+    if (!method) return;
+
+    let didError = false;
+    let result: unknown;
+    try {
+      result = await method(fromId, ...message.payload as unknown[]);
+    } catch (err) {
+      didError = true;
+      result = err;
+    }
 
     // create the response and send it back
     const response = createRpcResponse({
       requestId: message.requestId,
       result,
+      error: didError
     });
     reply(response);
   }

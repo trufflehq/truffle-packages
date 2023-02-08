@@ -19,6 +19,7 @@ api.registerGlobalCallback(() => {
 
 const sayHelloButton = document.querySelector('#say-hello-button') as HTMLButtonElement;
 const getIdButton = document.querySelector('#get-id-button') as HTMLButtonElement;
+const throwErrorButton = document.querySelector('#throw-error-button') as HTMLButtonElement;
 
 sayHelloButton.addEventListener('click', async () => {
   const response = await api.sayHello();
@@ -28,4 +29,12 @@ sayHelloButton.addEventListener('click', async () => {
 getIdButton.addEventListener('click', async () => {
   const response = await api.getId();
   println(`From parent: ${response}`);
+});
+
+throwErrorButton.addEventListener('click', async () => {
+  try {
+    await api.throwError();
+  } catch (error) {
+    println(`Error from parent: ${(error as any).message}`);
+  }
 });

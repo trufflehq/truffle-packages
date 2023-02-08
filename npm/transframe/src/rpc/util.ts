@@ -28,15 +28,18 @@ export function createRpcRequest ({
 export function createRpcResponse ({
   requestId,
   result,
+  error = false,
 }: {
   requestId: string;
   result: unknown;
+  error?: boolean;
 }): RPCResponse {
   return {
     _transframe: true,
     type: RPCMessageType.RPC_RESPONSE,
     requestId,
     result,
+    error,
   };
 }
 

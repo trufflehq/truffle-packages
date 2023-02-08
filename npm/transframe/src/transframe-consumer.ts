@@ -3,13 +3,17 @@ import { createRpcCallbackPlaceholder, createRpcRequest, isRPCCallbackCall, isRP
 import { TransframeConsumerApi, TransframeConsumerOptions, TransframeSourceApi } from "./types";
 import { generateId } from "./util";
 
+const DEFAULT_API_CALL_TIMEOUT = 5000;
+
+// a tuple of resolve and reject functions
+type ResolveReject = [Function, Function];
 export class TransframeConsumer<T extends TransframeSourceApi> {
 
   private _options?: TransframeConsumerOptions<T>;
   private _api: TransframeConsumerApi<T>;
 
-  // map of request ids to callbacks; used to resolve promises
-  private _requestCallbacks: Map<string, Function> = new Map();
+  // map of request ids to callbacks; used to resolve/reject promises
+  private _requestCallbacks: Map<string, ResolveReject> = new Map();
 
   // if the user passes a callback in an api call, it'll be stored here
   // since we can't actually pass a function over the wire. The parent
@@ -64,11 +68,15 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
       // in this case we're just receiving a response from a request we made
 
       // get the callback for the request
-      const requestCallback = this._requestCallbacks.get(message.requestId);
-      if (!requestCallback) return;
+      const [resolve, reject] = this._requestCallbacks.get(message.requestId) ?? [];
+      if (!(resolve && reject)) return;
   
-      // call the callback with the result
-      requestCallback(message.result);
+      // check if we got an error, and reject or resolve the promise
+      if (message.error) {
+        reject(message.result);
+      } else {
+        resolve(message.result);
+      }
   
       // remove the callback
       this._requestCallbacks.delete(message.requestId);
@@ -112,12 +120,20 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
     const rpcRequest = createRpcRequest({ method: method as string, payload });
     this._interface.sendMessage(rpcRequest);
 
-    // wait for the response;
-    // this will be resolved by the message handler
-    // TODO: add a timeout and possibly error handling
-    const result = await new Promise((resolve, _reject) => {
-      this._requestCallbacks.set(rpcRequest.requestId, resolve);
-    })
+    // wait for the response
+    const result = await Promise.race([
+      // wait for the response
+      new Promise((resolve, reject) => {
+        this._requestCallbacks.set(rpcRequest.requestId, [resolve, reject]);
+      }),
+
+      // race with a timeout
+      new Promise((_, reject) => {
+        setTimeout(() => {
+          reject(new Error("RPC request timed out. Check that you can connect to the provider and that the method exists."));
+        }, this._options?.apiCallTimeout ?? DEFAULT_API_CALL_TIMEOUT);
+      })
+    ])
 
     return result as ReturnType<T[MethodName]>;
   }

@@ -46,4 +46,10 @@ export interface TransframeConsumerOptions<T extends TransframeSourceApi> {
    * If you set this to false, you will have to call the connect method manually.
    */
   connectImmediately?: boolean;
+
+  /**
+   * The number of milliseconds to wait for a response from the provider.
+   * Default is 5000.
+   */
+  apiCallTimeout?: number;
 }
