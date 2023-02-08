@@ -1,5 +1,5 @@
 /**
- * Creates a fake iframe element from a window object.
+ * Creates a fake iframe object from a window object.
  * This is to be passed to TransframeProvider.registerFrame.
  */
 export function fromWindow(_window: Window) {
