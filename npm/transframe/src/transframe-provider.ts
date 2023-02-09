@@ -60,7 +60,7 @@ export class TransframeProvider<Frame> {
 
     // filter out any callback placeholders and replace them
     // with methods that make rpc calls back to the consumer
-    message.payload = (message.payload as unknown[]).map((param) => {
+    const modifiedPayload = (message.payload as unknown[]).map((param) => {
       if (isRPCCallbackPlaceholder(param)) {
         const callbackId = param.callbackId;
 
@@ -87,7 +87,7 @@ export class TransframeProvider<Frame> {
     let didError = false;
     let result: unknown;
     try {
-      result = await method(fromId, ...message.payload as unknown[]);
+      result = await method(fromId, ...modifiedPayload);
     } catch (err) {
       didError = true;
       result = err;

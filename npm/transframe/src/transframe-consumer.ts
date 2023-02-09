@@ -102,7 +102,7 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
   ) => {
 
     // filter out any callbacks and store them
-    payload = payload.map((param) => {
+    const modifiedPayload = payload.map((param) => {
       if (typeof param === "function") {
 
         // store the callback
@@ -117,7 +117,7 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
     }) as Parameters<TransframeConsumerApi<T>[MethodName]>;
 
     // create the request and send it
-    const rpcRequest = createRpcRequest({ method: method as string, payload });
+    const rpcRequest = createRpcRequest({ method: method as string, payload: modifiedPayload });
     this._interface.sendMessage(rpcRequest);
 
     // wait for the response
