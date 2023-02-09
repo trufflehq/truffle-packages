@@ -10,6 +10,7 @@ import { useSignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
 import { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 import Icon from "https://tfl.dev/@truffle/ui@~0.2.0/components/legacy/icon/icon.tsx";
 
+import PatreonIframe from "../patreon-iframe/patreon-iframe.tsx";
 import styleSheet from "./premium-content-embed.scss.js";
 
 const CLOSE_ICON_PATH =
@@ -39,9 +40,11 @@ mutation DatapointIncrementMetric ($input: DatapointIncrementMetricInput!) {
   datapointIncrementMetric(input: $input) { isUpdated }
 }`;
 
-function Embed({ url, title, previewImageSrc }) {
+function Embed({ patreonUsername, title, previewImageSrc }) {
   useStyleSheet(styleSheet);
   useGoogleFontLoader(() => ["Roboto"]);
+  const tierName$ = useSignal("");
+  const tierName = useSelector(() => tierName$.get());
 
   const [_incrementMetricPayload, executeDatapointIncrementMetricMutation] =
     useMutation(
@@ -71,10 +74,20 @@ function Embed({ url, title, previewImageSrc }) {
         count: 1,
       },
     });
+
+    jumper.call("comms.onMessage", (message) => {
+      if (message?.type === "patreon.tierName") {
+        tierName$.set(message.body);
+      }
+    });
   }, []);
 
   const recordClick = (e) => {
     e?.stopPropagation();
+
+    // FIXME: set cookie for 1 hour and see if they join patreon
+    // setCookie("patreon-click", "true", 1);
+
     executeDatapointIncrementMetricMutation({
       input: {
         metricSlug: "patreon-premium-content-embed-clicks",
@@ -89,70 +102,85 @@ function Embed({ url, title, previewImageSrc }) {
     isCollapsed$.set(!isCollapsed$.get());
   };
 
+  const url = `https://www.patreon.com/${patreonUsername}`;
+
   return (
-    <a
-      className={`c-premium-content-embed ${isCollapsed ? "is-collapsed" : ""}`}
-      href={url}
-      target="_blank"
-      onClick={recordClick}
-    >
-      <div className="top">
-        <div className="icon">
-          <Icon
-            icon={PATREON_ICON_PATH}
-            size="24px"
-            color="#FF424D"
-          />
-        </div>
-        <div className="info">
-          <div className="title">Premium content</div>
-          <div className="description">
-            Unlock this video by becoming a patron
-          </div>
-        </div>
-        <div className="close">
-          <Icon
-            icon={isCollapsed ? EXPAND_ICON_PATH : CLOSE_ICON_PATH}
-            onclick={toggle}
-            size="18px"
-            color={"#FFFFFF"}
-          />
-        </div>
-      </div>
-      <div className="content">
-        <div className="preview">
-          <div
-            className="background"
-            style={{
-              backgroundImage: `url(${previewImageSrc})`,
-            }}
-          >
-          </div>
-          <div className="lock">
-            <LockIcon />
-          </div>
-          <a
-            className="button"
-            href={url}
-            target="_blank"
-            onClick={recordClick}
-          >
+    <>
+      <PatreonIframe patreonUsername={patreonUsername} />
+      <a
+        className={`c-premium-content-embed ${
+          isCollapsed ? "is-collapsed" : ""
+        }`}
+        href={url}
+        target="_blank"
+        onClick={recordClick}
+      >
+        <div className="top">
+          <div className="icon">
             <Icon
-              icon={OPEN_IN_NEW_ICON_PATH}
+              icon={PATREON_ICON_PATH}
               size="24px"
-              color="#000"
+              color="#FF424D"
             />
-            Watch now
-          </a>
-        </div>
-        <div className="info">
-          <div className="title">
-            {title}
           </div>
-          {/* <div className="description">129 likes · 3 days ago</div> */}
+          <div className="info">
+            <div className="title">Premium content</div>
+            {!tierName
+              ? (
+                <div className="description">
+                  Unlock this video by becoming a patron
+                </div>
+              )
+              : null}
+          </div>
+          <div className="close">
+            <Icon
+              icon={isCollapsed ? EXPAND_ICON_PATH : CLOSE_ICON_PATH}
+              onclick={toggle}
+              size="18px"
+              color={"#FFFFFF"}
+            />
+          </div>
         </div>
-      </div>
-    </a>
+        <div className="content">
+          <div className="preview">
+            <div
+              className="background"
+              style={{
+                backgroundImage: `url(${previewImageSrc})`,
+              }}
+            >
+            </div>
+            {!tierName
+              ? (
+                <div className="lock">
+                  <LockIcon />
+                </div>
+              )
+              : null}
+            <a
+              className="button"
+              href={url}
+              target="_blank"
+              onClick={recordClick}
+            >
+              <Icon
+                icon={OPEN_IN_NEW_ICON_PATH}
+                size="24px"
+                color="#000"
+              />
+              Watch now
+            </a>
+          </div>
+          <div className="info">
+            <div className="title">
+              {title}
+            </div>
+            {/* <div className="description">129 likes · 3 days ago</div> */}
+          </div>
+        </div>
+      </a>
+    </>
   );
 }
 
