@@ -5,7 +5,7 @@ import {
   signal,
   useSignal,
 } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
-import { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.21.0/react";
+import { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 
 import styleSheet from "./subscribe-iframe.scss.js";
 
@@ -31,12 +31,14 @@ function SubscribeFrame(
 
   return (
     <>
-      {isReady && (
-        <iframe
-          className={`c-subscribe-iframe${isVisible ? " is-visible" : ""}`}
-          src={`https://www.twitch.tv/subs/${channelName}?embed`}
-        />
-      )}
+      {isReady
+        ? (
+          <iframe
+            className={`c-subscribe-iframe${isVisible ? " is-visible" : ""}`}
+            src={`https://www.twitch.tv/subs/${channelName}?embed`}
+          />
+        )
+        : null}
     </>
   );
 }

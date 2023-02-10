@@ -7,7 +7,7 @@ import {
   useMutation,
 } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 import { useSignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
-import { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.21.0/react";
+import { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 
 import styleSheet from "./prime-button-youtube.scss.js";
 import SubscribeFrame from "../subscribe-iframe/subscribe-iframe.tsx";
@@ -49,17 +49,14 @@ export default function PrimeButtonYoutube(
     DATAPOINT_INCREMENT_UNIQUE_MUTATION,
   );
 
-  const [canPrimeSubscribe, setCanPrimeSubscribe] = useState(true); // FIXME: false
+  const [canPrimeSubscribe, setCanPrimeSubscribe] = useState(false);
   const isIframeVisible$ = useSignal(false);
   const isIframeVisible = useSelector(() => isIframeVisible$.get());
 
   useEffect(() => {
     // this will come from the /twitch route
     jumper.call("comms.onMessage", (message) => {
-      const canPrimeSubscribe =
-        message?.type === "twitch.subscribeButtonUser" &&
-        message.body?.[0]?.data?.user?.self?.canPrimeSubscribe;
-      if (canPrimeSubscribe) {
+      if (message?.type === "twitch.canPrimeSubscribe") {
         setCanPrimeSubscribe(true);
       }
     });
