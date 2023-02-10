@@ -139,6 +139,9 @@ export default function DraggableMenu({
   };
 
   const onPressedMouseUp = (e: React.MouseEvent, dragInfo: DragInfo) => {
+    setTimeout(() => {
+      setDragging(false);
+    }, 3000)
     updateMenuPosition(getMenuMousePosition(e));
     updateDimensions();
 
@@ -165,6 +168,7 @@ export default function DraggableMenu({
   };
 
   const onDragStart = () => {
+    setDragging(true);
     setIsClosed();
     updateDimensions({
       transition: "none",
@@ -192,52 +196,79 @@ export default function DraggableMenu({
   const dimensions = getDimensions(menuState);
   const defaultPosition = { x: 0, y: 0 };
 
-  const [hideMenu, setHideMenu] = useState(false);
+  const [controlsHidden, setControlsHidden] = useState(false);
+  const [hover, setHover] = useState(false);
+  const [dragging, setDragging] = useState(false);
 
 
   useEffect(() => {
-    console.log("Calling jumper")
     jumper.call(
         "layout.listenForElements",
         {
           listenElementLayoutConfigSteps: [
             {
               action: "querySelector",
-              value: "#movie_player.ytp-big-mode",
+              value: "#movie_player",
             },
           ],
           observerConfig: { attributes: true, attributeFilter: ["class"], childList: false, subtree: false },
-          targetQuerySelector: "#movie_player.ytp-big-mode",
+          targetQuerySelector: "#movie_player.ytp-big-mode:not(.ytp-progress-bar-hover)",
           // shouldCleanupMutatedElements: true,
         },
         (matches) => {
-          const controlsHidden = matches[0].attributes.class.includes("ytp-autohide");
+          const mark_start = performance.now();
+          //
+          // const controlsHidden = matches[0].attributes.class.includes("ytp-autohide");
+          // console.log(controlsHidden !== menuHidden)
 
-          // if (hideMenu !== controlsHidden) {
-          setHideMenu(controlsHidden)
+          // console.log(controlsHidden)
+          // console.log(menuHidden)
+          // if ((controlsHidden !== menuHidden)) {
+            setControlsHidden(matches[0].attributes.class.includes("ytp-autohide"))
 
           // }
-
+          console.log(performance.now() - mark_start);
         }
     );
+
   },[])
 
+  const hiddenMenu = {
+    base: {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+    },
+    modifiers: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      transition: "none"
+    }
+  }
+
   return (
-    <Draggable
-      requiredClassName="c-extension-icon"
-      dimensions={dimensions}
-      defaultPosition={defaultPosition}
-      onPressedMouseUp={onPressedMouseUp}
-      onDragStart={onDragStart}
-      translateFn={useTranslate}
-      updateParentPosition={useUpdateDraggableMenuPosition}
-      createClipPath={createClipPath}
-      resizeObserver={useWindowResizeObserver}
-      initializePosition={initializePosition}
-    >
-      <div hidden={hideMenu} className={className}>
-        <div className="menu">{children}</div>
-      </div>
-    </Draggable>
+            <Draggable
+                requiredClassName="c-extension-icon"
+                dimensions={dimensions}
+                hidden={!hover && !isOpen && !dragging && controlsHidden }
+                defaultPosition={defaultPosition}
+                onPressedMouseUp={onPressedMouseUp}
+                onDragStart={onDragStart}
+                translateFn={useTranslate}
+                updateParentPosition={useUpdateDraggableMenuPosition}
+                createClipPath={createClipPath}
+                resizeObserver={useWindowResizeObserver}
+                initializePosition={initializePosition}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setTimeout(() => {setHover(false)}, 500)}
+            >
+                <div  className={className}>
+                  <div  className="menu">{children}</div>
+                </div>
+            </Draggable>
+
   );
 }

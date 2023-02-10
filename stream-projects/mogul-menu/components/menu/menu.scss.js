@@ -151,6 +151,7 @@ html, body {
     }
     
     border-radius: 2px;
+    border-color: white;
     box-sizing: border-box;
     background: var(--mm-color-bg-primary);
     color: var(--mm-color-text-bg-primary);
