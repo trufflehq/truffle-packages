@@ -39,7 +39,14 @@ export class IframeConsumerInterface implements TransframeConsumerInterface {
   public sendMessage(message: RPCRequest) {
 
     // default to using the top most window as the provider unless the user specified otherwise
-    const providerWindow = this._options?.useDirectParent ? window.parent : window.top;
+    let providerWindow: Window | null;
+    if (this._options?.providerWindow) {
+      providerWindow = this._options.providerWindow;
+    } else if (this._options?.useDirectParent) {
+      providerWindow = window.parent;
+    } else {
+      providerWindow = window.top;
+    }
 
     if (!providerWindow) {
       throw new Error("No parent window to send message to");
@@ -49,7 +56,8 @@ export class IframeConsumerInterface implements TransframeConsumerInterface {
       // if they specified a list of allowed origins, only send the message to those origins;
       // we don't know which origin the provider is on, so we have to send it to all of them
       this._options.allowedOrigins.forEach((origin) => {
-        providerWindow.postMessage(message, origin);
+        // I don't know why, but typescript thinks providerWindow can be null here
+        providerWindow!.postMessage(message, origin);
       });
     } else {
       // if they didn't specify a list of allowed origins, send the message to all origins
