@@ -13,6 +13,14 @@ const PRIME_BUTTON_LAYOUT_CONFIG_STEPS = [
     value: ".support-panel > div:last-child > div:last-child > div:last-child",
   },
 ];
+const CSS_FOR_TWITCH = `
+[data-test-selector="support-panel__benefits-wrapper"] {
+  display: none;
+}
+[data-test-selector="support-panel__benefits-wrapper"] + div {
+  display: none !important;
+}
+`;
 
 // request needs to come from twitch frame, which is why this route exists
 // (this route is embedded in twitch embed)
@@ -25,35 +33,80 @@ export default function PrimeSubListener({ channelName }) {
       },
     });
 
+    jumper.call("layout.applyLayoutConfigSteps", {
+      layoutConfigSteps: [
+        {
+          action: "setStyleSheet",
+          value: {
+            id: "simpler-styles",
+            css: CSS_FOR_TWITCH,
+          },
+        },
+      ],
+    });
+
     jumper.call("layout.listenForElements", {
-      listenElementLayoutConfigSteps: PRIME_BUTTON_LAYOUT_CONFIG_STEPS,
-      targetQuerySelector: "button:last-child",
+      listenElementLayoutConfigSteps: [
+        {
+          action: "querySelector",
+          value: "body",
+        },
+      ],
+      targetQuerySelector: ".tw-checkbox__input",
     }, (matches) => {
-      const isPrimeButton =
-        matches?.[0]?.innerText?.toLowerCase().indexOf("prime") !== -1;
-      if (isPrimeButton) {
-        addPrimeButtonEventListener(matches?.[0]?.id);
+      const id = matches?.[0]?.id;
+      if (id) {
+        // send for our /youtube iframe to use the result
+        jumper.call("comms.postMessage", {
+          type: "twitch.canPrimeSubscribe",
+          body: true,
+        });
+        // check the prime checkbox
+        jumper.call("layout.click", {
+          targetElementLayoutConfigSteps: [
+            {
+              action: "querySelector",
+              value: `[data-truffle-id=${id}]`,
+            },
+          ],
+        });
       }
     });
+
+    addPrimeButtonEventListener();
   }, []);
 
   return <></>;
 }
 
-function addPrimeButtonEventListener(id: string) {
-  jumper.call("layout.addEventListener", {
-    eventName: "click",
-    listenElementLayoutConfigSteps: [
-      {
-        action: "querySelector",
-        value: `[data-truffle-id=${id}]`,
-      },
-    ],
-  }, () => {
-    mutation(DATAPOINT_INCREMENT_UNIQUE_MUTATION, {
-      input: {
-        metricSlug: "unique-prime-button-subscriptions",
-      },
-    });
+function addPrimeButtonEventListener() {
+  // mutation observer in case element isn't ready immediately
+  jumper.call("layout.listenForElements", {
+    listenElementLayoutConfigSteps: PRIME_BUTTON_LAYOUT_CONFIG_STEPS,
+    targetQuerySelector: "button:last-child",
+    observerConfig: { childList: true },
+  }, (matches) => {
+    const isPrimeButton =
+      matches?.[0]?.innerText?.toLowerCase().indexOf("prime") !== -1;
+    if (isPrimeButton) {
+      const id = matches?.[0]?.id;
+      const onClick = () => {
+        mutation(DATAPOINT_INCREMENT_UNIQUE_MUTATION, {
+          input: {
+            metricSlug: "unique-prime-button-subscriptions",
+          },
+        });
+      };
+      // when this button is clicked, record an event
+      jumper.call("layout.addEventListener", {
+        eventName: "click",
+        targetElementLayoutConfigSteps: [
+          {
+            action: "querySelector",
+            value: `[data-truffle-id=${id}]`,
+          },
+        ],
+      }, onClick);
+    }
   });
 }

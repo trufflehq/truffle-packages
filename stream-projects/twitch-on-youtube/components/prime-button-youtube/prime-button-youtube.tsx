@@ -6,9 +6,11 @@ import {
   gql,
   useMutation,
 } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
-import { previewSrc } from "https://tfl.dev/@truffle/raid@1.0.6/shared/util/stream-plat.ts";
+import { useSignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
+import { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.21.0/react";
 
 import styleSheet from "./prime-button-youtube.scss.js";
+import SubscribeFrame from "../subscribe-iframe/subscribe-iframe.tsx";
 
 // TODO: this package/route could probably be consolidated with twitch live embed route
 
@@ -20,13 +22,18 @@ const VISIBLE_STYLE = {
   background: "transparent",
 };
 
+const VISIBLE_WITH_IFRAME_STYLE = {
+  ...VISIBLE_STYLE,
+  height: "544px",
+};
+
 const HIDDEN_STYLE = {
   display: "none",
 };
 
-const DATAPOINT_INCREMENT_METRIC_MUTATION = gql`
-mutation DatapointIncrementMetric ($input: DatapointIncrementMetricInput!) {
-  datapointIncrementMetric(input: $input) { isUpdated }
+const DATAPOINT_INCREMENT_UNIQUE_MUTATION = gql`
+mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
+  datapointIncrementUnique(input: $input) { isUpdated }
 }`;
 
 export default function PrimeButtonYoutube(
@@ -38,58 +45,47 @@ export default function PrimeButtonYoutube(
   useStyleSheet(styleSheet);
   useGoogleFontLoader(() => ["Roboto"]);
 
-  const [_, executeDatapointIncrementMetricMutation] = useMutation(
-    DATAPOINT_INCREMENT_METRIC_MUTATION,
+  const [_, executeDatapointIncrementUniqueMutation] = useMutation(
+    DATAPOINT_INCREMENT_UNIQUE_MUTATION,
   );
 
-  const [canPrimeSubscribe, setCanPrimeSubscribe] = useState(false);
+  const [canPrimeSubscribe, setCanPrimeSubscribe] = useState(true); // FIXME: false
+  const isIframeVisible$ = useSignal(false);
+  const isIframeVisible = useSelector(() => isIframeVisible$.get());
 
   useEffect(() => {
     // this will come from the /twitch route
     jumper.call("comms.onMessage", (message) => {
-      if (message?.type === "twitch.subscribeButtonUser") {
-        console.log("res", message.body);
-
-        if (message.body?.[0]?.data?.user?.self?.canPrimeSubscribe) {
-          setCanPrimeSubscribe(true);
-        }
+      const canPrimeSubscribe =
+        message?.type === "twitch.subscribeButtonUser" &&
+        message.body?.[0]?.data?.user?.self?.canPrimeSubscribe;
+      if (canPrimeSubscribe) {
+        setCanPrimeSubscribe(true);
       }
     });
   }, []);
 
   useEffect(() => {
-    if (canPrimeSubscribe) {
-      executeDatapointIncrementMetricMutation({
-        input: {
-          metricSlug: "prime-button-views",
-          count: 1,
-        },
-      });
-    }
     jumper.call("layout.applyLayoutConfigSteps", {
       layoutConfigSteps: [
         { action: "useSubject" }, // start with our iframe
         {
           action: "setStyle",
-          value: canPrimeSubscribe ? VISIBLE_STYLE : HIDDEN_STYLE,
+          value: canPrimeSubscribe && isIframeVisible
+            ? VISIBLE_WITH_IFRAME_STYLE
+            : canPrimeSubscribe
+            ? VISIBLE_STYLE
+            : HIDDEN_STYLE,
         },
       ],
     });
-  }, [canPrimeSubscribe]);
+  }, [canPrimeSubscribe, isIframeVisible]);
 
-  // purposefully "undefined" so we don't double-load anyone's embedded stream when they're live
-  // don't want to inflate views / increase bandwidth.
-  // undefined account should always be a non-live stream
-  // NOTE: we only have 1 embed for this. sourceType: "twitchEmbed", sourceId "undefined"
-  const embedUrl = `${
-    previewSrc(`https://twitch.tv/undefined`)
-  }&muted=true&autoplay=false`;
-  const subscribeUrl = `https://www.twitch.tv/subs/${channelName}`;
-
-  const recordClick = () => {
-    executeDatapointIncrementMetricMutation({
+  const buttonClick = () => {
+    isIframeVisible$.set(!isIframeVisible$.get());
+    executeDatapointIncrementUniqueMutation({
       input: {
-        metricSlug: "prime-button-clicks",
+        metricSlug: "unique-prime-button-clicks",
         count: 1,
       },
     });
@@ -97,40 +93,39 @@ export default function PrimeButtonYoutube(
 
   return (
     <>
-      {!canPrimeSubscribe
-        ? <iframe src={embedUrl} width="600" height="600" className="iframe" />
-        : undefined}
-      {canPrimeSubscribe
-        ? (
-          <div className="c-youtube">
-            <div className="title">
-              Support {creatorName} with your FREE Twitch Prime sub
-            </div>
-            <a
-              href={subscribeUrl}
-              target="_blank"
-              className="button"
-              onClick={recordClick}
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon"
-              >
-                <path
-                  d="M18.1515 11.3757L23 6.6V17.3556L22.9863 17.3395C22.8645 18.6456 21.8005 19.6667 20.506 19.6667H3.49196C2.19815 19.6667 1.13463 18.6467 1.01183 17.3417L1 17.3556V6.6L5.83629 11.3637L11.9881 5L18.1515 11.3757Z"
-                  fill="#9147FF"
-                />
-              </svg>
-
-              Subscribe to {creatorName} for free
-            </a>
+      <div className="c-youtube">
+        <div className="prompt">
+          <div className="title">
+            Support {creatorName} with your FREE Twitch Prime sub
           </div>
-        )
-        : undefined}
+          <div
+            className="button"
+            onClick={buttonClick}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="icon"
+            >
+              <path
+                d="M18.1515 11.3757L23 6.6V17.3556L22.9863 17.3395C22.8645 18.6456 21.8005 19.6667 20.506 19.6667H3.49196C2.19815 19.6667 1.13463 18.6467 1.01183 17.3417L1 17.3556V6.6L5.83629 11.3637L11.9881 5L18.1515 11.3757Z"
+                fill="#9147FF"
+              />
+            </svg>
+
+            Subscribe to {creatorName} for free
+          </div>
+        </div>
+        <div className="iframe">
+          <SubscribeFrame
+            channelName={channelName}
+            isVisible$={isIframeVisible$}
+          />
+        </div>
+      </div>
     </>
   );
 }

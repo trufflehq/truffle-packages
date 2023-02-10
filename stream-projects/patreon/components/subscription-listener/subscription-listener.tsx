@@ -32,7 +32,7 @@ export default function SubscriptionListener({ patreonUsername }) {
 function addPrimeButtonEventListener(id: string) {
   jumper.call("layout.addEventListener", {
     eventName: "click",
-    listenElementLayoutConfigSteps: [
+    targetElementLayoutConfigSteps: [
       {
         action: "querySelector",
         value: `[data-truffle-id=${id}]`,

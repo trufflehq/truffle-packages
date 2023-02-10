@@ -9,37 +9,43 @@ export default scss`
   text-align: center;
   width: 100%;
   height: 100%;
-  padding: 20px 40px;
   box-sizing: border-box;
   background: #774AF0;
   color: #fff;
   border-radius: 10px;
   overflow: hidden;
+  border: 1px solid #774AF0;
+  display: flex;
+  flex-direction: column;
 
-  > .title {
-    margin-bottom: 12px;
-  }
+  > .prompt {
+    padding: 20px 32px;
 
-  > .button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    color: #774AF0;
-    border-radius: 30px;
-    padding: 6px 10px;
-    text-decoration: none;
-
-    &:hover {
-      background: #fafafa;
+    > .title {
+      margin-bottom: 12px;
     }
 
-    > .icon {
-      margin-right: 10px;
+    > .button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: #774AF0;
+      border-radius: 30px;
+      padding: 6px 10px;
+      cursor: pointer;
+
+      &:hover {
+        background: #fafafa;
+      }
+
+      > .icon {
+        margin-right: 10px;
+      }
     }
   }
-}
 
 .iframe {
-  visibility: hidden;
+  flex: 1;
+  }
 }`;
