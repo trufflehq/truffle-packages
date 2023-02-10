@@ -1,8 +1,8 @@
 export default {
-  name: "@truffle/patreon",
-  version: "0.5.36",
+  name: "@truffle/preact-helpers",
+  version: "0.1.0",
   apiUrl: "https://mycelium.truffle.vip/graphql",
-  description: "Patreon integration for Truffle",
+  description: "Helpers for building preact apps with Truffle",
   requestedPermissions: [],
   installActionRel: {},
 };
