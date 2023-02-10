@@ -7,42 +7,41 @@ mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
   datapointIncrementUnique(input: $input) { isUpdated }
 }`;
 
-const TIER_NAME_LAYOUT_CONFIG_STEPS = [
-  {
-    action: "querySelector",
-    value: "body",
-  },
-];
-
 // only reason react is necessary here is so we can pass the patreonUsername
 export default function SubscriptionListener({ patreonUsername }) {
   useEffect(() => {
-    // mutation(DATAPOINT_INCREMENT_UNIQUE_MUTATION, {
-    //   input: {
-    //     metricSlug: "unique-patreon-views",
-    //   },
-    // });
-
-    // TODO: get payment button and add event listener
+    jumper.call("layout.listenForElements", {
+      listenElementLayoutConfigSteps: [
+        {
+          action: "querySelector",
+          value: "body",
+        },
+      ],
+      targetQuerySelector: "#renderPageContentWrapper button:last-child",
+      observerConfig: { childList: true },
+    }, (matches) => {
+      const id = matches?.[0]?.id;
+      if (id) {
+        const onClick = () => {
+          mutation(DATAPOINT_INCREMENT_UNIQUE_MUTATION, {
+            input: {
+              metricSlug: "unique-patreon-subscriptions",
+            },
+          });
+        };
+        // when this button is clicked, record an event
+        jumper.call("layout.addEventListener", {
+          eventName: "click",
+          targetElementLayoutConfigSteps: [
+            {
+              action: "querySelector",
+              value: `[data-truffle-id=${id}]`,
+            },
+          ],
+        }, onClick);
+      }
+    });
   }, []);
 
   return <></>;
-}
-
-function addPrimeButtonEventListener(id: string) {
-  jumper.call("layout.addEventListener", {
-    eventName: "click",
-    targetElementLayoutConfigSteps: [
-      {
-        action: "querySelector",
-        value: `[data-truffle-id=${id}]`,
-      },
-    ],
-  }, () => {
-    mutation(DATAPOINT_INCREMENT_UNIQUE_MUTATION, {
-      input: {
-        metricSlug: "unique-prime-button-subscriptions",
-      },
-    });
-  });
 }
