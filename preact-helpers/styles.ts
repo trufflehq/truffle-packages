@@ -1,4 +1,4 @@
-import { h } from "https://npm.tfl.dev/preact";
+import { Fragment, h } from "https://npm.tfl.dev/preact";
 
 export function css(strings: TemplateStringsArray, ...values: any[]) {
   const cssString = strings.reduce((acc, str, i) => {
@@ -8,6 +8,9 @@ export function css(strings: TemplateStringsArray, ...values: any[]) {
   return cssString;
 }
 
-export function StyleSheet({ css }) {
-  return h("style", null, css);
+export function Styled({ css, children }) {
+  return h(Fragment, null, [
+    h("style", null, css),
+    h(Fragment, null, children),
+  ]);
 }
