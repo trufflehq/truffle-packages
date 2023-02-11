@@ -14,7 +14,7 @@ export function defineAndGetWebComponent(
   const webComponent = customElements.get(tagName);
 
   return {
-    libSlug: "pract-custom-element",
+    libSlug: "preact-custom-element",
     libSemver: "1",
     webComponent,
   };
