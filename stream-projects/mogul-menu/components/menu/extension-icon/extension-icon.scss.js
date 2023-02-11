@@ -40,18 +40,23 @@ export default scss`
 }
 
 .c-extension-icon {
-  cursor: pointer;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  background-color: black;  
-  background-size: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  flex-shrink: 0;
-  display: inline-flex;
-  width: 92px;
-  height: 48px;
-  transition: box-shadow 0.25s;
-  z-index: 1000000;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 2px;
+    border: 2px solid white;
+    border-radius: 4px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    background-color: black;  
+    background-size: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    flex-shrink: 0;
+    display: inline-flex;
+    width: 92px;
+    height: 48px;
+    transition: box-shadow 0.25s;
+    z-index: 1000000;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.3);

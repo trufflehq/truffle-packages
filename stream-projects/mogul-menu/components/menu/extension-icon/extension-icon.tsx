@@ -75,18 +75,17 @@ export default function ExtensionIcon() {
     //     });
     // }
 
+    const menuOpenStyles = {
+        justifyContent: 'space-between',
+        alignItems: 'left',
+        paddingLeft: 0,
+        width: 48,
+        borderWidth: 0
+    }
   return (
       <div
           className={`c-extension-icon ${classKebab({ hasNotification })}`}
-          style={{
-              justifyContent: 'space-between',
-              alignItems: menuOpen ? 'left': 'center',
-              paddingLeft: menuOpen ? 0 : 4,
-              width: menuOpen ? 48 : 92,
-              border: "solid white",
-              borderWidth: 2
-
-          }}
+          style={{...(menuOpen && menuOpenStyles)}}
           onClick={onExtensionIconClick}
       >
           <img
