@@ -9,7 +9,7 @@
 **Packages**  
 [@truffle/router@`1.0.0`](./router) - Framework-agnostic fs router  
 [@truffle/events@`0.0.1`](./events) - Utilities for handling webhooks from Truffle  
-[@truffle/distribute@`2.0.21`](./distribute) - Wrappers to create web components from various frameworks  
+[@truffle/distribute@`2.0.22`](./distribute) - Wrappers to create web components from various frameworks  
 [@truffle/global-context@`1.0.0`](./global-context) - Truffle Global Context to share info between packages  
 [@truffle/config@`1.0.0`](./config) - Env/API config  
 [@truffle/third-party-oauth@`2.0.37`](./third-party-oauth) - Login and other auth utilities  
