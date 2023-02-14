@@ -40,14 +40,15 @@ export default scss`
 }
 
 .c-extension-icon {
+    border-radius: 4px;
+    border: 1px solid white;
     justify-content: space-between;
     align-items: center;
-    padding-left: 2px;
-    border: 2px solid white;
-    border-radius: 4px;
+    padding-left: 3px;
+    background-clip: border-box;
     cursor: pointer;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    background-color: black;  
+    background-color: transparent;  
     background-size: 100%;
     background-color: rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
@@ -68,9 +69,5 @@ export default scss`
   }
 }
 
-.c-extension-icon {
-  background-color: var(--primary-base);
-  border-radius: 0px;
-  position: relative;
-}
+
 `;
