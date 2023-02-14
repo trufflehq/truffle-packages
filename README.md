@@ -9,7 +9,7 @@
 **Packages**  
 [@truffle/router@`1.0.0`](./router) - Framework-agnostic fs router  
 [@truffle/events@`0.0.1`](./events) - Utilities for handling webhooks from Truffle  
-[@truffle/distribute@`2.0.21`](./distribute) - Wrappers to create web components from various frameworks  
+[@truffle/distribute@`2.0.22`](./distribute) - Wrappers to create web components from various frameworks  
 [@truffle/global-context@`1.0.0`](./global-context) - Truffle Global Context to share info between packages  
 [@truffle/config@`1.0.0`](./config) - Env/API config  
 [@truffle/third-party-oauth@`2.0.37`](./third-party-oauth) - Login and other auth utilities  
@@ -20,7 +20,8 @@
 [@truffle/state@`0.0.12`](./state) - Signals coupled with Legend state for React  
 [@truffle/youtube-js@`0.5.9`](./youtube-js) - Truffle fork of [Youtube.js](https://github.com/LuanRT/YouTube.js)  
 [@truffle/functions@`0.0.6`](./functions) - Utilities for creating Truffle Edge Functions.  
-[@truffle/shared-contexts@`1.0.0`](./shared-contexts) - Shared Contexts
+[@truffle/shared-contexts@`1.0.0`](./shared-contexts) - Shared Contexts  
+[@truffle/preact-helpers@`0.1.0`](./preact-helpers) - Helpers for building preact apps with Truffle
 
 **Examples**  
 [@truffle/mutation-observer@`0.4.2`](./examples/mutation-observer) - Mutation Observer example  
@@ -43,8 +44,9 @@
 [@truffle/chat-theme@`0.0.45`](./stream-projects/chat-theme) - Theme for chat  
 [@truffle/mogul-menu@`3.0.151`](./stream-projects/mogul-menu) - Menu for channel points, predictions, and activities  
 [@truffle/stream-feedback@`0.5.30`](./stream-projects/stream-feedback) - Stream Feedback  
-[@truffle/twitch-on-youtube@`0.5.42`](./stream-projects/twitch-on-youtube) - Twitch on YouTube  
-[@truffle/live-embed@`0.5.48`](./stream-projects/live-embed) - Shows a twitch live stream on a creator's youtube channel.
+[@truffle/twitch-on-youtube@`0.6.5`](./stream-projects/twitch-on-youtube) - Twitch on YouTube  
+[@truffle/live-embed@`0.5.48`](./stream-projects/live-embed) - Shows a twitch live stream on a creator's youtube channel.  
+[@truffle/patreon@`0.5.36`](./stream-projects/patreon) - Patreon integration for Truffle
 
 <!-- END PACKAGES -->
 

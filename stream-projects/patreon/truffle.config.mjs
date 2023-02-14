@@ -1,8 +1,8 @@
 export default {
-  name: "@truffle/twitch-on-youtube",
-  version: "0.6.5",
+  name: "@truffle/patreon",
+  version: "0.5.36",
   apiUrl: "https://mycelium.truffle.vip/graphql",
-  description: "Twitch on YouTube",
+  description: "Patreon integration for Truffle",
   requestedPermissions: [],
   installActionRel: {},
 };

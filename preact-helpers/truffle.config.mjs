@@ -1,8 +1,8 @@
 export default {
-  name: "@truffle/twitch-on-youtube",
-  version: "0.6.5",
+  name: "@truffle/preact-helpers",
+  version: "0.1.0",
   apiUrl: "https://mycelium.truffle.vip/graphql",
-  description: "Twitch on YouTube",
+  description: "Helpers for building preact apps with Truffle",
   requestedPermissions: [],
   installActionRel: {},
 };
