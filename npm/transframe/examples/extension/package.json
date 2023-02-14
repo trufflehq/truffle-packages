@@ -43,7 +43,7 @@
     "puppeteer-extra": "^3.2.3",
     "puppeteer-extra-plugin-stealth": "^2.9.0",
     "rollup": "^2.77.0",
-    "rollup-plugin-chrome-extension": "trufflehq/rollup-plugin-chrome-package",
+    "rollup-plugin-chrome-extension": "^3.6.10",
     "rollup-plugin-empty-dir": "^1.0.5",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-terser": "^7.0.2",

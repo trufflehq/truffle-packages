@@ -15,7 +15,6 @@ export class BackgroundScriptConsumerInterface implements TransframeConsumerInte
   }
 
   private _messageHandlerWrapper = (message: unknown) => {
-    console.log('consumer receiving message', message)
     this._messageHandler(message);
   }
 

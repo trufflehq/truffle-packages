@@ -1,11 +1,4 @@
 const manifest: chrome.runtime.ManifestV2 = {
-  browser_specific_settings: {
-    gecko: {
-      id: 'test@test.com',
-      strict_min_version: '89.0',
-      update_url: '',
-    },
-  },
   name: 'test-webextension',
   manifest_version: 2,
   version: process.env.npm_package_version || '',
@@ -43,7 +36,7 @@ const manifest: chrome.runtime.ManifestV2 = {
     'http://*/*',
     'https://*/*',
   ],
-  web_accessible_resources: [],
+  // web_accessible_resources: [],
 };
 
 export default manifest;

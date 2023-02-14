@@ -1,10 +1,4 @@
-type ManifestV3 = Omit<chrome.runtime.ManifestV3, 'permissions'> & {
-  permissions: (
-    | chrome.runtime.ManifestPermissions
-    // definitely-typed doesn't have this yet
-    | 'declarativeNetRequestWithHostAccess'
-  )[];
-};
+type ManifestV3 = chrome.runtime.ManifestV3;
 
 const manifest: ManifestV3 = {
   name: 'test-webextension',
@@ -37,11 +31,7 @@ const manifest: ManifestV3 = {
     'storage',
     'unlimitedStorage',
     'gcm',
-    'notifications',
-    // this lets us modify headers for sites we have host_permissions for
-    // it does not add an additional warning to the user.
-    // declarativeNetRequest does add an additional warning ("Block content on any page")
-    'declarativeNetRequestWithHostAccess',
+    'notifications'
   ],
   host_permissions: ['http://*/*', 'https://*/*'],
   web_accessible_resources: [],

@@ -1,6 +1,6 @@
 {
   "name": "@trufflehq/transframe",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A library for creating apis for frames",
   "keywords": [
     "truffle"
@@ -16,24 +16,6 @@
   "files": [
     "dist"
   ],
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
-      "types": "./dist/esm/index.d.ts"
-    },
-    "./iframe": {
-      "import": "./dist/esm/interfaces/iframe/index.js",
-      "require": "./dist/cjs/interfaces/iframe/index.js",
-      "types": "./dist/esm/interfaces/iframe/index.d.ts"
-    },
-    "./background-script": {
-      "import": "./dist/esm/interfaces/background-script/index.js",
-      "require": "./dist/cjs/interfaces/background-script/index.js",
-      "types": "./dist/esm/interfaces/background-script/index.d.ts"
-    }
-  },
   "scripts": {
     "clean": "rm -rf dist",
     "build:esm": "tsc -p tsconfig/tsconfig.esm.json",
