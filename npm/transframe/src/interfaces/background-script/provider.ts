@@ -8,7 +8,6 @@ export class BackgroundScriptProviderInterface implements TransframeProviderInte
   private _messageHandler: (message: unknown, reply: RPCReplyFunction, fromId?: string) => void = () => {};
 
   private _messageHandlerWrapper = (port: Browser.Runtime.Port, message: unknown) => {
-
     // the user will use this to reply to the consumer
     const replyFn: RPCReplyFunction = (message) => {
       port.postMessage(message);
