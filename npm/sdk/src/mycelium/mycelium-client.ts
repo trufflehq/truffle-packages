@@ -1,14 +1,21 @@
-import { cacheExchange, Client, ClientOptions, dedupExchange, fetchExchange, makeOperation } from "@urql/core";
-import { authExchange } from "@urql/exchange-auth";
-import { DEFAULT_MYCELIUM_API_URL } from "../constants";
-import { getOrgId } from "../org/get-id";
-import { getAccessToken } from "../user/access-token";
+import {
+  cacheExchange,
+  Client,
+  ClientOptions,
+  dedupExchange,
+  fetchExchange,
+  makeOperation,
+} from '@urql/core';
+import { authExchange } from '@urql/exchange-auth';
+import { DEFAULT_MYCELIUM_API_URL } from '../constants';
+import { getOrgId } from '../org/get-id';
+import { getAccessToken } from '../user/access-token';
 
 export interface MyceliumClientOptions {
   url: string;
   userAccessToken?: string;
   orgId?: string;
-  urqlOptions?: ClientOptions
+  urqlOptions?: ClientOptions;
 }
 
 interface AuthState {
@@ -16,10 +23,11 @@ interface AuthState {
   orgId?: string;
 }
 
-export function createMyceliumClient(options: MyceliumClientOptions = {
-  url: DEFAULT_MYCELIUM_API_URL
-}) {
-
+export function createMyceliumClient(
+  options: MyceliumClientOptions = {
+    url: DEFAULT_MYCELIUM_API_URL,
+  }
+) {
   return new Client({
     url: options.url,
     exchanges: [
@@ -32,24 +40,25 @@ export function createMyceliumClient(options: MyceliumClientOptions = {
           const _authState = (authState ?? {}) as AuthState;
 
           if (!_authState.userAccessToken) {
-            _authState.userAccessToken = options.userAccessToken || await getAccessToken(options.url);
+            _authState.userAccessToken =
+              options.userAccessToken || (await getAccessToken(options.url));
           }
 
           if (!_authState.orgId) {
-            _authState.orgId = options.orgId || await getOrgId(options.url);
+            _authState.orgId = options.orgId || (await getOrgId(options.url));
           }
 
-          return _authState
+          return _authState;
         },
         addAuthToOperation({ authState, operation }) {
           const _authState = authState as AuthState;
 
           const fetchOptions =
-          typeof operation.context.fetchOptions === 'function'
-            ? operation.context.fetchOptions()
-            : operation.context.fetchOptions || {};
+            typeof operation.context.fetchOptions === 'function'
+              ? operation.context.fetchOptions()
+              : operation.context.fetchOptions || {};
 
-          const authHeaders: Record<string, any> = {}
+          const authHeaders: Record<string, any> = {};
 
           // I am defining headers this way so that we can
           // still make successful requests to the API
@@ -79,17 +88,16 @@ export function createMyceliumClient(options: MyceliumClientOptions = {
         didAuthError({ error }) {
           // check if the error was an auth error
           const hasAuthError = error?.graphQLErrors?.some(
-            (e) => e.extensions?.code === 401,
+            (e) => e.extensions?.code === 401
           );
           return hasAuthError;
         },
         willAuthError() {
           return false;
         },
-
       }),
       fetchExchange,
     ],
-    ...options.urqlOptions
-  })
+    ...options.urqlOptions,
+  });
 }

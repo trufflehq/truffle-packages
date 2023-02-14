@@ -1,4 +1,4 @@
-import { gql } from "@urql/core";
+import { gql } from '@urql/core';
 
 export const ME_USER_QUERY = gql`
   query SDKMeQuery {
@@ -18,7 +18,7 @@ export const ME_USER_QUERY = gql`
       }
     }
   }
-`
+`;
 
 export const USER_LOGIN_ANON = gql`
   mutation SDKUserAnonCreate {
@@ -26,4 +26,4 @@ export const USER_LOGIN_ANON = gql`
       accessToken
     }
   }
-`
+`;
