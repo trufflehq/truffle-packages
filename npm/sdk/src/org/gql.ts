@@ -1,4 +1,4 @@
-import { gql } from "@urql/core";
+import { gql } from '@urql/core';
 
 export const ORG_QUERY = gql`
   query SDKOrgQuery($id: ID, $slug: String) {
@@ -8,4 +8,4 @@ export const ORG_QUERY = gql`
       name
     }
   }
-`
+`;

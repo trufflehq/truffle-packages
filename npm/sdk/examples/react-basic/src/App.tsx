@@ -1,37 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
-import { embed } from '@trufflehq/sdk'
+import { useState } from 'react';
+import reactLogo from './assets/react.svg';
+import './App.css';
+import { embed } from '@trufflehq/sdk';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
-  const [isSmall, setIsSmall] = useState(true)
-  const [hasBorder, setHasBorder] = useState(false)
+  const [isSmall, setIsSmall] = useState(true);
+  const [hasBorder, setHasBorder] = useState(false);
 
   const setSize = () => {
     if (isSmall) {
-      embed.setSize("800px", "800px")
-      setIsSmall(false)
+      embed.setSize('800px', '800px');
+      setIsSmall(false);
     } else {
-      embed.setSize("600px", "600px")
-      setIsSmall(true)
+      embed.setSize('600px', '600px');
+      setIsSmall(true);
     }
-  }
-  
+  };
+
   const setBorder = () => {
     if (hasBorder) {
       embed.setStyles({
-        border: "none"
-      })
-      setHasBorder(false)
+        border: 'none',
+      });
+      setHasBorder(false);
     } else {
       embed.setStyles({
-        border: "5px solid red"
-      })
-      setHasBorder(true)
+        border: '5px solid red',
+      });
+      setHasBorder(true);
     }
-  }
+  };
 
   return (
     <div className="App">
@@ -40,7 +40,11 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
         <a href="https://truffle.vip" target="_blank">
-          <img src="https://cdn.bio/assets/images/branding/logomark.svg" className="logo truffle" alt="Truffle logo" />
+          <img
+            src="https://cdn.bio/assets/images/branding/logomark.svg"
+            className="logo truffle"
+            alt="Truffle logo"
+          />
         </a>
       </div>
       <h1>React + Truffle</h1>
@@ -56,7 +60,7 @@ function App() {
       <button onClick={setSize}>Toggle Size</button>
       <button onClick={setBorder}>Toggle Border</button>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

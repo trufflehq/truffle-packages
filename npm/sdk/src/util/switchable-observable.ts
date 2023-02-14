@@ -1,11 +1,10 @@
-import { toObservable } from "wonka";
+import { toObservable } from 'wonka';
 
 type Observable<T> = ReturnType<typeof toObservable<T>>;
-type ObservableSubscription<T> = ReturnType<Observable<T>["subscribe"]>;
-type ObservableObserver<T> = Parameters<Observable<T>["subscribe"]>[0];
+type ObservableSubscription<T> = ReturnType<Observable<T>['subscribe']>;
+type ObservableObserver<T> = Parameters<Observable<T>['subscribe']>[0];
 
 export class SwitchableObservable<T> implements Observable<T> {
-
   private _observers: ObservableObserver<T>[] = [];
   private _subscription: ObservableSubscription<T> | null = null;
 
@@ -15,7 +14,7 @@ export class SwitchableObservable<T> implements Observable<T> {
     // so we'll do it in the subscribe method.
   }
 
-  private _subscribeToObservable () {
+  private _subscribeToObservable() {
     this._subscription = this._observable.subscribe({
       next: (value) => {
         this._observers.forEach((observer) => {
@@ -53,10 +52,10 @@ export class SwitchableObservable<T> implements Observable<T> {
           this._subscription = null;
         }
       },
-      get closed(){
+      get closed() {
         return closed;
       },
-    }
+    };
   }
 
   /**
@@ -71,5 +70,4 @@ export class SwitchableObservable<T> implements Observable<T> {
     this._observable = observable;
     this._subscribeToObservable();
   }
-
 }

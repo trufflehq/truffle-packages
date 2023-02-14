@@ -1,7 +1,7 @@
 const CDN_URLS = {
-  legacy: "https://fdn.uno/images",
-  default: "https://cdn.bio/ugc",
-  assets: "https://cdn.bio/assets",
+  legacy: 'https://fdn.uno/images',
+  default: 'https://cdn.bio/ugc',
+  assets: 'https://cdn.bio/assets',
 };
 
 export interface TruffleImage {
@@ -16,23 +16,25 @@ export interface TruffleImage {
   aspectRatio: number;
 }
 
-type ImageSize = "small" | "medium" | "large";
+type ImageSize = 'small' | 'medium' | 'large';
 
-export function getSrcByImageObj(imageObj: TruffleImage, { size = "small" }: { size?: ImageSize } = {}) {
-  const { cdn, prefix, variations, ext = "jpg" } = imageObj || {};
+export function getSrcByImageObj(
+  imageObj: TruffleImage,
+  { size = 'small' }: { size?: ImageSize } = {}
+) {
+  const { cdn, prefix, variations, ext = 'jpg' } = imageObj || {};
 
   if (!prefix) {
-    return "";
+    return '';
   }
 
   const postfix = `.${size}`;
 
   // check if variation exists
-  const cdnKey = !cdn ? "legacy" : cdn;
+  const cdnKey = !cdn ? 'legacy' : cdn;
   const hasVariation =
-    (variations || []).find((variation) => variation.postfix === postfix) || (
-      cdnKey === "legacy" && ext !== "svg" // legacy embedded imageObjs don't always have variations
-    );
+    (variations || []).find((variation) => variation.postfix === postfix) ||
+    (cdnKey === 'legacy' && ext !== 'svg'); // legacy embedded imageObjs don't always have variations
 
   const cdnUrl = CDN_URLS[cdnKey] || CDN_URLS.default;
 

@@ -1,16 +1,18 @@
-// @ts-nocheck
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck TODO: fix types
 
 // TODO: simplify jumper so we can simplify this file
-import Jumper from "@trufflehq/jumper";
+import Jumper from '@trufflehq/jumper';
 
-const LOCAL_STORAGE_PREFIX = "truffle";
+const LOCAL_STORAGE_PREFIX = 'truffle';
 const PLATFORMS = {
-  APP: "app",
-  WEB: "web",
+  APP: 'app',
+  WEB: 'web',
 };
 
-const isSsr = typeof document === "undefined" ||
-  globalThis?.process?.release?.name === "node" ||
+const isSsr =
+  typeof document === 'undefined' ||
+  globalThis?.process?.release?.name === 'node' ||
   globalThis?.Deno;
 
 class JumperInstance {
@@ -38,26 +40,25 @@ class JumperInstance {
   call = (...args) => {
     if (isSsr) {
       // throw new Error 'Comms called server-side'
-      return console.log("Comms called server-side");
+      return console.log('Comms called server-side');
     }
 
-    return this.jumper.call(...args)
-      .catch((err) => {
-        // if we don't catch, zorium freaks out if a jumper call is in state
-        // (infinite errors on page load/route)
-        // FIXME: re-enable
-        // console.log('missing jumper call', args)
-        if (!err.message?.startsWith?.("Method not found")) {
-          console.log(err);
-        }
-        return null;
-      });
+    return this.jumper.call(...args).catch((err) => {
+      // if we don't catch, zorium freaks out if a jumper call is in state
+      // (infinite errors on page load/route)
+      // FIXME: re-enable
+      // console.log('missing jumper call', args)
+      if (!err.message?.startsWith?.('Method not found')) {
+        console.log(err);
+      }
+      return null;
+    });
   };
 
   callWithError = (...args) => {
     if (isSsr) {
       // throw new Error 'Comms called server-side'
-      return console.log("Comms called server-side");
+      return console.log('Comms called server-side');
     }
 
     return this.jumper.call(...Array.from(args || []));
@@ -65,36 +66,35 @@ class JumperInstance {
 
   listen = () => {
     if (isSsr) {
-      throw new Error("Comms called server-side");
+      throw new Error('Comms called server-side');
     }
 
     this.jumper.listen();
 
-    this.jumper.on("auth.getStatus", this.authGetStatus);
-    this.jumper.on("env.getPlatform", this.getPlatform);
+    this.jumper.on('auth.getStatus', this.authGetStatus);
+    this.jumper.on('env.getPlatform', this.getPlatform);
 
     // fallbacks
-    this.jumper.on("app.onResume", this.appOnResume);
+    this.jumper.on('app.onResume', this.appOnResume);
 
     this.jumper.on(
-      "networkInformation.onOnline",
-      this.networkInformationOnOnline,
+      'networkInformation.onOnline',
+      this.networkInformationOnOnline
     );
     this.jumper.on(
-      "networkInformation.onOffline",
-      this.networkInformationOnOffline,
+      'networkInformation.onOffline',
+      this.networkInformationOnOffline
     );
     this.jumper.on(
-      "networkInformation.onOnline",
-      this.networkInformationOnOnline,
+      'networkInformation.onOnline',
+      this.networkInformationOnOnline
     );
 
-    this.jumper.on("storage.get", this.storageGet);
-    this.jumper.on("storage.set", this.storageSet);
+    this.jumper.on('storage.get', this.storageGet);
+    this.jumper.on('storage.set', this.storageSet);
 
-    return this.jumper.on(
-      "browser.openWindow",
-      ({ url, target, options }) => window?.open(url, target, options),
+    return this.jumper.on('browser.openWindow', ({ url, target, options }) =>
+      window?.open(url, target, options)
     );
   };
 
@@ -133,7 +133,7 @@ class JumperInstance {
 
   appOnResume = (callback) => {
     if (this.appResumeHandler) {
-      window.removeEventListener("visibilitychange", this.appResumeHandler);
+      window.removeEventListener('visibilitychange', this.appResumeHandler);
     }
 
     this.appResumeHandler = function () {
@@ -142,15 +142,15 @@ class JumperInstance {
       }
     };
 
-    return window.addEventListener("visibilitychange", this.appResumeHandler);
+    return window.addEventListener('visibilitychange', this.appResumeHandler);
   };
 
   networkInformationOnOnline(fn) {
-    return window.addEventListener("online", fn);
+    return window.addEventListener('online', fn);
   }
 
   networkInformationOnOffline(fn) {
-    return window.addEventListener("offline", fn);
+    return window.addEventListener('offline', fn);
   }
 
   storageGet = ({ key }) => {
