@@ -1,17 +1,16 @@
-import { jumper } from '../jumper/jumper-instance'
+import { jumper } from '../jumper/jumper-instance';
 
 type Styles = Record<string, unknown>;
 
 export class Embed {
-
   private _currentStyles: Styles = {};
 
   private _setIframeStyles(styles: Styles) {
-    jumper.call("layout.applyLayoutConfigSteps", {
+    jumper.call('layout.applyLayoutConfigSteps', {
       layoutConfigSteps: [
-        { action: "useSubject" }, // start with our iframe
+        { action: 'useSubject' }, // start with our iframe
         {
-          action: "setStyle",
+          action: 'setStyle',
           value: styles,
         },
       ],
@@ -19,10 +18,10 @@ export class Embed {
   }
 
   private _resetIframStyles() {
-    jumper.call("layout.applyLayoutConfigSteps", {
+    jumper.call('layout.applyLayoutConfigSteps', {
       layoutConfigSteps: [
-        { action: "useSubject" }, // start with our iframe
-        { action: "resetStyles" },
+        { action: 'useSubject' }, // start with our iframe
+        { action: 'resetStyles' },
       ],
     });
   }
@@ -30,12 +29,12 @@ export class Embed {
   /**
    * Set styles on the embed
    * @param newStyles styles to add
-    */
+   */
   public setStyles(newStyles: Styles) {
     this._currentStyles = {
       ...this._currentStyles,
       ...newStyles,
-    }
+    };
 
     this._setIframeStyles(this._currentStyles);
   }
@@ -77,7 +76,7 @@ export class Embed {
    */
   public setVisibility(isVisible: boolean) {
     this.setStyles({
-      display: isVisible ? "block" : "none",
+      display: isVisible ? 'block' : 'none',
     });
   }
 
@@ -94,7 +93,6 @@ export class Embed {
   public show() {
     this.setVisibility(true);
   }
-
 }
 
 export const embed = new Embed();

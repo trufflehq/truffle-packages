@@ -1,4 +1,4 @@
-import { gql } from "@urql/core";
+import { gql } from '@urql/core';
 
 export const ORG_USER_QUERY = gql`
   query SDKOrgUserQuery($id: ID, $userId: ID, $orgId: ID) {
@@ -36,4 +36,4 @@ export const ORG_USER_QUERY = gql`
       }
     }
   }
-`
+`;

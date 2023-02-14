@@ -1,7 +1,7 @@
-import { Client } from "@urql/core";
-import { map, pipe, toObservable } from "wonka";
-import { SwitchableObservable } from "../util/switchable-observable";
-import { ORG_QUERY } from "./gql";
+import { Client } from '@urql/core';
+import { map, pipe, toObservable } from 'wonka';
+import { SwitchableObservable } from '../util/switchable-observable';
+import { ORG_QUERY } from './gql';
 
 export interface TruffleOrg {
   id: string;
@@ -15,30 +15,29 @@ export interface TruffleOrgInput {
 }
 
 export class TruffleOrgClient {
-
   private _observable: SwitchableObservable<TruffleOrg>;
 
-  constructor (private _gqlClient: Client, private _orgInput?: TruffleOrgInput) {
+  constructor(private _gqlClient: Client, private _orgInput?: TruffleOrgInput) {
     this._observable = new SwitchableObservable(this._getOrgObservable());
   }
 
-  private _getOrgObservable () {
+  private _getOrgObservable() {
     return pipe(
       this._gqlClient.query<{ org: TruffleOrg }>(ORG_QUERY, this._orgInput),
       map((res) => res.data?.org),
-      toObservable,
-    )
+      toObservable
+    );
   }
 
-  public get gqlClient () {
+  public get gqlClient() {
     return this._gqlClient;
   }
 
-  public set gqlClient (client: Client) {
+  public set gqlClient(client: Client) {
     this._gqlClient = client;
   }
 
-  public get observable () {
+  public get observable() {
     return this._observable;
   }
 }
