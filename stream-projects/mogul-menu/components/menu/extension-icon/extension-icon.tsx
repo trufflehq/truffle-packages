@@ -110,16 +110,6 @@ export default function ExtensionIcon() {
                   }}
               />
           }
-
-
-
-          {/*<div*/}
-          {/*    style={{*/}
-          {/*        backgroundImage: iconImageObj*/}
-          {/*            ? `url(${getSrcByImageObj(iconImageObj)})`*/}
-          {/*            : undefined,*/}
-          {/*    }}*/}
-          {/*></div>*/}
           <Ripple color="var(--mm-color-text-bg-primary)" />
       </div>
 

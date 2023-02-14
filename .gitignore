@@ -5,3 +5,4 @@ truffle.secret.*
 .yarn
 .pnp.*
 yarn.lock
+.idea
