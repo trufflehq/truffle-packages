@@ -6,39 +6,39 @@ export class IframeProviderInterface implements TransframeProviderInterface<HTML
   private _isListening: boolean = false;
   private _messageHandler: (message: unknown, reply: RPCReplyFunction, fromId?: string) => void = () => {};
   private _frameIdMap: Map<Window, string> = new Map();
-  private _messageHandlerWrapper: (event: MessageEvent) => void;
   private _options?: IframeProviderInterfaceOptions;
 
   constructor(options?: IframeProviderInterfaceOptions) {
     this._options = options;
-    this._messageHandlerWrapper = (event) => {
+  }
 
-      // only process messages from the allowed origins
-      if (this._options?.allowedOrigins && !this._options.allowedOrigins.includes(event.origin)) {
-        return;
-      }
+  private _messageHandlerWrapper = (event: MessageEvent) => {
 
-      // according to typescript, this can be null?
-      const eventSource = event.source;
-      if (!eventSource) {
-        throw new Error("Somehow the event source is null");
-      }
+    // only process messages from the allowed origins
+    if (this._options?.allowedOrigins && !this._options.allowedOrigins.includes(event.origin)) {
+      return;
+    }
 
-      // get the id of the frame that sent the message
-      const fromId = this._frameIdMap.get(event.source as Window);
+    // according to typescript, this can be null?
+    const eventSource = event.source;
+    if (!eventSource) {
+      throw new Error("Somehow the event source is null");
+    }
 
-      // the user will use this to reply to the consumer
-      const replyFn: RPCReplyFunction = (message) => {
-        eventSource.postMessage(message, event.origin as any);
-      };
+    // get the id of the frame that sent the message
+    const fromId = this._frameIdMap.get(event.source as Window);
 
-      // call the message handler set by the user
-      this._messageHandler(
-        event.data,
-        replyFn,
-        fromId
-      );
+    // the user will use this to reply to the consumer
+    const replyFn: RPCReplyFunction = (message) => {
+      eventSource.postMessage(message, event.origin as any);
     };
+
+    // call the message handler set by the user
+    this._messageHandler(
+      event.data,
+      replyFn,
+      fromId
+    );
   }
 
   public get isListening() {
