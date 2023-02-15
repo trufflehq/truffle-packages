@@ -1,17 +1,16 @@
 import {
   classKebab,
   getSrcByImageObj,
-  jumper,
+  Icon,
   React,
   Ripple,
-  useEffect,
-  useState,
   useStyleSheet,
 } from "../../../deps.ts";
 import { getHasNotification, useTabs } from "../../tabs/mod.ts";
 import { getIsOpen, getMenuIconImageObj, useMenu } from "../mod.ts";
 import stylesheet from "./extension-icon.scss.js";
-import hamburgerIcon from "../../../assets/hamburgerIcon.png";
+
+const HAMBURGER_ICON_PATH = "M3 18H21V16H3V18ZM3 13H21V11H3V13ZM3 6V8H21V6H3Z";
 
 export default function ExtensionIcon() {
   const { state: menuState, toggleOpen } = useMenu();
@@ -51,18 +50,24 @@ export default function ExtensionIcon() {
           pointerEvents: "none",
         }}
       />
+
       {menuOpen ? null : (
-        <img
-          src={hamburgerIcon}
-          alt="Hamburger icon"
-          width={18}
-          height={12}
+        <div
+          className="icon"
           style={{
             pointerEvents: "none",
             transition: "box-shadow 0.25s",
           }}
-        />
+        >
+          <Icon
+            icon={HAMBURGER_ICON_PATH}
+            size="24px"
+            color="white"
+            isClickable={false}
+          />
+        </div>
       )}
+
       <Ripple color="var(--mm-color-text-bg-primary)" />
     </div>
   );
