@@ -1,4 +1,11 @@
-import {classKebab, jumper, React, useEffect, useRef, useState} from "../../../deps.ts";
+import {
+  classKebab,
+  jumper,
+  React,
+  useEffect,
+  useRef,
+  useState,
+} from "../../../deps.ts";
 import { getHasNotification, useTabs } from "../../tabs/mod.ts";
 import {
   getDimensions,
@@ -211,47 +218,51 @@ export default function DraggableMenu({
             value: "#movie_player",
           },
         ],
-        observerConfig: { attributes: true, attributeFilter: ["class"], childList: false, subtree: false },
+        observerConfig: {
+          attributes: true,
+          attributeFilter: ["class"],
+          childList: false,
+          subtree: false,
+        },
         targetQuerySelector: "#movie_player:not(.ytp-progress-bar-hover)",
       },
       (matches) => {
         setIsFullscreen(matches[0].attributes.class.includes("ytp-fullscreen"));
-        setControlsHidden(matches[0].attributes.class.includes("ytp-autohide"))
-      }
+        setControlsHidden(matches[0].attributes.class.includes("ytp-autohide"));
+      },
     );
 
-    return() => {
-      clearTimeout(hoverTimer) // Prevent memory leaks in case component is unmounted before timeout finishes
-    }
-  },[])
+    return () => {
+      clearTimeout(hoverTimer); // Prevent memory leaks in case component is unmounted before timeout finishes
+    };
+  }, []);
 
   return (
     <Draggable
-        requiredClassName="c-extension-icon"
-        dimensions={dimensions}
-        hidden={isFullscreen && !hover && !isOpen && !dragging && controlsHidden }
-        defaultPosition={defaultPosition}
-        onPressedMouseUp={onPressedMouseUp}
-        onDragStart={onDragStart}
-        translateFn={useTranslate}
-        updateParentPosition={useUpdateDraggableMenuPosition}
-        createClipPath={createClipPath}
-        resizeObserver={useWindowResizeObserver}
-        initializePosition={initializePosition}
-        onMouseEnter={() => {
-          clearTimeout(hoverTimer.current) // Prevents race condition where dragging too fast triggers unhover and timout sets hover to false after being set to true
-          setHover(true)
-        }}
-        onMouseLeave={() => {
-          hoverTimer.current = setTimeout(() => { // Prevents flickering of menu in moment where mouse leaves menu but controls aren't shown
-            setHover(false)
-          }, 500)
-        }}
+      requiredClassName="c-extension-icon"
+      dimensions={dimensions}
+      hidden={isFullscreen && !hover && !isOpen && !dragging && controlsHidden}
+      defaultPosition={defaultPosition}
+      onPressedMouseUp={onPressedMouseUp}
+      onDragStart={onDragStart}
+      translateFn={useTranslate}
+      updateParentPosition={useUpdateDraggableMenuPosition}
+      createClipPath={createClipPath}
+      resizeObserver={useWindowResizeObserver}
+      initializePosition={initializePosition}
+      onMouseEnter={() => {
+        clearTimeout(hoverTimer.current); // Prevents race condition where dragging too fast triggers unhover and timout sets hover to false after being set to true
+        setHover(true);
+      }}
+      onMouseLeave={() => {
+        hoverTimer.current = setTimeout(() => { // Prevents flickering of menu in moment where mouse leaves menu but controls aren't shown
+          setHover(false);
+        }, 500);
+      }}
     >
-        <div className={className}>
-          <div className="menu">{children}</div>
-        </div>
+      <div className={className}>
+        <div className="menu">{children}</div>
+      </div>
     </Draggable>
-
   );
 }
