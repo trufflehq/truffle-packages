@@ -139,7 +139,6 @@ export default function DraggableMenu({
   };
 
   const onPressedMouseUp = (e: React.MouseEvent, dragInfo: DragInfo) => {
-    console.log("stopped dragging")
     setDragging(false);
 
     updateMenuPosition(getMenuMousePosition(e));
@@ -168,7 +167,6 @@ export default function DraggableMenu({
   };
 
   const onDragStart = () => {
-    console.log("started dragging")
     setDragging(true);
     setIsClosed();
     updateDimensions({
@@ -227,22 +225,6 @@ export default function DraggableMenu({
     }
   },[])
 
-  const hiddenMenu = {
-    base: {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-    },
-    modifiers: {
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      transition: "none"
-    }
-  }
-
   return (
     <Draggable
         requiredClassName="c-extension-icon"
@@ -261,8 +243,6 @@ export default function DraggableMenu({
           setHover(true)
         }}
         onMouseLeave={() => {
-          console.log("hover end")
-
           hoverTimer.current = setTimeout(() => { // Prevents flickering of menu in moment where mouse leaves menu but controls aren't shown
             setHover(false)
           }, 500)

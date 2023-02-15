@@ -10,70 +10,19 @@ import { getMenuIconImageObj, useMenu, getIsOpen } from "../mod.ts";
 import stylesheet from "./extension-icon.scss.js";
 import hamburgerIcon from "../../../assets/hamburgerIcon.png";
 
-
 export default function ExtensionIcon() {
-  const { state: menuState, toggleOpen } = useMenu();
-  const { state: tabsState } = useTabs();
+    const { state: menuState, toggleOpen } = useMenu();
+    const { state: tabsState } = useTabs();
 
-  const hasNotification = getHasNotification(tabsState);
-  const menuOpen = getIsOpen(menuState);
+    const hasNotification = getHasNotification(tabsState);
+    const menuOpen = getIsOpen(menuState);
 
-
-  const onExtensionIconClick = () => {
+    const onExtensionIconClick = () => {
     toggleOpen();
-  };
+    };
 
-  useStyleSheet(stylesheet);
-  const iconImageObj = getMenuIconImageObj(menuState);
-
-
-
-
-      // console.log(hideMenu)
-
-      // jumper.call("layout.listenForElements", {
-      //     listenElementLayoutConfigSteps: [
-      //         {
-      //             action: "querySelector",
-      //             value: "ytd-comments#comments ytd-item-section-renderer #contents",
-      //         },
-      //     ],
-      //     observerConfig: { childList: true, subtree: true },
-      //     targetQuerySelector: "ytd-comment-thread-renderer",
-      //     shouldCleanupMutatedElements: true,
-      // }, onEmit);
-
-    // function onEmit(matches) {
-    //     matches.forEach((match) => {
-    //         const { id: elementId, data } = match;
-    //         const authorId = data?.comment?.commentRenderer?.authorEndpoint
-    //             ?.browseEndpoint?.browseId;
-    //         console.log("Youtube comments!", { match, authorId });
-    //
-    //         jumper.call("layout.applyLayoutConfigSteps", {
-    //             layoutConfigSteps: [
-    //                 { action: "querySelector", value: `[data-truffle-id="${elementId}"]` },
-    //                 {
-    //                     action: "setStyle",
-    //                     value: JSON.stringify({ border: `2px solid red` }),
-    //                 },
-    //             ],
-    //             mutatedElementId: elementId,
-    //         });
-    //
-    //         // NOTE: this won't return anything for 99.99% of commenters since we're using our staging data
-    //         // you can manually add a connection for your org and sourceType: 'youtube', sourceId: your YouTube id
-    //         // in the GraphQL API
-    //         // const orgUserResponse = await query(GET_ORG_USER_QUERY, {
-    //         //   input: {
-    //         //     sourceType: "youtube",
-    //         //     sourceId: authorId,
-    //         //     orgId: getOrgId(),
-    //         //   },
-    //         // });
-    //         // const orgUser = orgUserResponse.data.connection?.orgUser;
-    //     });
-    // }
+    useStyleSheet(stylesheet);
+    const iconImageObj = getMenuIconImageObj(menuState);
 
     const menuOpenStyles = {
         justifyContent: 'space-between',
@@ -82,7 +31,8 @@ export default function ExtensionIcon() {
         width: 48,
         borderWidth: 0
     }
-  return (
+
+    return (
       <div
           className={`c-extension-icon ${classKebab({ hasNotification })}`}
           style={{...(menuOpen && menuOpenStyles)}}
@@ -112,7 +62,5 @@ export default function ExtensionIcon() {
           }
           <Ripple color="var(--mm-color-text-bg-primary)" />
       </div>
-
-
-  );
+    );
 }
