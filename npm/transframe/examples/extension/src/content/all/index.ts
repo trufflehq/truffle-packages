@@ -1,4 +1,5 @@
 import { createBackgroundScriptConsumer } from "@trufflehq/transframe/background-script";
+import { createExporterClient } from "@fyko/export-api/client"
 
 const consumer = createBackgroundScriptConsumer();
 

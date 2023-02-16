@@ -1,10 +1,10 @@
-// the following types help us type the api that users create;
+// the following types help us type the api that users create
 
-// for some reason, typescript gave me fits when I used the `Function` type, so I created my own
-export type ApiFunction<P, R> = (fromId: string | undefined, ...args: P[]) => R
+// every source api function must have a context parameter
+export type SourceApiFunction<P, R> = (fromId: string | undefined, ...args: P[]) => R
 
 // an api is just a map of functions
-export type TransframeSourceApi = Record<string, ApiFunction<any, unknown>>
+export type TransframeSourceApi = Record<string, SourceApiFunction<any, unknown>>
 
 // using this to drop the fromId parameter from the api functions
 // because the consumer api will not have it
