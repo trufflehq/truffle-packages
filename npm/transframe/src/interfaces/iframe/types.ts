@@ -24,3 +24,7 @@ export interface IframeConsumerInterfaceOptions {
    */
   providerWindow?: Window;
 }
+
+export type IframeInterfaceContext = {
+  event: MessageEvent;
+}

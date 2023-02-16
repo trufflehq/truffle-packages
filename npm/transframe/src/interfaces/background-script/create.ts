@@ -1,22 +1,32 @@
 import { TransframeConsumer } from "../../transframe-consumer";
 import { TransframeProvider } from "../../transframe-provider";
-import { TransframeConsumerOptions, TransframeProviderOptions, TransframeSourceApi } from "../../types";
+import { ContextFromSourceApi, TransframeConsumerOptions, TransframeProviderOptions, TransframeSourceApi } from "../../types";
 import { BackgroundScriptConsumerInterface } from "./consumer";
 import { BackgroundScriptProviderInterface } from "./provider";
-import { BackgroundScriptConsumerInterfaceOptions } from "./types";
+import { BackgroundScriptConsumerInterfaceOptions, BackgroundScriptInterfaceContext } from "./types";
 
-export function createBackgroundScriptConsumer<Api extends TransframeSourceApi>(
+export function createBackgroundScriptConsumer
+<Api extends TransframeSourceApi<BackgroundScriptInterfaceContext>>
+(
   options?: BackgroundScriptConsumerInterfaceOptions & TransframeConsumerOptions<Api>
 ) {
-  return new TransframeConsumer(
+  return new TransframeConsumer<Api>(
     new BackgroundScriptConsumerInterface(options),
     options
   );
 }
 
-export function createBackgroundScriptProvider(options: TransframeProviderOptions) {
-  return new TransframeProvider(
+export function createBackgroundScriptProvider
+<Api extends TransframeSourceApi<BackgroundScriptInterfaceContext>>(
+  options: TransframeProviderOptions<Api>
+) {
+  return new TransframeProvider<never, TransframeSourceApi<BackgroundScriptInterfaceContext>>(
     new BackgroundScriptProviderInterface(),
     options
   );
+}
+
+export function createBackgroundScriptApi
+<Api extends TransframeSourceApi<BackgroundScriptInterfaceContext>>(api: Api) {
+  return api;
 }

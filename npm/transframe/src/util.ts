@@ -1,4 +1,5 @@
-import { TransframeSourceApi } from "./types";
+import { IframeInterfaceContext } from "./interfaces/iframe/types";
+import { ContextFromSourceApi, TransframeSourceApi } from "./types";
 
 /**
  * Generates a random string of 32 characters
@@ -9,6 +10,6 @@ export function generateId () {
   return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
-export function createProviderApi<T extends TransframeSourceApi>(api: T) {
+export function createProviderApi<Api extends TransframeSourceApi<unknown>>(api: Api) {
   return api
 }

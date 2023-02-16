@@ -1,16 +1,16 @@
 import { TransframeConsumerInterface } from "./interfaces/types";
 import { createRpcCallbackPlaceholder, createRpcRequest, isRPCCallbackCall, isRPCResponse } from "./rpc/util";
-import { TransframeConsumerApi, TransframeConsumerOptions, TransframeSourceApi } from "./types";
+import { ContextFromSourceApi, TransframeConsumerApi, TransframeConsumerOptions, TransframeSourceApi } from "./types";
 import { generateId } from "./util";
 
 const DEFAULT_API_CALL_TIMEOUT = 5000;
 
 // a tuple of resolve and reject functions
 type ResolveReject = [Function, Function];
-export class TransframeConsumer<T extends TransframeSourceApi> {
+export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFromSourceApi<SourceApi>>> {
 
-  private _options?: TransframeConsumerOptions<T>;
-  private _api: TransframeConsumerApi<T>;
+  private _options?: TransframeConsumerOptions<SourceApi>;
+  private _api: TransframeConsumerApi<SourceApi>;
 
   // map of request ids to callbacks; used to resolve/reject promises
   private _requestCallbacks: Map<string, ResolveReject> = new Map();
@@ -22,7 +22,7 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
 
   constructor (
     private _interface: TransframeConsumerInterface,
-    options?: TransframeConsumerOptions<T>
+    options?: TransframeConsumerOptions<SourceApi>
   ) {
     this._options = options;
     this._api = this._buildApi();
@@ -39,11 +39,11 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
   private _buildApi = () => {
     // create a proxy that will call the `call` method
     const api = new Proxy(
-      {} as TransframeConsumerApi<T>,
+      {} as TransframeConsumerApi<SourceApi>,
       {
         get: (_target, prop: string) => {
           // whatever the property is, return a function that calls the `call` method
-          return (...payload: Parameters<TransframeConsumerApi<T>[typeof prop]>) => this.call(prop, ...payload);
+          return (...payload: Parameters<TransframeConsumerApi<SourceApi>[typeof prop]>) => this.call(prop, ...payload);
         }
       }
     );
@@ -100,11 +100,11 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
 
   }
 
-  public call = async <MethodName extends keyof T>
+  public call = async <MethodName extends keyof SourceApi>
   (
     method: MethodName,
     // we have to convert T to the TransframeConsumerApi type so that we skip the first `fromId` parameter
-    ...payload: Parameters<TransframeConsumerApi<T>[MethodName]>
+    ...payload: Parameters<TransframeConsumerApi<SourceApi>[MethodName]>
   ) => {
 
     // filter out any callbacks and store them
@@ -120,7 +120,7 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
       } else {
         return param;
       }
-    }) as Parameters<TransframeConsumerApi<T>[MethodName]>;
+    }) as Parameters<TransframeConsumerApi<SourceApi>[MethodName]>;
 
     // create the request and send it
     const rpcRequest = createRpcRequest({
@@ -145,7 +145,7 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
       })
     ])
 
-    return result as ReturnType<T[MethodName]>;
+    return result as ReturnType<SourceApi[MethodName]>;
   }
 
 }

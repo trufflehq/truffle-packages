@@ -1,10 +1,13 @@
 import { RPCReplyFunction } from "../../rpc/types";
+import { Context } from "../../types";
 import { TransframeProviderInterface } from "../types";
-import { IframeProviderInterfaceOptions } from "./types";
+import { IframeInterfaceContext, IframeProviderInterfaceOptions } from "./types";
 
-export class IframeProviderInterface implements TransframeProviderInterface<HTMLIFrameElement> {
+export class IframeProviderInterface implements
+  TransframeProviderInterface<HTMLIFrameElement, IframeInterfaceContext> {
+
   private _isListening: boolean = false;
-  private _messageHandler: (message: unknown, reply: RPCReplyFunction, fromId?: string) => void = () => {};
+  private _messageHandler: (message: unknown, reply: RPCReplyFunction, context: Context<IframeInterfaceContext>) => void = () => {};
   private _frameIdMap: Map<Window, string> = new Map();
   private _options?: IframeProviderInterfaceOptions;
 
@@ -27,6 +30,10 @@ export class IframeProviderInterface implements TransframeProviderInterface<HTML
 
     // get the id of the frame that sent the message
     const fromId = this._frameIdMap.get(event.source as Window);
+    const context: Context<IframeInterfaceContext> = {
+      fromId,
+      event
+    };
 
     // the user will use this to reply to the consumer
     const replyFn: RPCReplyFunction = (message) => {
@@ -37,7 +44,7 @@ export class IframeProviderInterface implements TransframeProviderInterface<HTML
     this._messageHandler(
       event.data,
       replyFn,
-      fromId
+      context
     );
   }
 
@@ -55,7 +62,7 @@ export class IframeProviderInterface implements TransframeProviderInterface<HTML
     this._isListening = false;
   }
 
-  public onMessage(callback: (message: unknown, reply: RPCReplyFunction, fromId?: string) => void) {
+  public onMessage(callback: (message: unknown, reply: RPCReplyFunction, context: Context<IframeInterfaceContext>) => void, ) {
     this._messageHandler = callback;
   }
 

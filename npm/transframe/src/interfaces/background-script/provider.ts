@@ -1,11 +1,14 @@
 import Browser from "webextension-polyfill";
 import { RPCReplyFunction } from "../../rpc/types";
+import { Context } from "../../types";
 import { TransframeProviderInterface } from "../types";
+import { BackgroundScriptInterfaceContext } from "./types";
 
-export class BackgroundScriptProviderInterface implements TransframeProviderInterface<never> {
+export class BackgroundScriptProviderInterface implements 
+  TransframeProviderInterface<never, BackgroundScriptInterfaceContext> {
 
   private _isListening: boolean = false;
-  private _messageHandler: (message: unknown, reply: RPCReplyFunction, fromId?: string) => void = () => {};
+  private _messageHandler: (message: unknown, reply: RPCReplyFunction, context: Context<BackgroundScriptInterfaceContext>) => void = () => {};
 
   private _messageHandlerWrapper = (port: Browser.Runtime.Port, message: unknown) => {
 
@@ -24,8 +27,13 @@ export class BackgroundScriptProviderInterface implements TransframeProviderInte
     // I'm not sure what we should use to identify the consumer...
     const fromId = undefined;
 
+    const context: Context<BackgroundScriptInterfaceContext> = {
+      fromId,
+      port
+    };
+
     // call the message handler set by the user
-    this._messageHandler(message, replyFn, fromId);
+    this._messageHandler(message, replyFn, context);
   };
 
   private _connectionListener = (port: Browser.Runtime.Port) => {
@@ -48,7 +56,7 @@ export class BackgroundScriptProviderInterface implements TransframeProviderInte
     this._isListening = false;
   }
 
-  onMessage(callback: (message: unknown, reply: RPCReplyFunction, fromId?: string | undefined) => void): void {
+  onMessage(callback: (message: unknown, reply: RPCReplyFunction, context: Context<BackgroundScriptInterfaceContext>) => void): void {
     this._messageHandler = callback;
   }
   registerFrame(frame: never, id: string): void {

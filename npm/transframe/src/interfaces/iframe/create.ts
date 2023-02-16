@@ -3,19 +3,26 @@ import { TransframeProvider } from "../../transframe-provider";
 import { TransframeConsumerOptions, TransframeProviderOptions, TransframeSourceApi } from "../../types";
 import { IframeConsumerInterface } from "./consumer";
 import { IframeProviderInterface } from "./provider";
-import { IframeConsumerInterfaceOptions, IframeProviderInterfaceOptions } from "./types";
+import { IframeConsumerInterfaceOptions, IframeInterfaceContext, IframeProviderInterfaceOptions } from "./types";
 
-export function createIframeProvider(options: TransframeProviderOptions & IframeProviderInterfaceOptions) {
-  return new TransframeProvider(
+export function createIframeProvider<Api extends TransframeSourceApi<IframeInterfaceContext>>(
+  options: TransframeProviderOptions<Api> & IframeProviderInterfaceOptions
+) {
+  return new TransframeProvider<HTMLIFrameElement, TransframeSourceApi<IframeInterfaceContext>>(
     new IframeProviderInterface(options),
     options
   )
 }
 
-export function createIframeConsumer<Api extends TransframeSourceApi>
+export function createIframeConsumer<Api extends TransframeSourceApi<IframeInterfaceContext>>
 (options?: TransframeConsumerOptions<Api> & IframeConsumerInterfaceOptions) {
-  return new TransframeConsumer(
+  return new TransframeConsumer<Api>(
     new IframeConsumerInterface(options),
     options
   );
+}
+
+export function createIframeApi
+<Api extends TransframeSourceApi<IframeInterfaceContext>>(api: Api) {
+  return api;
 }

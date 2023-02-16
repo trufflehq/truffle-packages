@@ -1,16 +1,16 @@
 import { TransframeProviderInterface } from "./interfaces/types";
 import { RPCReplyFunction } from "./rpc/types";
 import { createRpcCallbackCall, createRpcResponse, isRPCCallbackPlaceholder, isRPCRequest } from "./rpc/util";
-import { TransframeProviderOptions } from "./types";
+import { Context, ContextFromSourceApi, SourceApiFunction, TransframeProviderOptions, TransframeSourceApi } from "./types";
 import { generateId } from "./util";
 
-export class TransframeProvider<Frame> {
+export class TransframeProvider<Frame, SourceApi extends TransframeSourceApi<ContextFromSourceApi<SourceApi>>> {
 
-  private _options: TransframeProviderOptions;
+  private _options: TransframeProviderOptions<SourceApi>;
 
   constructor (
-    private _interface: TransframeProviderInterface<Frame>,
-    options: TransframeProviderOptions
+    private _interface: TransframeProviderInterface<Frame, ContextFromSourceApi<SourceApi>>,
+    options: TransframeProviderOptions<SourceApi>
   ) {
     this._options = options;
 
@@ -49,7 +49,7 @@ export class TransframeProvider<Frame> {
   private _messageHandler = async (
     message: unknown,
     reply: RPCReplyFunction,
-    fromId?: string
+    context: Context<ContextFromSourceApi<SourceApi>>
   ) => {
     
     // if the message is not an RPC request, ignore it
@@ -59,7 +59,7 @@ export class TransframeProvider<Frame> {
     if (message.namespace !== this._options.namespace) return;
 
     // if strict mode is enabled, make sure to only handle messages if fromId is defined
-    if (this._options.strictMode && fromId == null) return;
+    if (this._options.strictMode && context.fromId == null) return;
 
     // filter out any callback placeholders and replace them
     // with methods that make rpc calls back to the consumer
@@ -88,13 +88,13 @@ export class TransframeProvider<Frame> {
     });
 
     // call the method and get the result
-    const method = this._options.api[message.method] as (...args: unknown[]) => Promise<unknown>;
+    const method = this._options.api[message.method] as SourceApiFunction<ContextFromSourceApi<SourceApi>, unknown, unknown>;
     if (!method) return;
 
     let didError = false;
     let result: unknown;
     try {
-      result = await method(fromId, ...modifiedPayload);
+      result = await method(context, ...modifiedPayload);
     } catch (err) {
       didError = true;
       result = err;
