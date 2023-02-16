@@ -5,8 +5,8 @@ import { BackgroundScriptConsumerInterface } from "./consumer";
 import { BackgroundScriptProviderInterface } from "./provider";
 import { BackgroundScriptConsumerInterfaceOptions } from "./types";
 
-export function createBackgroundScriptConsumer<T extends TransframeSourceApi>(
-  options?: BackgroundScriptConsumerInterfaceOptions & TransframeConsumerOptions<T>
+export function createBackgroundScriptConsumer<Api extends TransframeSourceApi>(
+  options?: BackgroundScriptConsumerInterfaceOptions & TransframeConsumerOptions<Api>
 ) {
   return new TransframeConsumer(
     new BackgroundScriptConsumerInterface(options),

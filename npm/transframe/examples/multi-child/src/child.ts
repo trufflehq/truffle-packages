@@ -1,9 +1,13 @@
-import { TransframeConsumer, IframeConsumerInterface } from "@trufflehq/transframe";
+import { TransframeConsumer } from "@trufflehq/transframe";
+import { IframeConsumerInterface } from "@trufflehq/transframe/iframe";
 import { api as backendApi } from "./api";
 import { println } from "./console";
 
 const iframeConsumer = new TransframeConsumer<typeof backendApi>(
-  new IframeConsumerInterface()
+  new IframeConsumerInterface(),
+  {
+    namespace: 'truffle-site'
+  }
 );
 
 const api = iframeConsumer.api;

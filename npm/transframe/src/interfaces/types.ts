@@ -1,4 +1,4 @@
-import { RPCReplyFunction, RPCRequest, RPCResponse } from "../rpc/types";
+import { RPCReplyFunction, RPCRequest } from "../rpc/types";
 
 export interface TransframeProviderInterface<Frame> {
   isListening: boolean;

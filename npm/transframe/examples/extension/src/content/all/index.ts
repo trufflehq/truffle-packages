@@ -1,7 +1,8 @@
-import { createBackgroundScriptConsumerInterface } from "@trufflehq/transframe";
+import { createBackgroundScriptConsumer } from "@trufflehq/transframe/background-script";
 
-const consumer = createBackgroundScriptConsumerInterface();
+const consumer = createBackgroundScriptConsumer();
 
+console.log('ima content script!')
 consumer.call('sayHello', 'Bob').then(result => {
   console.log('result', result);
 })

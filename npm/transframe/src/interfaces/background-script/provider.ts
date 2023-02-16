@@ -8,9 +8,17 @@ export class BackgroundScriptProviderInterface implements TransframeProviderInte
   private _messageHandler: (message: unknown, reply: RPCReplyFunction, fromId?: string) => void = () => {};
 
   private _messageHandlerWrapper = (port: Browser.Runtime.Port, message: unknown) => {
+
+    // if the consumer disconnects, we should disable the reply function
+    let isConnected = true;
+    port.onDisconnect.addListener(() => {
+      isConnected = false;
+    });
+
     // the user will use this to reply to the consumer
     const replyFn: RPCReplyFunction = (message) => {
-      port.postMessage(message);
+      // only send the message if the consumer is still connected
+      if (isConnected) port.postMessage(message);
     };
 
     // I'm not sure what we should use to identify the consumer...

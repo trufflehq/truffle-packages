@@ -55,6 +55,9 @@ export class TransframeProvider<Frame> {
     // if the message is not an RPC request, ignore it
     if (!isRPCRequest(message)) return;
 
+    // if the message is not for this namespace, ignore it
+    if (message.namespace !== this._options.namespace) return;
+
     // if strict mode is enabled, make sure to only handle messages if fromId is defined
     if (this._options.strictMode && fromId == null) return;
 
@@ -67,7 +70,11 @@ export class TransframeProvider<Frame> {
         // create a callback function that will send a message
         // back to the consumer
         const callback = (...args: unknown[]) => {
-          const callbackCall = createRpcCallbackCall(callbackId, args);
+          const callbackCall = createRpcCallbackCall({
+            callbackId,
+            payload: args,
+            namespace: this._options.namespace
+          });
           reply(callbackCall);
         };
 
@@ -97,7 +104,8 @@ export class TransframeProvider<Frame> {
     const response = createRpcResponse({
       requestId: message.requestId,
       result,
-      error: didError
+      error: didError,
+      namespace: this._options.namespace
     });
     reply(response);
   }

@@ -1,8 +1,9 @@
-import { createBackgroundScriptProviderInterface, createProviderApi } from '@trufflehq/transframe'
+import { createProviderApi } from '@trufflehq/transframe'
+import { createBackgroundScriptProvider } from '@trufflehq/transframe/background-script'
 
 console.log('ima background script!')
 
-createBackgroundScriptProviderInterface({
+createBackgroundScriptProvider({
   api: createProviderApi({
     sayHello (_fromId, name: string) {
       console.log('saying hello to', name)

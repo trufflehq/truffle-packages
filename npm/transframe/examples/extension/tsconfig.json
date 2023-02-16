@@ -16,7 +16,7 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "jsx": "react-jsx",
     "plugins": [

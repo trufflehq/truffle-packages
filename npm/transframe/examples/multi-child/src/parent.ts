@@ -1,10 +1,11 @@
-import { TransframeProvider, IframeProviderInterface } from '@trufflehq/transframe';
+import { TransframeProvider } from '@trufflehq/transframe';
+import { IframeProviderInterface } from '@trufflehq/transframe/iframe';
 import { api, frameCallbackMap, globalCallbacks } from './api';
 
 const iframeProvider = 
 new TransframeProvider(
   new IframeProviderInterface(),
-  { api }
+  { api, namespace: 'truffle-site' }
 );
 
 const frames = [

@@ -67,6 +67,9 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
     if (isRPCResponse(message)) {
       // in this case we're just receiving a response from a request we made
 
+      // if the message is not for this namespace, ignore it
+      if (message.namespace !== this._options?.namespace) return;
+
       // get the callback for the request
       const [resolve, reject] = this._requestCallbacks.get(message.requestId) ?? [];
       if (!(resolve && reject)) return;
@@ -83,6 +86,9 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
 
     } else if (isRPCCallbackCall(message)) {
       // in this case we're receiving a call to a callback we passed to the parent
+
+      // if the message is not for this namespace, ignore it
+      if (message.namespace !== this._options?.namespace) return;
 
       // get the callback for the request
       const rpcCallback = this._rpcCallbacks.get(message.callbackId);
@@ -117,7 +123,11 @@ export class TransframeConsumer<T extends TransframeSourceApi> {
     }) as Parameters<TransframeConsumerApi<T>[MethodName]>;
 
     // create the request and send it
-    const rpcRequest = createRpcRequest({ method: method as string, payload: modifiedPayload });
+    const rpcRequest = createRpcRequest({
+      method: method as string,
+      payload: modifiedPayload,
+      namespace: this._options?.namespace
+    });
     this._interface.sendMessage(rpcRequest);
 
     // wait for the response

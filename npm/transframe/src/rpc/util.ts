@@ -8,10 +8,12 @@ export function createRpcRequest ({
   requestId,
   method,
   payload,
+  namespace
 }: {
   requestId?: string;
   method: string;
   payload: unknown;
+  namespace?: string;
 }): RPCRequest {
   return {
     _transframe: true,
@@ -19,6 +21,7 @@ export function createRpcRequest ({
     requestId: requestId ?? generateId(),
     method,
     payload,
+    namespace,
   };
 }
 
@@ -29,10 +32,12 @@ export function createRpcResponse ({
   requestId,
   result,
   error = false,
+  namespace
 }: {
   requestId: string;
   result: unknown;
   error?: boolean;
+  namespace?: string;
 }): RPCResponse {
   return {
     _transframe: true,
@@ -40,6 +45,7 @@ export function createRpcResponse ({
     requestId,
     result,
     error,
+    namespace,
   };
 }
 
@@ -56,12 +62,22 @@ export function createRpcCallbackPlaceholder (callbackId: string): RPCCallbackPl
 /**
  * Creates an rpc callback call
  */
-export function createRpcCallbackCall (callbackId: string, payload: unknown): RPCCallbackCall {
+export function createRpcCallbackCall ({
+  callbackId,
+  payload,
+  namespace
+}: {
+  callbackId: string;
+  payload: unknown;
+  namespace?: string;
+}
+): RPCCallbackCall {
   return {
     _transframe: true,
     type: RPCMessageType.RPC_CALLBACK_CALL,
     callbackId,
     payload,
+    namespace,
   }
 }
 

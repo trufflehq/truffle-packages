@@ -31,6 +31,12 @@ export interface TransframeProviderOptions {
    * with the provider will be able to communicate with it.
    */
   strictMode?: boolean;
+
+  /**
+   * The namespace to use. If not specified, the provider will
+   * listen for messages that do not have a namespace specified.
+   */
+  namespace?: string;
 }
 
 export interface TransframeConsumerOptions<T extends TransframeSourceApi> {
@@ -52,4 +58,10 @@ export interface TransframeConsumerOptions<T extends TransframeSourceApi> {
    * Default is 5000.
    */
   apiCallTimeout?: number;
+
+  /**
+   * The namespace to use. If not specified, the consumer will
+   * communicate with providers that do not have a namespace specified.
+   */
+  namespace?: string; 
 }

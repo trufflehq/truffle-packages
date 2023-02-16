@@ -14,6 +14,12 @@ export interface RPCMessage {
    * Identifies the type of message as an RPC request
    */
   type: RPCMessageType;
+
+  /**
+   * The namespace of the message. Providers/consumers can only 
+   * communicate within the same namespace (if one is specified).
+   */
+  namespace?: string;
 }
 
 export interface RPCRequest extends RPCMessage {
