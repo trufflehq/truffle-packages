@@ -42,9 +42,9 @@ export default scss`
 .c-extension-icon {
     border-radius: 4px;
     border: 1px solid white;
+    padding-right: 3px;
     justify-content: space-between;
     align-items: center;
-    padding-left: 3px;
     background-clip: border-box;
     cursor: pointer;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -54,10 +54,11 @@ export default scss`
     box-sizing: border-box;
     flex-shrink: 0;
     display: inline-flex;
-    width: 92px;
-    height: 48px;
+    width: 76px;
+    height: 40px;
     transition: box-shadow 0.25s;
     z-index: 1000000;
+    overflow: visible;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.3);

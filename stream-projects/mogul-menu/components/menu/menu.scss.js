@@ -108,7 +108,6 @@ html, body {
   // TODO: rm this when we either include it in the design system or have it as a component prop
   --truffle-gradient: linear-gradient(281.86deg, #71DBDB 2.63%, #ADACDD 50.48%, #FF9DC6 94.5%);
 
-
   &.position-bottom-right, &.position-bottom-left {
     > .menu {
       > .inner {
@@ -137,7 +136,6 @@ html, body {
       }
     }
   }
-
 
   > .menu {
     transition: clip-path $clip-path-transition cubic-bezier(.4, .71, .18, .99);
@@ -198,6 +196,26 @@ html, body {
   }
 }
 
+.c-browser-extension-menu.is-open {
+  &.position-top-left, &.position-top-right {
+    > .menu {
+      > .inner {
+        > .bottom {
+          border-bottom: 1px solid gray;
+        }
+      }
+    }
+  }
+  &.position-bottom-right, &.position-bottom-left {
+    > .menu {
+      > .inner {
+        > .bottom {
+          border-top: 1px solid gray;
+        }
+      }
+    }
+  }
+}
 
 .c-browser-extension-menu.has-notification:not(.is-open) {
   >.extension-icon {

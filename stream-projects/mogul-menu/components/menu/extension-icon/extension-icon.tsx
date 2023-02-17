@@ -9,8 +9,9 @@ import {
 import { getHasNotification, useTabs } from "../../tabs/mod.ts";
 import { getIsOpen, getMenuIconImageObj, useMenu } from "../mod.ts";
 import stylesheet from "./extension-icon.scss.js";
+import { DEFAULT_MENU_ICON_HEIGHT } from "../constants.ts";
 
-const HAMBURGER_ICON_PATH = "M3 18H21V16H3V18ZM3 13H21V11H3V13ZM3 6V8H21V6H3Z";
+const HAMBURGER_ICON_PATH = "M2.5 15H17.5V13.3333H2.5V15ZM2.5 10.8333H17.5V9.16667H2.5V10.8333ZM2.5 5V6.66667H17.5V5H2.5Z";
 
 export default function ExtensionIcon() {
   const { state: menuState, toggleOpen } = useMenu();
@@ -29,9 +30,10 @@ export default function ExtensionIcon() {
   const menuOpenStyles = {
     justifyContent: "space-between",
     alignItems: "left",
-    paddingLeft: 0,
-    width: 48,
+    paddingRight: 0,
+    width: DEFAULT_MENU_ICON_HEIGHT,
     borderWidth: 0,
+    border: "none"
   };
 
   return (
@@ -40,34 +42,37 @@ export default function ExtensionIcon() {
       style={{ ...(menuOpen && menuOpenStyles) }}
       onClick={onExtensionIconClick}
     >
+      {menuOpen ? null : (
+          <div
+              style={{
+                pointerEvents: "none",
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+          >
+            <Icon
+                icon={HAMBURGER_ICON_PATH}
+                size="20px"
+                color="white"
+                isClickable={false}
+            />
+          </div>
+      )}
+
+
       <img
         src={getSrcByImageObj(iconImageObj)}
         alt="Creator icon"
-        width={menuOpen ? 48 : 40}
-        height={menuOpen ? 48 : 40}
+        width={menuOpen ? DEFAULT_MENU_ICON_HEIGHT : 32}
+        height={menuOpen ? DEFAULT_MENU_ICON_HEIGHT : 32}
         style={{
           borderRadius: menuOpen ? 0 : 2,
           pointerEvents: "none",
         }}
       />
-
-      {menuOpen ? null : (
-        <div
-          className="icon"
-          style={{
-            pointerEvents: "none",
-            transition: "box-shadow 0.25s",
-          }}
-        >
-          <Icon
-            icon={HAMBURGER_ICON_PATH}
-            size="24px"
-            color="white"
-            isClickable={false}
-          />
-        </div>
-      )}
-
       <Ripple color="var(--mm-color-text-bg-primary)" />
     </div>
   );

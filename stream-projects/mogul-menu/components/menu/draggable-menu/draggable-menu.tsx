@@ -33,6 +33,7 @@ import Draggable, {
   DragInfo,
   Vector,
 } from "../../draggable/draggable.tsx";
+import {DEFAULT_MENU_ICON_HEIGHT} from "../constants.ts";
 
 const DEFAULT_MENU_POSITION: MenuPosition = "top-right";
 const DEFAULT_POSITION_ELEMENT_QUERY_SELECTOR = "#chatframe";
@@ -237,6 +238,11 @@ export default function DraggableMenu({
     };
   }, []);
 
+  const menuOpenStyles = {
+    border: "1px solid white",
+    borderRadius: 4
+  };
+
   return (
     <Draggable
       requiredClassName="c-extension-icon"
@@ -261,7 +267,7 @@ export default function DraggableMenu({
       }}
     >
       <div className={className}>
-        <div className="menu">{children}</div>
+        <div className="menu" style={{ ...(isOpen && menuOpenStyles)}}>{children}</div>
       </div>
     </Draggable>
   );
