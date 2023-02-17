@@ -201,7 +201,7 @@ html, body {
     > .menu {
       > .inner {
         > .bottom {
-          border-bottom: 1px solid gray;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.25);
         }
       }
     }
@@ -210,7 +210,7 @@ html, body {
     > .menu {
       > .inner {
         > .bottom {
-          border-top: 1px solid gray;
+          border-top: 1px solid rgba(255, 255, 255, 0.25);
         }
       }
     }

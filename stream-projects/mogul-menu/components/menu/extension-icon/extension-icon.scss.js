@@ -41,7 +41,7 @@ export default scss`
 
 .c-extension-icon {
     border-radius: 4px;
-    border: 1px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.25);
     padding-right: 3px;
     justify-content: space-between;
     align-items: center;

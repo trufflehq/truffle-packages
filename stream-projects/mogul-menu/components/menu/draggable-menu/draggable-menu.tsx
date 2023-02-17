@@ -239,7 +239,7 @@ export default function DraggableMenu({
   }, []);
 
   const menuOpenStyles = {
-    border: "1px solid white",
+    border: "1px solid rgba(255, 255, 255, 0.25)",
     borderRadius: 4
   };
 
@@ -266,9 +266,11 @@ export default function DraggableMenu({
         }, 500);
       }}
     >
+
       <div className={className}>
         <div className="menu" style={{ ...(isOpen && menuOpenStyles)}}>{children}</div>
       </div>
+      <span>Hi</span>
     </Draggable>
   );
 }
