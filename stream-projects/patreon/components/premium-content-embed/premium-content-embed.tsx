@@ -40,7 +40,7 @@ mutation DatapointIncrementMetric ($input: DatapointIncrementMetricInput!) {
   datapointIncrementMetric(input: $input) { isUpdated }
 }`;
 
-function Embed({ patreonUsername, title, previewImageSrc }) {
+function Embed({ url, patreonUsername, title, previewImageSrc }) {
   useStyleSheet(styleSheet);
   useGoogleFontLoader(() => ["Roboto"]);
   const tierName$ = useSignal("");
@@ -85,6 +85,13 @@ function Embed({ patreonUsername, title, previewImageSrc }) {
   const recordClick = (e) => {
     e?.stopPropagation();
 
+    // TODO: uncomment when folks are on 4.0.1
+    // e?.preventDefault();
+    // jumper.call("comms.postMessage", {
+    //   type: "patreon.embedVideo",
+    //   body: { url },
+    // });
+
     // FIXME: set cookie for 1 hour and see if they join patreon
     // setCookie("patreon-click", "true", 1);
 
@@ -102,11 +109,12 @@ function Embed({ patreonUsername, title, previewImageSrc }) {
     isCollapsed$.set(!isCollapsed$.get());
   };
 
-  const url = `https://www.patreon.com/${patreonUsername}`;
-
   return (
     <>
-      <PatreonIframe patreonUsername={patreonUsername} />
+      <PatreonIframe
+        url={`https://www.patreon.com/${patreonUsername}/membership?embed`}
+        isHidden={true}
+      />
       <a
         className={`c-premium-content-embed ${
           isCollapsed ? "is-collapsed" : ""

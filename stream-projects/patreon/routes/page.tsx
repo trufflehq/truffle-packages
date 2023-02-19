@@ -7,8 +7,9 @@ function EmbedPage() {
   return (
     <PremiumContentEmbed
       patreonUsername="theyard"
-      title="Ep. 81 Premium - Slime & Aiden Power hour! [VIDEO]"
-      previewImageSrc="https://image.mux.com/oyqgHxbgHqIdocoK8201RFIl99sI1VguEfZS02K9XRSv4/thumbnail.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0In0.eyJzdWIiOiJveXFnSHhiZ0hxSWRvY29LODIwMVJGSWw5OXNJMVZndUVmWlMwMks5WFJTdjQiLCJleHAiOjE2NzgxMzYwMjgsImF1ZCI6InQiLCJ0aW1lIjoyLjB9.Np1Whqo2olHENx7d6aMp_nTBupttdjvkmaa06gAMAoyigo2yMzyswYsX9WMOigbm9Hzyfq_gtNXhJEL4IBhnOQ7Lq5DpYfOSjtrWZddroSzd9MkhPaXyksfxQ4fF6nOwtmCWkqv2XYgus1Kf5iSAF2yH978VRBbBytlZ7v4MNbHTPMBkxaKbMYHEdZ6K9Hm9NvaC_1IhIzEzGYvkjLhek0bLrzYbj7r7YfmMNcBsXl7wXeQwcedAtheIuzOso9hCTiGfq12EulO9z96vFSpXt5TcLpc50UL3ji2nLzrMgNx-kfgDK-KjN7rwrd-FrvglM8pEmvNHmnaPl1jfK9Jwdw"
+      url="https://www.patreon.com/posts/ep-83-premium-78759612"
+      title="Ep. 83 Premium - aidens new cut"
+      previewImageSrc="https://image.mux.com/02QeSZsrnC00KgaocgyacCygdGIxf8KU5CM6VqnxHCdVg/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiIwMlFlU1pzcm5DMDBLZ2FvY2d5YWNDeWdkR0l4ZjhLVTVDTTZWcW54SENkVmciLCJleHAiOjE2Nzk0NTYzNzksImF1ZCI6InQiLCJ0aW1lIjoyLjB9.OeS9Q0XRwZsVhiQNnHJYo9TFSxRkSMNf_8G_LlGNJhgYeEFnQ5C8Ftd9XQMCy_WnH9mFES7qbXzQ9-YIjkIReImwQDgvWTb8f6qctmj3PE8pCAfLOY_8BA-n6fpOEnyd4dtE4p5xepT1-TfnPvwsJzOsW5jdfm1WrnEfTjRQlvV7-s5PNeHJPFbD1T3vEjiwMd-G46CI9VhRXnC5x7c51cQxnqKMlCo5tNitaSfC5lNKpYCiyWlX9qm8QJeJQG9fCKMeINRbeeNrQKzEL29ESZH88Fy-7tT_tikT0AjMf4sJluS1iLXNeS8kBoI6cKSKtO2-aZGt7KVu-U3NxP6ThA"
     />
   );
 }
