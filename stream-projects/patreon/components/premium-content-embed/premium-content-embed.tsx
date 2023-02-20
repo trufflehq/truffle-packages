@@ -36,8 +36,8 @@ const COLLAPSED_STYLE = {
 };
 
 const DATAPOINT_INCREMENT_METRIC_MUTATION = gql`
-mutation DatapointIncrementMetric ($input: DatapointIncrementMetricInput!) {
-  datapointIncrementMetric(input: $input) { isUpdated }
+mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
+  datapointIncrementUnique(input: $input) { isUpdated }
 }`;
 
 function Embed({ url, patreonUsername, title, previewImageSrc }) {
@@ -46,7 +46,7 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
   const tierName$ = useSignal("");
   const tierName = useSelector(() => tierName$.get());
 
-  const [_incrementMetricPayload, executeDatapointIncrementMetricMutation] =
+  const [_incrementUniquePayload, executeDatapointIncrementUniqueMutation] =
     useMutation(
       DATAPOINT_INCREMENT_METRIC_MUTATION,
     );
@@ -68,16 +68,18 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
   }, [isCollapsed]);
 
   useEffect(() => {
-    executeDatapointIncrementMetricMutation({
-      input: {
-        metricSlug: "patreon-premium-content-embed-views",
-        count: 1,
-      },
-    });
-
     jumper.call("comms.onMessage", (message) => {
       if (message?.type === "patreon.tierName") {
         tierName$.set(message.body);
+
+        executeDatapointIncrementUniqueMutation({
+          input: {
+            metricSlug: "unique-patreon-premium-content-embed-views",
+            dimensionValues: {
+              "patreon-tier-name": message.body || "none",
+            },
+          },
+        });
       }
     });
   }, []);
@@ -95,10 +97,12 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
     // FIXME: set cookie for 1 hour and see if they join patreon
     // setCookie("patreon-click", "true", 1);
 
-    executeDatapointIncrementMetricMutation({
+    executeDatapointIncrementUniqueMutation({
       input: {
-        metricSlug: "patreon-premium-content-embed-clicks",
-        count: 1,
+        metricSlug: "unique-patreon-premium-content-embed-clicks",
+        dimensionValues: {
+          "patreon-tier-name": tierName$.get() || "none",
+        },
       },
     });
   };
