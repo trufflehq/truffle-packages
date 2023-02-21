@@ -137,13 +137,13 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
           </div>
           <div className="info">
             <div className="title">Premium content</div>
-            {!tierName
-              ? (
-                <div className="description">
-                  Unlock this video by becoming a patron
-                </div>
-              )
-              : null}
+            {
+              <div className="description">
+                {tierName
+                  ? "Thanks for being a patron"
+                  : "Unlock this video by becoming a patron"}
+              </div>
+            }
           </div>
           <div className="close">
             <Icon
