@@ -6,6 +6,8 @@ import { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react"
 
 import styleSheet from "./patreon-iframe.scss.js";
 
+const TEN_MINUTES_MS = 10 * 60 * 1000;
+
 function PatreonFrame({ url, isHidden }: { url: string; isHidden?: boolean }) {
   useStyleSheet(styleSheet);
   const isReady$ = useSignal(false);
@@ -23,8 +25,12 @@ function PatreonFrame({ url, isHidden }: { url: string; isHidden?: boolean }) {
         url: "https://www.patreon.com",
         name: "datadome",
       }),
+      // remove the x-frame-options header for 10 min
+      // patreon throws up a captcha sometimes, and after solved it reloads
+      // so we need the header to still be gone until the captcha is solved
       jumper.call("extension.removeRequestHeaders", {
         headers: ["X-Frame-Options"],
+        ttlMs: TEN_MINUTES_MS,
       }),
     ]).then(() => {
       isReady$.set(true);

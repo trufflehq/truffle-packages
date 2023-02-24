@@ -62,11 +62,13 @@ export default function PrimeSubListener({ channelName }) {
             value: '[data-a-page-loaded-name="SubsBroadcasterPage"]',
           },
         ],
-        targetQuerySelector: ".tw-checkbox__input",
+        targetQuerySelector: ".tw-checkbox__label",
         observerConfig: { childList: true },
       }, (matches) => {
-        const id = matches?.[0]?.id;
-        if (id) {
+        const { id, innerText } = matches?.[0] || {};
+        console.log("label", innerText); // keeping for prod debug, can rm mar 2023
+
+        if (id && innerText?.toLowerCase().indexOf("prime") !== -1) {
           // send for our /youtube iframe to use the result
           jumper.call("comms.postMessage", {
             type: "twitch.canPrimeSubscribe",

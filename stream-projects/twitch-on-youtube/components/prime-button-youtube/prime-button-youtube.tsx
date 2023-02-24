@@ -35,6 +35,7 @@ const DATAPOINT_INCREMENT_UNIQUE_MUTATION = gql`
 mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
   datapointIncrementUnique(input: $input) { isUpdated }
 }`;
+const TEN_MINUTES_MS = 10 * 60 * 1000;
 
 export default function PrimeButtonYoutube(
   { channelName = "stanz", creatorName = "Stanz" }: {
@@ -79,7 +80,16 @@ export default function PrimeButtonYoutube(
   }, [canPrimeSubscribe, isIframeVisible]);
 
   const buttonClick = () => {
-    isIframeVisible$.set(!isIframeVisible$.get());
+    const shouldShowIframe = !isIframeVisible$.get();
+    if (shouldShowIframe) {
+      // remove the x-frame-options header for 10 min
+      // clicking subscribe with prime will trigger a reload, which needs the header to still be gone
+      jumper.call("extension.removeRequestHeaders", {
+        headers: ["X-Frame-Options"],
+        ttlMs: TEN_MINUTES_MS,
+      });
+    }
+    isIframeVisible$.set(shouldShowIframe);
     executeDatapointIncrementUniqueMutation({
       input: {
         metricSlug: "unique-prime-button-clicks",

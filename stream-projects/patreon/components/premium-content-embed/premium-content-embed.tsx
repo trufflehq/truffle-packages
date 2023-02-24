@@ -87,14 +87,16 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
   const recordClick = (e) => {
     e?.stopPropagation();
 
-    // TODO: uncomment when folks are on 4.0.1
-    // e?.preventDefault();
-    // jumper.call("comms.postMessage", {
-    //   type: "patreon.embedVideo",
-    //   body: { url },
-    // });
+    const shouldEmbed = tierName$.get();
+    if (shouldEmbed) {
+      e?.preventDefault();
+      jumper.call("comms.postMessage", {
+        type: "patreon.embedVideo",
+        body: { url },
+      });
+    }
 
-    // FIXME: set cookie for 1 hour and see if they join patreon
+    // FIXME: set cookie for 1 hour and see if they join patreon bc of us
     // setCookie("patreon-click", "true", 1);
 
     executeDatapointIncrementUniqueMutation({
