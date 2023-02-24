@@ -1,6 +1,6 @@
 export default {
   name: "@truffle/patreon",
-  version: "0.5.45",
+  version: "0.5.46",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   description: "Patreon integration for Truffle",
   requestedPermissions: [],

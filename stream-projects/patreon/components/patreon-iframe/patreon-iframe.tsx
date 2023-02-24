@@ -43,6 +43,7 @@ function PatreonFrame({ url, isHidden }: { url: string; isHidden?: boolean }) {
         <iframe
           className={`c-patreon-iframe ${isHidden ? "is-hidden" : ""}`}
           src={url}
+          allow="fullscreen; autoplay;"
         />
       )}
     </>
