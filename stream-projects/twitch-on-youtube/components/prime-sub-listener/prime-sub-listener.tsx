@@ -31,7 +31,7 @@ const CSS_FOR_TWITCH = `
 // request needs to come from twitch frame, which is why this route exists
 // (this route is embedded in twitch embed)
 // only reason react is necessary here is so we can pass the sourceName
-export default function PrimeSubListener({ channelName }) {
+export default function PrimeSubListener() {
   useEffect(() => {
     setTimeout(() => {
       mutation(DATAPOINT_INCREMENT_UNIQUE_MUTATION, {

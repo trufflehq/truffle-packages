@@ -9,10 +9,12 @@ import {
 import { useSignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
 import { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 import Icon from "https://tfl.dev/@truffle/ui@~0.2.0/components/legacy/icon/icon.tsx";
+import semver from "https://npm.tfl.dev/semver@7.3.7";
 
 import { tierName$ } from "../../lib/detect.ts";
 import PatreonIframe from "../patreon-iframe/patreon-iframe.tsx";
 import styleSheet from "./premium-content-embed.scss.js";
+import type { VideoInfo } from "../../types/index.ts";
 
 const CLOSE_ICON_PATH =
   "M19,6.41 L17.59,5 L12,10.59 L6.41,5 L5,6.41 L10.59,12 L5,17.59 L6.41,19 L12,13.41 L17.59,19 L19,17.59 L13.41,12 L19,6.41 Z";
@@ -54,6 +56,7 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
 
   const isCollapsed$ = useSignal(false);
   const isCollapsed = useSelector(() => isCollapsed$.get());
+  const extensionInfo$ = useSignal(jumper.call("context.getInfo"));
 
   useEffect(() => {
     // set styles for this iframe within YouTube's site
@@ -70,15 +73,23 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
 
   const recordClick = (e) => {
     e?.stopPropagation();
+    const supportsEmbeddedVideo = semver.satisfies(
+      extensionInfo$.get().version,
+      ">=4.0.1",
+    );
 
-    const shouldEmbed = tierName$.get();
+    const shouldEmbed = tierName$.get() && supportsEmbeddedVideo;
     if (shouldEmbed) {
       e?.preventDefault();
+      const videoInfo: VideoInfo = {
+        url,
+        title,
+      };
       jumper.call("comms.postMessage", {
         type: "patreon.embedVideo",
         // ?embed will trigger a truffle embed that adds css to fullscreen the video on patreon
         // since they don't have a normal embed url
-        body: { url: `${url}?embed` },
+        body: { videoInfo },
       });
     }
 
