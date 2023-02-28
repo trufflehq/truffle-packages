@@ -93,7 +93,6 @@ export default function PrimeButtonYoutube(
     executeDatapointIncrementUniqueMutation({
       input: {
         metricSlug: "unique-prime-button-clicks",
-        count: 1,
       },
     });
   };
