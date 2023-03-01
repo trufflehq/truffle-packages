@@ -139,7 +139,7 @@ function Embed({ sourceType, sourceId, sourceName, forceIsLive }) {
     : `https://youtube.com/channel/${sourceId}/live`;
 
   const previewUrl = sourceType === "twitch"
-    ? `${previewSrc(url)}&muted=true`
+    ? `${previewSrc(url)}&muted=true&quality=360p30`
     : `${
       previewSrc(`https://youtube.com/channel/${sourceId}`)
     }&autoplay=1&mute=1`;
