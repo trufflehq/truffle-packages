@@ -34,12 +34,6 @@ const CSS_FOR_TWITCH = `
 export default function PrimeSubListener() {
   useEffect(() => {
     setTimeout(() => {
-      mutation(DATAPOINT_INCREMENT_UNIQUE_MUTATION, {
-        input: {
-          metricSlug: "unique-prime-button-views",
-        },
-      });
-
       jumper.call("layout.applyLayoutConfigSteps", {
         layoutConfigSteps: [
           {
@@ -82,6 +76,12 @@ export default function PrimeSubListener() {
                 value: `[data-truffle-id=${id}]`,
               },
             ],
+          });
+
+          mutation(DATAPOINT_INCREMENT_UNIQUE_MUTATION, {
+            input: {
+              metricSlug: "unique-prime-button-views",
+            },
           });
         }
       });

@@ -1,6 +1,6 @@
 export default {
   name: "@truffle/twitch-on-youtube",
-  version: "0.6.11",
+  version: "0.6.12",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   description: "Twitch on YouTube",
   requestedPermissions: [],
