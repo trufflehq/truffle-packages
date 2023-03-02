@@ -14,6 +14,7 @@ import {
 } from "https://tfl.dev/@truffle/global-context@^1.0.0/package-context.ts";
 
 const ACCESS_TOKEN_COOKIE = "accessToken";
+const JUMPER_ACCESS_TOKEN_TIMEOUT_MS = 1000;
 
 if (!isSsr) {
   jumper.call(
@@ -55,12 +56,20 @@ export async function getAccessToken(): Promise<string> {
   // we need to rely on jumper first bc we can't trust that third party cookies will be set.
   // for ssr this is a little trickier... ssr obj can't use jumper. so for ssr we
   let accessTokenFromJumper = isSsr ? "" : // we'll eventually have different accessTokens per orgId
-    await jumper.call("user.getAccessToken", { orgId: getOrgId() });
+    await Promise.race([
+      jumper.call("user.getAccessToken", { orgId: getOrgId() }),
+      new Promise((resolve) =>
+        setTimeout(resolve, JUMPER_ACCESS_TOKEN_TIMEOUT_MS, "")
+      ),
+    ]);
   // TODO: legacy, rm 4/2023
   if (!accessTokenFromJumper && !isSsr) {
-    accessTokenFromJumper = await jumper.call("storage.get", {
-      key: TRUFFLE_ACCESS_TOKEN_KEY,
-    });
+    accessTokenFromJumper = await Promise.race([
+      jumper.call("storage.get", { key: TRUFFLE_ACCESS_TOKEN_KEY }),
+      new Promise((resolve) =>
+        setTimeout(resolve, JUMPER_ACCESS_TOKEN_TIMEOUT_MS, "")
+      ),
+    ]);
   }
   // somewhere and some point in time, some of these were set to str "undefined"
   if (accessTokenFromJumper === "undefined") {
