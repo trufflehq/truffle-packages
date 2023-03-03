@@ -7,7 +7,7 @@ import {
   useStyleSheet,
 } from "../../../deps.ts";
 import { getHasNotification, useTabs } from "../../tabs/mod.ts";
-import { getIsOpen, getMenuIconImageObj, useMenu } from "../mod.ts";
+import {getIsOpen, getMenuIconImageObj, getMenuPosition, useMenu} from "../mod.ts";
 import stylesheet from "./extension-icon.scss.js";
 import { DEFAULT_MENU_ICON_HEIGHT } from "../constants.ts";
 
@@ -19,6 +19,7 @@ export default function ExtensionIcon() {
 
   const hasNotification = getHasNotification(tabsState);
   const menuOpen = getIsOpen(menuState);
+  const position = getMenuPosition(menuState);
 
   const onExtensionIconClick = () => {
     toggleOpen();
@@ -27,7 +28,7 @@ export default function ExtensionIcon() {
   useStyleSheet(stylesheet);
   const iconImageObj = getMenuIconImageObj(menuState);
 
-  const menuOpenStyles = {
+  const extensionIconMenuOpenStyles = {
     justifyContent: "space-between",
     alignItems: "left",
     paddingRight: 0,
@@ -39,7 +40,7 @@ export default function ExtensionIcon() {
   return (
     <div
       className={`c-extension-icon ${classKebab({ hasNotification })}`}
-      style={{ ...(menuOpen && menuOpenStyles) }}
+      style={{ ...(menuOpen && extensionIconMenuOpenStyles) }}
       onClick={onExtensionIconClick}
     >
       {menuOpen ? null : (
@@ -69,7 +70,10 @@ export default function ExtensionIcon() {
         width={menuOpen ? DEFAULT_MENU_ICON_HEIGHT : 32}
         height={menuOpen ? DEFAULT_MENU_ICON_HEIGHT : 32}
         style={{
-          borderRadius: menuOpen ? 0 : 2,
+          borderTopLeftRadius: menuOpen && position !== "top-left" ? 0 : 4,
+          borderTopRightRadius: menuOpen && position !== "top-right" ? 0 : 4,
+          borderBottomLeftRadius: menuOpen && position !== "bottom-left" ? 0 : 4,
+          borderBottomRightRadius: menuOpen && position !== "bottom-right" ? 0 : 4,
           pointerEvents: "none",
         }}
       />

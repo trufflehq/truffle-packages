@@ -270,7 +270,6 @@ export default function DraggableMenu({
       <div className={className}>
         <div className="menu" style={{ ...(isOpen && menuOpenStyles)}}>{children}</div>
       </div>
-      <span>Hi</span>
     </Draggable>
   );
 }
