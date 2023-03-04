@@ -1,6 +1,6 @@
 export default {
   name: "@truffle/live-embed",
-  version: "0.5.49",
+  version: "0.5.50",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   description: "Shows a twitch live stream on a creator's youtube channel.",
   requestedPermissions: [],

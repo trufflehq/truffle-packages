@@ -58,7 +58,11 @@ export default scss`
 
   > .button {
     position: absolute;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1em;
+    gap: 10px;
     text-decoration: none;
     top: 50%;
     left: 50%;
