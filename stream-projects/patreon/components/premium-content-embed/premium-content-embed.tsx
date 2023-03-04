@@ -7,6 +7,7 @@ import {
   useMutation,
 } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 import { useSignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
+import { setCookie } from "https://tfl.dev/@truffle/utils@~0.0.3/cookie/cookie.ts";
 import { useSelector } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 import Icon from "https://tfl.dev/@truffle/ui@~0.2.0/components/legacy/icon/icon.tsx";
 import semver from "https://npm.tfl.dev/semver@7.3.7";
@@ -15,6 +16,8 @@ import { tierName$ } from "../../lib/detect.ts";
 import PatreonIframe from "../patreon-iframe/patreon-iframe.tsx";
 import styleSheet from "./premium-content-embed.scss.js";
 import type { VideoInfo } from "../../types/index.ts";
+
+const ONE_HOUR_MS = 3600 * 1000;
 
 const CLOSE_ICON_PATH =
   "M19,6.41 L17.59,5 L12,10.59 L6.41,5 L5,6.41 L10.59,12 L5,17.59 L6.41,19 L12,13.41 L17.59,19 L19,17.59 L13.41,12 L19,6.41 Z";
@@ -104,7 +107,8 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
     }
 
     // FIXME: set cookie for 1 hour and see if they join patreon bc of us
-    // setCookie("patreon-click", "true", 1);
+    // TODO: set with jumper.call storage.set so it works w/ 3rd party cookies disabled
+    setCookie("patreon-click", "true", { ttlMs: ONE_HOUR_MS });
 
     executeDatapointIncrementUniqueMutation({
       input: {

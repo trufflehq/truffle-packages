@@ -1,6 +1,7 @@
 import React, { useEffect } from "https://npm.tfl.dev/react";
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
 import { gql, mutation } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
+import { getCookie } from "https://tfl.dev/@truffle/utils@~0.0.3/cookie/cookie.ts";
 
 const DATAPOINT_INCREMENT_UNIQUE_MUTATION = gql`
 mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
@@ -10,6 +11,12 @@ mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
 // only reason react is necessary here is so we can pass the patreonUsername
 export default function SubscriptionListener({ patreonUsername }) {
   useEffect(() => {
+    const wasFromTruffle = getCookie("patreon-click");
+
+    if (!wasFromTruffle) {
+      return;
+    }
+
     jumper.call("layout.listenForElements", {
       listenElementLayoutConfigSteps: [
         {
