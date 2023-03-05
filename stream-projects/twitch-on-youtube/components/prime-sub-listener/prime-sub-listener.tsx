@@ -13,6 +13,13 @@ mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
   datapointIncrementUnique(input: $input) { isUpdated }
 }`;
 
+const DATAPOINT_INCREMENT_METRIC_MUTATION = gql`
+mutation DatapointIncrementMetric ($input: DatapointIncrementMetricInput!) {
+  datapointIncrementMetric(input: $input) { isUpdated }
+}`;
+
+const PRIME_REVENUE_ADDED_CENTS = 250; // $2.50
+
 const PRIME_BUTTON_LAYOUT_CONFIG_STEPS = [
   {
     action: "querySelector",
@@ -108,6 +115,12 @@ function addPrimeButtonEventListener() {
         mutation(DATAPOINT_INCREMENT_UNIQUE_MUTATION, {
           input: {
             metricSlug: "unique-prime-button-subscriptions",
+          },
+        });
+        mutation(DATAPOINT_INCREMENT_METRIC_MUTATION, {
+          input: {
+            metricSlug: "revenue-added-cents",
+            count: PRIME_REVENUE_ADDED_CENTS,
           },
         });
       };
