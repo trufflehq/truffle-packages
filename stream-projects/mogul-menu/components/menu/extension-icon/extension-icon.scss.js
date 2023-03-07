@@ -40,20 +40,25 @@ export default scss`
 }
 
 .c-extension-icon {
-  cursor: pointer;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  background-image: url(https://cdn.bio/assets/images/creators/ludwig/extension_icon.png);
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-color: rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-  transition: box-shadow 0.25s;
-  z-index: 1000000;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding-right: 3px;
+    justify-content: space-between;
+    align-items: center;
+    background-clip: border-box;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    background-color: transparent;  
+    background-size: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    flex-shrink: 0;
+    display: inline-flex;
+    width: 76px;
+    height: 40px;
+    transition: box-shadow 0.25s;
+    z-index: 1000000;
+    overflow: visible;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.3);
@@ -65,9 +70,5 @@ export default scss`
   }
 }
 
-.c-extension-icon {
-  background-color: var(--primary-base);
-  border-radius: 0px;
-  position: relative;
-}
+
 `;

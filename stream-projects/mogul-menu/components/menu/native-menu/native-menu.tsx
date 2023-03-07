@@ -181,7 +181,7 @@ function ExpandedMenu(props: MogulMenuProps) {
           </div>
         </div>
       )}
-      <div className="bottom">
+      <div className="bottom" >
         <TabBar />
       </div>
       <div className="body">

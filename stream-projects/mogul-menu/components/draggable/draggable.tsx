@@ -10,6 +10,7 @@ export interface DragInfo {
   start: Vector;
   pressed: boolean;
   draggable: boolean;
+  over: boolean;
 }
 
 export interface DimensionModifiers {
@@ -60,6 +61,7 @@ export function useUpdateDragPosition(
 
 export default function Draggable({
   children,
+  hidden,
   dimensions,
   defaultPosition,
   createClipPath,
@@ -67,6 +69,8 @@ export default function Draggable({
   initializePosition,
   onPressedMouseUp,
   onDragStart,
+  onMouseEnter,
+  onMouseLeave,
   translateFn,
   updateParentPosition,
   resizeObserver,
@@ -82,12 +86,15 @@ export default function Draggable({
       left,
     }: Pick<Partial<DimensionModifiers>, "top" | "bottom" | "right" | "left">,
   ) => string;
+  hidden?: boolean;
   dimensions: Dimensions;
   defaultPosition: Vector;
   requiredClassName: string;
   ignoreClassName?: string;
   onPressedMouseUp?: (e: React.MouseEvent, dragInfo: DragInfo) => void;
   onDragStart?: (e: React.MouseEvent) => void;
+  onMouseEnter?: (e: React.MouseEvent) => void;
+  onMouseLeave?: (e: React.MouseEvent) => void;
   translateFn?: (
     updateOnTranslate: (
       x: number,
@@ -165,6 +172,7 @@ export default function Draggable({
     //outer div is the full screen div that is cropped with clip path
     <div
       className="draggable"
+      hidden={hidden}
       draggable={true}
       style={{
         position: "absolute",
@@ -221,6 +229,15 @@ export default function Draggable({
             y: old.current.y,
           },
         }));
+      }}
+      onMouseEnter={(e) => {
+        e.preventDefault();
+        onMouseEnter?.(e);
+      }}
+
+      onMouseLeave={(e) => {
+        e.preventDefault();
+        onMouseLeave?.(e);
       }}
     >
       <div

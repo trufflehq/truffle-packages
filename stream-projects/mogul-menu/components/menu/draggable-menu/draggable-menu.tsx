@@ -1,4 +1,11 @@
-import { classKebab, jumper, React } from "../../../deps.ts";
+import {
+  classKebab,
+  jumper,
+  React,
+  useEffect,
+  useRef,
+  useState,
+} from "../../../deps.ts";
 import { getHasNotification, useTabs } from "../../tabs/mod.ts";
 import {
   getDimensions,
@@ -26,6 +33,7 @@ import Draggable, {
   DragInfo,
   Vector,
 } from "../../draggable/draggable.tsx";
+import {DEFAULT_MENU_ICON_HEIGHT} from "../constants.ts";
 
 const DEFAULT_MENU_POSITION: MenuPosition = "top-right";
 const DEFAULT_POSITION_ELEMENT_QUERY_SELECTOR = "#chatframe";
@@ -139,6 +147,8 @@ export default function DraggableMenu({
   };
 
   const onPressedMouseUp = (e: React.MouseEvent, dragInfo: DragInfo) => {
+    setDragging(false);
+
     updateMenuPosition(getMenuMousePosition(e));
     updateDimensions();
 
@@ -165,6 +175,7 @@ export default function DraggableMenu({
   };
 
   const onDragStart = () => {
+    setDragging(true);
     setIsClosed();
     updateDimensions({
       transition: "none",
@@ -191,11 +202,52 @@ export default function DraggableMenu({
 
   const dimensions = getDimensions(menuState);
   const defaultPosition = { x: 0, y: 0 };
+  const hoverTimer = useRef(null);
+
+  const [controlsHidden, setControlsHidden] = useState(false);
+  const [hover, setHover] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [dragging, setDragging] = useState(false);
+
+  useEffect(() => {
+    jumper.call(
+      "layout.listenForElements",
+      {
+        listenElementLayoutConfigSteps: [
+          {
+            action: "querySelector",
+            value: "#movie_player",
+          },
+        ],
+        observerConfig: {
+          attributes: true,
+          attributeFilter: ["class"],
+          childList: false,
+          subtree: false,
+        },
+        targetQuerySelector: "#movie_player:not(.ytp-progress-bar-hover)",
+      },
+      (matches) => {
+        setIsFullscreen(matches[0].attributes.class.includes("ytp-fullscreen"));
+        setControlsHidden(matches[0].attributes.class.includes("ytp-autohide"));
+      },
+    );
+
+    return () => {
+      clearTimeout(hoverTimer); // Prevent memory leaks in case component is unmounted before timeout finishes
+    };
+  }, []);
+
+  const menuOpenStyles = {
+    border: "1px solid rgba(255, 255, 255, 0.25)",
+    borderRadius: 4
+  };
 
   return (
     <Draggable
       requiredClassName="c-extension-icon"
       dimensions={dimensions}
+      hidden={isFullscreen && !hover && !isOpen && !dragging && controlsHidden}
       defaultPosition={defaultPosition}
       onPressedMouseUp={onPressedMouseUp}
       onDragStart={onDragStart}
@@ -204,9 +256,19 @@ export default function DraggableMenu({
       createClipPath={createClipPath}
       resizeObserver={useWindowResizeObserver}
       initializePosition={initializePosition}
+      onMouseEnter={() => {
+        clearTimeout(hoverTimer.current); // Prevents race condition where dragging too fast triggers unhover and timout sets hover to false after being set to true
+        setHover(true);
+      }}
+      onMouseLeave={() => {
+        hoverTimer.current = setTimeout(() => { // Prevents flickering of menu in moment where mouse leaves menu but controls aren't shown
+          setHover(false);
+        }, 500);
+      }}
     >
+
       <div className={className}>
-        <div className="menu">{children}</div>
+        <div className="menu" style={{ ...(isOpen && menuOpenStyles)}}>{children}</div>
       </div>
     </Draggable>
   );

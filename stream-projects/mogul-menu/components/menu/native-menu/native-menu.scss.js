@@ -169,7 +169,7 @@ body {
       > .bottom {
         display: flex;
         justify-content: flex-end;
-        max-height: 40px;
+        max-height: 48px;
         width: 100%;
         box-sizing: border-box;
         border-bottom: 1px solid rgba(58, 58, 58, 1);

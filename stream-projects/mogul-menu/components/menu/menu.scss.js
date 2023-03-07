@@ -108,7 +108,6 @@ html, body {
   // TODO: rm this when we either include it in the design system or have it as a component prop
   --truffle-gradient: linear-gradient(281.86deg, #71DBDB 2.63%, #ADACDD 50.48%, #FF9DC6 94.5%);
 
-
   &.position-bottom-right, &.position-bottom-left {
     > .menu {
       > .inner {
@@ -138,7 +137,6 @@ html, body {
     }
   }
 
-
   > .menu {
     transition: clip-path $clip-path-transition cubic-bezier(.4, .71, .18, .99);
     
@@ -150,7 +148,6 @@ html, body {
       height: 600px;
     }
     
-    border-radius: 2px;
     box-sizing: border-box;
     background: var(--mm-color-bg-primary);
     color: var(--mm-color-text-bg-primary);
@@ -192,13 +189,33 @@ html, body {
       > .bottom {
         display: flex;
         justify-content: flex-end;
-        max-height: 40px;
+        max-height: 48px;
         width: 100%;
       }
     }
   }
 }
 
+.c-browser-extension-menu.is-open {
+  &.position-top-left, &.position-top-right {
+    > .menu {
+      > .inner {
+        > .bottom {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+        }
+      }
+    }
+  }
+  &.position-bottom-right, &.position-bottom-left {
+    > .menu {
+      > .inner {
+        > .bottom {
+          border-top: 1px solid rgba(255, 255, 255, 0.25);
+        }
+      }
+    }
+  }
+}
 
 .c-browser-extension-menu.has-notification:not(.is-open) {
   >.extension-icon {
