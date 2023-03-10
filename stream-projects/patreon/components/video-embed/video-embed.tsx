@@ -74,7 +74,7 @@ const TIERS = [
     priceCents: 2500,
     bullets: [
       "shill and rich king benefits",
-      "WE WILL ACTUALLY MAIL OT YOUR HOUSE: a custom postcard every month with a trinket chosen at random, or a shirtless polaroid",
+      "WE WILL ACTUALLY MAIL TO YOUR HOUSE: a custom postcard every month with a trinket chosen at random, or a shirtless polaroid",
       "Discounts and early access to merch",
     ],
   },

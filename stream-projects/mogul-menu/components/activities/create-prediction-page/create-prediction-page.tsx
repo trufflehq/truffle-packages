@@ -79,7 +79,7 @@ const CreatePredictionPage = observer(function CreatePredictionPage() {
     const result = await executeCreatePredictionMutation({
       question: predictionForm$.question.get(),
       options: predictionForm$.options.get(),
-      durationSeconds: parseInt(predictionForm$.durationMinutes.get()) *
+      durationSeconds: parseFloat(predictionForm$.durationMinutes.get()) *
         SECONDS_PER_MINUTE,
     });
 
@@ -93,7 +93,7 @@ const CreatePredictionPage = observer(function CreatePredictionPage() {
 
   const canSubmit = useComputed(() => {
     const hasQuestion = Boolean(predictionForm$.question.get().length);
-    const hasDuration = parseInt(predictionForm$.durationMinutes.get()) > 0;
+    const hasDuration = parseFloat(predictionForm$.durationMinutes.get()) > 0;
     const hasOptions = predictionForm$.options.get().every((option) =>
       option.text.length
     );
@@ -136,7 +136,7 @@ function SubmissionPeriod(
   const error$ = useSignal("");
 
   useObserve(() => {
-    const durationMinutes = parseInt(durationMinutes$.get());
+    const durationMinutes = parseFloat(durationMinutes$.get());
     if (durationMinutes < 0) {
       error$.set("Must be a positive value");
     } else {
