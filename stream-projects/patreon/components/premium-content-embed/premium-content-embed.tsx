@@ -47,7 +47,7 @@ const COLLAPSED_STYLE = {
   height: "32px",
 };
 
-const DATAPOINT_INCREMENT_METRIC_MUTATION = gql`
+const DATAPOINT_INCREMENT_UNIQUE_MUTATION = gql`
 mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
   datapointIncrementUnique(input: $input) { isUpdated }
 }`;
@@ -59,7 +59,7 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
 
   const [_incrementUniquePayload, executeDatapointIncrementUniqueMutation] =
     useMutation(
-      DATAPOINT_INCREMENT_METRIC_MUTATION,
+      DATAPOINT_INCREMENT_UNIQUE_MUTATION,
     );
 
   const isCollapsed$ = useSignal(false);
