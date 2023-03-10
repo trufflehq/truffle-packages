@@ -206,7 +206,7 @@ function PatreonUpsell({ close }: { close: () => void }) {
       <div className="close" onClick={close}>
         <Icon
           icon={CLOSE_ICON_PATH}
-          size="24px"
+          size="20px"
           color="#fff"
           onclick={close}
         />
@@ -323,7 +323,7 @@ function VideoInfoBar(
         <Icon
           icon={buttonIconPath}
           size="16px"
-          color="#FF424D"
+          color="#fff"
         />
         {buttonText}
       </a>
@@ -331,7 +331,7 @@ function VideoInfoBar(
       <div className="close">
         <Icon
           icon={CLOSE_ICON_PATH}
-          size="24px"
+          size="20px"
           color="#fff"
           onclick={close}
         />

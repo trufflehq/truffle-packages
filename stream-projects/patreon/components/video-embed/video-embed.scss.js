@@ -6,6 +6,8 @@ export default scss`
   height: 100%;
   display: flex;
   flex-direction: column;
+  border: 1px solid #444;
+  box-sizing: border-box;
 }
 
 .c-premium-preview {
@@ -20,8 +22,6 @@ export default scss`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-sizing: border-box;
 
   &:not(.is-visible) {
     > .loading {
@@ -62,7 +62,7 @@ export default scss`
 .c-video-info-bar {
   font-family: Roboto, sans-serif;
   width: 100%;
-  background: #000;
+  background: #292829;
   color: #ffffff;
   padding: 8px 16px;
   box-sizing: border-box;
@@ -98,17 +98,17 @@ export default scss`
     gap: 10px;
     text-decoration: none;
     text-align: center;
-    padding: 6px 16px;
-    background: #000000;
+    padding: 6px 12px;
+    background: #292829;
     border: 1px solid #FF424D;
-    color: #FF424D;
+    color: #fff;
     border-radius: 30px;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 14px;
     cursor: pointer;
 
     &:hover {
-      background: #222222;
+      background: #222;
     }
   }
 
@@ -120,6 +120,7 @@ export default scss`
 .c-patreon-upsell {
   background: #292829;
   color: #fff;
+  border: 1px solid #444;
   padding: 32px;
   font-family: 'Roboto', sans-serif;
   width: 100%;
