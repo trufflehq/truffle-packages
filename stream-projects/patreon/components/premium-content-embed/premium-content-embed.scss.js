@@ -110,7 +110,7 @@ export default scss`
           padding: 6px 16px;
           background: #FF424D;
           border-radius: 30px;
-          color: #000;
+          color: #fff;
           font-weight: 600;
           font-size: 14px;
           cursor: pointer;

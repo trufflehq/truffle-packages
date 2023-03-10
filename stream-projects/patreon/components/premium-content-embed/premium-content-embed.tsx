@@ -25,8 +25,6 @@ const EXPAND_ICON_PATH =
   "M14 21v-2h3.59l-4.5-4.5 1.41-1.41 4.5 4.5V14h2v7h-7M9.5 10.91L5 6.41V10H3V3h7v2H6.41l4.5 4.5-1.41 1.41z";
 const PATREON_ICON_PATH =
   "M4.23146 0.421875V23.5172H0V0.421875H4.23146ZM15.3429 0.421875C20.1241 0.421875 24 4.29781 24 9.07902C24 13.8602 20.1241 17.7362 15.3429 17.7362C10.5616 17.7362 6.68571 13.8602 6.68571 9.07902C6.68571 4.29781 10.5616 0.421875 15.3429 0.421875Z";
-const OPEN_IN_NEW_ICON_PATH =
-  "M18 19H6C5.45 19 5 18.55 5 18V6C5 5.45 5.45 5 6 5H11C11.55 5 12 4.55 12 4C12 3.45 11.55 3 11 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V13C21 12.45 20.55 12 20 12C19.45 12 19 12.45 19 13V18C19 18.55 18.55 19 18 19ZM14 4C14 4.55 14.45 5 15 5H17.59L8.46 14.13C8.07 14.52 8.07 15.15 8.46 15.54C8.85 15.93 9.48 15.93 9.87 15.54L19 6.41V9C19 9.55 19.45 10 20 10C20.55 10 21 9.55 21 9V4C21 3.45 20.55 3 20 3H15C14.45 3 14 3.45 14 4Z";
 const PLAY_ICON_PATH = "M8 5V19L19 12L8 5Z";
 
 const VISIBLE_STYLE = {
@@ -64,6 +62,8 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
 
   const isCollapsed$ = useSignal(false);
   const isCollapsed = useSelector(() => isCollapsed$.get());
+  const isWatching$ = useSignal(false);
+  const isWatching = useSelector(() => isWatching$.get());
   const extensionInfo$ = useSignal(jumper.call("context.getInfo"));
   const isPatron = Boolean(tierName);
 
@@ -86,38 +86,37 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
 
   const recordClick = (e) => {
     e?.stopPropagation();
+    const tierName = tierName$.get();
+    const isPatron = Boolean(tierName);
     const supportsEmbeddedVideo = semver.satisfies(
       extensionInfo$.get().version,
       ">=4.0.1",
     );
 
-    const shouldEmbed = tierName$.get() && supportsEmbeddedVideo;
-    if (shouldEmbed) {
-      e?.preventDefault();
-      const videoInfo: VideoInfo = {
-        url,
-        title,
-      };
-      jumper.call("comms.postMessage", {
-        type: "patreon.embedVideo",
-        // ?embed will trigger a truffle embed that adds css to fullscreen the video on patreon
-        // since they don't have a normal embed url
-        body: { videoInfo },
-      });
-    }
-
-    // FIXME: set cookie for 1 hour and see if they join patreon bc of us
     // TODO: set with jumper.call storage.set so it works w/ 3rd party cookies disabled
     setCookie("patreon-click", "true", { ttlMs: ONE_HOUR_MS });
-
     executeDatapointIncrementUniqueMutation({
       input: {
         metricSlug: "unique-patreon-premium-content-embed-clicks",
         dimensionValues: {
-          "patreon-tier-name": tierName$.get() || "none",
+          "patreon-tier-name": tierName || "none",
         },
       },
     });
+
+    if (supportsEmbeddedVideo) {
+      e?.preventDefault();
+      isWatching$.set(true);
+      const videoInfo: VideoInfo = {
+        url,
+        title,
+        isPatron,
+      };
+      jumper.call("comms.postMessage", {
+        type: "patreon.showVideoEmbed",
+        body: { videoInfo },
+      });
+    }
   };
 
   const toggle = (e) => {
@@ -188,11 +187,11 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
               onClick={recordClick}
             >
               <Icon
-                icon={isPatron ? PLAY_ICON_PATH : OPEN_IN_NEW_ICON_PATH}
+                icon={PLAY_ICON_PATH}
                 size="24px"
-                color="#000"
+                color="#fff"
               />
-              Watch now
+              {isWatching ? "Currently playing" : "Watch now"}
             </a>
           </div>
           <div className="info">
