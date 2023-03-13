@@ -1,4 +1,4 @@
-import { jumper } from '../jumper/jumper-instance';
+import { embedConsumer } from '../transframe/embed-consumer';
 
 type Styles = Record<string, unknown>;
 
@@ -6,24 +6,8 @@ export class Embed {
   private _currentStyles: Styles = {};
 
   private _setIframeStyles(styles: Styles) {
-    jumper.call('layout.applyLayoutConfigSteps', {
-      layoutConfigSteps: [
-        { action: 'useSubject' }, // start with our iframe
-        {
-          action: 'setStyle',
-          value: styles,
-        },
-      ],
-    });
-  }
-
-  private _resetIframStyles() {
-    jumper.call('layout.applyLayoutConfigSteps', {
-      layoutConfigSteps: [
-        { action: 'useSubject' }, // start with our iframe
-        { action: 'resetStyles' },
-      ],
-    });
+    embedConsumer.call('embedSetStyles', styles);
+    this._currentStyles = styles;
   }
 
   /**
@@ -37,14 +21,6 @@ export class Embed {
     };
 
     this._setIframeStyles(this._currentStyles);
-  }
-
-  /**
-   * Clear all styles on the embed
-   */
-  public resetStyles() {
-    this._currentStyles = {};
-    this._resetIframStyles();
   }
 
   /**
