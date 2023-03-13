@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+  </head>
+  <body>
+    <h1>This is the parent</h1>
+    <div>
+      <h3>Frames</h3>
+      <iframe id="frame-1" src="/child" width="400" height="400"></iframe>
+      <iframe id="frame-2" src="/child" width="400" height="400"></iframe>
+      <iframe id="frame-3" src="/child" width="400" height="400"></iframe>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <div>
+        <h3>Actions</h3>
+        <button id="notify-1-button">Notify 1</button>
+        <button id="notify-2-button">Notify 2</button>
+        <button id="notify-3-button">Notify 3</button>
+        <button id="notify-all-button">Notify all</button>
+      </div>
+      <div>
+        <h3>Messages</h3>
+        <textarea id="messages" cols="70" rows="10"></textarea>
+      </div>
+    </div>
+    <script type="module" src="/src/parent.ts"></script>
+  </body>
+</html>

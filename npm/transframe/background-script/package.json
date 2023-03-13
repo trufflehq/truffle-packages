@@ -1,0 +1,6 @@
+{
+  "name": "@trufflehq/transframe/background-script",
+  "main": "../dist/cjs/interfaces/background-script/index.js",
+  "module": "../dist/esm/interfaces/background-script/index.js",
+  "types": "../dist/esm/interfaces/background-script/index.d.ts"
+}
