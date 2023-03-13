@@ -23,7 +23,7 @@ function App() {
   useEffect(() => {
     const subscription = orgClient.observable.subscribe({
       next: (org) => {
-        setOrgId(org.id);
+        setOrgId(org?.id);
       },
       error: (error) => {
         console.error(error);

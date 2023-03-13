@@ -8,7 +8,6 @@ import {
 } from '@urql/core';
 import { authExchange } from '@urql/exchange-auth';
 import { DEFAULT_MYCELIUM_API_URL } from '../constants';
-import { getOrgId } from '../org/get-id';
 import { getAccessToken } from '../user/access-token';
 
 export interface MyceliumClientOptions {
@@ -44,9 +43,11 @@ export function createMyceliumClient(
               options.userAccessToken || (await getAccessToken(options.url));
           }
 
-          if (!_authState.orgId) {
-            _authState.orgId = options.orgId || (await getOrgId(options.url));
-          }
+          // extract orgId from userAccessToken
+          const tokenPayload = JSON.parse(
+            atob(_authState.userAccessToken.split('.')[1])
+          );
+          _authState.orgId = tokenPayload.orgId;
 
           return _authState;
         },

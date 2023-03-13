@@ -1,8 +1,6 @@
 import { Client } from '@urql/core';
 import { createMyceliumClient, MyceliumClientOptions } from '../mycelium';
 import { TruffleUserClient } from '../user';
-import { jumper } from '../jumper/jumper-instance';
-import { getOrgId } from '../org/get-id';
 import { TruffleOrgClient } from '../org';
 
 export class TruffleApp {
@@ -22,25 +20,18 @@ export class TruffleApp {
       // in this case, we're probably initializing the app
       // as the default app, so we want to listen for changes
       // to the authentication state
-      getOrgId().then((orgId) => {
-        jumper.call(
-          'user.onAccessTokenChange',
-          { orgId },
-          ({ _accessToken }: { _accessToken: string }) => {
-            // console.log('user access token changed!')
-            updateClient(clientOptions);
-          }
-        );
-      });
 
-      // TODO: legacy, rm 4/2023
-      jumper.call('comms.onMessage', (message: string) => {
-        if (message === 'user.accessTokenUpdated') {
-          // console.log('user access token changed! [legacy]')
-          updateClient(clientOptions);
-        }
-      });
-      // end legacy
+      // TODO: reimplement auth state changes with transframe
+      // getOrgId().then((orgId) => {
+      //   jumper.call(
+      //     'user.onAccessTokenChange',
+      //     { orgId },
+      //     ({ _accessToken }: { _accessToken: string }) => {
+      //       // console.log('user access token changed!')
+      //       updateClient(clientOptions);
+      //     }
+      //   );
+      // });
     }
 
     this._gqlClient = createMyceliumClient(clientOptions);
