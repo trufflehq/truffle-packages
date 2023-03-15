@@ -2,7 +2,7 @@ import { Client } from '@urql/core';
 import { map, pipe, toObservable } from 'wonka';
 import { TruffleOrgUserClient } from '../org-user';
 import { TruffleRoleConnection } from '../role/role';
-import { TrufflePowerupConnection } from '../types';
+import { TrufflePowerupConnection } from '../types/truffle';
 import { TruffleImage } from '../util/image';
 import { SwitchableObservable } from '../util/switchable-observable';
 import { ME_USER_QUERY } from './gql';

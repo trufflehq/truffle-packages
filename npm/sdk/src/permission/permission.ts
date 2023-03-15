@@ -1,4 +1,4 @@
-import { GQLConnection } from '../types';
+import { GQLConnection } from '../types/truffle';
 
 export interface TrufflePermission {
   id: string;
