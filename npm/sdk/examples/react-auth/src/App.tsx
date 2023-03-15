@@ -3,6 +3,7 @@ import {
   user as userClient,
   getSrcByImageObj,
   org as orgClient,
+  getAccessToken,
 } from '@trufflehq/sdk';
 import { observer } from '@legendapp/state/react';
 import { fromSpecObservable } from './from-spec-observable';
@@ -31,8 +32,12 @@ function App() {
       complete: () => void null,
     });
 
+    getAccessToken().then((token) => {
+      console.log('access token', token);
+    });
+
     return () => subscription.unsubscribe();
-  });
+  }, []);
 
   return (
     <div className="App">
@@ -40,7 +45,15 @@ function App() {
       {/* the cool thing is that it will automatically update on any changes */}
       <div>Org: {org.name.get()}</div>
       <div>Org ID: {orgId}</div>
-      <h2>Welcome, {orgUser.name.get()}</h2>
+      <h2>Welcome, user {orgUser.id.get()}</h2>
+      <div>
+        <h3>Roles</h3>
+        <ul>
+          {orgUser.roleConnection.nodes.get()?.map((role) => (
+            <li key={role.id}>{role.slug}</li>
+          ))}
+        </ul>
+      </div>
       <img src={getSrcByImageObj(user.avatarImage.get(), { size: 'small' })} />
     </div>
   );
