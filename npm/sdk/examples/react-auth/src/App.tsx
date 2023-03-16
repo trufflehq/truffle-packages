@@ -26,10 +26,6 @@ function App() {
       next: (org) => {
         setOrgId(org?.id);
       },
-      error: (error) => {
-        console.error(error);
-      },
-      complete: () => void null,
     });
 
     getAccessToken().then((token) => {
