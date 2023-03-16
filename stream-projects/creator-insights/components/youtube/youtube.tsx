@@ -15,9 +15,13 @@ const extensionInfo = jumper.call(
   "context.getInfo",
 );
 
-const recordClick = async (
+// NOTE: there's a chance this doesn't get called a 2nd time if a user goes from
+// one video from a creator to a next video from same creator (don't think we reload embed)
+recordMetric("youtube-video-views");
+
+async function recordMetric(
   metricSlug: string,
-): Promise<void> => {
+): Promise<void> {
   mutation(DATAPOINT_INCREMENT_METRIC_MUTATION, {
     input: {
       metricSlug,
@@ -25,7 +29,7 @@ const recordClick = async (
       filterValues: getFiltersFromExtensionInfo(await extensionInfo),
     },
   });
-};
+}
 
 // TODO: may need to change #top-row and #comment-box #submit-button to body
 // if they don't exist when iframe is loaded in.
@@ -69,7 +73,7 @@ function handleMatches(matches) {
         },
       ],
     }, () => {
-      recordClick(metricSlug);
+      recordMetric(metricSlug);
     });
   });
 }
@@ -94,19 +98,19 @@ function getButtonInfoFromMatch(match): ButtonInfo | null {
     match.attributes["aria-label"]?.trim().toLowerCase() || "";
 
   let metricSlug;
-  if (text === "Comment") metricSlug = "youtube-button-comment";
-  if (text === "Subscribe") metricSlug = "youtube-button-subscribe";
-  if (text === "Join") metricSlug = "youtube-button-join";
-  if (text === "Share") metricSlug = "youtube-button-share";
+  if (text === "Comment") metricSlug = "youtube-button-comments";
+  if (text === "Subscribe") metricSlug = "youtube-button-subscribes";
+  if (text === "Join") metricSlug = "youtube-button-joins";
+  if (text === "Share") metricSlug = "youtube-button-shares";
   // sometimes youtube shows different aria text
   if (
     ariaLabelLowercase.startsWith("like this") ||
     ariaLabelLowercase.endsWith("likes")
   ) {
-    metricSlug = "youtube-button-like";
+    metricSlug = "youtube-button-likes";
   }
   if (ariaLabelLowercase.startsWith("dislike this")) {
-    metricSlug = "youtube-button-dislike";
+    metricSlug = "youtube-button-dislikes";
   }
 
   if (metricSlug) {
