@@ -178,14 +178,14 @@ function PremiumPreview(
   return (
     <div className="c-premium-preview">
       <iframe
-        src="https://player.vimeo.com/video/806550009?h=d1c3d5121d&badge=0&autoplay=1&player_id=0&app_id=58479"
+        src="https://player.vimeo.com/video/808818515?h=d9d3c4dfb5&badge=0&autopause=0&player_id=0&app_id=58479"
         frameBorder="0"
         allow="autoplay; fullscreen; picture-in-picture"
         style={{
           width: "100%",
           height: "99%",
         }}
-        title="ep. 86 preview"
+        title="ep. 87 preview"
       >
       </iframe>
     </div>
