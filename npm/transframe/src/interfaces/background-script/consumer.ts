@@ -23,9 +23,25 @@ export class BackgroundScriptConsumerInterface implements TransframeConsumerInte
   }
 
   public connect() {
-    this._port = Browser.runtime.connect({ name: this._options?.channelName ?? "transframe" });
-    this._port.onMessage.addListener(this._messageHandlerWrapper);
-    this._isConnected = true;
+    const _connect = () => {
+      this._port = Browser.runtime.connect({ name: this._options?.channelName ?? "transframe" });
+      this._port.onMessage.addListener(this._messageHandlerWrapper);
+      this._isConnected = true;
+    }
+
+    // If the document is pre-rendering do NOT connect right away;
+    // There's some weird behavior where the port disconnects immediately
+    // upon loading the page after prerendering.
+    const document = window.document as (Document & { prerendering: boolean });
+    if (document.prerendering) {
+      document.addEventListener("prerenderingchange", () => {
+        if (!document.prerendering) {
+          _connect();
+        }
+      });
+    } else {
+      _connect();
+    }
   }
 
   public close() {
