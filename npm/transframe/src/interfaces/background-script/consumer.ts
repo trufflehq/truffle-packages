@@ -35,6 +35,7 @@ export class BackgroundScriptConsumerInterface
     // If the document is pre-rendering do NOT connect right away;
     // There's some weird behavior where the port disconnects immediately
     // upon loading the page after prerendering.
+    // See this post for more info: https://groups.google.com/a/chromium.org/g/chromium-extensions/c/gHAEKspcdRY
     const document = window.document as Document & { prerendering: boolean };
     if (document.prerendering) {
       document.addEventListener("prerenderingchange", () => {
