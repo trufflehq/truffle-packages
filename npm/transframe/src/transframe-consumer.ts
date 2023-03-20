@@ -215,7 +215,7 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
     const methodString = String(method);
 
     // if the method is not available, throw an error
-    if (!this._availableMethods.has(methodString)) {
+    if (!this.hasMethod(methodString)) {
       throw new Error(`Method ${methodString} is not available`);
     }
 
