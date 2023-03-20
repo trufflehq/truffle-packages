@@ -48,13 +48,13 @@ export class BackgroundScriptConsumerInterface
     }
   }
 
-  public close() {
+  public disconnect() {
     this._port?.onMessage.removeListener(this._messageHandlerWrapper);
     this._port?.disconnect();
     this._isConnected = false;
   }
 
-  public sendMessage(message: RPCRequest) {
+  public sendMessage(message: unknown) {
     this._port?.postMessage(message);
   }
 

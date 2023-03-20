@@ -2,6 +2,8 @@ export enum RPCMessageType {
   RPC_REQUEST = 'rpc-request',
   RPC_RESPONSE = 'rpc-response',
   RPC_CALLBACK_CALL = 'rpc-callback-call',
+  RPC_CONNECT_REQUEST = 'rpc-connect-request',
+  RPC_CONNECT_RESPONSE = 'rpc-connect-response',
 }
 
 export interface RPCMessage {
@@ -84,6 +86,25 @@ export interface RPCCallbackCall extends RPCMessage {
   payload: unknown;
 }
 
+export interface RPCConnectRequest extends RPCMessage {
+  /**
+   * The type of the message
+   */
+  type: RPCMessageType.RPC_CONNECT_REQUEST;
+}
+
+export interface RPCConnectResponse extends RPCMessage {
+  /**
+   * The type of the message
+   */
+  type: RPCMessageType.RPC_CONNECT_RESPONSE;
+
+  /**
+   * The list of methods that are available
+   */
+  methods: string[];
+}
+
 export interface RPCCallbackPlaceholderParam {
   /**
    * Magic property to identify this as a transframe RPC callback placeholder
@@ -96,4 +117,4 @@ export interface RPCCallbackPlaceholderParam {
   callbackId: string;
 }
 
-export type RPCReplyFunction = (message: RPCResponse | RPCCallbackCall) => void;
+export type RPCReplyFunction = (message: RPCResponse | RPCCallbackCall | RPCConnectResponse) => void;

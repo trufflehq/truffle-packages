@@ -1,5 +1,32 @@
 import { generateId } from "../util";
-import { RPCCallbackCall, RPCCallbackPlaceholderParam, RPCMessage, RPCMessageType, RPCRequest, RPCResponse } from "./types";
+import { RPCCallbackCall, RPCCallbackPlaceholderParam, RPCConnectRequest, RPCConnectResponse, RPCMessage, RPCMessageType, RPCRequest, RPCResponse } from "./types";
+
+export function createRpcConnectRequest({
+  namespace,
+}: {
+  namespace?: string;
+}): RPCConnectRequest{
+  return {
+    _transframe: true,
+    type: RPCMessageType.RPC_CONNECT_REQUEST,
+    namespace,
+  }
+}
+
+export function createRpcConnectResponse({
+  namespace,
+  methods
+}: {
+  namespace?: string;
+  methods: string[];
+}): RPCConnectResponse {
+  return {
+    _transframe: true,
+    type: RPCMessageType.RPC_CONNECT_RESPONSE,
+    namespace,
+    methods,
+  }
+}
 
 /**
  * Creates an rpc request
@@ -102,4 +129,14 @@ export function isRPCCallbackCall (payload: any): payload is RPCCallbackCall {
 
 export function isRPCCallbackPlaceholder (payload: any): payload is RPCCallbackPlaceholderParam {
   return payload?._transframeCallback === true;
+}
+
+export function isRPCConnectRequest (payload: any): payload is RPCConnectRequest {
+  return isRPCMessage(payload) &&
+    payload.type === RPCMessageType.RPC_CONNECT_REQUEST;
+}
+
+export function isRPCConnectResponse (payload: any): payload is RPCConnectResponse {
+  return isRPCMessage(payload) &&
+    payload.type === RPCMessageType.RPC_CONNECT_RESPONSE;
 }
