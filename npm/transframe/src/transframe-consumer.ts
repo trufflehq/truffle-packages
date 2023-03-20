@@ -26,6 +26,9 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
   private _isConnected: boolean = false;
   private _isConnecting: boolean = false;
 
+  // if we're not connected, we'll queue up api calls and send them when we connect
+  private _apiCallQueue: Array<Function> = [];
+
   constructor (
     private _interface: TransframeConsumerInterface,
     options?: TransframeConsumerOptions<SourceApi>
@@ -55,6 +58,12 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
     );
 
     return api;
+  }
+
+  // go through the api call queue and send all the calls
+  private _processApiCallQueue() {
+    this._apiCallQueue.forEach(call => call());
+    this._apiCallQueue = [];
   }
 
   public get api() {
@@ -133,6 +142,8 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
     // set the connecting flag
     this._isConnecting = false;
 
+    // process any api calls that were queued up while we were connecting
+    this._processApiCallQueue();
   }
 
   private _messageHandler = (message: unknown) => {
@@ -194,6 +205,12 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
 
     if (!this._isConnected && !this._isConnecting) {
       throw new Error('Cannot call any api methods: Not connected to provider');
+    } else if (this._isConnecting) {
+      console.log('connecting, queueing call', method);
+      // if we're connecting, queue up the call and await a promise that will resolve when the connection is complete
+      await new Promise((resolve) => {
+        this._apiCallQueue.push(resolve);
+      });
     }
 
     // convert the method to a string in case that's necessary
