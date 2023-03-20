@@ -74,6 +74,10 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
     return this._isConnected && this._interface.isConnected;
   }
 
+  public hasMethod(method: string) {
+    return this._availableMethods.has(method);
+  }
+
   public connect = async () => {
     // if we're already connecting or connected, don't do anything
     if (this._isConnecting || this._isConnected) return;
