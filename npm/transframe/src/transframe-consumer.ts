@@ -1,9 +1,11 @@
 import { TransframeConsumerInterface } from "./interfaces/types";
-import { createRpcCallbackPlaceholder, createRpcRequest, isRPCCallbackCall, isRPCResponse } from "./rpc/util";
+import { createRpcCallbackPlaceholder, createRpcConnectRequest, createRpcRequest, isRPCCallbackCall, isRPCConnectResponse, isRPCMessage, isRPCResponse } from "./rpc/util";
 import { ContextFromSourceApi, TransframeConsumerApi, TransframeConsumerOptions, TransframeSourceApi } from "./types";
 import { generateId } from "./util";
 
 const DEFAULT_API_CALL_TIMEOUT = 5000;
+const CONNECT_RETRY_INTERVAL = 5;
+const CONNECT_RETRY_COUNT = 5;
 
 // a tuple of resolve and reject functions
 type ResolveReject = [Function, Function];
@@ -19,6 +21,10 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
   // since we can't actually pass a function over the wire. The parent
   // will have to "call" our callback by sending us messages using the `rpc-callback` type
   private _rpcCallbacks: Map<string, Function> = new Map();
+
+  private _availableMethods: Set<string> = new Set();
+  private _isConnected: boolean = false;
+  private _isConnecting: boolean = false;
 
   constructor (
     private _interface: TransframeConsumerInterface,
@@ -56,19 +62,89 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
   }
 
   public get isConnected() {
-    return this._interface.isConnected;
+    return this._isConnected && this._interface.isConnected;
   }
 
-  public connect = () => {
+  public connect = async () => {
+    console.log('connect called')
+    // if we're already connecting or connected, don't do anything
+    if (this._isConnecting || this._isConnected) return;
+
+    // allow the interface to do any setup it needs to do
     this._interface.connect();
+
+    const rpcConnectRequest = createRpcConnectRequest({
+      namespace: this._options?.namespace,
+    });
+
+    // set the connecting flag
+    this._isConnecting = true;
+
+    // wait for the connect response
+    const availableMethods = await new Promise<string[]>((resolve, reject) => {
+
+      // add the resolve and reject functions to the request callbacks map
+      this._requestCallbacks.set('connect', [resolve, reject]);
+
+      let retryCount = 0;
+      const sendConnectRequest = () => {
+        // send the connect request
+        this._interface.sendMessage(rpcConnectRequest);
+        retryCount++;
+      }
+
+      // send the connect request
+      console.log('sending connect request');
+      sendConnectRequest();
+      // try more times in case the provider missed the first requests
+      const timer = setInterval(() => {
+        // if we're connected, stop trying
+        if (this._isConnected) {
+          console.log('connected! stopping timer')
+          clearInterval(timer);
+        }
+
+        // if we haven't gotten a response yet, try again
+        else if (retryCount < CONNECT_RETRY_COUNT) {
+          console.log('retrying connect request');
+          sendConnectRequest();
+        }
+
+        // if we've reached the max retry count, reject the promise
+        else {
+          clearInterval(timer);
+          this._requestCallbacks.delete('connect');
+          this._isConnected = false;
+          this._isConnecting = false;
+          reject(new Error(`Could not connect to provider ${this._options?.namespace ?? ''}`));
+        }
+
+      }, CONNECT_RETRY_INTERVAL);
+    });
+
+    console.log('available methods', availableMethods)
+    // make sure the available methods set is cleared
+    this._availableMethods.clear();
+    // set the available methods
+    availableMethods.forEach(method => this._availableMethods.add(method));
+
+    // set the connected flag
+    this._isConnected = true;
+    // set the connecting flag
+    this._isConnecting = false;
+
   }
 
   private _messageHandler = (message: unknown) => {
+
+    // if the message is not an RPC message or is not for this namespace, ignore it
+    if (!isRPCMessage(message)) return;
+
+    // if the message is for a different namespace, ignore it
+    if (message.namespace !== this._options?.namespace) return;
+
     if (isRPCResponse(message)) {
       // in this case we're just receiving a response from a request we made
-
-      // if the message is not for this namespace, ignore it
-      if (message.namespace !== this._options?.namespace) return;
 
       // get the callback for the request
       const [resolve, reject] = this._requestCallbacks.get(message.requestId) ?? [];
@@ -87,15 +163,24 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
     } else if (isRPCCallbackCall(message)) {
       // in this case we're receiving a call to a callback we passed to the parent
 
-      // if the message is not for this namespace, ignore it
-      if (message.namespace !== this._options?.namespace) return;
-
       // get the callback for the request
       const rpcCallback = this._rpcCallbacks.get(message.callbackId);
       if (!rpcCallback) return;
   
       // call the callback with the result
       rpcCallback(...message.payload as unknown[]);
+    } else if (isRPCConnectResponse(message)) {
+      // in this case we're receiving a response to our connect request
+
+      // get the callback for the request
+      const [resolve, reject] = this._requestCallbacks.get('connect') ?? [];
+      if (!(resolve && reject)) return;
+  
+      // resolve the promise with the available methods
+      resolve(message.methods);
+  
+      // remove the callback
+      this._requestCallbacks.delete('connect');
     }
 
   }
@@ -106,6 +191,18 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
     // we have to convert T to the TransframeConsumerApi type so that we skip the first `fromId` parameter
     ...payload: Parameters<TransframeConsumerApi<SourceApi>[MethodName]>
   ) => {
+
+    if (!this._isConnected && !this._isConnecting) {
+      throw new Error('Cannot call any api methods: Not connected to provider');
+    }
+
+    // convert the method to a string in case that's necessary
+    const methodString = String(method);
+
+    // if the method is not available, throw an error
+    if (!this._availableMethods.has(methodString)) {
+      throw new Error(`Method ${methodString} is not available`);
+    }
 
     // filter out any callbacks and store them
     const modifiedPayload = payload.map((param) => {
@@ -124,7 +221,7 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
 
     // create the request and send it
     const rpcRequest = createRpcRequest({
-      method: method as string,
+      method: methodString,
       payload: modifiedPayload,
       namespace: this._options?.namespace
     });

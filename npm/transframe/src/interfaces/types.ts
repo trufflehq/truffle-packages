@@ -1,4 +1,4 @@
-import { RPCReplyFunction, RPCRequest } from "../rpc/types";
+import { RPCReplyFunction } from "../rpc/types";
 import { Context } from "../types";
 
 export interface TransframeProviderInterface<Frame, ContextType> {
@@ -14,7 +14,7 @@ export interface TransframeProviderInterface<Frame, ContextType> {
 export interface TransframeConsumerInterface {
   isConnected: boolean;
   connect: () => void;
-  close: () => void;
-  sendMessage: (message: RPCRequest) => void;
+  disconnect: () => void;
+  sendMessage: (message: unknown) => void;
   onMessage(callback: (message: unknown) => void): void;
 }

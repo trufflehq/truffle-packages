@@ -31,12 +31,12 @@ export class IframeConsumerInterface implements TransframeConsumerInterface {
     this._isConnected = true;
   }
 
-  public close() {
+  public disconnect() {
     window.removeEventListener("message", this._messageHandlerWrapper);
     this._isConnected = false;
   }
 
-  public sendMessage(message: RPCRequest) {
+  public sendMessage(message: unknown) {
 
     // default to using the top most window as the provider unless the user specified otherwise
     let providerWindow: Window | null;
