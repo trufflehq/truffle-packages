@@ -75,7 +75,6 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
   }
 
   public connect = async () => {
-    console.log('connect called')
     // if we're already connecting or connected, don't do anything
     if (this._isConnecting || this._isConnected) return;
 
@@ -103,19 +102,16 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
       }
 
       // send the connect request
-      console.log('sending connect request');
       sendConnectRequest();
       // try more times in case the provider missed the first requests
       const timer = setInterval(() => {
         // if we're connected, stop trying
         if (this._isConnected) {
-          console.log('connected! stopping timer')
           clearInterval(timer);
         }
 
         // if we haven't gotten a response yet, try again
         else if (retryCount < CONNECT_RETRY_COUNT) {
-          console.log('retrying connect request');
           sendConnectRequest();
         }
 
@@ -131,7 +127,6 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
       }, CONNECT_RETRY_INTERVAL);
     });
 
-    console.log('available methods', availableMethods)
     // make sure the available methods set is cleared
     this._availableMethods.clear();
     // set the available methods
@@ -206,7 +201,6 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
     if (!this._isConnected && !this._isConnecting) {
       throw new Error('Cannot call any api methods: Not connected to provider');
     } else if (this._isConnecting) {
-      console.log('connecting, queueing call', method);
       // if we're connecting, queue up the call and await a promise that will resolve when the connection is complete
       await new Promise((resolve) => {
         this._apiCallQueue.push(resolve);
