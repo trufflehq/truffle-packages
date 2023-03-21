@@ -15,7 +15,7 @@ export interface TruffleOrgInput {
 }
 
 export class TruffleOrgClient {
-  private _observable: SwitchableObservable<TruffleOrg>;
+  private _observable: SwitchableObservable<TruffleOrg | undefined>;
 
   constructor(private _gqlClient: Client, private _orgInput?: TruffleOrgInput) {
     this._observable = new SwitchableObservable(this._getOrgObservable());

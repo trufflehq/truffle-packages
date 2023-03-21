@@ -21,7 +21,7 @@ export interface TruffleOrgUser {
 }
 
 export class TruffleUserClient {
-  private _observable: SwitchableObservable<TruffleUser>;
+  private _observable: SwitchableObservable<TruffleUser | undefined>;
   private _orgUser: TruffleOrgUserClient;
 
   constructor(private _gqlClient: Client) {
