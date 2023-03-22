@@ -625,10 +625,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@trufflehq/transframe@^0.0.21":
-  version "0.0.21"
-  resolved "https://registry.npmjs.org/@trufflehq/transframe/-/transframe-0.0.21.tgz"
-  integrity sha512-mcl2YhknoV9ljGTu/+AV8kt58MdFC91LmbXrdhy4v12beSOA2lNdFtW2k2ZGW8KtUzNqyUp738yHxTBf/P/vig==
+"@trufflehq/transframe@^0.0.28":
+  version "0.0.28"
+  resolved "https://registry.npmjs.org/@trufflehq/transframe/-/transframe-0.0.28.tgz"
+  integrity sha512-OKjnqTrbDb4NR4AtgIrow5fhhMiWS+nZDl/cOoRreI2PkkccKtFRaEXPUboDeoBg0nU6PfBWlYvynaNh4zj7aw==
 
 "@types/babel__core@^7.1.14":
   version "7.20.0"

@@ -1,6 +1,6 @@
 {
   "name": "@trufflehq/sdk",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "The official javascript SDK for Truffle",
   "keywords": [
     "truffle",
@@ -33,7 +33,7 @@
     "format": "eslint --ext .ts,.tsx,.js,.jsx src examples --fix --debug"
   },
   "dependencies": {
-    "@trufflehq/transframe": "^0.0.21",
+    "@trufflehq/transframe": "^0.0.28",
     "@urql/core": "^3.1.1",
     "@urql/exchange-auth": "^1.0.0",
     "graphql": "^16.6.0",
