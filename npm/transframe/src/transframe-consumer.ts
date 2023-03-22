@@ -27,7 +27,7 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
   private _isConnecting: boolean = false;
 
   // if we're not connected, we'll queue up api calls and send them when we connect
-  private _apiCallQueue: Array<Function> = [];
+  private _apiCallQueue: Array<ResolveReject> = [];
 
   constructor (
     private _interface: TransframeConsumerInterface,
@@ -62,7 +62,7 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
 
   // go through the api call queue and send all the calls
   private _processApiCallQueue() {
-    this._apiCallQueue.forEach(call => call());
+    this._apiCallQueue.forEach(([call]) => call());
     this._apiCallQueue = [];
   }
 
@@ -119,12 +119,18 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
           sendConnectRequest();
         }
 
-        // if we've reached the max retry count, reject the promise
+        // if we've reached the max retry count, we've failed to connect
         else {
           clearInterval(timer);
           this._requestCallbacks.delete('connect');
           this._isConnected = false;
           this._isConnecting = false;
+          // fail all of the queued api calls
+          this._apiCallQueue.forEach(
+            ([, reject]) => 
+              reject(new Error(`Failed to call api method: could not connect to provider ${this._options?.namespace ?? ''}`))
+          );
+          // reject the promise
           reject(new Error(`Could not connect to provider ${this._options?.namespace ?? ''}`));
         }
 
@@ -206,8 +212,9 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
       throw new Error('Cannot call any api methods: Not connected to provider');
     } else if (this._isConnecting) {
       // if we're connecting, queue up the call and await a promise that will resolve when the connection is complete
-      await new Promise((resolve) => {
-        this._apiCallQueue.push(resolve);
+      await new Promise((resolve, reject) => {
+        // we also pass reject in case the connection fails
+        this._apiCallQueue.push([resolve, reject]);
       });
     }
 
