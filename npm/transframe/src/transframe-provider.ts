@@ -58,10 +58,10 @@ export class TransframeProvider<Frame, SourceApi extends TransframeSourceApi<Con
     // if the message is not for this namespace, ignore it
     if (message.namespace !== this._options.namespace) return;
 
+    // if strict mode is enabled, make sure to only handle messages if fromId is defined
+    if (this._options.strictMode && context.fromId == null) return;
+    
     if (isRPCRequest(message)) {
-      // if strict mode is enabled, make sure to only handle messages if fromId is defined
-      if (this._options.strictMode && context.fromId == null) return;
-  
       // filter out any callback placeholders and replace them
       // with methods that make rpc calls back to the consumer
       const modifiedPayload = (message.payload as unknown[]).map((param) => {
@@ -116,7 +116,7 @@ export class TransframeProvider<Frame, SourceApi extends TransframeSourceApi<Con
       const methods = Object.keys(this._options.api);
       const response = createRpcConnectResponse({
         methods,
-        namespace: this._options.namespace
+        namespace: message.namespace
       });
       reply(response);
     }
