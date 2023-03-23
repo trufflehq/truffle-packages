@@ -3,9 +3,9 @@ import { createRpcCallbackPlaceholder, createRpcConnectRequest, createRpcRequest
 import { ContextFromSourceApi, TransframeConsumerApi, TransframeConsumerOptions, TransframeSourceApi } from "./types";
 import { generateId } from "./util";
 
-const DEFAULT_API_CALL_TIMEOUT = 5000;
-const CONNECT_RETRY_INTERVAL = 5;
-const CONNECT_RETRY_COUNT = 5;
+const DEFAULT_API_CALL_TIMEOUT = 3000;
+const CONNECT_RETRY_INTERVAL = 50;
+const CONNECT_RETRY_COUNT = 60;
 
 // a tuple of resolve and reject functions
 type ResolveReject = [Function, Function];
