@@ -178,7 +178,9 @@ function PremiumPreview(
   return (
     <div className="c-premium-preview">
       <iframe
-        src="https://player.vimeo.com/video/808818515?h=d9d3c4dfb5&badge=0&autopause=0&player_id=0&app_id=58479"
+        // ./yt-dlp --cookies-from-browser chrome https://www.patreon.com/posts/ep-88-premium-or-80428456
+        // ffmpeg -i premium.mp4 -ss 0 -t 30 -c copy premium-trimmed.mp4
+        src="https://player.vimeo.com/video/811055310?h=c64c1176ae&badge=0&autopause=0&player_id=0&app_id=58479"
         frameBorder="0"
         allow="autoplay; fullscreen; picture-in-picture"
         style={{
