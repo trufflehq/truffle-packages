@@ -1,6 +1,5 @@
-import { RPCRequest } from "../../rpc/types";
-import { TransframeConsumerInterface } from "../types";
-import { IframeConsumerInterfaceOptions } from "./types";
+import type { TransframeConsumerInterface } from "../types";
+import type { IframeConsumerInterfaceOptions } from "./types";
 
 export class IframeConsumerInterface implements TransframeConsumerInterface {
   private _isConnected: boolean;

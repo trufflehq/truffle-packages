@@ -1,6 +1,6 @@
-import { TransframeConsumerInterface } from "./interfaces/types";
+import type { TransframeConsumerInterface } from "./interfaces/types";
 import { createRpcCallbackPlaceholder, createRpcConnectRequest, createRpcRequest, isRPCCallbackCall, isRPCConnectResponse, isRPCMessage, isRPCResponse } from "./rpc/util";
-import { ContextFromSourceApi, TransframeConsumerApi, TransframeConsumerOptions, TransframeSourceApi } from "./types";
+import type { ContextFromSourceApi, TransframeConsumerApi, TransframeConsumerOptions, TransframeSourceApi } from "./types";
 import { generateId } from "./util";
 
 const DEFAULT_API_CALL_TIMEOUT = 3000;

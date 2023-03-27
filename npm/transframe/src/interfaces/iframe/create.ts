@@ -1,9 +1,9 @@
 import { TransframeConsumer } from "../../transframe-consumer";
 import { TransframeProvider } from "../../transframe-provider";
-import { TransframeConsumerOptions, TransframeProviderOptions, TransframeSourceApi } from "../../types";
+import type { TransframeConsumerOptions, TransframeProviderOptions, TransframeSourceApi } from "../../types";
 import { IframeConsumerInterface } from "./consumer";
 import { IframeProviderInterface } from "./provider";
-import { IframeConsumerInterfaceOptions, IframeInterfaceContext, IframeProviderInterfaceOptions } from "./types";
+import type { IframeConsumerInterfaceOptions, IframeInterfaceContext, IframeProviderInterfaceOptions } from "./types";
 
 export function createIframeProvider<Api extends TransframeSourceApi<IframeInterfaceContext>>(
   options: TransframeProviderOptions<Api> & IframeProviderInterfaceOptions

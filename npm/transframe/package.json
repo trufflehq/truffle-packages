@@ -11,9 +11,9 @@
     "access": "public"
   },
   "private": false,
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/esm/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "background-script",
@@ -22,26 +22,29 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
-      "types": "./dist/esm/index.d.ts"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
     },
     "./iframe": {
-      "import": "./dist/esm/interfaces/iframe/index.js",
-      "require": "./dist/cjs/interfaces/iframe/index.js",
-      "types": "./dist/esm/interfaces/iframe/index.d.ts"
+      "import": "./dist/interfaces/iframe/index.mjs",
+      "require": "./dist/interfaces/iframe/index.js",
+      "types": "./dist/interfaces/iframe/index.d.ts"
     },
     "./background-script": {
-      "import": "./dist/esm/interfaces/background-script/index.js",
-      "require": "./dist/cjs/interfaces/background-script/index.js",
-      "types": "./dist/esm/interfaces/background-script/index.d.ts"
+      "import": "./dist/interfaces/background-script/index.mjs",
+      "require": "./dist/interfaces/background-script/index.js",
+      "types": "./dist/interfaces/background-script/index.d.ts"
     }
   },
+  "sideEffects": [
+		"./dist/chunk*.mjs"
+	],
   "scripts": {
     "clean": "rm -rf dist",
     "build:esm": "tsc -p tsconfig/tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig/tsconfig.cjs.json",
-    "build": "npm run clean && npm run build:esm ; npm run build:cjs",
+    "build": "tsup",
     "watch": "npm run watch:cjs",
     "watch:esm": "tsc -p tsconfig/tsconfig.esm.json --watch",
     "watch:cjs": "tsc -p tsconfig/tsconfig.cjs.json --watch",
@@ -50,8 +53,11 @@
   "devDependencies": {
     "@types/jest": "^29.2.6",
     "@types/webextension-polyfill": "^0.10.0",
+    "esbuild-plugin-file-path-extensions": "^1.0.0",
     "jest": "^29.3.1",
     "ts-jest": "^29.0.5",
+    "tslib": "^2.5.0",
+    "tsup": "^6.7.0",
     "typescript": "^4.9.4"
   },
   "peerDependencies": {

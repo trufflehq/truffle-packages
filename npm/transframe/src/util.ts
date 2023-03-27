@@ -1,5 +1,4 @@
-import { IframeInterfaceContext } from "./interfaces/iframe/types";
-import { ContextFromSourceApi, TransframeSourceApi } from "./types";
+import type { TransframeSourceApi } from "./types";
 
 /**
  * Generates a random string of 32 characters

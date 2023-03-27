@@ -1,7 +1,7 @@
-import { TransframeProviderInterface } from "./interfaces/types";
-import { RPCReplyFunction } from "./rpc/types";
+import type { TransframeProviderInterface } from "./interfaces/types";
+import type { RPCReplyFunction } from "./rpc/types";
 import { createRpcCallbackCall, createRpcConnectResponse, createRpcResponse, isRPCCallbackPlaceholder, isRPCConnectRequest, isRPCMessage, isRPCRequest } from "./rpc/util";
-import { Context, ContextFromSourceApi, SourceApiFunction, TransframeProviderOptions, TransframeSourceApi } from "./types";
+import type { Context, ContextFromSourceApi, SourceApiFunction, TransframeProviderOptions, TransframeSourceApi } from "./types";
 import { generateId } from "./util";
 
 export class TransframeProvider<Frame, SourceApi extends TransframeSourceApi<ContextFromSourceApi<SourceApi>>> {

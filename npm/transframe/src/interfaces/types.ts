@@ -1,5 +1,5 @@
-import { RPCReplyFunction } from "../rpc/types";
-import { Context } from "../types";
+import type { RPCReplyFunction } from "../rpc/types";
+import type { Context } from "../types";
 
 export interface TransframeProviderInterface<Frame, ContextType> {
   isListening: boolean;

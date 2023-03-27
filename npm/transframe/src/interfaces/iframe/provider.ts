@@ -1,7 +1,7 @@
-import { RPCReplyFunction } from "../../rpc/types";
-import { Context } from "../../types";
-import { TransframeProviderInterface } from "../types";
-import { IframeInterfaceContext, IframeProviderInterfaceOptions } from "./types";
+import type { RPCReplyFunction } from "../../rpc/types";
+import type { Context } from "../../types";
+import type { TransframeProviderInterface } from "../types";
+import type { IframeInterfaceContext, IframeProviderInterfaceOptions } from "./types";
 
 export class IframeProviderInterface implements
   TransframeProviderInterface<HTMLIFrameElement, IframeInterfaceContext> {

@@ -1,9 +1,9 @@
 import { TransframeConsumer } from "../../transframe-consumer";
 import { TransframeProvider } from "../../transframe-provider";
-import { ContextFromSourceApi, TransframeConsumerOptions, TransframeProviderOptions, TransframeSourceApi } from "../../types";
+import type { TransframeConsumerOptions, TransframeProviderOptions, TransframeSourceApi } from "../../types";
 import { BackgroundScriptConsumerInterface } from "./consumer";
 import { BackgroundScriptProviderInterface } from "./provider";
-import { BackgroundScriptConsumerInterfaceOptions, BackgroundScriptInterfaceContext } from "./types";
+import type { BackgroundScriptConsumerInterfaceOptions, BackgroundScriptInterfaceContext } from "./types";
 
 export function createBackgroundScriptConsumer
 <Api extends TransframeSourceApi<BackgroundScriptInterfaceContext>>

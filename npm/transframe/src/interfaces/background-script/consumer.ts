@@ -1,7 +1,6 @@
-import { RPCRequest } from "../../rpc/types";
-import { TransframeConsumerInterface } from "../types";
+import type { TransframeConsumerInterface } from "../types";
 import Browser from "webextension-polyfill";
-import { BackgroundScriptConsumerInterfaceOptions } from "./types";
+import type { BackgroundScriptConsumerInterfaceOptions } from "./types";
 
 export class BackgroundScriptConsumerInterface
   implements TransframeConsumerInterface

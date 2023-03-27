@@ -1,9 +1,11 @@
 import Browser from "webextension-polyfill";
-import { RPCReplyFunction } from "../../rpc/types";
-import { Context } from "../../types";
-import { TransframeProviderInterface } from "../types";
-import { BackgroundScriptInterfaceContext } from "./types";
+import type { RPCReplyFunction } from "../../rpc/types";
+import type { Context } from "../../types";
+import type { TransframeProviderInterface } from "../types";
+import type { BackgroundScriptInterfaceContext } from "./types";
 
+// TODO: this should be an abstract class because
+// registerTransFrame is an abstract method
 export class BackgroundScriptProviderInterface implements 
   TransframeProviderInterface<never, BackgroundScriptInterfaceContext> {
 
@@ -59,7 +61,7 @@ export class BackgroundScriptProviderInterface implements
   onMessage(callback: (message: unknown, reply: RPCReplyFunction, context: Context<BackgroundScriptInterfaceContext>) => void): void {
     this._messageHandler = callback;
   }
-  registerFrame(frame: never, id: string): void {
+  registerFrame(_frame: never, _id: string): void {
     throw new Error("Method not implemented.");
   }
 
