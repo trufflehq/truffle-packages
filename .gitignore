@@ -2,7 +2,8 @@ node_modules
 build
 truffle.secret.*
 .DS_Store
-.yarn
-.pnp.*
-yarn.lock
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+
 .idea
