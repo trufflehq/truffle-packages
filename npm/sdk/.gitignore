@@ -5,3 +5,4 @@ node_modules
 !.yarn/plugins
 yarn.lock
 package-lock.json
+*.pnp.*
