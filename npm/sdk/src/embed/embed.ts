@@ -1,12 +1,18 @@
-import { embedConsumer } from '../transframe/embed-consumer';
+import { TransframeConsumer } from '@trufflehq/transframe';
+import { EmbedSourceApi, getEmbedConsumer } from '../transframe/embed-consumer';
 
 type Styles = Record<string, unknown>;
 
 export class Embed {
   private _currentStyles: Styles = {};
+  private _embedConsumer: TransframeConsumer<EmbedSourceApi>;
+
+  constructor() {
+    this._embedConsumer = getEmbedConsumer();
+  }
 
   private _setIframeStyles(styles: Styles) {
-    embedConsumer.call('embedSetStyles', styles);
+    this._embedConsumer.call('embedSetStyles', styles);
     this._currentStyles = styles;
   }
 
@@ -70,5 +76,3 @@ export class Embed {
     this.setVisibility(true);
   }
 }
-
-export const embed = new Embed();

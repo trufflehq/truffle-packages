@@ -2,6 +2,7 @@ import { Client } from '@urql/core';
 import { map, pipe, toObservable } from 'wonka';
 import { TruffleRoleConnection } from '../role';
 import { TrufflePowerupConnection } from '../types/truffle';
+import { getUserClient } from '../user';
 import { SwitchableObservable } from '../util/switchable-observable';
 import { ORG_USER_QUERY } from './gql';
 
@@ -53,4 +54,9 @@ export class TruffleOrgUserClient {
     const newObservable = this._getOrgUserObservable();
     this._observable.switch(newObservable);
   }
+}
+
+export function getOrgUserClient(instanceName?: string) {
+  const userClient = getUserClient(instanceName);
+  return userClient.orgUser;
 }

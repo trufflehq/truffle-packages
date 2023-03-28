@@ -1,5 +1,6 @@
 import { Client } from '@urql/core';
 import { map, pipe, toObservable } from 'wonka';
+import { getTruffleApp } from '../app';
 import { SwitchableObservable } from '../util/switchable-observable';
 import { ORG_QUERY } from './gql';
 
@@ -40,4 +41,9 @@ export class TruffleOrgClient {
   public get observable() {
     return this._observable;
   }
+}
+
+export function getOrgClient(instanceName?: string) {
+  const app = getTruffleApp(instanceName);
+  return app.org;
 }
