@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import './App.css';
-import { embed } from '@trufflehq/sdk';
+import { getEmbed } from '@trufflehq/sdk';
+
+const embed = getEmbed();
 
 function App() {
   const [count, setCount] = useState(0);
