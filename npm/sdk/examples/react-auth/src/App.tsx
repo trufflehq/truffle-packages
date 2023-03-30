@@ -1,8 +1,9 @@
 import './App.css';
 import {
-  user as userClient,
+  getUserClient,
   getSrcByImageObj,
-  org as orgClient,
+  getOrgClient,
+  getOrgUserClient,
   getAccessToken,
   TruffleOrg,
   TruffleOrgUser,
@@ -10,24 +11,32 @@ import {
 } from '@trufflehq/sdk';
 import { observer } from '@legendapp/state/react';
 import { fromSpecObservable } from './from-spec-observable';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 // here we're creating observables using the legend state library
 // https://legendapp.com/open-source/state/
-const user = fromSpecObservable<TruffleUser>(userClient.observable);
-const orgUser = fromSpecObservable<TruffleOrgUser>(
-  userClient.orgUser.observable
-);
-const org = fromSpecObservable<TruffleOrg>(orgClient.observable);
 
 function App() {
+  const user = useMemo(
+    () => fromSpecObservable<TruffleUser>(getUserClient().observable),
+    []
+  );
+  const orgUser = useMemo(
+    () => fromSpecObservable<TruffleOrgUser>(getOrgUserClient().observable),
+    []
+  );
+  const org = useMemo(
+    () => fromSpecObservable<TruffleOrg>(getOrgClient().observable),
+    []
+  );
+
   // `.observable` is actually a spec compliant observable
   // https://github.com/tc39/proposal-observable
   // you can interact with it directly if you want, but we prefer to use legend :p
   const [orgId, setOrgId] = useState<string | undefined>(undefined);
   // this is how you use spec compliant observables without legend
   useEffect(() => {
-    const subscription = orgClient.observable.subscribe({
+    const subscription = getOrgClient().observable.subscribe({
       next: (org) => {
         setOrgId(org?.id);
       },
