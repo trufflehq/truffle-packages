@@ -13,10 +13,9 @@ import { observer } from '@legendapp/state/react';
 import { fromSpecObservable } from './from-spec-observable';
 import { useEffect, useMemo, useState } from 'react';
 
-// here we're creating observables using the legend state library
-// https://legendapp.com/open-source/state/
-
 function App() {
+  // here we're creating observables using the legend state library
+  // https://legendapp.com/open-source/state/
   const user = useMemo(
     () => fromSpecObservable<TruffleUser>(getUserClient().observable),
     []
