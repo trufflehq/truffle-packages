@@ -20,6 +20,7 @@ export default function EmbedController() {
 
   return (
     <div className="c-embed-controller">
+      <h2>Embed Controller</h2>
       <div>
         <button onClick={toggleBorder}>Toggle border</button>
       </div>
