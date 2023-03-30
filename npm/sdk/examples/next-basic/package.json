@@ -1,5 +1,5 @@
 {
-  "name": "next-sdk-debug",
+  "name": "next-basic",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@trufflehq/sdk": "file:../..",
+    "@trufflehq/sdk": "^0.2.0",
     "@types/node": "18.15.5",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
