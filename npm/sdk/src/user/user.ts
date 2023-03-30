@@ -2,8 +2,6 @@ import { Client } from '@urql/core';
 import { map, pipe, toObservable } from 'wonka';
 import { getTruffleApp } from '../app';
 import { TruffleOrgUserClient } from '../org-user';
-import { TruffleRoleConnection } from '../role/role';
-import { TrufflePowerupConnection } from '../types/truffle';
 import { TruffleImage } from '../util/image';
 import { SwitchableObservable } from '../util/switchable-observable';
 import { ME_USER_QUERY } from './gql';
@@ -12,13 +10,6 @@ export interface TruffleUser {
   id: string;
   name: string;
   avatarImage: TruffleImage;
-}
-
-export interface TruffleOrgUser {
-  id: string;
-  name: string;
-  roleConnection: TruffleRoleConnection;
-  activePowerupConnection: TrufflePowerupConnection;
 }
 
 export class TruffleUserClient {

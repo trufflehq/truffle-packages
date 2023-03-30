@@ -1,8 +1,18 @@
 import Head from 'next/head';
 import styles from '@/styles/Home.module.css';
 import EmbedController from '@/components/embed-controller';
+import UserInfo from '@/components/user-info';
+import { initTruffleApp } from '@trufflehq/sdk';
+import { useMemo } from 'react';
+import { isSsr } from '@/lib/util';
 
 export default function Home() {
+  // useMemo runs before useEffect,
+  // so we use it to guarantee that the
+  // Truffle app is initialized before
+  // any child components try to use it
+  useMemo(() => !isSsr && initTruffleApp(), []);
+
   return (
     <>
       <Head>
@@ -13,6 +23,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <EmbedController />
+        <UserInfo />
       </main>
     </>
   );
