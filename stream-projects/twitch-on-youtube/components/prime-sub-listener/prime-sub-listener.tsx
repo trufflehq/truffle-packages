@@ -6,7 +6,7 @@ import { gql, mutation } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 // when we first make the call. for embeds of sourceType url there's a good chance
 // we load our stuff before the actual dom is settled. so we wait a second before
 // TODO: see if things are more stable with transframe
-const LOAD_DELAY_MS = 1000; // 1 seconds
+const LOAD_DELAY_MS = 2000; // 2 seconds
 
 const DATAPOINT_INCREMENT_UNIQUE_MUTATION = gql`
 mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
@@ -40,6 +40,8 @@ const CSS_FOR_TWITCH = `
 // only reason react is necessary here is so we can pass the sourceName
 export default function PrimeSubListener() {
   useEffect(() => {
+    console.log("prime sub listener");
+
     setTimeout(() => {
       jumper.call("layout.applyLayoutConfigSteps", {
         layoutConfigSteps: [
