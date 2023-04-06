@@ -180,14 +180,14 @@ function PremiumPreview(
       <iframe
         // ./yt-dlp --cookies-from-browser chrome https://www.patreon.com/posts/ep-88-premium-or-80428456
         // ffmpeg -i premium.mp4 -ss 0 -t 30 -c copy premium-trimmed.mp4
-        src="https://player.vimeo.com/video/813377518?h=57c2ad7182&badge=0&autopause=0&autoplay=1&player_id=0&app_id=58479"
+        src="https://player.vimeo.com/video/815471214?h=3100be5ed0&badge=0&autopause=0&autoplay=1&player_id=0&app_id=58479"
         frameBorder="0"
         allow="autoplay; fullscreen; picture-in-picture"
         style={{
           width: "100%",
           height: "99%",
         }}
-        title="ep. 89 preview"
+        title="ep. 90 preview"
       >
       </iframe>
     </div>
