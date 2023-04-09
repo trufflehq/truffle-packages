@@ -33,6 +33,9 @@ const CSS_FOR_TWITCH = `
 [data-test-selector="support-panel__benefits-wrapper"] + div {
   display: none !important;
 }
+[data-test-selector="title-section-sub-goal__container"] {
+  display: none !important;
+}
 `;
 
 // request needs to come from twitch frame, which is why this route exists
