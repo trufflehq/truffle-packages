@@ -12,7 +12,7 @@ import { gql, mutation } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 
 import PatreonIframe from "../patreon-iframe/patreon-iframe.tsx";
 import styleSheet from "./video-embed.scss.js";
-import { Checkmark, YardLogo } from "./svgs.tsx";
+import { Checkmark } from "./svgs.tsx";
 import type { VideoInfo } from "../../types/index.ts";
 
 const PREVIEW_LENGTH_MS = 30000; // 30s
@@ -68,11 +68,11 @@ export default function VideoEmbed(
   useStyleSheet(styleSheet);
   useGoogleFontLoader(() => ["Roboto"]);
 
-  const isPatreonVideoReady$ = useSignal(true);
+  const isPatreonVideoReady$ = useSignal(false);
   const isPatreonVideoReady = useSelector(() => isPatreonVideoReady$.get());
-  const videoInfo$ = useSignal<VideoInfo | undefined>({});
+  const videoInfo$ = useSignal<VideoInfo | undefined>();
   const videoInfo = useSelector(() => videoInfo$.get());
-  const isUpsellVisible$ = useSignal(true);
+  const isUpsellVisible$ = useSignal(false);
   const isUpsellVisible = useSelector(() => isUpsellVisible$.get());
 
   useEffect(() => {
