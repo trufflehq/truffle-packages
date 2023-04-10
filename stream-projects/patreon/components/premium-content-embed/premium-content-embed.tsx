@@ -61,8 +61,6 @@ mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
   datapointIncrementUnique(input: $input) { isUpdated }
 }`;
 
-const THE_YARD_CHANNEL_ID = "79282f80-d4d6-11ed-80ab-8d6927988a61";
-
 const CHANNEL_POST_CONNECTION_QUERY = gql`
 query ChannelPostConnection($input: ChannelPostConnectionInput) {
   channelPostConnection(input: $input) {
@@ -74,7 +72,15 @@ query ChannelPostConnection($input: ChannelPostConnectionInput) {
 
 const PREVIEW_POST_COUNT = 3;
 
-function Embed({ url, patreonUsername, title, previewImageSrc }) {
+type Props = {
+  patreonUsername: string;
+  creatorName: string;
+  channelId: string;
+};
+
+function Embed(
+  { patreonUsername, creatorName, channelId }: Props,
+) {
   useStyleSheet(styleSheet);
   useGoogleFontLoader(() => ["Roboto"]);
   const tierName = useSelector(() => tierName$.get());
@@ -88,9 +94,11 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
     query: CHANNEL_POST_CONNECTION_QUERY,
     variables: {
       input: {
-        channelId: THE_YARD_CHANNEL_ID,
+        channelId,
       },
     },
+  }, {
+    skip: !channelId,
   });
 
   const isCollapsed$ = useSignal(false);
@@ -158,9 +166,17 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
     isCollapsed$.set(!isCollapsed$.get());
   };
 
+  const channelPosts =
+    channelPostConnectionResponse.data?.channelPostConnection?.nodes || [];
+
+  // HACK: hardcode for the yard / wine about it
+  const featuredPost =
+    channelPosts.find((channelPost) =>
+      channelPost.data.title?.includes("Ep.")
+    ) || channelPosts[0] || { data: {} };
+
   const posts = channelPostConnectionResponse.data?.channelPostConnection?.nodes
-    // HACK: hardcode for the yard
-    ?.filter((channelPost) => !channelPost.data.title?.startsWith("Ep."))
+    ?.filter((channelPost) => channelPost.data.url !== featuredPost.data.url)
     ?.slice(0, PREVIEW_POST_COUNT) || [];
 
   // HACK: hardcode for the yard
@@ -205,15 +221,15 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
         <div className="content">
           <a
             className="featured-post"
-            href={url}
+            href={featuredPost.data.url}
             target="_blank"
-            onClick={(e) => loadVideo({ e, url, title })}
+            onClick={(e) => loadVideo({ e, ...featuredPost.data })}
           >
             <div className="preview">
               <div
                 className="background"
                 style={{
-                  backgroundImage: `url(${previewImageSrc})`,
+                  backgroundImage: `url(${featuredPost.data.imageUrl})`,
                 }}
               >
               </div>
@@ -226,9 +242,9 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
                 : null}
               <a
                 className="button"
-                href={url}
+                href={featuredPost.data.url}
                 target="_blank"
-                onClick={(e) => loadVideo({ e, url, title })}
+                onClick={(e) => loadVideo({ e, ...featuredPost.data })}
               >
                 <Icon
                   icon={PLAY_ICON_PATH}
@@ -240,7 +256,7 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
             </div>
             <div className="info">
               <div className="title">
-                {title}
+                {featuredPost.data.title}
               </div>
               {/* <div className="description">129 likes · 3 days ago</div> */}
               <div className="schedule">
@@ -257,7 +273,7 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
           </a>
           <div className="divider" />
           <div className="posts">
-            <div className="title">More premium content from the Yard</div>
+            <div className="title">More premium content from {creatorName}</div>
             {posts.map(
               (channelPost) => {
                 return (
@@ -281,7 +297,7 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
           </div>
         </div>
       </div>
-      {isPatron && <DiscordPromo />}
+      {isPatron && patreonUsername === "theyard" && <DiscordPromo />}
     </div>
   );
 }
