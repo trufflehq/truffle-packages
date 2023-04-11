@@ -5,32 +5,35 @@ import VideoEmbed from "../../components/video-embed/video-embed.tsx";
 
 const TIERS = [
   {
-    id: "7158347",
-    name: "shill",
+    id: "9602021",
+    name: "buzzed",
     priceCents: 500,
     bullets: [
       "Premium episodes",
-      "Access to The Yard Discord",
+      "Early merch access",
+      "Patreon Exclusive Pet Photo Dumps",
     ],
   },
   {
-    id: "7158348",
-    name: "rich king",
+    id: "9602075",
+    name: "tipsy",
     priceCents: 1500,
     bullets: [
-      "shill benefits",
-      "Secret shows",
-      "Behind the scenes content",
+      "buzzed benefits",
+      "QT/Maya Trash TV Reacts",
+      "QT Explains a Taylor Swift Song",
+      "Maya's Weird Animal Spotlight",
     ],
   },
   {
-    id: "7158349",
-    name: "shillionaire",
-    priceCents: 2500,
+    id: "9602085",
+    name: "drunk",
+    priceCents: 3000,
     bullets: [
-      "shill and rich king benefits",
-      "WE WILL ACTUALLY MAIL TO YOUR HOUSE: a custom postcard every month with a trinket chosen at random, or a shirtless polaroid",
-      "Discounts and early access to merch",
+      "buzzed and tipsy benefits",
+      "Monthly stickers",
+      "Monthly QT Recipe Card",
+      "Monthly Maya Art Print",
     ],
   },
 ];
@@ -39,11 +42,11 @@ function VideoEmbedPage() {
   return (
     <>
       <VideoEmbed
-        creatorName="The Yard"
-        patreonUsername="theyard"
-        vimeoUrl="https://player.vimeo.com/video/815471214?h=3100be5ed0"
+        creatorName="Wine About It"
+        patreonUsername="wineaboutit"
+        vimeoUrl="https://player.vimeo.com/video/816373271?h=3ef8457d93"
         tiers={TIERS}
-        logoUrl="https://cdn.bio/assets/images/creators/ludwig/yard.jpg"
+        logoUrl="https://cdn.bio/assets/images/creators/qt/wineaboutit.png"
       />
     </>
   );

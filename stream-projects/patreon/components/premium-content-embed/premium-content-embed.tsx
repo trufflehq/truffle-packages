@@ -30,7 +30,7 @@ const PLAY_ICON_PATH = "M8 5V19L19 12L8 5Z";
 
 const VISIBLE_STYLE = {
   width: "100%",
-  height: "338px",
+  height: "484px",
   display: "block",
   "margin-bottom": "12px",
   background: "transparent",
@@ -259,16 +259,18 @@ function Embed(
                 {featuredPost.data.title}
               </div>
               {/* <div className="description">129 likes · 3 days ago</div> */}
-              <div className="schedule">
-                New episode every {DAYS_OF_WEEK[newEpisodeTime.getDay()]} at
-                {" "}
-                {newEpisodeTime.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                  timeZoneName: "short",
-                })}
-              </div>
+              {patreonUsername === "theyard" && (
+                <div className="schedule">
+                  New episode every {DAYS_OF_WEEK[newEpisodeTime.getDay()]} at
+                  {" "}
+                  {newEpisodeTime.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                    timeZoneName: "short",
+                  })}
+                </div>
+              )}
             </div>
           </a>
           <div className="divider" />

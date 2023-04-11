@@ -6,9 +6,9 @@ import PremiumContentEmbed from "../components/premium-content-embed/premium-con
 function EmbedPage() {
   return (
     <PremiumContentEmbed
-      patreonUsername="theyard"
-      creatorName="The Yard"
-      channelId="79282f80-d4d6-11ed-80ab-8d6927988a61"
+      patreonUsername="wineaboutit"
+      creatorName="Wine About It"
+      channelId="c5e1ab20-d7ca-11ed-ae82-f9fec1944503"
     />
   );
 }
