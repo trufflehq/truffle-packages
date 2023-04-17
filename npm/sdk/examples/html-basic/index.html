@@ -18,15 +18,20 @@
   <button id="toggle-border-button">Toggle Border</button>
   <button id="toggle-size-button">Toggle Size</button>
 
+  <p>
+    <strong>Org slug: </strong><span id="org-slug-text">null</span>
+  </p>
+
 </body>
 <script type="module">
-  import { embed } from 'https://npm.tfl.dev/@trufflehq/sdk'
+  import { embed, org as orgClient } from 'https://npm.tfl.dev/@trufflehq/sdk@0.1.2'
 
   let hasBorder = false;
   let isSmall = true;
 
   const toggleBorderButton = document.getElementById("toggle-border-button");
   const toggleSizeButton = document.getElementById("toggle-size-button");
+  const orgSlugText = document.getElementById("org-slug-text");
 
   toggleBorderButton.onclick = () => {
     if (hasBorder) {
@@ -59,6 +64,13 @@
       isSmall = true
     }
   }
+
+  orgClient.observable.subscribe({
+    next: (org) => {
+      console.log("org", org)
+      orgSlugText.innerText = org?.slug
+    }
+  })
   
 </script>
 </html>
