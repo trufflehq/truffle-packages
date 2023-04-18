@@ -46,6 +46,7 @@ export class SwitchableObservable<T> implements Observable<T> {
 
     this._observers.push(observer);
 
+    // only send the latest value if we've already gotten one
     if (this._hasGottenFirstValue) {
       // send the latest value to the new observer
       observer.next(this._latestValue as T);
