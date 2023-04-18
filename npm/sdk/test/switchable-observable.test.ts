@@ -1,5 +1,5 @@
 import { SwitchableObservable } from '../src/util/switchable-observable';
-import { Observable, from } from 'rxjs';
+import { Observable, from, Subject } from 'rxjs';
 
 const createObservable = (value: string) => {
   return from([value]);
@@ -82,6 +82,31 @@ describe('SwitchableObservable', () => {
 
     // make sure we get the correct result
     expect(result).toEqual('obs2');
+    subscription?.unsubscribe();
+  });
+
+  it('should wait for the first value if a consumer subscribes before the first value is emitted', async () => {
+    let subscription: any;
+    const obs = new Subject();
+    const switchableObs = new SwitchableObservable(obs);
+    const resultProm = new Promise<unknown>((resolve) => {
+      subscription = switchableObs.subscribe({
+        next: (value) => {
+          resolve(value);
+        },
+        error: (err) => {
+          throw err;
+        },
+        complete: () => {}
+      });
+    });
+
+    // emit a value after subscribing
+    obs.next('obs');
+    const result = await resultProm;
+
+    // make sure we get the correct result
+    expect(result).toEqual('obs');
     subscription?.unsubscribe();
   });
 });

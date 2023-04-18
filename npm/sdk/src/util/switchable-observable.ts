@@ -7,7 +7,8 @@ import {
 export class SwitchableObservable<T> implements Observable<T> {
   private _observers: ObservableObserver<T>[] = [];
   private _subscription: ObservableSubscription | null = null;
-  private _latestValue: T | undefined;
+  private _latestValue?: T;
+  private _hasGottenFirstValue = false;
 
   constructor(private _observable: Observable<T>) {
     // normally we would subscribe to the observable here,
@@ -18,6 +19,7 @@ export class SwitchableObservable<T> implements Observable<T> {
   private _subscribeToObservable() {
     this._subscription = this._observable.subscribe({
       next: (value) => {
+        this._hasGottenFirstValue = true;
         this._latestValue = value;
         this._observers.forEach((observer) => {
           observer.next(value);
@@ -44,8 +46,10 @@ export class SwitchableObservable<T> implements Observable<T> {
 
     this._observers.push(observer);
 
-    // send the latest value to the new observer
-    observer.next(this._latestValue as T);
+    if (this._hasGottenFirstValue) {
+      // send the latest value to the new observer
+      observer.next(this._latestValue as T);
+    }
 
     let closed = false;
     return {
