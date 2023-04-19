@@ -109,4 +109,38 @@ describe('SwitchableObservable', () => {
     expect(result).toEqual('obs');
     subscription?.unsubscribe();
   });
+
+  it('should emit the last value to a new consumer upon subscription', async () => {
+    let subscription1, subscription2: any;
+
+    // first consumer
+    subscription1 = switchableObs.subscribe({
+      next: (value) => {},
+      error: (err) => {
+        throw err;
+      },
+      complete: () => {}
+    });
+
+    // second consumer
+    const resultProm = new Promise<unknown>((resolve) => {
+      subscription2 = switchableObs.subscribe({
+        next: (value) => {
+          resolve(value);
+        },
+        error: (err) => {
+          throw err;
+        },
+        complete: () => {}
+      });
+    });
+
+    // emit a value after subscribing
+    const result = await resultProm;
+
+    // make sure we get the correct result
+    expect(result).toEqual('obs1');
+    subscription1.unsubscribe();
+    subscription2.unsubscribe();
+  });
 });
