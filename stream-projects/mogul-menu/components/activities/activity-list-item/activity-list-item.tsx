@@ -44,7 +44,6 @@ export default function ActivityListItem(
       const isActive = isActiveActivity(activity.alert);
       const useEndTime = !isActive && activity.endTime;
       const time = useEndTime ? activity.endTime : activity.time;
-      console.log("time", time, isActive);
 
       // if there's no time, don't show anything
       if (!time) return "";
