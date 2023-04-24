@@ -22,7 +22,7 @@ export function fromNowSeconds(seconds: number, suffix = "") {
   if (isNaN(seconds)) {
     return "...";
   } else if (seconds < 30) {
-    return "<30s";
+    return "<30s" + suffix;
   } else if (seconds < ONE_MINUTE_S) {
     return Math.round(seconds) + "s" + suffix;
   } else if (seconds < ONE_HOUR_S) {
@@ -52,7 +52,7 @@ export function fromNowLongSeconds(seconds: number, suffix = "") {
   if (isNaN(seconds)) {
     return "...";
   } else if (seconds < 30) {
-    return "<30s";
+    return "<30s" + suffix;
   } else if (seconds < ONE_MINUTE_S) {
     return timeStr(Math.round(seconds), "second") + suffix;
   } else if (seconds < ONE_HOUR_S) {

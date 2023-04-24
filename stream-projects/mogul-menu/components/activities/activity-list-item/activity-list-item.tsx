@@ -37,16 +37,23 @@ export default function ActivityListItem(
   // compute timestamp if not provided
   timestamp ??= useMemo(
     () => {
-      // only show timestamp if activity is under "activity history"
-      if (activity && isActiveActivity(activity.alert)) return "";
+      if (!activity) return "";
 
-      // we'll get the timestamp from the activity if it's there
-      const time = activity?.endTime ?? activity?.time;
+      // if it's an active activity, show time since created;
+      // if it's not active, show time since ended
+      const isActive = isActiveActivity(activity.alert);
+      const useEndTime = !isActive && activity.endTime;
+      const time = useEndTime ? activity.endTime : activity.time;
+      console.log("time", time, isActive);
 
       // if there's no time, don't show anything
       if (!time) return "";
       // by default, show "(time) ago"
-      else return fromNowLong(time, " ago");
+      else {
+        return useEndTime
+          ? `Ended ${fromNowLong(time, " ago")}`
+          : `Created ${fromNowLong(time, " ago")}`;
+      }
     },
     [activity],
   );
