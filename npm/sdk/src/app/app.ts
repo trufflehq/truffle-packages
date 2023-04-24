@@ -2,10 +2,12 @@ import { Client } from '@urql/core';
 import { createMyceliumClient, MyceliumClientOptions } from '../mycelium';
 import { TruffleUserClient } from '../user';
 import { TruffleOrgClient } from '../org';
+import { TruffleOrgUserClient } from '../org-user';
 
 export class TruffleApp {
   private _gqlClient: Client;
   private _user: TruffleUserClient;
+  private _orgUser: TruffleOrgUserClient;
   private _org: TruffleOrgClient;
   private _isAuthenticated = false;
 
@@ -36,6 +38,7 @@ export class TruffleApp {
 
     this._gqlClient = createMyceliumClient(clientOptions);
     this._user = new TruffleUserClient(this._gqlClient);
+    this._orgUser = new TruffleOrgUserClient(this._gqlClient);
     this._org = new TruffleOrgClient(this._gqlClient);
   }
 
@@ -53,5 +56,9 @@ export class TruffleApp {
 
   public get org() {
     return this._org;
+  }
+
+  public get orgUser() {
+    return this._orgUser;
   }
 }
