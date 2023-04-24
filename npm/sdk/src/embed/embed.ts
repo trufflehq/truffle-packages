@@ -63,6 +63,20 @@ export class Embed {
   }
 
   /**
+   * Set the embed container
+   */
+  public setContainer(
+    querySelector: string,
+    insertionMethod?: 'append' | 'prepend'
+  ) {
+    this._embedConsumer.call(
+      'embedSetContainer',
+      querySelector,
+      insertionMethod
+    );
+  }
+
+  /**
    * Hide the embed
    */
   public hide() {

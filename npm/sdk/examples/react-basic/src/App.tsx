@@ -35,6 +35,10 @@ function App() {
     }
   };
 
+  const setContainer = () => {
+    embed.setContainer('#title.ytd-watch-metadata');
+  };
+
   return (
     <div className="App">
       <div>
@@ -61,6 +65,7 @@ function App() {
       <h2>Embed controls</h2>
       <button onClick={setSize}>Toggle Size</button>
       <button onClick={setBorder}>Toggle Border</button>
+      <button onClick={setContainer}>Set Container</button>
     </div>
   );
 }
