@@ -42,7 +42,7 @@
 [@truffle/better-chat@`0.0.13`](./stream-projects/better-chat) - Youtube chat mutation observer  
 [@truffle/chat@`1.0.12`](./stream-projects/chat) - Chat client for 3rd party chats  
 [@truffle/chat-theme@`0.0.45`](./stream-projects/chat-theme) - Theme for chat  
-[@truffle/mogul-menu@`3.0.157`](./stream-projects/mogul-menu) - Menu for channel points, predictions, and activities  
+[@truffle/mogul-menu@`3.0.159`](./stream-projects/mogul-menu) - Menu for channel points, predictions, and activities  
 [@truffle/stream-feedback@`0.5.30`](./stream-projects/stream-feedback) - Stream Feedback  
 [@truffle/twitch-on-youtube@`0.6.16`](./stream-projects/twitch-on-youtube) - Twitch on YouTube  
 [@truffle/live-embed@`0.5.50`](./stream-projects/live-embed) - Shows a twitch live stream on a creator's youtube channel.  

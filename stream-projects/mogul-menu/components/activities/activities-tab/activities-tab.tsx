@@ -186,7 +186,9 @@ function ActivityGroup<
           {/* This was necessary to make the TS compiler happy, for some reason it wasn't liking the JSX format <Component activity={activityAlert.activity} />*/}
           return ActivityListItem &&
             React.createElement(ActivityListItem, {
-              activity: alert.activity,
+              // HACK: we pass a reference to the alert so that child components
+              // can call isActivityAlert() to determine if the activity is active
+              activity: { ...alert.activity, alert },
               createdBy: hasPermissions ? alert.orgUser?.name : undefined,
             });
         })}

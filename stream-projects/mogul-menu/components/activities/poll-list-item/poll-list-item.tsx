@@ -37,6 +37,7 @@ function BasePollListItem({ activity }: ActivityListItemProps<Poll>) {
       activityType="Poll"
       color="#CAE88A"
       title={activity.question}
+      activity={activity}
       description={<PollListItemDescription poll={activity} />}
     />
   );

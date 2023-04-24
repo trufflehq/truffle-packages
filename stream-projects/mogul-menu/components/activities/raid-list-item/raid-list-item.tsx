@@ -46,6 +46,7 @@ export default function RaidListItem(
       title={activity.data.title}
       description={activity.data.description}
       onClick={hasAlertPermissions ? showRaidPage : onClick}
+      activity={activity}
     />
   );
 }

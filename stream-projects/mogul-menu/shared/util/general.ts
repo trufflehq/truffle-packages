@@ -44,6 +44,36 @@ export function fromNow(date: Date, suffix = "") {
   return fromNowSeconds(seconds, suffix);
 }
 
+export function fromNowLongSeconds(seconds: number, suffix = "") {
+  const timeStr = (val: number, unit: string) => {
+    return `${val} ${unit}${val > 1 ? "s" : ""}`;
+  };
+
+  if (isNaN(seconds)) {
+    return "...";
+  } else if (seconds < 30) {
+    return "<30s";
+  } else if (seconds < ONE_MINUTE_S) {
+    return timeStr(Math.round(seconds), "second") + suffix;
+  } else if (seconds < ONE_HOUR_S) {
+    return timeStr(Math.round(seconds / ONE_MINUTE_S), "minute") + suffix;
+  } else if (seconds <= ONE_DAY_S) {
+    return timeStr(Math.round(seconds / ONE_HOUR_S), "hour") + suffix;
+  } else if (seconds <= ONE_WEEK_S) {
+    return timeStr(Math.round(seconds / ONE_DAY_S), "day") + suffix;
+  } else {
+    return timeStr(Math.round(seconds / ONE_WEEK_S), "week") + suffix;
+  }
+}
+
+export function fromNowLong(date: Date, suffix = "") {
+  if (!(date instanceof Date)) {
+    date = new Date(date);
+  }
+  const seconds = Math.abs((Date.now() - date.getTime()) / 1000);
+  return fromNowLongSeconds(seconds, suffix);
+}
+
 export const secondsSince = (date: Date) => {
   return Math.floor((Date.now() - date.getTime()) / 1000);
 };
