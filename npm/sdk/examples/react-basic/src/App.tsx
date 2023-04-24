@@ -36,7 +36,7 @@ function App() {
   };
 
   const setContainer = () => {
-    embed.setContainer('#title.ytd-watch-metadata');
+    embed.setContainer('#title.ytd-watch-metadata', 'prepend');
   };
 
   return (
