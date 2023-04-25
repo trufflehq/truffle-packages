@@ -1,16 +1,14 @@
 import { fromSpecObservable } from '@/lib/from-spec-observable';
-import { isSsr } from '@/lib/util';
-import { getOrgUserClient } from '@trufflehq/sdk';
 import { useMemo } from 'react';
 import { observer } from '@legendapp/state/react';
+import { truffle } from '@/lib/truffle';
 
 function UserInfo() {
   // create a memoized legend observable
   const orgUser = useMemo(
     () =>
       // make sure we're not server rendering
-      (!isSsr && fromSpecObservable(getOrgUserClient().observable)) ||
-      undefined,
+      truffle && fromSpecObservable(truffle.orgUser.observable),
     []
   );
 
@@ -18,12 +16,12 @@ function UserInfo() {
     <div className="c-user-info">
       <h2>Org user info</h2>
       <div>
-        <div>Org user ID: {orgUser?.get()?.id}</div>
-        <div>Username: {orgUser?.get()?.name}</div>
+        <div>Org user ID: {orgUser?.id.get()}</div>
+        <div>Username: {orgUser?.name.get()}</div>
         <div>
           <h3>Roles</h3>
           <ul>
-            {orgUser?.get()?.roleConnection.nodes.map((role) => (
+            {orgUser?.roleConnection.nodes.get()?.map((role) => (
               <li key={role.id}>{role.slug}</li>
             ))}
           </ul>
