@@ -15,10 +15,6 @@ const extensionInfo = jumper.call(
   "context.getInfo",
 );
 
-// NOTE: there's a chance this doesn't get called a 2nd time if a user goes from
-// one video from a creator to a next video from same creator (don't think we reload embed)
-recordMetric("youtube-video-views");
-
 async function recordMetric(
   metricSlug: string,
 ): Promise<void> {
@@ -31,51 +27,57 @@ async function recordMetric(
   });
 }
 
-// TODO: may need to change #top-row and #comment-box #submit-button to body
-// if they don't exist when iframe is loaded in.
-// drawback is it's less performant since we run the handleMatches fn any time anything
-// change in any part of dom
-jumper.call("layout.listenForElements", {
-  listenElementLayoutConfigSteps: [
-    {
-      action: "querySelector",
-      value: "#top-row",
-    },
-  ],
-  targetQuerySelector: "button",
-  observerConfig: { childList: true },
-}, handleMatches);
+export function listen() {
+  // NOTE: there's a chance this doesn't get called a 2nd time if a user goes from
+  // one video from a creator to a next video from same creator (don't think we reload embed)
+  recordMetric("youtube-video-views");
 
-jumper.call("layout.listenForElements", {
-  listenElementLayoutConfigSteps: [
-    {
-      action: "querySelector",
-      value: "#commentbox #submit-button",
-    },
-  ],
-  targetQuerySelector: "button",
-  observerConfig: { childList: true },
-}, handleMatches);
+  // TODO: may need to change #top-row and #comment-box #submit-button to body
+  // if they don't exist when iframe is loaded in.
+  // drawback is it's less performant since we run the handleMatches fn any time anything
+  // change in any part of dom
+  jumper.call("layout.listenForElements", {
+    listenElementLayoutConfigSteps: [
+      {
+        action: "querySelector",
+        value: "#top-row",
+      },
+    ],
+    targetQuerySelector: "button",
+    observerConfig: { childList: true },
+  }, handleMatches);
 
-function handleMatches(matches) {
-  const buttonInfos = matches
-    .map((match) => getButtonInfoFromMatch(match))
-    .filter(Boolean);
+  jumper.call("layout.listenForElements", {
+    listenElementLayoutConfigSteps: [
+      {
+        action: "querySelector",
+        value: "#commentbox #submit-button",
+      },
+    ],
+    targetQuerySelector: "button",
+    observerConfig: { childList: true },
+  }, handleMatches);
 
-  buttonInfos.forEach(({ metricSlug, id }) => {
-    // when this button is clicked, record an event
-    jumper.call("layout.addEventListener", {
-      eventName: "click",
-      targetElementLayoutConfigSteps: [
-        {
-          action: "querySelector",
-          value: `[data-truffle-id=${id}]`,
-        },
-      ],
-    }, () => {
-      recordMetric(metricSlug);
+  function handleMatches(matches) {
+    const buttonInfos = matches
+      .map((match) => getButtonInfoFromMatch(match))
+      .filter(Boolean);
+
+    buttonInfos.forEach(({ metricSlug, id }) => {
+      // when this button is clicked, record an event
+      jumper.call("layout.addEventListener", {
+        eventName: "click",
+        targetElementLayoutConfigSteps: [
+          {
+            action: "querySelector",
+            value: `[data-truffle-id=${id}]`,
+          },
+        ],
+      }, () => {
+        recordMetric(metricSlug);
+      });
     });
-  });
+  }
 }
 
 function getFiltersFromExtensionInfo(
