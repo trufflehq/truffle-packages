@@ -1,6 +1,6 @@
 {
   "name": "@trufflehq/transframe/iframe",
-  "main": "../dist/cjs/interfaces/iframe/index.js",
-  "module": "../dist/esm/interfaces/iframe/index.js",
-  "types": "../dist/esm/interfaces/iframe/index.d.ts"
+  "main": "../dist/interfaces/iframe/index.js",
+  "module": "../dist/interfaces/iframe/index.mjs",
+  "types": "../dist/interfaces/iframe/index.d.ts"
 }

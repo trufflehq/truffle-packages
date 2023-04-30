@@ -1,9 +1,7 @@
-import { embedConsumer } from '../transframe/embed-consumer';
+import { getEmbedConsumer } from '../transframe/embed-consumer';
 
-export async function getAccessToken(apiUrl?: string): Promise<string> {
-  // FIXME: This is a hack to wait for the embed transframe provider to initialize
-  await new Promise((resolve) => setTimeout(resolve, 10));
-
-  const token = (await embedConsumer.call('userGetAccessToken')) as string;
+export async function getAccessToken(): Promise<string> {
+  // TODO: support auth without extension
+  const token = (await getEmbedConsumer().call('userGetAccessToken')) as string;
   return token;
 }

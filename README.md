@@ -47,7 +47,8 @@
 [@truffle/twitch-on-youtube@`0.6.16`](./stream-projects/twitch-on-youtube) - Twitch on YouTube  
 [@truffle/live-embed@`0.5.50`](./stream-projects/live-embed) - Shows a twitch live stream on a creator's youtube channel.  
 [@truffle/patreon@`0.5.78`](./stream-projects/patreon) - Patreon integration for Truffle  
-[@truffle/creator-insights@`0.5.34`](./stream-projects/creator-insights) - Truffle Creator Insights
+[@truffle/creator-insights@`0.5.35`](./stream-projects/creator-insights) - Truffle Creator Insights  
+[@truffle/links@`0.5.30`](./stream-projects/links) - Links
 
 <!-- END PACKAGES -->
 

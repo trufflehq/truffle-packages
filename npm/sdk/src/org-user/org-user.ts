@@ -1,5 +1,6 @@
 import { Client } from '@urql/core';
 import { map, pipe, toObservable } from 'wonka';
+import { getTruffleApp } from '../app';
 import { TruffleRoleConnection } from '../role';
 import { TrufflePowerupConnection } from '../types/truffle';
 import { SwitchableObservable } from '../util/switchable-observable';
@@ -19,7 +20,7 @@ export interface TruffleOrgUserInput {
 }
 
 export class TruffleOrgUserClient {
-  private _observable: SwitchableObservable<TruffleOrgUser | undefined>;
+  private _observable: SwitchableObservable<TruffleOrgUser>;
 
   constructor(
     private _gqlClient: Client,
@@ -53,4 +54,9 @@ export class TruffleOrgUserClient {
     const newObservable = this._getOrgUserObservable();
     this._observable.switch(newObservable);
   }
+}
+
+export function getOrgUserClient(instanceName?: string) {
+  const app = getTruffleApp(instanceName);
+  return app.orgUser;
 }

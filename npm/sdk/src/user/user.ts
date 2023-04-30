@@ -1,8 +1,6 @@
 import { Client } from '@urql/core';
 import { map, pipe, toObservable } from 'wonka';
-import { TruffleOrgUserClient } from '../org-user';
-import { TruffleRoleConnection } from '../role/role';
-import { TrufflePowerupConnection } from '../types/truffle';
+import { getTruffleApp } from '../app';
 import { TruffleImage } from '../util/image';
 import { SwitchableObservable } from '../util/switchable-observable';
 import { ME_USER_QUERY } from './gql';
@@ -13,20 +11,11 @@ export interface TruffleUser {
   avatarImage: TruffleImage;
 }
 
-export interface TruffleOrgUser {
-  id: string;
-  name: string;
-  roleConnection: TruffleRoleConnection;
-  activePowerupConnection: TrufflePowerupConnection;
-}
-
 export class TruffleUserClient {
-  private _observable: SwitchableObservable<TruffleUser | undefined>;
-  private _orgUser: TruffleOrgUserClient;
+  private _observable: SwitchableObservable<TruffleUser>;
 
   constructor(private _gqlClient: Client) {
     this._observable = new SwitchableObservable(this._getUserObservable());
-    this._orgUser = new TruffleOrgUserClient(this._gqlClient);
   }
 
   private _getUserObservable() {
@@ -43,7 +32,6 @@ export class TruffleUserClient {
 
   public set gqlClient(client: Client) {
     this._gqlClient = client;
-    this._orgUser.gqlClient = client;
     // switch the underlying observable and refresh the user object
     const newObservable = this._getUserObservable();
     this._observable.switch(newObservable);
@@ -52,11 +40,9 @@ export class TruffleUserClient {
   public get observable() {
     return this._observable;
   }
+}
 
-  /**
-   * Returns the org user object.
-   */
-  public get orgUser() {
-    return this._orgUser;
-  }
+export function getUserClient(instanceName?: string) {
+  const app = getTruffleApp(instanceName);
+  return app.user;
 }

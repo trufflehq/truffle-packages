@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import './App.css';
-import { embed } from '@trufflehq/sdk';
+import { getEmbed } from '@trufflehq/sdk';
+
+const embed = getEmbed();
 
 function App() {
   const [count, setCount] = useState(0);
@@ -33,6 +35,10 @@ function App() {
     }
   };
 
+  const setContainer = () => {
+    embed.setContainer('#title.ytd-watch-metadata', 'prepend');
+  };
+
   return (
     <div className="App">
       <div>
@@ -59,6 +65,7 @@ function App() {
       <h2>Embed controls</h2>
       <button onClick={setSize}>Toggle Size</button>
       <button onClick={setBorder}>Toggle Border</button>
+      <button onClick={setContainer}>Set Container</button>
     </div>
   );
 }

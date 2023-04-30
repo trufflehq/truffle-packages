@@ -11,7 +11,7 @@ import { DEFAULT_MYCELIUM_API_URL } from '../constants';
 import { getAccessToken } from '../user/access-token';
 
 export interface MyceliumClientOptions {
-  url: string;
+  url?: string;
   userAccessToken?: string;
   orgId?: string;
   urqlOptions?: ClientOptions;
@@ -22,13 +22,9 @@ interface AuthState {
   orgId?: string;
 }
 
-export function createMyceliumClient(
-  options: MyceliumClientOptions = {
-    url: DEFAULT_MYCELIUM_API_URL,
-  }
-) {
+export function createMyceliumClient(options: MyceliumClientOptions = {}) {
   return new Client({
-    url: options.url,
+    url: options.url || DEFAULT_MYCELIUM_API_URL,
     exchanges: [
       dedupExchange,
       cacheExchange,
@@ -40,7 +36,7 @@ export function createMyceliumClient(
 
           if (!_authState.userAccessToken) {
             _authState.userAccessToken =
-              options.userAccessToken || (await getAccessToken(options.url));
+              options.userAccessToken || (await getAccessToken());
           }
 
           // extract orgId from userAccessToken
