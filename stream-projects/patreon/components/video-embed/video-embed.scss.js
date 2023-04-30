@@ -141,7 +141,9 @@ export default scss`
     > .icon {
       width: 80px;
       height: 80px;
-      background: #000;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
       border-radius: 50%;
       border: 1px solid #fff;
       margin-right: 20px;

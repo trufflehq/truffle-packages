@@ -14,8 +14,8 @@ mutation DatapointIncrementMetric ($input: DatapointIncrementMetricInput!) {
   datapointIncrementMetric(input: $input) { isUpdated }
 }`;
 
-// only reason react is necessary here is so we can pass the patreonUsername
-export default function SubscriptionListener({ patreonUsername }) {
+// don't need react
+export default function SubscriptionListener() {
   const dollarAmount$ = useSignal(5);
 
   const onClick = () => {
@@ -55,10 +55,10 @@ function setDollarAmount$(dollarAmount$) {
         value: "body",
       },
     ],
-    targetQuerySelector: "input[name=cadence]",
+    targetQuerySelector: "#renderPageContentWrapper",
     observerConfig: { childList: true },
   }, (matches) => {
-    const value = matches?.[0]?.attributes?.value;
+    const value = matches?.[0]?.innerText;
     const dollarAmount = value?.match(/\$([\d.]+)/)?.[1];
     dollarAmount$.set(dollarAmount);
   });

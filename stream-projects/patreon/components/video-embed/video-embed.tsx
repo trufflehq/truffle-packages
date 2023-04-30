@@ -12,7 +12,7 @@ import { gql, mutation } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 
 import PatreonIframe from "../patreon-iframe/patreon-iframe.tsx";
 import styleSheet from "./video-embed.scss.js";
-import { Checkmark, YardLogo } from "./svgs.tsx";
+import { Checkmark } from "./svgs.tsx";
 import type { VideoInfo } from "../../types/index.ts";
 
 const PREVIEW_LENGTH_MS = 30000; // 30s
@@ -47,40 +47,24 @@ mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
   datapointIncrementUnique(input: $input) { isUpdated }
 }`;
 
-// TODO: replace w/ value from db or props
-const TIERS = [
-  {
-    id: "7158347",
-    name: "shill",
-    priceCents: 500,
-    bullets: [
-      "Premium episodes",
-      "Access to The Yard Discord",
-    ],
-  },
-  {
-    id: "7158348",
-    name: "rich king",
-    priceCents: 1500,
-    bullets: [
-      "shill benefits",
-      "Secret shows",
-      "Behind the scenes content",
-    ],
-  },
-  {
-    id: "7158349",
-    name: "shillionaire",
-    priceCents: 2500,
-    bullets: [
-      "shill and rich king benefits",
-      "WE WILL ACTUALLY MAIL TO YOUR HOUSE: a custom postcard every month with a trinket chosen at random, or a shirtless polaroid",
-      "Discounts and early access to merch",
-    ],
-  },
-];
+type Tier = {
+  id: string;
+  name: string;
+  priceCents: number;
+  bullets: string[];
+};
 
-export default function VideoEmbed() {
+type Props = {
+  tiers: Tier[];
+  creatorName: string;
+  patreonUsername: string;
+  vimeoUrl: string;
+  logoUrl: string;
+};
+
+export default function VideoEmbed(
+  { tiers, creatorName, patreonUsername, vimeoUrl, logoUrl }: Props,
+) {
   useStyleSheet(styleSheet);
   useGoogleFontLoader(() => ["Roboto"]);
 
@@ -125,7 +109,15 @@ export default function VideoEmbed() {
   }
 
   if (isUpsellVisible) {
-    return <PatreonUpsell close={close} />;
+    return (
+      <PatreonUpsell
+        close={close}
+        tiers={tiers}
+        creatorName={creatorName}
+        patreonUsername={patreonUsername}
+        logoUrl={logoUrl}
+      />
+    );
   }
 
   const { isPatron, url, title } = videoInfo;
@@ -157,14 +149,22 @@ export default function VideoEmbed() {
           buttonIconPath={OPEN_IN_NEW_ICON_PATH} // TODO: lock icon?
           close={close}
         />
-        <PremiumPreview isUpsellVisible$={isUpsellVisible$} />
+        <PremiumPreview
+          isUpsellVisible$={isUpsellVisible$}
+          vimeoUrl={vimeoUrl}
+        />
       </div>
     );
   }
 }
 
+type PremiumPreviewProps = {
+  isUpsellVisible$: signal<boolean>;
+  vimeoUrl: string;
+};
+
 function PremiumPreview(
-  { isUpsellVisible$ }: { isUpsellVisible$: signal<boolean> },
+  { isUpsellVisible$, vimeoUrl }: PremiumPreviewProps,
 ) {
   const timeoutRef = useRef<number>();
 
@@ -180,21 +180,31 @@ function PremiumPreview(
       <iframe
         // ./yt-dlp --cookies-from-browser chrome https://www.patreon.com/posts/ep-88-premium-or-80428456
         // ffmpeg -i premium.mp4 -ss 0 -t 30 -c copy premium-trimmed.mp4
-        src="https://player.vimeo.com/video/811055310?h=c64c1176ae&badge=0&autopause=0&player_id=0&app_id=58479"
+        src={`${vimeoUrl}&badge=0&autopause=0&autoplay=1&player_id=0&app_id=58479`}
         frameBorder="0"
         allow="autoplay; fullscreen; picture-in-picture"
         style={{
           width: "100%",
           height: "99%",
         }}
-        title="ep. 87 preview"
+        title="ep. 90 preview"
       >
       </iframe>
     </div>
   );
 }
 
-function PatreonUpsell({ close }: { close: () => void }) {
+type PatreonUpsellProps = {
+  close: () => void;
+  tiers: Tier[];
+  creatorName: string;
+  patreonUsername: string;
+  logoUrl: string;
+};
+
+function PatreonUpsell(
+  { close, tiers, creatorName, patreonUsername, logoUrl }: PatreonUpsellProps,
+) {
   const onClick = () => {
     mutation(DATAPOINT_INCREMENT_UNIQUE_MUTATION, {
       input: {
@@ -214,20 +224,18 @@ function PatreonUpsell({ close }: { close: () => void }) {
         />
       </div>
       <div className="header">
-        <div className="icon">
-          <YardLogo />
-        </div>
+        <div className="icon" style={{ backgroundImage: `url(${logoUrl})` }} />
         <div className="info">
           <div className="subtitle">
             Premium content Preview Ended
           </div>
           <div className="title">
-            Support The Yard and unlock exclusive content and more:
+            Support {creatorName} and unlock exclusive content and more:
           </div>
         </div>
       </div>
       <div className="tiers">
-        {TIERS.map((tier) => (
+        {tiers.map((tier) => (
           <div className="tier">
             <div className="title">
               {tier.name}
@@ -239,7 +247,7 @@ function PatreonUpsell({ close }: { close: () => void }) {
 
               <a
                 className="button"
-                href={`https://www.patreon.com/checkout/theyard/${tier.id}`}
+                href={`https://www.patreon.com/checkout/${patreonUsername}/${tier.id}`}
                 onClick={onClick}
                 target="_blank"
               >

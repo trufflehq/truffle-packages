@@ -5,6 +5,7 @@ import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.3/googl
 import {
   gql,
   useMutation,
+  useQuery,
 } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 import { useSignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
 import { setCookie } from "https://tfl.dev/@truffle/utils@~0.0.3/cookie/cookie.ts";
@@ -29,7 +30,7 @@ const PLAY_ICON_PATH = "M8 5V19L19 12L8 5Z";
 
 const VISIBLE_STYLE = {
   width: "100%",
-  height: "338px",
+  height: "484px",
   display: "block",
   "margin-bottom": "12px",
   background: "transparent",
@@ -37,7 +38,7 @@ const VISIBLE_STYLE = {
 
 const VISIBLE_PATRON_STYLE = {
   ...VISIBLE_STYLE,
-  height: "380px",
+  height: "516px",
 };
 
 const COLLAPSED_STYLE = {
@@ -45,12 +46,41 @@ const COLLAPSED_STYLE = {
   height: "32px",
 };
 
+const DAYS_OF_WEEK = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 const DATAPOINT_INCREMENT_UNIQUE_MUTATION = gql`
 mutation DatapointIncrementUnique ($input: DatapointIncrementUniqueInput!) {
   datapointIncrementUnique(input: $input) { isUpdated }
 }`;
 
-function Embed({ url, patreonUsername, title, previewImageSrc }) {
+const CHANNEL_POST_CONNECTION_QUERY = gql`
+query ChannelPostConnection($input: ChannelPostConnectionInput) {
+  channelPostConnection(input: $input) {
+    nodes {
+      data
+    }
+  }
+}`;
+
+const PREVIEW_POST_COUNT = 3;
+
+type Props = {
+  patreonUsername: string;
+  creatorName: string;
+  channelId: string;
+};
+
+function Embed(
+  { patreonUsername, creatorName, channelId }: Props,
+) {
   useStyleSheet(styleSheet);
   useGoogleFontLoader(() => ["Roboto"]);
   const tierName = useSelector(() => tierName$.get());
@@ -59,6 +89,17 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
     useMutation(
       DATAPOINT_INCREMENT_UNIQUE_MUTATION,
     );
+
+  const [channelPostConnectionResponse] = useQuery({
+    query: CHANNEL_POST_CONNECTION_QUERY,
+    variables: {
+      input: {
+        channelId,
+      },
+    },
+  }, {
+    skip: !channelId,
+  });
 
   const isCollapsed$ = useSignal(false);
   const isCollapsed = useSelector(() => isCollapsed$.get());
@@ -84,7 +125,7 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
     });
   }, [isCollapsed, isPatron]);
 
-  const recordClick = (e) => {
+  const loadVideo = ({ e, url, title }) => {
     e?.stopPropagation();
     const tierName = tierName$.get();
     const isPatron = Boolean(tierName);
@@ -125,17 +166,30 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
     isCollapsed$.set(!isCollapsed$.get());
   };
 
+  const channelPosts =
+    channelPostConnectionResponse.data?.channelPostConnection?.nodes || [];
+
+  // HACK: hardcode for the yard / wine about it
+  const featuredPost =
+    channelPosts.find((channelPost) =>
+      channelPost.data.title?.includes("Ep.")
+    ) || channelPosts[0] || { data: {} };
+
+  const posts = channelPostConnectionResponse.data?.channelPostConnection?.nodes
+    ?.filter((channelPost) => channelPost.data.url !== featuredPost.data.url)
+    ?.slice(0, PREVIEW_POST_COUNT) || [];
+
+  // HACK: hardcode for the yard
+  const newEpisodeTime = new Date(Date.UTC(2023, 3, 6, 18, 0, 0, 0));
+
   return (
     <div className="c-premium-content-embed">
       <PatreonIframe
         url={`https://www.patreon.com/${patreonUsername}/membership?embed`}
         isHidden={true}
       />
-      <a
+      <div
         className={`patreon-content ${isCollapsed ? "is-collapsed" : ""}`}
-        href={url}
-        target="_blank"
-        onClick={recordClick}
       >
         <div className="top">
           <div className="icon">
@@ -165,44 +219,87 @@ function Embed({ url, patreonUsername, title, previewImageSrc }) {
           </div>
         </div>
         <div className="content">
-          <div className="preview">
-            <div
-              className="background"
-              style={{
-                backgroundImage: `url(${previewImageSrc})`,
-              }}
-            >
+          <a
+            className="featured-post"
+            href={featuredPost.data.url}
+            target="_blank"
+            onClick={(e) => loadVideo({ e, ...featuredPost.data })}
+          >
+            <div className="preview">
+              <div
+                className="background"
+                style={{
+                  backgroundImage: `url(${featuredPost.data.imageUrl})`,
+                }}
+              >
+              </div>
+              {!isPatron
+                ? (
+                  <div className="lock">
+                    <LockIcon />
+                  </div>
+                )
+                : null}
+              <a
+                className="button"
+                href={featuredPost.data.url}
+                target="_blank"
+                onClick={(e) => loadVideo({ e, ...featuredPost.data })}
+              >
+                <Icon
+                  icon={PLAY_ICON_PATH}
+                  size="24px"
+                  color="#fff"
+                />
+                {isWatching ? "Currently playing" : "Watch now"}
+              </a>
             </div>
-            {!isPatron
-              ? (
-                <div className="lock">
-                  <LockIcon />
+            <div className="info">
+              <div className="title">
+                {featuredPost.data.title}
+              </div>
+              {/* <div className="description">129 likes · 3 days ago</div> */}
+              {patreonUsername === "theyard" && (
+                <div className="schedule">
+                  New episode every {DAYS_OF_WEEK[newEpisodeTime.getDay()]} at
+                  {" "}
+                  {newEpisodeTime.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                    timeZoneName: "short",
+                  })}
                 </div>
-              )
-              : null}
-            <a
-              className="button"
-              href={url}
-              target="_blank"
-              onClick={recordClick}
-            >
-              <Icon
-                icon={PLAY_ICON_PATH}
-                size="24px"
-                color="#fff"
-              />
-              {isWatching ? "Currently playing" : "Watch now"}
-            </a>
-          </div>
-          <div className="info">
-            <div className="title">
-              {title}
+              )}
             </div>
-            {/* <div className="description">129 likes · 3 days ago</div> */}
+          </a>
+          <div className="divider" />
+          <div className="posts">
+            <div className="title">More premium content from {creatorName}</div>
+            {posts.map(
+              (channelPost) => {
+                return (
+                  <a
+                    href={channelPost.data.url}
+                    onClick={(e) => loadVideo({ e, ...channelPost.data })}
+                    target="_blank"
+                    className="post"
+                  >
+                    <div
+                      className="thumbnail"
+                      style={{
+                        backgroundImage: `url(${channelPost.data.imageUrl})`,
+                      }}
+                    />
+                    <div className="info">{channelPost.data.title}</div>
+                  </a>
+                );
+              },
+            )}
           </div>
         </div>
-      </a>
-      {isPatron && <DiscordPromo />}
+      </div>
+      {isPatron && patreonUsername === "theyard" && <DiscordPromo />}
     </div>
   );
 }

@@ -52,6 +52,7 @@ export default function WatchPartyListItem(
       title={activity.data.title}
       description={activity.data.description}
       onClick={onClick}
+      activity={activity}
     />
   );
 }

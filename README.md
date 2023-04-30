@@ -42,12 +42,13 @@
 [@truffle/better-chat@`0.0.13`](./stream-projects/better-chat) - Youtube chat mutation observer  
 [@truffle/chat@`1.0.12`](./stream-projects/chat) - Chat client for 3rd party chats  
 [@truffle/chat-theme@`0.0.45`](./stream-projects/chat-theme) - Theme for chat  
-[@truffle/mogul-menu@`3.0.157`](./stream-projects/mogul-menu) - Menu for channel points, predictions, and activities  
+[@truffle/mogul-menu@`3.0.200`](./stream-projects/mogul-menu) - Menu for channel points, predictions, and activities  
 [@truffle/stream-feedback@`0.5.30`](./stream-projects/stream-feedback) - Stream Feedback  
-[@truffle/twitch-on-youtube@`0.6.14`](./stream-projects/twitch-on-youtube) - Twitch on YouTube  
+[@truffle/twitch-on-youtube@`0.6.16`](./stream-projects/twitch-on-youtube) - Twitch on YouTube  
 [@truffle/live-embed@`0.5.50`](./stream-projects/live-embed) - Shows a twitch live stream on a creator's youtube channel.  
-[@truffle/patreon@`0.5.68`](./stream-projects/patreon) - Patreon integration for Truffle  
-[@truffle/creator-insights@`0.5.34`](./stream-projects/creator-insights) - Truffle Creator Insights
+[@truffle/patreon@`0.5.78`](./stream-projects/patreon) - Patreon integration for Truffle  
+[@truffle/creator-insights@`0.5.35`](./stream-projects/creator-insights) - Truffle Creator Insights  
+[@truffle/links@`0.5.30`](./stream-projects/links) - Links
 
 <!-- END PACKAGES -->
 

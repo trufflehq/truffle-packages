@@ -1,8 +1,8 @@
 export default {
-  name: "@truffle/creator-insights",
-  version: "0.5.35",
+  name: "@truffle/links",
+  version: "0.5.30",
   apiUrl: "https://mycelium.truffle.vip/graphql",
-  description: "Truffle Creator Insights",
+  description: "Links",
   requestedPermissions: [],
   installActionRel: {},
 };
