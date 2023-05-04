@@ -30,7 +30,8 @@ const PLAY_ICON_PATH = "M8 5V19L19 12L8 5Z";
 
 const VISIBLE_STYLE = {
   width: "100%",
-  height: "484px",
+  // height: "484px",
+  height: "664px", // TODO: taller for merch ad, can swap back
   display: "block",
   "margin-bottom": "12px",
   background: "transparent",
@@ -38,7 +39,8 @@ const VISIBLE_STYLE = {
 
 const VISIBLE_PATRON_STYLE = {
   ...VISIBLE_STYLE,
-  height: "516px",
+  // height: "516px",
+  height: "664px", // TODO: taller for merch ad, can swap back
 };
 
 const COLLAPSED_STYLE = {
@@ -160,6 +162,17 @@ function Embed(
     }
   };
 
+  const merchClick = () => {
+    // TODO: set with jumper.call storage.set so it works w/ 3rd party cookies disabled
+    setCookie("patreon-click", "true", { ttlMs: ONE_HOUR_MS });
+
+    executeDatapointIncrementUniqueMutation({
+      input: {
+        metricSlug: "unique-patreon-premium-content-embed-ad-clicks",
+      },
+    });
+  };
+
   const toggle = (e) => {
     e?.stopPropagation();
     e?.preventDefault();
@@ -273,7 +286,22 @@ function Embed(
               )}
             </div>
           </a>
-          <div className="divider" />
+          {/* TODO: remove and only show divider once merch sale is over */}
+          {patreonUsername === "theyard"
+            ? (
+              <a
+                className="merch"
+                href="https://theyard.sale/"
+                target="_blank"
+                onClick={merchClick}
+              >
+                <div className="background" />
+                <div className="title">
+                  Patreon (shillionaire+) exclusive merch drop
+                </div>
+              </a>
+            )
+            : <div className="divider" />}
           <div className="posts">
             <div className="title">More premium content from {creatorName}</div>
             {posts.map(

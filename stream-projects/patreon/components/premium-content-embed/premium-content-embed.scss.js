@@ -162,6 +162,47 @@ export default scss`
         }
       }
 
+      > .merch {
+        width: 100%;
+        aspect-ratio: 0.4324; // 160/370
+        max-height: 200px;
+        display: flex;
+        align-items: flex-end;
+        position: relative;
+        overflow: hidden;
+        margin: 16px 0;
+
+        &:hover {
+          > .background {
+            transform: scale(1.05);
+          }
+        }
+
+        > .background {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          z-index: 0;
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-image: url(https://cdn.bio/assets/images/creators/ludwig/yardco_banner.png);
+          transition: transform 0.2s ease-in-out;
+        }
+
+        > .title {
+          width: 100%;
+          padding: 8px 12px;
+          box-sizing: border-box;
+          background: rgba(0, 0, 0, 0.3);
+          font-weight: 600;
+          font-size: 16px;
+          text-decoration: none;
+          color: #fff;
+          position: relative;
+          z-index: 1;
+        }
+      }
+
       > .divider {
         width: 100%;
         height: 1px;

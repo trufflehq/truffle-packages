@@ -6,7 +6,7 @@ import PremiumContentEmbed from "../components/premium-content-embed/premium-con
 function EmbedPage() {
   return (
     <PremiumContentEmbed
-      patreonUsername="wineaboutit"
+      patreonUsername="theyard"
       creatorName="Wine About It"
       channelId="c5e1ab20-d7ca-11ed-ae82-f9fec1944503"
     />
