@@ -297,7 +297,7 @@ function Embed(
               >
                 <div className="background" />
                 <div className="title">
-                  Patreon (shillionaire+) exclusive merch drop
+                  Get the new Yard merch!
                 </div>
               </a>
             )
