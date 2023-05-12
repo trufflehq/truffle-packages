@@ -6,14 +6,44 @@ mutation DatapointIncrementMetric ($input: DatapointIncrementMetricInput!) {
   datapointIncrementMetric(input: $input) { isUpdated }
 }`;
 
+const TEN_SECONDS_MS = 10 * 1000;
+
 type ButtonInfo = {
   metricSlug: string;
   id: string;
 };
 
-const extensionInfo = jumper.call(
-  "context.getInfo",
-);
+// this function saves the datapoint "filters" we want to set.
+// filters are similar to dimensions.
+// the filters are the youtube channel id and video id, so we can get
+// graphs for a specific video or channel
+
+// to get the filters, we need to get the extension info from the extension
+// and since we don't cleanup and reload this embed if the extension pageIdentifiers
+// haven't changed, we need to query for the extension info every 10 seconds
+let datapointFilterValuesPromise, previousDatapointFilterValuesStr;
+async function setFilterValues() {
+  datapointFilterValuesPromise = jumper.call(
+    "context.getInfo",
+  ).then((extensionInfo) =>
+    getDatapointFiltersFromExtensionInfo(extensionInfo)
+  );
+
+  const newDatapointFilterValuesStr = JSON.stringify(
+    await datapointFilterValuesPromise,
+  );
+  // true if the video or channel has changed (and embed is still around)
+  const hasFiltersChanged =
+    previousDatapointFilterValuesStr !== newDatapointFilterValuesStr;
+
+  if (hasFiltersChanged) {
+    recordMetric("youtube-video-views");
+  }
+
+  previousDatapointFilterValuesStr = newDatapointFilterValuesStr;
+}
+setFilterValues();
+setInterval(setFilterValues, TEN_SECONDS_MS);
 
 async function recordMetric(
   metricSlug: string,
@@ -22,20 +52,18 @@ async function recordMetric(
     input: {
       metricSlug,
       count: 1,
-      filterValues: getFiltersFromExtensionInfo(await extensionInfo),
+      filterValues: await datapointFilterValuesPromise,
     },
   });
 }
 
 export function listen() {
-  // NOTE: there's a chance this doesn't get called a 2nd time if a user goes from
-  // one video from a creator to a next video from same creator (don't think we reload embed)
-  recordMetric("youtube-video-views");
-
   // TODO: may need to change #top-row and #comment-box #submit-button to body
   // if they don't exist when iframe is loaded in.
   // drawback is it's less performant since we run the handleMatches fn any time anything
   // change in any part of dom
+
+  // listen for the like/subscribe/etc dom button elements
   jumper.call("layout.listenForElements", {
     listenElementLayoutConfigSteps: [
       {
@@ -47,6 +75,7 @@ export function listen() {
     observerConfig: { childList: true },
   }, handleMatches);
 
+  // listen for the comment dom button element
   jumper.call("layout.listenForElements", {
     listenElementLayoutConfigSteps: [
       {
@@ -58,6 +87,8 @@ export function listen() {
     observerConfig: { childList: true },
   }, handleMatches);
 
+  // when mutation observer finds buttons, we see if it's a like button, subscribe button, etc...
+  // and if it is, log the metric for creators
   function handleMatches(matches) {
     const buttonInfos = matches
       .map((match) => getButtonInfoFromMatch(match))
@@ -80,7 +111,7 @@ export function listen() {
   }
 }
 
-function getFiltersFromExtensionInfo(
+function getDatapointFiltersFromExtensionInfo(
   extensionInfo,
 ): { youtubeChannelId: string; youtubeVideoId: string } | null {
   const pageInfo = extensionInfo?.pageInfo?.find((pageInfo) =>
