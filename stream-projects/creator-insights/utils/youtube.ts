@@ -37,7 +37,7 @@ async function setFilterValues() {
     previousDatapointFilterValuesStr !== newDatapointFilterValuesStr;
 
   if (hasFiltersChanged) {
-    recordMetric("youtube-video-views");
+    recordMetric("youtube-from-client-video-views");
   }
 
   previousDatapointFilterValuesStr = newDatapointFilterValuesStr;
