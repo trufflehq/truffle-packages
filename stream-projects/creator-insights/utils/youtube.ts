@@ -42,8 +42,6 @@ async function setFilterValues() {
 
   previousDatapointFilterValuesStr = newDatapointFilterValuesStr;
 }
-setFilterValues();
-setInterval(setFilterValues, TEN_SECONDS_MS);
 
 async function recordMetric(
   metricSlug: string,
@@ -62,6 +60,8 @@ export function listen() {
   // if they don't exist when iframe is loaded in.
   // drawback is it's less performant since we run the handleMatches fn any time anything
   // change in any part of dom
+  setFilterValues();
+  setInterval(setFilterValues, TEN_SECONDS_MS);
 
   // listen for the like/subscribe/etc dom button elements
   jumper.call("layout.listenForElements", {
