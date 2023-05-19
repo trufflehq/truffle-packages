@@ -1,6 +1,6 @@
 export default {
   name: "@tim/screen-picker",
-  version: "0.5.32",
+  version: "0.5.33",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   requestedPermissions: [],
   installActionRel: {},
@@ -20,11 +20,12 @@ export default {
       slug: "screen-picker-viewer-twitch-embed",
       "contentPageType": "twitch",
       "defaultStyles": {
-        "height": "300px",
-        "width": "100%",
+        "height": "0",
+        "width": "0",
+        "display": "none",
       },
       "insertionMethod": "prepend",
-      "parentQuerySelector": ".channel-info-content",
+      "parentQuerySelector": ".video-player__overlay",
       "url": "https://screen-picker-embed.web.app/viewer",
     },
   ],
