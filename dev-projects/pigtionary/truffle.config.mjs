@@ -1,5 +1,7 @@
 export default {
   name: "@casperr/pigtionary",
+  // NOTE: for now, don't change version. updating embeds w/o changing version will still work.
+  // changing version will cause reinstalls on creator sites to duplicate the embeds
   version: "0.5.30",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   requestedPermissions: [],
