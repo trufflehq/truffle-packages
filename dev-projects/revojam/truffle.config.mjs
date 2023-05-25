@@ -1,6 +1,6 @@
 export default {
   name: "@alexswear/revojam",
-  version: "0.5.30",
+  version: "0.5.31",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   description:
     "the ultimate music companion for livestreamers. collaborate with viewers on live playlists.",
@@ -9,7 +9,7 @@ export default {
   embeds: [
     {
       slug: "revojam-youtube-embed",
-      contentPageType: "youtube",
+      contentPageType: "youtubeLive",
       defaultStyles: {
         "background-color": "#666",
         "border": "2px solid black",
