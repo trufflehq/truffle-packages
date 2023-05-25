@@ -1,6 +1,6 @@
 export default {
   name: "@alexswear/revojam",
-  version: "0.5.31",
+  version: "0.5.30",
   apiUrl: "https://mycelium.truffle.vip/graphql",
   description:
     "the ultimate music companion for livestreamers. collaborate with viewers on live playlists.",
