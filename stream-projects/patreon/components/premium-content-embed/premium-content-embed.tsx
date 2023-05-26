@@ -286,8 +286,8 @@ function Embed(
               )}
             </div>
           </a>
-          {/* TODO: remove and only show divider once merch sale is over */}
-          {patreonUsername === "theyard"
+          {/* use for merch banner if you need */}
+          {patreonUsername === "theyard" && false
             ? (
               <a
                 className="merch"
