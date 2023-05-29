@@ -29,5 +29,27 @@ export default {
       "parentQuerySelector": ".channel-info-content",
       "url": "https://pigtionary-embed.netlify.app/viewer.html",
     },
+    {
+      slug: "pigtionary-streamer-youtube-embed",
+      "contentPageType": "youtubeLive",
+      "defaultStyles": {
+        "height": "900px",
+        "width": "100%",
+      },
+      "insertionMethod": "prepend",
+      "parentQuerySelector": "#above-the-fold",
+      "url": "https://pigtionary-embed.netlify.app/streamer.html",
+    },
+    {
+      slug: "pigtionary-viewer-youtube-embed",
+      "contentPageType": "youtubeLive",
+      "defaultStyles": {
+        "height": "300px",
+        "width": "100%",
+      },
+      "insertionMethod": "prepend",
+      "parentQuerySelector": "#above-the-fold",
+      "url": "https://pigtionary-embed.netlify.app/viewer.html",
+    },
   ],
 };
