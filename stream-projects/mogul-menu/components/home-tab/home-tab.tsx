@@ -142,7 +142,8 @@ export default function HomeTab() {
             hasBattlePass={hasBattlePass}
           />
         </IsLive>
-        {typeof window !== "undefined" &&
+        {
+          /* {typeof window !== "undefined" &&
             window.location.href.includes("new.ludwig.social")
           ? (
             <a
@@ -152,7 +153,8 @@ export default function HomeTab() {
             >
             </a>
           )
-          : ""}
+          : ""} */
+        }
         {
           /*
           (if re-enabling search for "seasonpassdisabled")
