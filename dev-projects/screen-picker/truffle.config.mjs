@@ -4,6 +4,7 @@ export default {
   // changing version will cause reinstalls on creator sites to duplicate the embeds
   version: "0.5.33",
   apiUrl: "https://mycelium.truffle.vip/graphql",
+  description: "Screen Picker",
   requestedPermissions: [],
   installActionRel: {},
   embeds: [

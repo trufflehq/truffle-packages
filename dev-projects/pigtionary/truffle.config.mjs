@@ -4,6 +4,7 @@ export default {
   // changing version will cause reinstalls on creator sites to duplicate the embeds
   version: "0.5.30",
   apiUrl: "https://mycelium.truffle.vip/graphql",
+  description: "Play Pigtionary with your viewers!",
   requestedPermissions: [],
   installActionRel: {},
   embeds: [

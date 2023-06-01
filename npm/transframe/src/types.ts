@@ -38,7 +38,7 @@ export interface TransframeProviderOptions<SourceApi extends TransframeSourceApi
   listenImmediately?: boolean;
 
   /**
-   * When strict mode is enabled, only iframes that are registered
+   * When strict mode is enabled, only frames that are registered
    * with the provider will be able to communicate with it.
    */
   strictMode?: boolean;
