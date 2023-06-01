@@ -4,8 +4,6 @@ import type { Context } from "../../types";
 import type { TransframeProviderInterface } from "../types";
 import type { BackgroundScriptInterfaceContext } from "./types";
 
-// TODO: this should be an abstract class because
-// registerTransFrame is an abstract method
 export class BackgroundScriptProviderInterface implements 
   TransframeProviderInterface<never, BackgroundScriptInterfaceContext> {
 
