@@ -1,0 +1,190 @@
+:host .c-browser-extension-item-dialog {
+  --error-red: #ED6565;
+}
+
+:host .c-browser-extension-item-dialog .c-dialog > .backdrop {
+  opacity: 40% !important;
+  -webkit-backdrop-filter: none !important;
+          backdrop-filter: none !important;
+  background-color: #000000 !important;
+}
+
+:host .c-browser-extension-item-dialog .c-dialog > .dialog {
+  background-color: var(--bg-mod-inverse-5) !important;
+}
+
+:host .c-browser-extension-item-dialog .c-dialog > .dialog > .top {
+  border-bottom: none !important;
+}
+
+:host .c-browser-extension-item-dialog .c-dialog > .dialog > .top > .inner > .top-right {
+  margin-top: 12px;
+}
+
+:host .c-browser-extension-item-dialog .c-dialog > .dialog > .content {
+  padding-bottom: 16px !important;
+}
+
+:host .c-browser-extension-item-dialog .c-dialog > .dialog > .actions {
+  gap: 12px;
+}
+
+:host .c-browser-extension-item-dialog .c-dialog > .dialog > .actions > .button {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+:host .c-browser-extension-item-dialog.left .body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 16px;
+}
+
+:host .c-browser-extension-item-dialog.left .body > .info > div {
+  margin-bottom: 2px;
+}
+
+:host .c-browser-extension-item-dialog.left .body > .info > .primary-text {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+:host .c-browser-extension-item-dialog.left .body > .info > .value-text {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+:host .c-browser-extension-item-dialog.left .body > .info > .secondary-text {
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--inherit-base-text);
+}
+
+:host .c-browser-extension-item-dialog.left .body > .info > .secondary-text.alert {
+  color: var(--error-red);
+}
+
+:host .c-browser-extension-item-dialog.left .close-button {
+  margin-right: 16px;
+}
+
+:host .c-browser-extension-item-dialog.left .action {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+:host .c-browser-extension-item-dialog.left .action > button {
+  border-radius: 4px;
+}
+
+:host .c-browser-extension-item-dialog.center .c-dialog > .dialog {
+  background-color: var(--bg-mod-inverse-5) !important;
+}
+
+:host .c-browser-extension-item-dialog.center .c-dialog > .dialog > .top {
+  border-bottom: none !important;
+  background: var(--highlight-gradient, var(--primary-base));
+  color: var(--priimary-base-text);
+}
+
+:host .c-browser-extension-item-dialog.center .c-dialog > .dialog > .top > .inner {
+  padding: 0 16px;
+  color: var(--bg-base) !important;
+}
+
+:host .c-browser-extension-item-dialog.center .c-dialog > .dialog > .top > .inner > .top-right {
+  margin-top: 0;
+}
+
+:host .c-browser-extension-item-dialog.center .c-dialog > .dialog > .top > .inner > .top-right > .close-button > .c-icon > svg > path {
+  fill: var(--bg-base) !important;
+}
+
+:host .c-browser-extension-item-dialog.center .body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+}
+
+:host .c-browser-extension-item-dialog.center .body > .header-text {
+  font-weight: 500;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+:host .c-browser-extension-item-dialog.center .body > .children {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 16px;
+}
+
+:host .c-browser-extension-item-dialog.center .body > .controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  text-align: left;
+}
+
+:host .c-browser-extension-item-dialog.center .body > .error {
+  margin-top: 8px;
+  color: var(--error-red);
+}
+
+:host .c-browser-extension-item-dialog.center .body > .primary-text {
+  margin-bottom: 2px;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--bg-mod-inverse-5-text);
+}
+
+:host .c-browser-extension-item-dialog.center .body > .secondary-text {
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--bg-mod-inverse-5-text-80);
+}
+
+:host .c-browser-extension-item-dialog.center .body > .secondary-text.alert {
+  color: var(--error-red);
+}
+
+:host .c-browser-extension-item-dialog.center .body > .close-button {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  margin-right: -16px;
+}
+
+:host .c-browser-extension-item-dialog.center .action {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}

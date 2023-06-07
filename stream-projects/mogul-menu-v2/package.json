@@ -1,0 +1,22 @@
+{
+  "name": "mogul-menu",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "preact": "^10.11.3"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.5.0",
+    "@types/jscodeshift": "^0",
+    "jscodeshift": "^0.14.0",
+    "sass": "^1.58.1",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.0"
+  }
+}
