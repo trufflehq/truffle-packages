@@ -8,7 +8,8 @@ import {
   useObserve,
   useUrqlQuerySignal,
 } from "../../deps.ts";
-import { getOrgId } from "https://tfl.dev/@truffle/utils@~0.0.3/site/site.ts";
+// import { getOrgId } from "https://tfl.dev/@truffle/utils@~0.0.3/site/site.ts";
+import { getOrgId } from "../../shared/util/truffle/org-id.ts";
 import { MeUserWithConnectionConnection } from "../../types/mod.ts";
 import { usePageStack } from "../page-stack/mod.ts";
 import {

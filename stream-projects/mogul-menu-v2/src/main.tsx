@@ -1,5 +1,7 @@
-import { React, render } from "./deps.ts";
+import { React, UrqlProvider } from "./deps.ts";
+import { toDist } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP
 import Menu from "./components/menu/menu.tsx";
+import { truffleApp } from "./shared/util/truffle/truffle-app.ts";
 
 const iconImageObj = {
   id: "f38e1f40-fe27-11ec-8613-c8d0b98b6415",
@@ -29,15 +31,14 @@ const iconImageObj = {
 
 function HomePage() {
   return (
-    <>
+    <UrqlProvider value={truffleApp.gqlClient}>
       <Menu iconImageObj={iconImageObj} creatorName={"Ludwig"} />
-    </>
+    </UrqlProvider>
   );
 }
 
-render(
-  <React.StrictMode>
-    <HomePage />
-  </React.StrictMode>,
-  document.getElementById("app"),
-);
+const wcObject = toDist(HomePage, import.meta.url);
+
+// add the component to the body
+const wcElement = document.createElement(wcObject.tagName);
+document.body.appendChild(wcElement);

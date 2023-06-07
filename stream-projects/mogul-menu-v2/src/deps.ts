@@ -1,18 +1,40 @@
 // utils
 export { getSrcByImageObj } from "https://tfl.dev/@truffle/utils@~0.0.3/legacy/image.ts";
+
+export {
+  usePollingQuery,
+  usePollingQuerySignal,
+  useQuerySignal,
+  useSubscriptionSignal,
+  useUrqlQuerySignal,
+} from "./shared/util/graphql/hooks.ts";
+
+export { getClient, query } from "./shared/util/graphql/methods.ts";
+
 export {
   getAccessToken,
   getAccessToken$,
-  getClient,
-  gql,
   onAccessTokenChange,
-  query,
   setAccessToken,
+} from "./shared/util/truffle/access-token.ts";
+
+export {
+  gql,
+  Provider as UrqlProvider,
   useMutation,
-  usePollingQuery,
   useQuery,
   useSubscription,
-} from "https://tfl.dev/@truffle/api@~0.2.0/mod.ts";
+} from "https://npm.tfl.dev/urql@4.0.3";
+
+export type {
+  Client,
+  CombinedError,
+  OperationContext,
+  RequestPolicy,
+  TypedDocumentNode,
+} from "https://npm.tfl.dev/urql@4.0.3";
+
+export * from "https://npm.tfl.dev/@trufflehq/sdk@0.2.3";
 
 export { ErrorBoundary } from "https://npm.tfl.dev/react-error-boundary@^3.1.4";
 
@@ -124,18 +146,10 @@ export { legend } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react-compo
 export {
   signal,
   updateSignalOnChange,
-  usePollingQuerySignal,
-  useQuerySignal,
   useSignal,
-  useSubscriptionSignal,
   useUpdateSignalOnChange,
-  useUrqlQuerySignal,
 } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
+
 export type { TruffleQuerySignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
-export type {
-  Client,
-  CombinedError,
-  OperationContext,
-} from "https://npm.tfl.dev/urql@2";
 export { previewSrc as getPreviewSrc } from "https://tfl.dev/@truffle/raid@~0.0.4/shared/util/stream-plat.ts";
 export { default as YoutubeChat } from "https://tfl.dev/@truffle/chat@^1.0.0/components/youtube-chat/youtube-chat.tsx";
