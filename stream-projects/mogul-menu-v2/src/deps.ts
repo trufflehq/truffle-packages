@@ -33,6 +33,8 @@ export {
   useRef,
   useState,
 } from "https://npm.tfl.dev/react";
+// @deno-types="https://npm.tfl.dev/v86/@types/react-dom@~18.0/index.d.ts"
+export { render } from "https://npm.tfl.dev/react-dom";
 export type { MutableRefObject } from "https://npm.tfl.dev/react";
 export { default as semver } from "https://npm.tfl.dev/semver@7.3.7";
 export { default as scss } from "https://tfl.dev/@truffle/utils@~0.0.3/css/css.ts";
