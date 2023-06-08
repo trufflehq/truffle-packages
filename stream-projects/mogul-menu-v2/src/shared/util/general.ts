@@ -79,3 +79,44 @@ export const secondsSince = (date: Date) => {
 };
 
 export const isGoogleChrome = window.navigator.vendor === "Google Inc.";
+
+export function setCookie(
+  key: string,
+  value: string,
+  options: {
+    expires?: Date;
+    path?: string;
+    secure?: boolean;
+    sameSite?: "lax" | "strict" | "none";
+  } = {},
+) {
+  let cookie = `${key}=${value};`;
+
+  // set the expiration date
+  if (options.expires) {
+    cookie += ` expires=${options.expires.toUTCString()};`;
+  }
+
+  // set the path
+  if (options.path) {
+    cookie += ` path=${options.path};`;
+  }
+
+  // set the sameSite flag
+  if (options.sameSite) {
+    cookie += ` sameSite=${options.sameSite};`;
+  }
+
+  // set the secure flag if we're in production or staging (needs https)
+  if (options.secure) {
+    cookie += "; secure";
+  }
+
+  document.cookie = cookie;
+}
+
+// taken from https://www.regex-tutorial.com/getCookieWithRegex.html
+export function getCookie(name: string) {
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+  return match ? match[2] : "";
+}

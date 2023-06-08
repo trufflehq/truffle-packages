@@ -1,5 +1,6 @@
 import { globalContext, useMemo, useQuery } from "../../../deps.ts";
 import { OwnedCollectibleConnection } from "../../../types/mod.ts";
+import { getOrgId } from "../truffle/org-id.ts";
 import { OWNED_COLLECTIBLE_GET_ALL_BY_ME_QUERY } from "./gql.ts";
 
 interface OwnedCollectibleData {
@@ -7,7 +8,6 @@ interface OwnedCollectibleData {
 }
 
 export function useOwnedCollectibleConnection() {
-  const context = globalContext.getStore();
   const [
     {
       data: ownedCollectibleConnectionData,
@@ -16,7 +16,7 @@ export function useOwnedCollectibleConnection() {
   ] = useQuery({
     query: OWNED_COLLECTIBLE_GET_ALL_BY_ME_QUERY,
     variables: {
-      orgId: context?.orgId,
+      orgId: getOrgId(),
     },
     context: useMemo(
       () => ({

@@ -82,6 +82,7 @@ export default function ChannelPointsShop() {
               {storeCollectibleItems?.map((storeCollectibleItem) => {
                 return (
                   <CollectibleItem
+                    key={storeCollectibleItem.id}
                     channelPointsImageObj={channelPointsImageObj}
                     channelPoints={channelPoints}
                     collectibleItem={storeCollectibleItem}

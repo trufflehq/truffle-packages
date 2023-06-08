@@ -5,8 +5,10 @@ import {
   dedupExchange,
   fetchExchange,
   makeOperation,
+  subscriptionExchange,
 } from "@urql/core";
 import { authExchange } from "@urql/exchange-auth";
+import { createClient as createWSClient } from "graphql-ws";
 import { DEFAULT_MYCELIUM_API_URL } from "../constants";
 import { getAccessToken } from "../user/access-token";
 
@@ -23,8 +25,27 @@ interface AuthState {
 }
 
 export function createMyceliumClient(options: MyceliumClientOptions = {}) {
+  const url = options.url || DEFAULT_MYCELIUM_API_URL;
+
+  const wsClient = createWSClient({
+    // FIXME: .replace is hacky
+    url: url.replace("http", "ws"),
+    // TODO: pass in websocket lib on node for ssr
+    // need to figure out smart way to import only for node - ideally normal import, not dynamic
+
+    // basically want to retry until we're connected
+    retryAttempts: 99999,
+    retryWait: async (retries) => {
+      // 0.5s, 1s, 1.5, 2s, ..., 5s (repeated)
+      const delayMs = Math.min((retries + 1) * 400, 5000);
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    },
+    // always retry. otherwise it doesn't seem to retry if server is down
+    shouldRetry: (/* errOrCloseEvent */) => true,
+  });
+
   return new Client({
-    url: options.url || DEFAULT_MYCELIUM_API_URL,
+    url,
     exchanges: [
       dedupExchange,
       cacheExchange,
@@ -99,6 +120,18 @@ export function createMyceliumClient(options: MyceliumClientOptions = {}) {
         },
       }),
       fetchExchange,
+      subscriptionExchange({
+        forwardSubscription(operation) {
+          return {
+            subscribe: (sink) => {
+              const dispose = wsClient!.subscribe(operation, sink);
+              return {
+                unsubscribe: dispose,
+              };
+            },
+          };
+        },
+      }),
     ],
     ...options.urqlOptions,
   });

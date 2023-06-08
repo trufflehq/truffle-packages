@@ -3,9 +3,9 @@ import {
   globalContext,
   jumper,
 } from "../../../deps.ts";
+import { getOrgId } from "../truffle/org-id.ts";
 
 export function invalidateExtensionUser() {
-  const context = globalContext.getStore();
-  jumper.call("user.invalidateSporeUser", { orgId: context?.orgId });
+  jumper.call("user.invalidateSporeUser", { orgId: getOrgId() });
   jumper.call("comms.postMessage", GLOBAL_JUMPER_MESSAGES.INVALIDATE_USER);
 }

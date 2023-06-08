@@ -32,6 +32,7 @@ export type {
   OperationContext,
   RequestPolicy,
   TypedDocumentNode,
+  UseQueryState,
 } from "https://npm.tfl.dev/urql@4.0.3";
 
 export * from "https://npm.tfl.dev/@trufflehq/sdk@0.2.3";
@@ -70,10 +71,7 @@ export {
 } from "https://tfl.dev/@truffle/utils@~0.0.3/legacy/format/format.ts";
 export type { DeepPick } from "https://npm.tfl.dev/ts-deep-pick";
 export { default as jumper } from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
-export {
-  getCookie,
-  setCookie,
-} from "https://tfl.dev/@truffle/utils@~0.0.3/cookie/cookie.ts";
+export { getCookie, setCookie } from "./shared/util/general.ts";
 export {
   default as cssVars,
   hexOpacity,

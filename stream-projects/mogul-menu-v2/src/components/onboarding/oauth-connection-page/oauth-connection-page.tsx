@@ -19,6 +19,7 @@ import { useOnLoggedIn } from "../mod.ts";
 import LocalOAuthFrame from "./local-oauth-frame.tsx";
 
 import stylesheet from "./oauth-connection-page.scss.js";
+import { getOrgId } from "../../../shared/util/truffle/org-id.ts";
 
 export default function OAuthConnectionPage(
   { sourceType = "youtube" }: { sourceType: ConnectionSourceType },
@@ -90,7 +91,7 @@ function OAuthButton(
     onLoggedIn();
   });
   const context = globalContext.getStore();
-  const orgId = context?.orgId;
+  const orgId = getOrgId();
   const accessToken = useSelector(() => accessToken$.get());
 
   return (

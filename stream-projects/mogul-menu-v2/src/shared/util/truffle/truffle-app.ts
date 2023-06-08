@@ -1,4 +1,4 @@
-import { TruffleApp } from "https://npm.tfl.dev/@trufflehq/sdk@0.2.3";
+import { TruffleApp } from "https://npm.tfl.dev/@trufflehq/sdk@0.2.6";
 import { getAccessToken } from "./access-token.ts";
 import { getOrgId } from "./org-id.ts";
 
