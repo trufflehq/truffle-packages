@@ -20,6 +20,7 @@ import LocalOAuthFrame from "./local-oauth-frame.tsx";
 
 import stylesheet from "./oauth-connection-page.scss.js";
 import { getOrgId } from "../../../shared/util/truffle/org-id.ts";
+import { reInitTruffleApp } from "../../../shared/util/truffle/truffle-app.ts";
 
 export default function OAuthConnectionPage(
   { sourceType = "youtube" }: { sourceType: ConnectionSourceType },
@@ -88,6 +89,7 @@ function OAuthButton(
   useHandleTruffleOAuth(async (oauthResponse: OAuthResponse) => {
     unsubscribe();
     await setAccessToken(oauthResponse.truffleAccessToken);
+    reInitTruffleApp();
     onLoggedIn();
   });
   const context = globalContext.getStore();
@@ -95,18 +97,22 @@ function OAuthButton(
   const accessToken = useSelector(() => accessToken$.get());
 
   return (
-    <OAuthIframe
+    // <OAuthIframe
+    //   sourceType={sourceType}
+    //   accessToken={accessToken}
+    //   orgId={orgId}
+    //   styles={{
+    //     width: "308px",
+    //     height: "42px",
+    //     border: "none",
+    //   }}
+    // />
+    // For local development
+    <LocalOAuthFrame
       sourceType={sourceType}
       accessToken={accessToken}
       orgId={orgId}
-      styles={{
-        width: "308px",
-        height: "42px",
-        border: "none",
-      }}
     />
-    // For local development
-    // <LocalOAuthFrame sourceType={sourceType} accessToken={accessToken} orgId={orgId} />
   );
 }
 

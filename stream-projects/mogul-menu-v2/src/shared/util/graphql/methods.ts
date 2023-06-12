@@ -1,8 +1,8 @@
 import { OperationContext } from "../../../deps.ts";
-import { truffleApp } from "../truffle/truffle-app.ts";
+import { truffleApp$ } from "../truffle/truffle-app.ts";
 
 export function getClient() {
-  return truffleApp.gqlClient;
+  return truffleApp$.gqlClient;
 }
 
 export function query(

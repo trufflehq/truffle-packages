@@ -1,9 +1,17 @@
-import { TruffleApp } from "https://npm.tfl.dev/@trufflehq/sdk@0.2.6";
-import { getAccessToken } from "./access-token.ts";
-import { getOrgId } from "./org-id.ts";
+import { initTruffleApp } from "https://npm.tfl.dev/@trufflehq/sdk@0.2.7";
+import {
+  observable,
+  opaqueObject,
+} from "https://npm.tfl.dev/@legendapp/state@1.2.8";
 
-export const truffleApp = new TruffleApp({
-  orgId: getOrgId(),
-  url: "https://mycelium.truffle.vip/graphql",
-  userAccessToken: getAccessToken(),
-});
+function initApp() {
+  return initTruffleApp({
+    // url: "https://mycelium.truffle.vip/graphql",
+  });
+}
+
+export const truffleApp$ = observable(opaqueObject(initApp()));
+
+export function reInitTruffleApp() {
+  truffleApp$.set(opaqueObject(initApp()));
+}
