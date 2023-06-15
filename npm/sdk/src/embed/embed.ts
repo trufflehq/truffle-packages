@@ -1,5 +1,5 @@
-import { TransframeConsumer } from '@trufflehq/transframe';
-import { EmbedSourceApi, getEmbedConsumer } from '../transframe/embed-consumer';
+import { TransframeConsumer } from "@trufflehq/transframe";
+import { EmbedSourceApi, getEmbedConsumer } from "../transframe/embed-consumer";
 
 type Styles = Record<string, unknown>;
 
@@ -12,7 +12,7 @@ export class Embed {
   }
 
   private _setIframeStyles(styles: Styles) {
-    this._embedConsumer.call('embedSetStyles', styles);
+    this._embedConsumer.call("embedSetStyles", styles);
     this._currentStyles = styles;
   }
 
@@ -58,7 +58,7 @@ export class Embed {
    */
   public setVisibility(isVisible: boolean) {
     this.setStyles({
-      display: isVisible ? 'block' : 'none',
+      display: isVisible ? "block" : "none",
     });
   }
 
@@ -67,12 +67,12 @@ export class Embed {
    */
   public setContainer(
     querySelector: string,
-    insertionMethod?: 'append' | 'prepend'
+    insertionMethod?: "append" | "prepend",
   ) {
     this._embedConsumer.call(
-      'embedSetContainer',
+      "embedSetContainer",
       querySelector,
-      insertionMethod
+      insertionMethod,
     );
   }
 
@@ -88,5 +88,40 @@ export class Embed {
    */
   public show() {
     this.setVisibility(true);
+  }
+
+  /**
+   * Set the visibility of the window.
+   */
+  public setWindowVisibility(isVisible: boolean) {
+    this._embedConsumer.call("embedWindowSetVisibility", isVisible);
+  }
+
+  /**
+   * Get the visibility state of the window.
+   */
+  public async getWindowVisibility() {
+    return await this._embedConsumer.call("embedWindowGetVisiblility");
+  }
+
+  /**
+   * Shows a toast message.
+   */
+  public showToast(options: {
+    message: string;
+    header?: string;
+    iconUrl?: string;
+    onClick?: () => void;
+  }) {
+    return this._embedConsumer.call(
+      "embedShowToast",
+      {
+        message: options.message,
+        header: options.header,
+        iconUrl: options.iconUrl,
+      },
+      // transframe callbacks only work if they're passed as top level arguments to a function
+      options.onClick,
+    );
   }
 }
