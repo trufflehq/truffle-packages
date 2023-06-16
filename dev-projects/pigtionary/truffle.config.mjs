@@ -22,9 +22,6 @@ export default {
       },
       "insertionMethod": "prepend",
       "parentQuerySelector": ".channel-info-content",
-      "embedWindow": {
-        "initialDimensions": { "x": 900, "y": 400 },
-      },
       "url": streamerUrl,
     },
     {
@@ -37,8 +34,9 @@ export default {
       },
       "insertionMethod": "prepend",
       "parentQuerySelector": ".channel-info-content",
-      "embedWindow": {
-        "initialDimensions": { "x": 900, "y": 400 },
+      "windowProps": {
+        "title": "Pigtionary",
+        "initialDimensions": { "x": 880, "y": 360 },
       },
       "url": viewerUrl,
     },
@@ -52,9 +50,6 @@ export default {
       },
       "insertionMethod": "prepend",
       "parentQuerySelector": "#above-the-fold",
-      "embedWindow": {
-        "initialDimensions": { "x": 900, "y": 400 },
-      },
       "url": streamerUrl,
     },
     {
@@ -67,8 +62,9 @@ export default {
       },
       "insertionMethod": "prepend",
       "parentQuerySelector": "#above-the-fold",
-      "embedWindow": {
-        "initialDimensions": { "x": 900, "y": 400 },
+      "windowProps": {
+        "title": "Pigtionary",
+        "initialDimensions": { "x": 880, "y": 360 },
       },
       "url": viewerUrl,
     },
