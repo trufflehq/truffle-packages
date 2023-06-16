@@ -45,8 +45,8 @@ function App() {
 
   const showToast = () => {
     embed.showToast({
-      message: "Hello World!",
-      header: "A message from Truffle",
+      title: "Hello World!",
+      body: "A message from Truffle",
     });
   };
 
