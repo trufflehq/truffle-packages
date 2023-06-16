@@ -101,23 +101,37 @@ export class Embed {
    * Get the visibility state of the window.
    */
   public async getWindowVisibility() {
-    return await this._embedConsumer.call("embedWindowGetVisiblility");
+    return await this._embedConsumer.call("embedWindowGetVisibility");
+  }
+
+  /**
+   * Open the window.
+   */
+  public openWindow() {
+    this.setWindowVisibility(true);
+  }
+
+  /**
+   * Close the window.
+   */
+  public closeWindow() {
+    this.setWindowVisibility(false);
   }
 
   /**
    * Shows a toast message.
    */
   public showToast(options: {
-    message: string;
-    header?: string;
+    body: string;
+    title?: string;
     iconUrl?: string;
     onClick?: () => void;
   }) {
     return this._embedConsumer.call(
       "embedShowToast",
       {
-        message: options.message,
-        header: options.header,
+        body: options.body,
+        title: options.title,
         iconUrl: options.iconUrl,
       },
       // transframe callbacks only work if they're passed as top level arguments to a function
