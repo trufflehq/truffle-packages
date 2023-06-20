@@ -19,7 +19,7 @@ export default scss`
   flex-direction: column;
 
   > .prompt {
-    padding: 20px 32px;
+    padding: 20px 22px;
 
     > .title {
       margin-bottom: 12px;
