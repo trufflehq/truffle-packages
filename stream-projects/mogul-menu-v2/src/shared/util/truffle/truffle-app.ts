@@ -3,10 +3,14 @@ import {
   observable,
   opaqueObject,
 } from "https://npm.tfl.dev/@legendapp/state@1.2.8";
+import { getOrgId } from "./org-id.ts";
+import { getAccessToken } from "./access-token.ts";
 
 function initApp() {
   return initTruffleApp({
     // url: "https://mycelium.truffle.vip/graphql",
+    orgId: getOrgId(),
+    userAccessToken: getAccessToken(),
   });
 }
 
