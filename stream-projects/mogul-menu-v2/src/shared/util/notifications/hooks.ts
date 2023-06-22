@@ -1,15 +1,9 @@
-import { useActionBanner } from "../../../components/action-banner/hooks.ts";
-import SetupNotificationsBanner from "../../../components/notifications/setup-notifications-banner.tsx";
 import {
   jumper,
-  React,
-  useComputed,
   useEffect,
   useMemo,
   useMutation,
-  useObserve,
   useQuery,
-  useRef,
 } from "../../../deps.ts";
 import { NotificationTopic } from "../../../types/notification.types.ts";
 import {
@@ -21,10 +15,7 @@ import {
   NOTIFICATION_TOPIC_QUERY,
   UPSERT_NOTIFICATION_SUBSCRIPTION_MUTATION,
 } from "../../gql/notifications.gql.ts";
-import { getIsNative, useFcmTokenManager } from "../../mod.ts";
-import { isGoogleChrome } from "../general.ts";
-import { useUserKV } from "../kv/hooks.ts";
-import { HAS_SEEN_NOTIFICATION_SETUP_BANNER } from "./constants.ts";
+import { useFcmTokenManager } from "../../mod.ts";
 
 export function useNotificationTopics() {
   const [{ data: notificationTopicData, fetching }] = useQuery({
@@ -135,45 +126,4 @@ export function useDesktopNotificationSetting() {
   };
 
   return { isDesktopNotificationsEnabled, setDesktopNotificationPref };
-}
-
-export function useFirstTimeNotificationBanner() {
-  const actionBannerIdRef = useRef("");
-  const { isNotificationBannerVisible$ } = useIsNotificationBannerVisible();
-
-  const { displayActionBanner, removeActionBanner } = useActionBanner();
-  const isNative = getIsNative();
-
-  useObserve(() => {
-    if (!isNotificationBannerVisible$.get()) {
-      removeActionBanner(actionBannerIdRef.current);
-
-      // notifications only supported on Google Chrome & native atm
-    } else if (isGoogleChrome || isNative) {
-      actionBannerIdRef.current = displayActionBanner(
-        // we're using `React.createElement` here because this code is not in a tsx file
-        React.createElement(SetupNotificationsBanner, { actionBannerIdRef }),
-      ) ?? "";
-    }
-  });
-}
-
-export function useIsNotificationBannerVisible() {
-  // if you want to force this banner to show up again for users, change this "truthyValue"
-  const truthyValue = "1";
-
-  // TODO: we prob want to use jumper storage.get instead of this so we can get folks
-  // to turn on notifications on new devices too
-  const { value$, fetching$, setUserKV } = useUserKV(
-    HAS_SEEN_NOTIFICATION_SETUP_BANNER,
-    true,
-  );
-  const isNotificationBannerVisible$ = useComputed(() =>
-    !fetching$.get() && value$.get() !== truthyValue
-  );
-
-  const setHasSeen = (hasSeen: boolean) =>
-    setUserKV(hasSeen ? truthyValue : "");
-
-  return { isNotificationBannerVisible$, setHasSeen };
 }

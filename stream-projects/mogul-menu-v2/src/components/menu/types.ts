@@ -47,17 +47,6 @@ export type PopSnackbarAction = {
   payload: Record<never, never>;
 };
 
-export type UpdateDimensionsAction = {
-  type: "@@MENU_UPDATE_DIMENSIONS";
-  payload?: {
-    top?: number;
-    right?: number;
-    bottom?: number;
-    left?: number;
-    transition?: string;
-  };
-};
-
 export type UpdateMenuPosition = {
   type: "@@MENU_UPDATE_POSITION";
   payload?: {
@@ -69,7 +58,6 @@ export type MenuDimensionActions = OpenMenuAction | CloseMenuAction;
 
 export type MenuActions =
   | MenuDimensionActions
-  | UpdateDimensionsAction
   | EnqueueSnackbarAction
   | PopSnackbarAction
   | UpdateMenuPosition;

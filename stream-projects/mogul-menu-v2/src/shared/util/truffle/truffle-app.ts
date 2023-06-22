@@ -9,8 +9,8 @@ import { getAccessToken } from "./access-token.ts";
 function initApp() {
   return initTruffleApp({
     // url: "https://mycelium.truffle.vip/graphql",
-    orgId: getOrgId(),
-    userAccessToken: getAccessToken(),
+    // orgId: getOrgId(),
+    // userAccessToken: getAccessToken(),
   });
 }
 

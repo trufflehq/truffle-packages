@@ -21,14 +21,10 @@ export default function TabBar() {
   const tabButtonManager = useTabButton();
   const additionalTabButtons = tabButtonManager.buttonMap;
   const { state: tabsState } = useTabs();
-  const { state: menuState, updateDimensions } = useMenu();
+  const { state: menuState } = useMenu();
   const { setActiveTab } = useCurrentTab();
   const { clearPageStack } = usePageStack();
-  const isMenuOpen = getIsOpen(menuState);
-
-  useLayoutEffect(() => {
-    updateDimensions();
-  }, [isMenuOpen]);
+  const isMenuOpen = true; // getIsOpen(menuState);
 
   return (
     <div

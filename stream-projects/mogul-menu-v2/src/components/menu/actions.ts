@@ -5,10 +5,8 @@ import {
   MenuPosition,
   OpenMenuAction,
   PopSnackbarAction,
-  UpdateDimensionsAction,
   UpdateMenuPosition,
 } from "./types.ts";
-import { DimensionModifiers } from "../draggable/draggable.tsx";
 
 export const setOpen = (): OpenMenuAction => ({
   type: "@@MENU_DEMENSION_OPEN",
@@ -18,13 +16,6 @@ export const setOpen = (): OpenMenuAction => ({
 export const setClosed = (): CloseMenuAction => ({
   type: "@@MENU_DIMENSION_CLOSE",
   payload: {},
-});
-
-export const updateDimensions = (
-  mods?: Partial<DimensionModifiers>,
-): UpdateDimensionsAction => ({
-  type: "@@MENU_UPDATE_DIMENSIONS",
-  payload: mods,
 });
 
 export const enqueueSnackBar = (

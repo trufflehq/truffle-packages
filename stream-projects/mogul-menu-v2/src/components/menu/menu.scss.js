@@ -142,12 +142,6 @@ html, body {
     
     width: 100%;
     height: 100%;
-    
-    @media (min-width: 768px) {
-      width: 640px;
-      height: 600px;
-    }
-    
     box-sizing: border-box;
     background: var(--mm-color-bg-primary);
     color: var(--mm-color-text-bg-primary);
@@ -159,14 +153,6 @@ html, body {
       position: relative;
       display: flex;
       flex-direction: column;
-
-      > .close {
-        position: absolute;
-        top: 48px;
-        right: 12px;
-        cursor: pointer;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-      }
 
       > .body {
         flex: 1;
@@ -193,33 +179,6 @@ html, body {
         width: 100%;
       }
     }
-  }
-}
-
-.c-browser-extension-menu.is-open {
-  &.position-top-left, &.position-top-right {
-    > .menu {
-      > .inner {
-        > .bottom {
-          border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-        }
-      }
-    }
-  }
-  &.position-bottom-right, &.position-bottom-left {
-    > .menu {
-      > .inner {
-        > .bottom {
-          border-top: 1px solid rgba(255, 255, 255, 0.25);
-        }
-      }
-    }
-  }
-}
-
-.c-browser-extension-menu.has-notification:not(.is-open) {
-  >.extension-icon {
-    @include badge(outer-bottom-right, 16px, 16px, rgba(0, 0, 0, 1));
   }
 }
 

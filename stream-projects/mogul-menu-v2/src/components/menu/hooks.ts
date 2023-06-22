@@ -7,7 +7,6 @@ import {
   popSnackBar,
   setClosed,
   setOpen,
-  updateDimensions,
   updateMenuPosition,
 } from "./actions.ts";
 import { MenuContext } from "./context.ts";
@@ -37,8 +36,6 @@ export function useMenu() {
     },
     setIsOpen: () => dispatch(setOpen()),
     setIsClosed: () => dispatch(setClosed()),
-    updateDimensions: (mods?: Partial<DimensionModifiers>) =>
-      dispatch(updateDimensions(mods)),
     enqueueSnackBar: (snackbar: React.ReactNode) =>
       dispatch(enqueueSnackBar(snackbar)),
     popSnackBar: () => dispatch(popSnackBar()),

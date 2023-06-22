@@ -17,11 +17,7 @@ import Watchtime from "../watchtime/watchtime.tsx";
 import PredictionTile from "../prediction-tile/prediction-tile.tsx";
 import KothTile from "../koth-tile/koth-tile.tsx";
 import SettingsPage from "../settings/settings-page/settings-page.tsx";
-import {
-  useActivePowerupConnection,
-  useFirstTimeNotificationBanner,
-  useOrgUser$,
-} from "../../shared/mod.ts";
+import { useActivePowerupConnection, useOrgUser$ } from "../../shared/mod.ts";
 import BrowserExtensionNotificationDialog from "../dialogs/notification-dialog/notification-dialog.tsx";
 import { useDialog } from "../base/dialog-container/dialog-service.ts";
 import { useChannelPoints } from "../channel-points/hooks.ts";
@@ -65,8 +61,6 @@ export default function HomeTab() {
   const handleOpenNotificationDialog = () => {
     pushDialog(<BrowserExtensionNotificationDialog />);
   };
-
-  useFirstTimeNotificationBanner();
 
   return (
     <div className="c-home-tab">

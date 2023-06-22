@@ -50,5 +50,10 @@ function HomePage() {
 const wcObject = toDist(observer(HomePage), import.meta.url);
 
 // add the component to the body
+// TODO: we can swap this to a normal react render() method instead of web components
+// all we need to do is fix the useStyleSheet to work w/o shadow dom
 const wcElement = document.createElement(wcObject.tagName);
+document.documentElement.style.height = "100%";
+document.body.style.margin = "0";
+document.body.style.height = "100%";
 document.body.appendChild(wcElement);

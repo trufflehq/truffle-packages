@@ -8,10 +8,6 @@ import {
 
 import { MenuPosition } from "./types.ts";
 
-export function getDimensions(state: MenuState) {
-  return state.dimensions;
-}
-
 export function getMenuState(state: MenuState) {
   return state.menuState;
 }
