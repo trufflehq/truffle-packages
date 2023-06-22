@@ -99,16 +99,18 @@ export default scss`
     gap: 16px;
 
 
-    .mobile-beta {
+    .new-tab-promo {
       display: block;
       height: 0;
       padding-bottom: 40%;
       border-radius: 6px;
       grid-column-end: span 2;
-      background: url('https://cdn.bio/assets/images/creators/ludwig/desktop_mobile_promo.png');
+      background: url('https://cdn.bio/assets/images/creators/ludwig/new_tab_promo.png');
       background-repeat: no-repeat;
       background-position: center;
       background-size: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-sizing: border-box;
     }
   }
 

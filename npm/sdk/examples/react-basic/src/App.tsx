@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import './App.css';
-import { getEmbed } from '@trufflehq/sdk';
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import "./App.css";
+import { getEmbed } from "@trufflehq/sdk";
 
 const embed = getEmbed();
 
@@ -13,10 +13,10 @@ function App() {
 
   const setSize = () => {
     if (isSmall) {
-      embed.setSize('800px', '800px');
+      embed.setSize("800px", "800px");
       setIsSmall(false);
     } else {
-      embed.setSize('600px', '600px');
+      embed.setSize("600px", "600px");
       setIsSmall(true);
     }
   };
@@ -24,19 +24,30 @@ function App() {
   const setBorder = () => {
     if (hasBorder) {
       embed.setStyles({
-        border: 'none',
+        border: "none",
       });
       setHasBorder(false);
     } else {
       embed.setStyles({
-        border: '5px solid red',
+        border: "5px solid red",
       });
       setHasBorder(true);
     }
   };
 
   const setContainer = () => {
-    embed.setContainer('#title.ytd-watch-metadata', 'prepend');
+    embed.setContainer("#title.ytd-watch-metadata", "prepend");
+  };
+
+  const hideWindow = () => {
+    embed.setWindowVisibility(false);
+  };
+
+  const showToast = () => {
+    embed.showToast({
+      title: "Hello World!",
+      body: "A message from Truffle",
+    });
   };
 
   return (
@@ -66,6 +77,8 @@ function App() {
       <button onClick={setSize}>Toggle Size</button>
       <button onClick={setBorder}>Toggle Border</button>
       <button onClick={setContainer}>Set Container</button>
+      <button onClick={hideWindow}>Hide Window</button>
+      <button onClick={showToast}>Show Toast</button>
     </div>
   );
 }

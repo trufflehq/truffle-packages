@@ -142,19 +142,17 @@ export default function HomeTab() {
             hasBattlePass={hasBattlePass}
           />
         </IsLive>
-        {
-          /* {typeof window !== "undefined" &&
+        {typeof window !== "undefined" && window.chrome &&
             window.location.href.includes("new.ludwig.social")
           ? (
             <a
-              className="mobile-beta"
-              href="https://bit.ly/3WfPtSn"
+              className="new-tab-promo"
+              href="https://bit.ly/3Pil6dq"
               target="_blank"
             >
             </a>
           )
-          : ""} */
-        }
+          : ""}
         {
           /*
           (if re-enabling search for "seasonpassdisabled")
