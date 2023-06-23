@@ -35,7 +35,7 @@ export type {
   UseQueryState,
 } from "https://npm.tfl.dev/urql@4.0.3";
 
-export * from "https://npm.tfl.dev/@trufflehq/sdk@0.2.3";
+// export * from "https://npm.tfl.dev/@trufflehq/sdk@0.2.3";
 
 export { ErrorBoundary } from "https://npm.tfl.dev/react-error-boundary@^3.1.4";
 

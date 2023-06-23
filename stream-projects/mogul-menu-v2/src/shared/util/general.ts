@@ -1,3 +1,5 @@
+import { observable } from "https://npm.tfl.dev/@legendapp/state@1.2.8";
+
 export const ONE_MINUTE_S = 60;
 export const ONE_HOUR_S = 3600;
 export const ONE_DAY_S = 3600 * 24;
@@ -119,4 +121,35 @@ export function setCookie(
 export function getCookie(name: string) {
   const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
   return match ? match[2] : "";
+}
+
+interface SpecObserver<T = unknown, E = unknown> {
+  next: (value: T) => void;
+  error: (error: E) => void;
+  complete: () => void;
+}
+
+interface SpecSubscription {
+  unsubscribe(): void;
+  closed?: boolean;
+}
+
+interface SpecObservable<T> {
+  subscribe: (observer: SpecObserver<T, any>) => SpecSubscription;
+}
+
+export function fromSpecObservable<T = unknown>(
+  specObservable: SpecObservable<T>,
+  initialValue?: T,
+) {
+  const obs = observable<T>(initialValue);
+  specObservable.subscribe({
+    next: (value) => {
+      obs.set(() => value);
+    },
+    error: () => void null,
+    complete: () => void null,
+  });
+
+  return obs;
 }
