@@ -1874,9 +1874,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mogul-menu@workspace:.":
+"mogul-menu-v2@workspace:.":
   version: 0.0.0-use.local
-  resolution: "mogul-menu@workspace:."
+  resolution: "mogul-menu-v2@workspace:."
   dependencies:
     "@types/jscodeshift": ^0
     "@vitejs/plugin-react": ^4.0.0

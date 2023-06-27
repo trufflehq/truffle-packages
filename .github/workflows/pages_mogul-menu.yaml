@@ -35,4 +35,4 @@ jobs:
           # The name of the Cloudflare Pages project
           project_name: mogul-menu
           # The name of the yarn workspace being deployed
-          workspace_name: mogul-menu
+          workspace_name: mogul-menu-v2
