@@ -3,7 +3,7 @@ name: Cloudflare Pages - mogul-menu
 on:
   push:
     paths:
-      - 'stream-projects/mogul-menu-v2'
+      - 'stream-projects/mogul-menu-v2/**'
       - '.github/workflows/pages_mogul-menu.yaml'
   workflow_dispatch:
 
