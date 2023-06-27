@@ -1,0 +1,95 @@
+name: "Truffle "
+description: "Publish to Cloudflare Pages"
+inputs:
+  build_script:
+    description: "The script to build your site (default: `build`) (joins with `yarn workspace $workspace_name`)"
+    required: false
+    default: "build"
+  cloudflare_account_id:
+    description: "Cloudflare Account ID"
+    required: true
+  cloudflare_api_token:
+    description: "Cloudflare API Token"
+    required: true
+  directory:
+    description: "The directory of static assets to upload (default: `dist`)"
+    required: true
+    default: "dist"
+  github_token:
+    description: "GitHub Token"
+    required: true
+  prebuild_script:
+    description: "The script to run before building your site"
+    required: false
+  production_branch:
+    description: "The branch to deploy to production"
+    required: true
+    default: "master"
+  project_name:
+    description: "The name of the Cloudflare Pages project"
+    required: true
+  workspace_name:
+    description: "The name of the yarn workspace being deployed"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Install node.js v18
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      uses: ./.github/actions/yarn
+
+    - name: Get project directory
+      id: get-project-directory
+      shell: bash
+      run: |
+        dir=$(yarn workspaces list --json | jq -r 'select(.name == "${{ inputs.workspace_name }}") | .location')
+        echo "dir=$dir" >> $GITHUB_OUTPUT
+
+    - name: Prebuild script
+      shell: bash
+      if: ${{ inputs.prebuild_script }}
+      run: ${{ inputs.prebuild_script }}
+
+    - name: Build script
+      shell: bash
+      if: ${{ inputs.build_script }}
+      run: yarn workspace ${{ inputs.workspace_name }} ${{ inputs.build_script }}
+
+    - name: Check if Cloudflare Pages Project exists
+      shell: bash
+      id: check-project
+      run: |
+        check=$(curl -s -X GET "https://api.cloudflare.com/client/v4/accounts/${{ inputs.cloudflare_account_id }}/pages/projects/${{ inputs.project_name }}" \
+          -H "Authorization: Bearer ${{ inputs.cloudflare_api_token }}" \
+          -H "Content-Type:application/json" | jq -r '.success')
+        echo "result=$check" >> $GITHUB_OUTPUT
+
+    - name: Create Cloudflare Pages Project (if it doesn't exist)
+      shell: bash
+      if: steps.check-project.outputs.result != 'true'
+      run: |
+        curl -s -X POST "https://api.cloudflare.com/client/v4/accounts/${{ inputs.cloudflare_account_id }}/pages/projects" \
+          -H "Authorization: Bearer ${{ inputs.cloudflare_api_token }}" \
+          -H "Content-Type:application/json" \
+          --data '{"name":"${{ inputs.project_name }}", "production_branch":"${{ inputs.production_branch }}"}'
+
+    - name: Publish to Cloudflare Pages
+      uses: cloudflare/pages-action@v1
+      with:
+        apiToken: ${{ inputs.cloudflare_api_token }}
+        accountId: ${{ inputs.cloudflare_account_id }}
+        projectName: ${{ inputs.project_name }}
+        directory: dist
+        # Optional: Enable this if you want to have GitHub Deployments triggered
+        gitHubToken: ${{ inputs.github_token }}
+        # Optional: Change the working directory
+        workingDirectory: ${{ steps.get-project-directory.outputs.dir }}
+        # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
+        wranglerVersion: "3"
+        # Optional: Switch what branch you are publishing to.
+        # By default this will be the branch which triggered this workflow
+        # branch: main
