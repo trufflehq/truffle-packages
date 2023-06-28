@@ -46,7 +46,7 @@
 [@truffle/chat@`1.0.12`](./stream-projects/chat) - Chat client for 3rd party chats  
 [@truffle/live-embed@`0.5.50`](./stream-projects/live-embed) - Shows a twitch live stream on a creator's youtube channel.  
 [@truffle/stream-feedback@`0.5.30`](./stream-projects/stream-feedback) - Stream Feedback  
-[@truffle/mogul-menu-v2@`3.0.202`](./stream-projects/mogul-menu-v2) - Menu for channel points, predictions, and activities  
+[@truffle/mogul-menu-v2@`4.0.0`](./stream-projects/mogul-menu-v2) - Menu for channel points, predictions, and activities  
 [@truffle/mogul-menu@`3.0.204`](./stream-projects/mogul-menu) - Menu for channel points, predictions, and activities  
 [@truffle/creator-insights@`0.5.39`](./stream-projects/creator-insights) - Truffle Creator Insights  
 [@truffle/raid@`1.0.11`](./stream-projects/raid) - Stream Raids
