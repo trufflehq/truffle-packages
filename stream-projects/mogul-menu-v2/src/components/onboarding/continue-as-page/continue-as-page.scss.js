@@ -10,7 +10,7 @@ export default scss`
   text-align: center;
   flex: 1;
 
-  @media (min-width: 768px) {
+  @media (min-width: 600px) {
     padding: 32px;
   }
 

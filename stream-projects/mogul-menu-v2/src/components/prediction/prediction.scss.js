@@ -13,7 +13,7 @@ export default scss`
     
     padding: 0 64px;
     
-    @media (min-width: 768px) {
+    @media (min-width: 600px) {
       padding:  0;
     }
 
@@ -57,7 +57,7 @@ export default scss`
 
   grid-column: span 2;
 
-  @media (min-width: 768px) {
+  @media (min-width: 600px) {
     grid-column: span 1;
   }
   
@@ -224,7 +224,7 @@ export default scss`
   box-sizing: border-box;
   margin-top: 20px;
   
-  @media (min-width: 768px) {
+  @media (min-width: 600px) {
     width: 400px;
   }
 

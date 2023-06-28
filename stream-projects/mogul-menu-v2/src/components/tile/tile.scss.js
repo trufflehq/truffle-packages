@@ -42,7 +42,7 @@ export default scss`
   position: relative;
   grid-column: span 2;
 
-  @media (min-width: 768px) {
+  @media (min-width: 600px) {
     grid-column: span 1;
   }
 

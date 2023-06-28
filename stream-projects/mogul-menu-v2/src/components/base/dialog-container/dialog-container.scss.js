@@ -22,7 +22,7 @@ export default scss`
     max-height: 80%;
     overflow: hidden;
     
-    @media (min-width: 768px) {
+    @media (min-width: 600px) {
       width: unset;
     }
   }

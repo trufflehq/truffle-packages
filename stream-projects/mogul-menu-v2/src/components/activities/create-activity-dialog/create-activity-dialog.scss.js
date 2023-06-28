@@ -11,7 +11,7 @@ export default scss`
 
   .c-dialog {
     
-    @media (min-width: 768px) {
+    @media (min-width: 600px) {
       width: 540px !important;
       height: 100%;
     }
@@ -25,7 +25,7 @@ export default scss`
     display: grid;
     grid-template-columns: 1fr;
 
-    @media (min-width: 768px) {
+    @media (min-width: 600px) {
       grid-template-columns: 1fr 1fr;
     }
     gap: 12px;

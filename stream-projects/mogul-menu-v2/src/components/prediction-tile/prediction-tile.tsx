@@ -19,6 +19,7 @@ import {
   OrgUserQuerySignal,
   useInterval,
 } from "../../shared/mod.ts";
+import { getEmbed } from "https://npm.tfl.dev/@trufflehq/sdk@0.3.2"; // TODO: deps file
 import { usePageStack } from "../page-stack/mod.ts";
 import { useDialog } from "../base/dialog-container/dialog-service.ts";
 import DeleteDialog from "../delete-dialog/delete-dialog.tsx";
@@ -30,6 +31,8 @@ import Tile, { RemoveButton } from "../tile/tile.tsx";
 import Time from "../time/time.tsx";
 import { getTimeInfo, getWinningInfo } from "../prediction/prediction.tsx";
 import styleSheet from "./prediction-tile.scss.js";
+
+const embed = getEmbed();
 
 const PASSIVE_POLL_INTERVAL = 60 * ONE_SECOND_MS;
 const RESULTS_TIMOUT = 100 * ONE_SECOND_MS;
@@ -154,12 +157,21 @@ export default function PredictionTile(
     );
   }
 
-  const showPredictionPage = () => {
-    setIsOpen();
-    pushPage(<PredictionPage />);
-  };
+  // useListenForOpenPrediction(showPredictionPage);
 
-  useListenForOpenPrediction(showPredictionPage);
+  const prediction = prediction$.get();
+    
+  useEffect(() => {
+    if (prediction?.id && !hasPredictionEnded) {
+      embed.showToast({
+        title: "New prediction!",
+        body: prediction.question,
+        onClick: () => {
+          embed.openWindow();
+        }
+      });
+    }
+  }, [prediction?.id]);
 
   if (!prediction$.get()) return <></>;
 

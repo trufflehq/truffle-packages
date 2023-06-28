@@ -195,7 +195,7 @@ html, body {
   max-width: 200px;
   width: 100%;
 
-  @media (min-width: 768px) {
+  @media (min-width: 600px) {
     max-width: 232px;
   }
 

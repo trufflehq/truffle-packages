@@ -11,7 +11,7 @@ export default scss`
   overflow: hidden;
   width: 90% !important;
 
-  @media (min-width: 768px) {
+  @media (min-width: 600px) {
     width: 424px !important;
   }
 

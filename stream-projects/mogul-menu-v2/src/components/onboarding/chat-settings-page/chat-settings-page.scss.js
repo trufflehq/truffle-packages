@@ -29,7 +29,7 @@ export default scss`
       font-weight: 700;
       display: none;
 
-      @media (min-width: 768px) {
+      @media (min-width: 600px) {
         display: block;
       }
     }

@@ -39,7 +39,7 @@ export default scss`
   flex-direction: column;
   padding: 24px;
 
-  @media (min-width: 768px) {
+  @media (min-width: 600px) {
     padding:  0;
   }
 }
@@ -62,7 +62,7 @@ export default scss`
   background: var(--mm-color-bg-secondary);
   border-radius: 6px;
 
-  @media (min-width: 768px) {
+  @media (min-width: 600px) {
     width: 400px;
   }
 

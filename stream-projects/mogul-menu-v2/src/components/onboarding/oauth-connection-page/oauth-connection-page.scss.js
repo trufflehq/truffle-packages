@@ -44,7 +44,7 @@ export default scss`
     margin: 16px auto 0 auto;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 600px) {
     padding: 32px 32px 8px 32px;
 
     > .onboard-image {
