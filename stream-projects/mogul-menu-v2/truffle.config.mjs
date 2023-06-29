@@ -7,6 +7,8 @@ export default {
   installActionRel: {},
   embeds: [
     {
+      "status": "experimental", // TODO: remove and update all orgs we prev installed on, once 4.3.0 is out
+
       "iconUrl": "https://cdn.bio/assets/images/features/channel_points/icon.svg",
       "slug": "mogul-menu-youtube-embed",
       "contentPageType": "youtubeLive",
