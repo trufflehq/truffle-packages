@@ -1,4 +1,4 @@
-import { observable } from "https://npm.tfl.dev/@legendapp/state@1.2.8";
+import { observable } from "https://npm.tfl.dev/@legendapp/state@~0.19.0";
 
 export const ONE_MINUTE_S = 60;
 export const ONE_HOUR_S = 3600;

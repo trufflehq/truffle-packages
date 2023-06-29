@@ -45,7 +45,16 @@ export function useUrqlQuerySignal(query: any, variables?: any, args?: any) {
   const signal$ = useSignal(result);
 
   useEffect(() => {
-    signal$.set(result);
+    // HACK: i have no clue why, but the .set here throws a can't read .get of undefined
+    // when account settings (eg name) are changed. (the error points to this bit of code, not a separate .get)
+    // don't have time to look into deeper now, but not setting hwne it errors seems to be fine
+    // for now.
+    // there's a chance it's from using an nolder version of legend, but bumping to 1 breaks other things
+    try {
+      signal$.set(result);
+    } catch (err) {
+      console.warn('state didn\'t save', err);
+    }
   }, [result]);
 
   return { signal$, reexecuteQuery };

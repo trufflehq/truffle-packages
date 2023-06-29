@@ -9,3 +9,4 @@ function initApp() {
 
 export const truffleApp = initApp();
 export const user$ = fromSpecObservable(truffleApp.user.observable);
+export const org$ = fromSpecObservable(truffleApp.org.observable);
