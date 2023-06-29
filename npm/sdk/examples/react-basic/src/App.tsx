@@ -47,6 +47,9 @@ function App() {
     embed.showToast({
       title: "Hello World!",
       body: "A message from Truffle",
+      onClick: () => {
+        embed.openWindow();
+      }
     });
   };
 
