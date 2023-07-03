@@ -1,163 +1,16 @@
-import React, { useEffect } from "https://npm.tfl.dev/react";
-import { gql, mutation, useQuery } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
+import React from "https://npm.tfl.dev/react";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.3/google-font-loader/mod.ts";
-import { useSignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
-import { observer } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
-import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
 
-import styleSheet from "./giveaway.scss.js";
+import styleSheet from "./tos.scss.js";
 
-// NOTE: this file is bad code, don't use as example
+export default function Tos({ isVisible$ }) {
+  useStyleSheet(styleSheet);
+  useGoogleFontLoader(() => ["Roboto"]);
 
-const BASE_STYLE = {
-  width: "100%",
-  display: "block", // need to replace hidden style
-  "margin-bottom": "12px",
-  background: "transparent",
-};
-
-const FORM_STYLE = {
-  ...BASE_STYLE,
-  height: "318px",
-};
-
-const THANKS_STYLE = {
-  ...BASE_STYLE,
-  height: "172px",
-};
-
-const HIDDEN_STYLE = {
-  display: "none",
-};
-
-type GiveawayProps = {
-};
-
-const FORM_RESPONSE_CONNECTION_QUERY = gql`
-  query FormResponseConnection($input: FormResponseConnectionInput!) {
-    formResponseConnection(input: $input) {
-      nodes {
-        id
-      }
-    }
-  }
-`;
-
-const FORM_RESPONSE_UPSERT_MUTATION = gql`
-  mutation FormResponseUpsert($input: FormResponseUpsertInput!) {
-    formResponseUpsert(input: $input) {
-      formResponse { id }
-    }
-  }
-`;
-
-const FORM_ID = 'c10bbce0-1964-11ee-bf4c-a5444e22d20b';
-const ORG_ID = '3fced6c0-ef0f-11eb-87f7-ab208466080e'; // the-stanz-show
-
-const Giveaway = observer(
-  ({}: GiveawayProps) => {
-    useStyleSheet(styleSheet);
-    useGoogleFontLoader(() => ["Roboto"]);
-
-    const email$ = useSignal("");
-    const hasEntered$ = useSignal(false);
-    // const isTosVisible$ = useSignal(false);
-
-    const [{ data, fetching }] = useQuery(
-      { 
-        query: FORM_RESPONSE_CONNECTION_QUERY,
-        variables: { input: { formId: FORM_ID, orgId: ORG_ID, isMe: true } }
-      }
-    );    
-
-    const existingResponseId = data?.formResponseConnection?.nodes?.[0]?.id;
-
-    const shouldShowSuccess = existingResponseId || hasEntered$.get()
-
-    useEffect(() => {
-      jumper.call("layout.applyLayoutConfigSteps", {
-        layoutConfigSteps: [
-          { action: "useSubject" }, // start with our iframe
-          {
-            action: "setStyle",
-            value: fetching
-              ? HIDDEN_STYLE
-              : shouldShowSuccess
-              ? THANKS_STYLE
-              : FORM_STYLE
-          },
-        ],
-      });
-    }, [shouldShowSuccess, fetching]);
-
-    const onSubmit = (e) => {
-      e.preventDefault();
-      hasEntered$.set(true);
-      mutation(FORM_RESPONSE_UPSERT_MUTATION, {
-        input: {
-          // id: formResponseId$.get(),
-          formId: FORM_ID,
-          formQuestionAnswers: [
-            {
-              // id: formQuestionAnswerId$.get(),
-              formQuestionId: 'a7266780-1964-11ee-bf4c-a5444e22d20b',
-              value: email$.get()
-            }
-          ]
-        }
-      });
-    };
-
-    return (
-      <div className="c-giveaway">
-        <div className="header">
-          <div className="title">Stanz + Truffle $500 giveaway</div>
-        </div>
-        <div className="content">
-          {
-            // isTosVisible$.get() ? <Tos isVisible$={isTosVisible$} />
-            fetching ? <div className="loading">Loading...</div>
-            : (shouldShowSuccess) ?
-              <div className="success">
-                <div className="title">
-                  You’re entered in the Giveaway!
-                </div>
-                <div className="description">
-                The giveaway will end July 20th @ 11:59 PM PDT and the winner will receive an email from austin@truffle.vip
-                </div>
-              </div>
-              : <>
-                <div className="description">
-                  Enter for a chance to win $500! We’ll need an email so we can notify the winner
-                </div>
-                <form onSubmit={onSubmit} className="form">
-                  <label className="label">
-                    Email
-                    <input
-                      className="input"
-                      placeholder="Enter your email"
-                      value={email$.get()}
-                      onInput={(e) => email$.set(e.target.value)}
-                    />
-                  </label>
-                  <button className="button" disabled={fetching}>Enter giveaway</button>
-                </form>
-                <a href="https://stanz.truffle.site/tos" className="terms" target="_blank">Terms & Conditions</a>
-              </>
-          }
-        </div>
-      </div>
-    );
-  },
-);
-
-export default Giveaway;
-
-function Tos({ isVisible$ }) {
   return (
     <div className="c-tos">
-      <button className="back" onClick={() => isVisible$.set(false)}>Back</button>
+      {/* <button className="back" onClick={() => isVisible$.set(false)}>Back</button> */}
       <h1>Terms of Service for Truffle Extension Giveaway</h1>
       <ol>
         <li>
@@ -180,7 +33,7 @@ function Tos({ isVisible$ }) {
         <li>
           <strong>Giveaway Period:</strong>{" "}
           The Giveaway period will begin on the date specified on the Giveaway
-          landing page and will end at 11:59 PM Pacific Time on May 23rd, 2023
+          landing page and will end at 11:59 PM Pacific Time on July 20, 2023
           (the "Giveaway Period").
         </li>
         <li>
