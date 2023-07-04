@@ -60,35 +60,17 @@ jumper.call("layout.listenForElements", {
   listenElementLayoutConfigSteps: [
     {
       action: "querySelector",
-      value: "ytd-subscribe-button-renderer",
-    },
-  ],
-  observerConfig: {
-    attributes: true, 
-    attributeFilter: ["subscribed"],
-    childList: false,
-    subtree: false
-  },
-  targetQuerySelector: "ytd-subscribe-button-renderer[subscribed]",
-}, (matches) => {  
-  isSubscribed$.set(matches?.length > 0);
-});
-
-// HACK: sometimes the subscribe button is not rendered on page load
-jumper.call("layout.listenForElements", {
-  listenElementLayoutConfigSteps: [
-    {
-      action: "querySelector",
       value: "body",
     },
   ],
   observerConfig: {
+    attributes: true,
     childList: true,
     subtree: true
   },
-  targetQuerySelector: "ytd-subscribe-button-renderer[subscribed]",
-}, (matches) => {  
-  isSubscribed$.set(matches?.length > 0);
+  targetQuerySelector: "ytd-subscribe-button-renderer",
+}, (matches) => {
+  isSubscribed$.set(!!matches?.find((match) => match.data.subscribed));
 });
 
 const Giveaway = observer(
