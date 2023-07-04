@@ -74,6 +74,23 @@ jumper.call("layout.listenForElements", {
   isSubscribed$.set(matches?.length > 0);
 });
 
+// HACK: sometimes the subscribe button is not rendered on page load
+jumper.call("layout.listenForElements", {
+  listenElementLayoutConfigSteps: [
+    {
+      action: "querySelector",
+      value: "body",
+    },
+  ],
+  observerConfig: {
+    childList: true,
+    subtree: true
+  },
+  targetQuerySelector: "ytd-subscribe-button-renderer[subscribed]",
+}, (matches) => {  
+  isSubscribed$.set(matches?.length > 0);
+});
+
 const Giveaway = observer(
   ({}: GiveawayProps) => {
     useStyleSheet(styleSheet);
