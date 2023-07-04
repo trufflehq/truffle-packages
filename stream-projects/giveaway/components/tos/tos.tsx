@@ -25,7 +25,7 @@ export default function Tos({ isVisible$ }) {
         </li>
         <li>
           <strong>Entry:</strong>{" "}
-          To enter the Giveaway, entrants must install the Truffle extension and
+          To enter the Giveaway, entrants must install the Truffle extension, be subscribed to Stanz on YouTube, and
           submit their email address through the extension's registration form
           during the Giveaway period. No purchase or payment is necessary to
           enter the Giveaway.

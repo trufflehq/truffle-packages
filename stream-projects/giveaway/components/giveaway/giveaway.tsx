@@ -2,7 +2,7 @@ import React, { useEffect } from "https://npm.tfl.dev/react";
 import { gql, mutation, useQuery } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.3/google-font-loader/mod.ts";
-import { useSignal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
+import { useSignal, signal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
 import { observer } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
 
@@ -55,6 +55,25 @@ const FORM_RESPONSE_UPSERT_MUTATION = gql`
 const FORM_ID = 'c10bbce0-1964-11ee-bf4c-a5444e22d20b';
 const ORG_ID = '3fced6c0-ef0f-11eb-87f7-ab208466080e'; // the-stanz-show
 
+const isSubscribed$ = signal(false);
+jumper.call("layout.listenForElements", {
+  listenElementLayoutConfigSteps: [
+    {
+      action: "querySelector",
+      value: "ytd-subscribe-button-renderer",
+    },
+  ],
+  observerConfig: {
+    attributes: true, 
+    attributeFilter: ["subscribed"],
+    childList: false,
+    subtree: false
+  },
+  targetQuerySelector: "ytd-subscribe-button-renderer[subscribed]",
+}, (matches) => {  
+  isSubscribed$.set(matches?.length > 0);
+});
+
 const Giveaway = observer(
   ({}: GiveawayProps) => {
     useStyleSheet(styleSheet);
@@ -71,7 +90,7 @@ const Giveaway = observer(
       }
     );    
 
-    const existingResponseId = data?.formResponseConnection?.nodes?.[0]?.id;
+    const existingResponseId = false && data?.formResponseConnection?.nodes?.[0]?.id;
 
     const shouldShowSuccess = existingResponseId || hasEntered$.get()
 
@@ -129,19 +148,24 @@ const Giveaway = observer(
               </div>
               : <>
                 <div className="description">
-                  Enter for a chance to win $500! We’ll need an email so we can notify the winner
+                  Enter for a chance to win $500!
+                  {' '}
+                  {isSubscribed$.get()
+                    ? "We’ll need an email so we can notify the winner"
+                    : "Subscribe to Stanz to enter"}
                 </div>
                 <form onSubmit={onSubmit} className="form">
                   <label className="label">
                     Email
                     <input
                       className="input"
-                      placeholder="Enter your email"
+                      placeholder={isSubscribed$.get() ? "Enter your email" : "Subscribe to Stanz first"}
                       value={email$.get()}
                       onInput={(e) => email$.set(e.target.value)}
+                      disabled={!isSubscribed$.get()}
                     />
                   </label>
-                  <button className="button" disabled={fetching}>Enter giveaway</button>
+                  <button className="button" disabled={!isSubscribed$.get()}>Enter giveaway</button>
                 </form>
                 <a href="https://stanz.truffle.site/tos" className="terms" target="_blank">Terms & Conditions</a>
               </>
