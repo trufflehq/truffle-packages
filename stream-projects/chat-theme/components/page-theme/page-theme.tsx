@@ -13,6 +13,14 @@ import {
   LudwigTarikPageTheme,
   onPageCleanup as onLudwigTarikThemeCleanup,
 } from "../ludwig-tarik-theme/ludwig-tarik-theme.tsx";
+import {
+  LacsPageTheme,
+  onPageCleanup as onLacsThemeCleanup,
+} from "../lacs-theme/lacs-theme.tsx";
+import {
+  TerroriserPageTheme,
+  onPageCleanup as onTerroriserThemeCleanup,
+} from "../terroriser-theme/terroriser-theme.tsx";
 import { AlertTheme } from "../alert-theme/alert-theme.tsx";
 
 export const ALERT_PAGE_THEMES: ThemeMap = {
@@ -27,6 +35,14 @@ export const ALERT_PAGE_THEMES: ThemeMap = {
   "ludwig-tarik-theme": {
     Component: LudwigTarikPageTheme,
     onCleanup: onLudwigTarikThemeCleanup,
+  },
+  "lacs-theme": {
+    Component: LacsPageTheme,
+    onCleanup: onLacsThemeCleanup,
+  },
+  "terroriser-theme": {
+    Component: TerroriserPageTheme,
+    onCleanup: onTerroriserThemeCleanup,
   },
 };
 

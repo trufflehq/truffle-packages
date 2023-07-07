@@ -16,6 +16,14 @@ import {
   LudwigTarikChatTheme,
   onChatCleanup as onLudwigTarikChatThemeCleanup,
 } from "../ludwig-tarik-theme/ludwig-tarik-theme.tsx";
+import {
+  LacsChatTheme,
+  onChatCleanup as onLacsChatThemeCleanup,
+} from "../lacs-theme/lacs-theme.tsx";
+import {
+  TerroriserChatTheme,
+  onChatCleanup as onTerroriserChatThemeCleanup,
+} from "../terroriser-theme/terroriser-theme.tsx";
 import { AlertTheme } from "../alert-theme/alert-theme.tsx";
 
 export const ALERT_CHAT_THEMES: ThemeMap = {
@@ -34,6 +42,14 @@ export const ALERT_CHAT_THEMES: ThemeMap = {
   "ludwig-tarik-theme": {
     Component: LudwigTarikChatTheme,
     onCleanup: onLudwigTarikChatThemeCleanup,
+  },
+  "lacs-theme": {
+    Component: LacsChatTheme,
+    onCleanup: onLacsChatThemeCleanup,
+  },
+  "terroriser-theme": {
+    Component: TerroriserChatTheme,
+    onCleanup: onTerroriserChatThemeCleanup,
   },
 };
 

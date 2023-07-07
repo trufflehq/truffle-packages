@@ -10,6 +10,8 @@ function ChatThemePage() {
         "watch-party",
         "scuffed-world-tour-theme",
         "ludwig-tarik-theme",
+        "lacs-theme",
+        "terroriser-theme",
       ]}
     />
   );

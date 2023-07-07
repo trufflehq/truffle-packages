@@ -9,6 +9,8 @@ function PageThemePage() {
         "drlupo-stjude",
         "scuffed-world-tour-theme",
         "ludwig-tarik-theme",
+        "lacs-theme",
+        "terroriser-theme",
       ]}
     />
   );

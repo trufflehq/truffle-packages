@@ -31,13 +31,15 @@ export function useAlertThemes$(
     return () => {
       onCleanupFn.current?.();
     };
-  }, []);
+  }, []);  
 
-  const latestAlert$ = useComputed(() =>
-    alertConnection$.data?.get()?.alertConnection.nodes.find((alert) =>
+  const latestAlert$ = useComputed(() => {
+    console.log('alerts', alertConnection$.data?.get());
+    
+    return alertConnection$.data?.get()?.alertConnection.nodes.find((alert) =>
       alert?.status === "ready"
     )
-  );
+  });
 
   // call the onCleanup function when the alert type changes to
   // cleanup any leftover jumper modifications or stylesheets
