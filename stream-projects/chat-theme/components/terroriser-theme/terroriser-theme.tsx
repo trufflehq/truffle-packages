@@ -24,40 +24,40 @@ const setJumperYoutubeChatStyles = () => {
           :root {
             color-scheme: only light;
             /* chat bg */
-            --yt-live-chat-product-picker-hover-color: #0C0A2B !important;
-            --yt-live-chat-background-color: #0C0A2B !important;
-            --yt-live-chat-primary-text-color: #ffffff !important;
+            --yt-live-chat-product-picker-hover-color: var(--truffle-bg) !important;
+            --yt-live-chat-background-color: var(--truffle-bg) !important;
+            --yt-live-chat-primary-text-color: var(--truffle-bg-text) !important;
             --yt-live-chat-secondary-text-color: #eeeeee !important;
 
             /* context chat styles */
-            --yt-live-chat-header-background-color: #0F0A44 !important;
-            --yt-live-chat-action-panel-background-color: #0C0A2B !important;
-            --yt-live-chat-message-highlight-background-color: #0F0A44 !important;
-            --yt-live-chat-ninja-message-background-color: #0F0A44 !important;
-            --yt-live-chat-vem-background-color: #0F0A44 !important;
+            --yt-live-chat-header-background-color: var(--truffle-bg-2);
+            --yt-live-chat-action-panel-background-color: var(--truffle-bg) !important;
+            --yt-live-chat-message-highlight-background-color: var(--truffle-bg-2);
+            --yt-live-chat-ninja-message-background-color: var(--truffle-bg-2);
+            --yt-live-chat-vem-background-color: var(--truffle-bg-2);
             --yt-live-chat-banner-gradient-scrim: linear-gradient(rgba(0, 0, 0, 0.95), transparent) !important;
-            --yt-spec-menu-background: #0F0A44 !important;
-            --yt-spec-raised-background: #0F0A44 !important;
+            --yt-spec-menu-background: var(--truffle-bg-2);
+            --yt-spec-raised-background: var(--truffle-bg-2);
             
-            --yt-spec-text-primary: #ffffff !important;
+            --yt-spec-text-primary: var(--truffle-bg-text) !important;
           }
 
           .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled {
-            background: #EA4E53 !important;
+            background: var(--truffle-primary) !important;
           }
 
           yt-icon-button.yt-live-chat-item-list-renderer {
-            background: #EA4E53 !important;
+            background: var(--truffle-primary) !important;
             color-scheme: only light;
           }
 
           #item-scroller.yt-live-chat-item-list-renderer::-webkit-scrollbar-track {
-            background: #0C0A2B !important;
+            background: var(--truffle-bg) !important;
           }
 
           #item-scroller.yt-live-chat-item-list-renderer::-webkit-scrollbar-thumb {
-            background: #0F0A44 !important;
-            border: 2px solid #0C0A2B !important;
+            background: var(--truffle-bg-2);
+            border: 2px solid var(--truffle-bg) !important;
           }
 
           yt-live-chat-header-renderer {
@@ -120,6 +120,123 @@ export function TerroriserChatTheme() {
   );
 }
 
+const colorsCss = `
+:root {
+  --truffle-bg: #0C0A2B;
+  --truffle-bg-2: #0F0A44;
+  --truffle-primary: #EA4E53;
+  --truffle-bg-text: #ffffff;
+
+  /* page bg */
+  --yt-spec-base-background: var(--truffle-bg) !important;
+  
+  /* search bar bg */
+  --ytd-searchbox-background: var(--truffle-bg) !important;
+  
+  /* popup menu bg */
+  --yt-spec-menu-background: var(--truffle-bg) !important;
+  
+  /* dialog bg */
+  --paper-dialog-background-color: var(--truffle-bg) !important;
+  
+  --yt-spec-brand-background-primary: var(--truffle-bg) !important;
+
+  /* hide chat bg */
+  --yt-spec-touch-response: var(--truffle-bg-2);
+  
+  /* primary buttons */
+  --yt-spec-call-to-action: var(--truffle-primary) !important;
+  --yt-spec-text-primary-inverse: var(--truffle-bg-text) !important;
+
+  /* light bg */
+  --yt-spec-badge-chip-background: var(--truffle-bg-2);
+  
+  /* search magnifying glass */
+  --ytd-searchbox-legacy-button-hover-color: var(--truffle-bg) !important;
+  --ytd-searchbox-legacy-button-color: var(--truffle-bg) !important;
+}
+
+html[dark], [dark] {
+  /* masthead bg */
+  --yt-spec-base-background: var(--truffle-bg) !important;
+
+  /* search bar bg */
+  --ytd-searchbox-background: var(--truffle-bg) !important;
+
+  /* masthead colors */
+  --yt-spec-general-background-a: var(--truffle-bg) !important;
+  --paper-dialog-background-color: var(--truffle-bg) !important;
+  --ytd-searchbox-legacy-button-color: var(--truffle-bg-2);
+  --ytd-searchbox-legacy-button-hover-color: var(--truffle-bg-2);
+}
+
+html, [light] {
+  --yt-spec-wordmark-text: var(--truffle-bg-text) !important;
+  --yt-spec-text-primary: var(--truffle-bg-text) !important;
+  --ytd-searchbox-legacy-border-color: var(--truffle-bg) !important;
+  --ytd-searchbox-legacy-border-shadow-color: var(--truffle-bg-2);
+  --ytd-searchbox-legacy-button-hover-border-color: var(--truffle-bg-2);
+  --ytd-searchbox-legacy-button-border-color: var(--truffle-bg-2);
+  --yt-spec-general-background-a: var(--truffle-bg-2);
+
+  --iron-icon-fill-color: var(--truffle-bg-text) !important;
+  /* --iron-icon-stroke-color: var(--truffle-bg-text) !important; */
+  --yt-spec-text-secondary: #F0ECEC	!important;
+  --light-theme-base-color: var(--truffle-bg-text) !important;
+  --ytd-searchbox-text-color: var(--truffle-bg-text) !important;
+}
+
+html[darker-dark-theme] {
+  --paper-dialog-background-color: var(--truffle-bg) !important;
+}
+
+.yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled {
+  background: var(--truffle-primary) !important;
+}
+
+.yt-spec-button-shape-next--filled {
+  background: var(--truffle-primary) !important;
+}
+
+yt-chip-cloud-chip-renderer[chip-style=STYLE_DEFAULT][selected] {
+  background-color: var(--truffle-primary) !important;
+}`
+
+const logoCss = `
+ytd-topbar-logo-renderer {
+  position: relative;
+}
+
+ytd-masthead {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+ytd-masthead::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 244px;
+  right: 222px;
+  background-image: url(https://cdn.bio/assets/images/features/browser_extension/chat-themes/terroriser/ytbar_bg.svg?1);
+  background-size: auto 100%;
+  z-index: -1;
+}
+
+ytd-topbar-logo-renderer::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 136px;
+  width: 59px;
+  height: 40px;
+  background-image: url(https://cdn.bio/assets/images/features/browser_extension/chat-themes/terroriser/masthead-logo.png);
+  z-index: 0;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}`
+
 const setJumperYoutubePageStyles = () => {
   jumper.call("layout.applyLayoutConfigSteps", {
     layoutConfigSteps: [
@@ -128,115 +245,25 @@ const setJumperYoutubePageStyles = () => {
         value: {
           id: "terroriser-page-styles",
           css: `
-          :root {
-            /* page bg */
-            --yt-spec-base-background: #0C0A2B !important;
-            
-            /* search bar bg */
-            --ytd-searchbox-background: #0C0A2B !important;
-            
-            /* popup menu bg */
-            --yt-spec-menu-background: #0C0A2B !important;
-            
-            /* dialog bg */
-            --paper-dialog-background-color: #0C0A2B !important;
-            
-            --yt-spec-brand-background-primary: #0C0A2B !important;
+          /* fonts */
+          @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-            /* hide chat bg */
-            --yt-spec-touch-response: #0F0A44 !important;
-            
-            /* primary buttons */
-            --yt-spec-call-to-action: #EA4E53 !important;
-            --yt-spec-text-primary-inverse: #ffffff !important;
-
-            /* light bg */
-            --yt-spec-badge-chip-background: #0F0A44 !important;
-            
-            /* search magnifying glass */
-            --ytd-searchbox-legacy-button-hover-color: #0C0A2B !important;
-            --ytd-searchbox-legacy-button-color: #0C0A2B !important;
+          html {
+            font-family: 'Press Start 2P', Roboto, Arial, sans-serif !important;
+            font-size: 9px !important;
           }
 
-          html[dark], [dark] {
-            /* masthead bg */
-            --yt-spec-base-background: #0C0A2B !important;
-
-            /* search bar bg */
-            --ytd-searchbox-background: #0C0A2B !important;
-
-            /* masthead colors */
-            --yt-spec-general-background-a: #0C0A2B !important;
-            --paper-dialog-background-color: #0C0A2B !important;
-            --ytd-searchbox-legacy-button-color: #0F0A44 !important;
-            --ytd-searchbox-legacy-button-hover-color: #0F0A44 !important;
+          yt-live-chat-text-message-renderer,
+          yt-live-chat-text-input-field-renderer,
+          yt-live-chat-message-input-renderer,
+          yt-live-chat-viewer-engagement-message-renderer
+           {
+            font-size: 9px !important;
+            letter-spacing: -0.9px !important;
           }
 
-          html, [light] {
-            --yt-spec-wordmark-text: #ffffff !important;
-            --yt-spec-text-primary: #ffffff !important;
-            --ytd-searchbox-legacy-border-color: #0C0A2B !important;
-            --ytd-searchbox-legacy-border-shadow-color: #0F0A44 !important;
-            --ytd-searchbox-legacy-button-hover-border-color: #0F0A44 !important;
-            --ytd-searchbox-legacy-button-border-color: #0F0A44 !important;
-            --yt-spec-general-background-a: #0F0A44 !important;
-
-            --iron-icon-fill-color: #ffffff !important;
-            /* --iron-icon-stroke-color: #ffffff !important; */
-            --yt-spec-text-secondary: #F0ECEC	!important;
-            --light-theme-base-color: #ffffff !important;
-            --ytd-searchbox-text-color: #ffffff !important;
-          }
-
-          html[darker-dark-theme] {
-            --paper-dialog-background-color: #0C0A2B !important;
-          }
-
-          .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled {
-            background: #EA4E53 !important;
-          }
-          
-          .yt-spec-button-shape-next--filled {
-            background: #EA4E53 !important;
-          }
-
-          yt-chip-cloud-chip-renderer[chip-style=STYLE_DEFAULT][selected] {
-            background-color: #EA4E53 !important;
-          }
-
-          ytd-topbar-logo-renderer {
-            position: relative;
-          }
-
-          ytd-masthead {
-            position: relative !important;
-            z-index: 1 !important;
-          }
-
-          ytd-masthead::after {
-            content: "";
-            position: absolute;
-            height: 100%;
-            top: 0;
-            left: 244px;
-            right: 222px;
-            background-image: url(https://cdn.bio/assets/images/features/browser_extension/chat-themes/terroriser/ytbar_bg.svg?1);
-            background-size: auto 100%;
-            z-index: -1;
-          }
-      
-          ytd-topbar-logo-renderer::after {
-            content: "";
-            position: absolute;
-            top: 8px;
-            left: 136px;
-            width: 59px;
-            height: 40px;
-            background-image: url(https://cdn.bio/assets/images/features/browser_extension/chat-themes/terroriser/masthead-logo.png);
-            z-index: 0;
-            background-size: 100%;
-            background-repeat: no-repeat;
-          }   
+          ${''/*colorsCss*/}
+          ${logoCss}
 
           ytd-toggle-button-renderer.ytd-live-chat-frame {
             position: relative !important;
