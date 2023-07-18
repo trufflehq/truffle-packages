@@ -50,7 +50,17 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
     const api = new Proxy(
       {} as TransframeConsumerApi<SourceApi>,
       {
-        get: (_target, prop: string) => {
+        get: (target, prop: string, receiver) => {
+          // there are some native js props that we still want to work.
+          // eg. if a transframe proxy is resolved with Promise.resolve (eg in a Deferred promise),
+          // Promise.resolve will check if the proxy is a thenable. without the conditional below,
+          // we'd throw because a `.then` method was never defined by the API, which breaks the user's code.
+          // so we need to make it clear this isn't a thenable by returning undefined for .then.
+          // there are other properties than can get called natively by js too. these two won't be everything...
+          // but they're the ones I've run into so far
+          if (['Symbol(Symbol.toPrimitive)', 'then'].includes(prop)) {
+            return Reflect.get(target, prop, receiver);
+          }
           // whatever the property is, return a function that calls the `call` method
           return (...payload: Parameters<TransframeConsumerApi<SourceApi>[typeof prop]>) => this.call(prop, ...payload);
         }
@@ -223,13 +233,6 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
 
     // if the method is not available, throw an error
     if (!this.hasMethod(methodString)) {
-      // if a transframe api proxy is resolved with Promise.resolve (eg in a Deferred promise),
-      // Promise.resolve will check if the proxy is a thenable. If we throw,
-      // because a `.then` method was never defined by the API, it breaks the user's code.
-      // so we need to make it clear this isn't a thenable by returning undefined for .then.
-      // if the user did for some reason name a method `then`, this should still work
-      if (methodString === 'then') return undefined;
-
       throw new Error(`Method ${methodString} is not available`);
     }
 
