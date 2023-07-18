@@ -58,7 +58,7 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
           // so we need to make it clear this isn't a thenable by returning undefined for .then.
           // there are other properties than can get called natively by js too. these two won't be everything...
           // but they're the ones I've run into so far
-          if (['Symbol(Symbol.toPrimitive)', 'then'].includes(prop)) {
+          if (['Symbol(Symbol.toPrimitive)', 'then'].includes(String(prop))) {
             return Reflect.get(target, prop, receiver);
           }
           // whatever the property is, return a function that calls the `call` method
