@@ -223,6 +223,13 @@ export class TransframeConsumer<SourceApi extends TransframeSourceApi<ContextFro
 
     // if the method is not available, throw an error
     if (!this.hasMethod(methodString)) {
+      // if a transframe api proxy is resolved with Promise.resolve (eg in a Deferred promise),
+      // Promise.resolve will check if the proxy is a thenable. If we throw,
+      // because a `.then` method was never defined by the API, it breaks the user's code.
+      // so we need to make it clear this isn't a thenable by returning undefined for .then.
+      // if the user did for some reason name a method `then`, this should still work
+      if (methodString === 'then') return undefined;
+
       throw new Error(`Method ${methodString} is not available`);
     }
 
