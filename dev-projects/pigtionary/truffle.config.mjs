@@ -14,15 +14,13 @@ export default {
   embeds: [
     {
       iconUrl,
-      "slug": "pigtionary-streamer-twitch-embed",
-      "contentPageType": "twitch",
-      "defaultStyles": {
-        "height": "900px",
-        "width": "100%",
-      },
-      "insertionMethod": "append",
-      "parentQuerySelector": ".channel-info-content",
+      "slug": "pigtionary-streamer",
+      "contentPageType": "quickActions",
       "url": streamerUrl,
+      "tileProps": {
+        "bgColor": "#454545",
+        "title": "Play Pigtionary",
+      },
     },
     {
       iconUrl,
@@ -39,18 +37,6 @@ export default {
         "initialDimensions": { "x": 880, "y": 325 },
       },
       "url": viewerUrl,
-    },
-    {
-      iconUrl,
-      "slug": "pigtionary-streamer-youtube-embed",
-      "contentPageType": "youtubeLive",
-      "defaultStyles": {
-        "height": "900px",
-        "width": "100%",
-      },
-      "insertionMethod": "prepend",
-      "parentQuerySelector": "#above-the-fold",
-      "url": streamerUrl,
     },
     {
       iconUrl,
