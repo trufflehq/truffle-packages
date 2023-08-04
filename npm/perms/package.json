@@ -3,14 +3,32 @@
   "private": false,
   "version": "0.0.1",
   "description": "A generic permissions library.",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "tsup",
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsup",
+    "watch": "tsup --watch",
+    "format": "eslint --ext .ts,.tsx,.js,.jsx src examples --fix --debug"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Spore Labs, Inc.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/index.mjs",
+    "types": "./dist/index.d.ts"
+  },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
+    "eslint": "^8.46.0",
     "rimraf": "^5.0.1",
     "tsup": "^7.2.0",
     "typescript": "^5.1.6"
