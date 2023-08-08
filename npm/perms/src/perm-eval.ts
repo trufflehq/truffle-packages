@@ -1,4 +1,4 @@
-import { Perm } from "./perm";
+import { Perm } from './perm';
 
 export interface PermEvalResult {
   result: 'granted' | 'denied' | 'undetermined';

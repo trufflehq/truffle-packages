@@ -1,11 +1,11 @@
-import { perm, PermsProcessor } from "../src";
+import { perm, PermsProcessor } from '../src';
 
 const processor = new PermsProcessor();
 
 // these are perms that a theoretical user has
 const userPerms = [
-  perm("obj.read"),
-  perm("obj.write"),
+  perm('obj.read'),
+  perm('obj.write'),
   // perm("obj.delete"),
 ];
 
@@ -14,9 +14,9 @@ const testPerm = (perm: string) => {
   console.log(perm, processor.evaluate(perm, userPerms));
 };
 
-testPerm("obj.read");
-testPerm("obj.write");
-testPerm("obj.delete");
+testPerm('obj.read');
+testPerm('obj.write');
+testPerm('obj.delete');
 
 // output:
 // obj.read true
