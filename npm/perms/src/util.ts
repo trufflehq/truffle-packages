@@ -1,12 +1,40 @@
-import { Perm } from "./perm";
-import { PermEvalFunc, PermEval } from "./perm-eval";
+import { Perm } from './perm';
+import { PermEvalFunc, PermEval, PermEvalResult } from './perm-eval';
+
+export const defaultResult: PermEvalResult = {
+  result: 'undetermined',
+  reason: `Nothing explicitly granted or denied permission.`,
+  reasonCode: 'undetermined',
+};
+
+function defaultHasPermissionFunc(perm: Perm): PermEvalResult {
+  switch (perm.value) {
+    case 'allow':
+      return {
+        result: 'granted',
+        reason: `Permission explicitly granted.`,
+        reasonCode: 'granted',
+      };
+
+    case 'deny':
+      return {
+        result: 'denied',
+        reason: `Permission explicitly denied.`,
+        reasonCode: 'denied',
+      };
+
+    default:
+      return defaultResult;
+  }
+}
 
 export function perm(perm: Perm): Perm;
 export function perm(action: string, params?: any): Perm;
 export function perm(permOrAction: string | Perm, params?: any): Perm {
-  if (typeof permOrAction === "string") {
+  if (typeof permOrAction === 'string') {
     return {
       action: permOrAction,
+      value: 'allow',
       params,
     };
   } else {
@@ -23,15 +51,15 @@ export function permEval(
         fallback?: PermEval;
       }
 ): PermEval {
-  if (typeof permEval === "string") {
+  if (typeof permEval === 'string') {
     return {
       action: permEval,
-      hasPermission: () => true,
+      hasPermission: defaultHasPermissionFunc,
     };
   }
 
   return {
-    hasPermission: () => true,
+    hasPermission: defaultHasPermissionFunc,
     ...permEval,
   };
 }

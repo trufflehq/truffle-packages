@@ -6,7 +6,10 @@ const processor = new PermsProcessor();
 const userPerms = [
   perm("obj.read"),
   perm("obj.write"),
-  // perm("obj.delete"),
+  perm({
+    action: "obj.delete",
+    value: "deny",
+  }),
 ];
 
 // helper function to reduce boilerplate

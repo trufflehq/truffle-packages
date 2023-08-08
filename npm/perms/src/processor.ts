@@ -1,6 +1,6 @@
-import { Perm } from "./perm";
-import { PermEval } from "./perm-eval";
-import { permEval } from "./util";
+import { Perm } from './perm';
+import { PermEval, PermEvalResult } from './perm-eval';
+import { defaultResult, permEval } from './util';
 
 export class PermsProcessor {
   private _permEvalMap = new Map<string, PermEval>();
@@ -20,10 +20,11 @@ export class PermsProcessor {
       if (
         this._permEvalMap.has(permEval.action) &&
         this._permEvalMap.get(permEval.action) !== permEval
-      )
+      ) {
         throw new Error(
           `Attempted to overwrite an existing permEval ${permEval.action}.`
         );
+      }
 
       this._permEvalMap.set(permEval.action, permEval);
 
@@ -38,9 +39,10 @@ export class PermsProcessor {
   public evaluate(
     action: string,
     perms: Perm | Perm[],
-    context?: any,
+    context?: unknown,
     maxFallbacks = 20
-  ): boolean {
+  ): PermEvalResult {
+
     // evaluate a single perm
     const evalPerm = (perm: Perm) => {
       let currentPermEval: PermEval | undefined =
@@ -53,26 +55,36 @@ export class PermsProcessor {
       // only iterate through the fallbacks a certain number of times
       // in case there's a circular fallback chain
       for (let iterations = 0; iterations < maxFallbacks; iterations++) {
-        if (!currentPermEval) return false;
+        if (!currentPermEval) return defaultResult;
 
         // match up the perm's action with the current permEval's action
-        // and check if the perm satisfies the hasPermission function
-        if (
-          perm.action === currentPermEval.action &&
-          currentPermEval.hasPermission(perm, context)
-        )
-          return true;
+        if (perm.action === currentPermEval.action) {
+          // and check if the perm triggers an explicit grant or denial of permission
+          const result = currentPermEval.hasPermission(perm, context);
+          if (result.result !== 'undetermined') {
+            return result;
+          }
+        }
 
         // if the perm doesn't satisfy the current permEval, check the fallback
         currentPermEval = currentPermEval.fallback || this.globalFallback;
       }
 
-      return false;
+      return defaultResult;
     };
 
-    // if we're given a list of perms, only one has to satisfy
+    // if we're given a list of perms, only one has to grant/deny permission;
+    // first one to do so returns the result
     if (Array.isArray(perms)) {
-      return perms.some(evalPerm);
+      let result: PermEvalResult = defaultResult;
+      perms.find((perm) => {
+        const _result = evalPerm(perm);
+        if (_result.result !== 'undetermined') {
+          result = _result;
+          return true;
+        }
+      });
+      return result;
     } else {
       return evalPerm(perms);
     }

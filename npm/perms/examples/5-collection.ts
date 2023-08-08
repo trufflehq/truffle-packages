@@ -4,7 +4,9 @@ import {
   perm,
   permEvalTree,
   PermEvalFunc,
-} from "../src";
+  defaultResult,
+  PermEvalResult,
+} from '../src';
 
 interface Doc {
   id: string;
@@ -36,7 +38,10 @@ interface CollectionContext {
 
 // function to check if a user can access a doc
 const canAccessDoc: PermEvalFunc<DocParams, DocContext> = (perm, context) => {
-  return perm.params?.docId === context.doc.id;
+  const resultIfMatch: PermEvalResult =
+    perm.value === 'allow' ? { result: 'granted' } : { result: 'denied' };
+
+  return perm.params?.docId === context.doc.id ? resultIfMatch : defaultResult;
 };
 
 // function to check if a user can access a collection
@@ -44,7 +49,12 @@ const canAccessCollection: PermEvalFunc<CollectionParams, CollectionContext> = (
   perm,
   context
 ) => {
-  return perm.params?.collectionId === context.collection.id;
+  const resultIfMatch: PermEvalResult =
+    perm.value === 'allow' ? { result: 'granted' } : { result: 'denied' };
+
+  return perm.params?.collectionId === context.collection.id
+    ? resultIfMatch
+    : defaultResult;
 };
 
 const processor = new PermsProcessor();
@@ -53,22 +63,22 @@ const processor = new PermsProcessor();
 processor.register(
   permEvalTree({
     self: permEval({
-      action: "collection.all",
+      action: 'collection.all',
       hasPermission: canAccessCollection,
     }),
     children: [
       {
-        self: permEval({ action: "doc.all", hasPermission: canAccessDoc }),
+        self: permEval({ action: 'doc.all', hasPermission: canAccessDoc }),
         children: [
           {
             self: permEval({
-              action: "collection.read",
+              action: 'collection.read',
               hasPermission: canAccessCollection,
             }),
             children: [
               {
                 self: permEval({
-                  action: "doc.read",
+                  action: 'doc.read',
                   hasPermission: canAccessDoc,
                 }),
               },
@@ -76,25 +86,25 @@ processor.register(
           },
           {
             self: permEval({
-              action: "collection.write",
+              action: 'collection.write',
               hasPermission: canAccessCollection,
             }),
             children: [
               {
                 self: permEval({
-                  action: "doc.write",
+                  action: 'doc.write',
                   hasPermission: canAccessDoc,
                 }),
                 children: [
                   {
                     self: permEval({
-                      action: "collection.create",
+                      action: 'collection.create',
                       hasPermission: canAccessCollection,
                     }),
                     children: [
                       {
                         self: permEval({
-                          action: "doc.create",
+                          action: 'doc.create',
                           hasPermission: canAccessDoc,
                         }),
                       },
@@ -102,13 +112,13 @@ processor.register(
                   },
                   {
                     self: permEval({
-                      action: "collection.update",
+                      action: 'collection.update',
                       hasPermission: canAccessCollection,
                     }),
                     children: [
                       {
                         self: permEval({
-                          action: "doc.update",
+                          action: 'doc.update',
                           hasPermission: canAccessDoc,
                         }),
                       },
@@ -116,13 +126,13 @@ processor.register(
                   },
                   {
                     self: permEval({
-                      action: "collection.delete",
+                      action: 'collection.delete',
                       hasPermission: canAccessCollection,
                     }),
                     children: [
                       {
                         self: permEval({
-                          action: "doc.delete",
+                          action: 'doc.delete',
                           hasPermission: canAccessDoc,
                         }),
                       },
@@ -140,15 +150,15 @@ processor.register(
 
 // a doc and collection to test against
 const doc: Doc = {
-  id: "123",
-  name: "My cool doc",
-  collectionId: "456",
-  content: "hello world",
+  id: '123',
+  name: 'My cool doc',
+  collectionId: '456',
+  content: 'hello world',
 };
 
 const collection: Collection = {
-  id: "456",
-  name: "My cool collection",
+  id: '456',
+  name: 'My cool collection',
 };
 
 // the doc and collection make up our "context"
@@ -156,31 +166,35 @@ const context = { doc, collection };
 
 // these are the permissions for three theoretical users
 const user1Perms = [
-  perm({ action: "collection.all", params: { collectionId: "456" } }),
+  perm({
+    action: 'collection.all',
+    value: 'allow',
+    params: { collectionId: '456' },
+  }),
 ];
 
 const user2Perms = [
-  perm({ action: "doc.read", params: { docId: "456" } }),
+  perm({ action: 'doc.read', value: 'allow', params: { docId: '456' } }),
 ];
 
 const user3Perms = [
-  perm({ action: "doc.all", params: { docId: "123" } }),
+  perm({ action: 'doc.all', value: 'allow', params: { docId: '123' } }),
 ];
 
 console.log(
   'can user1 read doc "123" in collection "456"',
-  processor.evaluate("doc.read", user1Perms, context)
-)
+  processor.evaluate('doc.read', user1Perms, context)
+);
 
 console.log(
   'can user2 read doc "123" in collection "456"',
-  processor.evaluate("doc.read", user2Perms, context)
-)
+  processor.evaluate('doc.read', user2Perms, context)
+);
 
 console.log(
   'can user3 read doc "123" in collection "456"',
-  processor.evaluate("doc.read", user3Perms, context)
-)
+  processor.evaluate('doc.read', user3Perms, context)
+);
 
 // output:
 // can user1 read doc "123" in collection "456" true

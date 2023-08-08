@@ -1,9 +1,15 @@
 import { Perm } from "./perm";
 
+export interface PermEvalResult {
+  result: 'granted' | 'denied' | 'undetermined';
+  reason?: string;
+  reasonCode?: string;
+}
+
 export type PermEvalFunc<TParams = any, TContext = any> = (
   perm: Perm<TParams>,
   context: TContext
-) => boolean;
+) => PermEvalResult;
 
 export interface PermEval {
   action: string;
