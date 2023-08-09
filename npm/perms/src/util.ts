@@ -48,7 +48,7 @@ export function permEval(
     | {
         action: string;
         hasPermission?: PermEvalFunc;
-        fallback?: PermEval;
+        fallbacks?: PermEval[];
       }
 ): PermEval {
   if (typeof permEval === 'string') {
