@@ -67,7 +67,7 @@ export function permEval(
 export function permEvalChain(permEvalChain: PermEval[]) {
   return permEvalChain.reduceRight((prev, curr) => ({
     ...curr,
-    fallback: prev,
+    fallbacks: [prev],
   }));
 }
 
@@ -86,7 +86,7 @@ export function permEvalTree(node: PermEvalTreeNode): PermEval[] {
 
   return children.reduce<PermEval[]>((acc, child) => {
     // link the child to its parent
-    child.self.fallback = self;
+    child.self.fallbacks = [self];
 
     // add the leaf nodes from this child to our final array
     return acc.concat(permEvalTree(child));

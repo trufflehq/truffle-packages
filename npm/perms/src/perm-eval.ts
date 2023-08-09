@@ -14,5 +14,5 @@ export type PermEvalFunc<TParams = any, TContext = any> = (
 export interface PermEval {
   action: string;
   hasPermission: PermEvalFunc<unknown, unknown>;
-  fallback?: PermEval;
+  fallbacks?: PermEval[];
 }
