@@ -92,3 +92,17 @@ export function permEvalTree(node: PermEvalTreeNode): PermEval[] {
     return acc.concat(permEvalTree(child));
   }, []);
 }
+
+const buildModelMatcher: (
+  modelName: string,
+  paramIdName?: string,
+) => PermEvalFunc =
+  (modelName, paramIdName = 'id') =>
+  (perm, context) => {
+    const resultIfMatch: PermEvalResult =
+      perm.value === 'allow' ? { result: 'granted' } : { result: 'denied' };
+
+    return perm.params?.[paramIdName] === context?.[modelName]?.id
+      ? resultIfMatch
+      : defaultResult;
+  };
