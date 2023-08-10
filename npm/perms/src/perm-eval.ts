@@ -13,6 +13,11 @@ export type PermEvalFunc<TParams = any, TContext = any> = (
 
 export interface PermEval {
   action: string;
-  hasPermission: PermEvalFunc<unknown, unknown>;
+  hasPermission?: PermEvalFunc<unknown, unknown>;
   fallbacks?: PermEval[];
+}
+
+export interface PermEvalTreeBuilderNode {
+  self: PermEval;
+  children?: PermEvalTreeBuilderNode[];
 }

@@ -1,6 +1,6 @@
 import { Perm } from './perm';
 import { PermEval, PermEvalResult } from './perm-eval';
-import { defaultResult, permEval } from './util';
+import { defaultHasPermissionFunc, DEFAULT_RESULT, permEval } from './util';
 
 export class PermsProcessor {
   private _permEvalMap = new Map<string, PermEval>();
@@ -21,6 +21,7 @@ export class PermsProcessor {
         this._permEvalMap.has(permEval.action) &&
         this._permEvalMap.get(permEval.action) !== permEval
       ) {
+        console.log(permEval)
         throw new Error(
           `Attempted to overwrite an existing permEval ${permEval.action}.`,
         );
@@ -61,12 +62,15 @@ export class PermsProcessor {
       // base case: if we've reached the end of the fallback chain,
       // return the default result.
       // also, if we've reached the max number of fallbacks, return the default result
-      if (!currentPermEval || ttl === 0) return defaultResult;
+      if (!currentPermEval || ttl === 0) return DEFAULT_RESULT;
 
       // match up the perm's action with the current permEval's action
       if (perm.action === currentPermEval.action) {
         // and check if the perm triggers an explicit grant or denial of permission
-        const result = currentPermEval.hasPermission(perm, context);
+        const result = currentPermEval.hasPermission
+          ? currentPermEval.hasPermission(perm, context)
+          : defaultHasPermissionFunc(perm);
+
         if (result.result !== 'undetermined') {
           return result;
         }
@@ -81,7 +85,7 @@ export class PermsProcessor {
           }
         }
 
-      return defaultResult;
+      return DEFAULT_RESULT;
     };
 
     // if we're given a list of perms, only one has to grant/deny permission;
@@ -93,7 +97,7 @@ export class PermsProcessor {
           return result;
         }
       }
-      return defaultResult;
+      return DEFAULT_RESULT;
     } else {
       return evalPerm(perms, undefined, maxFallbacks);
     }

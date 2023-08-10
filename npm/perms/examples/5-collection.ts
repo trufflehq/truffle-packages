@@ -4,7 +4,7 @@ import {
   perm,
   permEvalTree,
   PermEvalFunc,
-  defaultResult,
+  DEFAULT_RESULT,
   PermEvalResult,
 } from '../src';
 
@@ -41,7 +41,7 @@ const canAccessDoc: PermEvalFunc<DocParams, DocContext> = (perm, context) => {
   const resultIfMatch: PermEvalResult =
     perm.value === 'allow' ? { result: 'granted' } : { result: 'denied' };
 
-  return perm.params?.docId === context.doc.id ? resultIfMatch : defaultResult;
+  return perm.params?.docId === context.doc.id ? resultIfMatch : DEFAULT_RESULT;
 };
 
 // function to check if a user can access a collection
@@ -54,7 +54,7 @@ const canAccessCollection: PermEvalFunc<CollectionParams, CollectionContext> = (
 
   return perm.params?.collectionId === context.collection.id
     ? resultIfMatch
-    : defaultResult;
+    : DEFAULT_RESULT;
 };
 
 const processor = new PermsProcessor();
