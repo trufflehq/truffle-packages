@@ -1,7 +1,7 @@
 import {
   PermEvalFunc,
   PermsProcessor,
-  defaultResult,
+  DEFAULT_RESULT,
   perm,
   permEval,
 } from '../src';
@@ -25,7 +25,7 @@ interface DocContext {
 const canAccessDoc: PermEvalFunc<DocParams, DocContext> = (perm, context) => {
   return perm.params?.docId === context.doc.id
     ? { result: 'granted' }
-    : defaultResult;
+    : DEFAULT_RESULT;
 };
 
 const processor = new PermsProcessor();
