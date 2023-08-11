@@ -163,7 +163,10 @@ export const buildModelMatcher: (
               reason: `Permission denied to ${perm.action} from parent ${perm.params?.parentObject} with id ${perm.params?.parentId}.`,
               reasonCode: 'denied',
             }
-        : DEFAULT_RESULT;
+        : {
+          result: 'undetermined',
+          reason: `Nothing explicitly granted or denied permission to ${perm.action} from parent ${perm.params?.parentObject} with id ${perm.params?.parentId}.`,
+        };
 
     // check if they have permission to access this specific object
     return perm.params?.[paramIdName] === context?.[modelName]?.id
@@ -178,7 +181,11 @@ export const buildModelMatcher: (
             reason: `Permission denied to ${perm.action} ${modelName} with ${paramIdName} ${perm.params?.[paramIdName]}.`,
             reasonCode: 'denied',
           }
-      : DEFAULT_RESULT;
+      : {
+          result: 'undetermined',
+          reason: `Nothing explicitly granted or denied permission to ${perm.action} ${modelName} with ${paramIdName} ${perm.params?.[paramIdName]}.`,
+          reasonCode: 'undetermined',
+      };
   };
 
 export const BasicModelPermEvalBuilderTree = (domain?: string) => {
