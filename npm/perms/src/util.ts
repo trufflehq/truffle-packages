@@ -135,8 +135,39 @@ export const buildModelMatcher: (
 ) => PermEvalFunc =
   (modelName, paramIdName = 'id') =>
   (perm, context) => {
-    const resultIfMatch: PermEvalResult =
-      perm.value === 'allow'
+
+    // check if they have permission to access any object
+    if (perm.params?.all)
+      return perm.value === 'allow' ? {
+        result: 'granted',
+        reason: `Permission granted to ${perm.action} all ${modelName}s.`,
+        reasonCode: 'granted',
+      } : {
+        result: 'denied',
+        reason: `Permission denied to ${perm.action} all ${modelName}s.`,
+        reasonCode: 'denied',
+      };
+
+
+    // if we're checking if they have permission to access any object within a parent
+    if (perm.params?.parentId && perm.params?.parentObject)
+      return perm.params?.parentId === context?.[perm.params?.parentObject]?.id
+        ? perm.value === 'allow'
+          ? {
+              result: 'granted',
+              reason: `Permission granted to ${perm.action} from parent ${perm.params?.parentObject} with id ${perm.params?.parentId}.`,
+              reasonCode: 'granted',
+            }
+          : {
+              result: 'denied',
+              reason: `Permission denied to ${perm.action} from parent ${perm.params?.parentObject} with id ${perm.params?.parentId}.`,
+              reasonCode: 'denied',
+            }
+        : DEFAULT_RESULT;
+
+    // check if they have permission to access this specific object
+    return perm.params?.[paramIdName] === context?.[modelName]?.id
+      ? perm.value === 'allow'
         ? {
             result: 'granted',
             reason: `Permission granted to ${perm.action} ${modelName} with ${paramIdName} ${perm.params?.[paramIdName]}.`,
@@ -146,17 +177,7 @@ export const buildModelMatcher: (
             result: 'denied',
             reason: `Permission denied to ${perm.action} ${modelName} with ${paramIdName} ${perm.params?.[paramIdName]}.`,
             reasonCode: 'denied',
-          };
-
-    // if we're checking if they have permission to access any object within a parent
-    if (perm.params?.parentId && perm.params?.parentObject)
-      return perm.params?.parentId === context?.[perm.params?.parentObject]?.id
-        ? resultIfMatch
-        : DEFAULT_RESULT;
-
-    // check if they have permission to access this specific object
-    return perm.params?.[paramIdName] === context?.[modelName]?.id
-      ? resultIfMatch
+          }
       : DEFAULT_RESULT;
   };
 
