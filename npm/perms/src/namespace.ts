@@ -5,9 +5,9 @@ interface PermDomainOptions {
   defaultPermEvalFunc?: PermEvalFunc;
 }
 
-export class PermDomain {
+export class PermNamespace {
   private _actions = new Map<string, PermEval>();
-  private _children = new Set<PermDomain>();
+  private _children = new Set<PermNamespace>();
 
   private _defaultPermEvalFunc: PermEvalFunc;
 
@@ -51,15 +51,15 @@ export class PermDomain {
     });
   }
 
-  public registerChild(child: PermDomain) {
+  public registerChild(child: PermNamespace) {
     this._children.add(child);
   }
 
-  public registerChildren(children: PermDomain[]) {
+  public registerChildren(children: PermNamespace[]) {
     children.forEach((child) => this.registerChild(child));
   }
 
-  private _linkActions(stack: PermDomain[]) {
+  private _linkActions(stack: PermNamespace[]) {
     for (const [action, permEval] of this._actions.entries()) {
       // go up the stack and link this action to the first domain that has a matching action
       for (const domain of stack) {
@@ -76,7 +76,7 @@ export class PermDomain {
     // we'll pass down the stack
     // and modify it in place so that
     // we're not creating a bunch of arrays
-    stack: PermDomain[],
+    stack: PermNamespace[],
 
     // same with the result tree
     resultTree: PermEval[],

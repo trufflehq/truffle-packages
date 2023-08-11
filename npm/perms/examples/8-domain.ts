@@ -1,20 +1,20 @@
 /**
- * This example produces the same output as 5-collection.ts, but uses "domains"
+ * This example produces the same output as 5-collection.ts, but uses "PermNamespaces"
  * to build the permissions graph.
  */
 
 import {
   BasicModelPermEvalBuilderTree,
-  PermDomain,
+  PermNamespace,
   PermsProcessor,
   perm,
   permEvalTree,
 } from '../src';
 
-const collectionDomain = new PermDomain('collection');
+const collectionDomain = new PermNamespace('collection');
 collectionDomain.registerActions(permEvalTree(BasicModelPermEvalBuilderTree()));
 
-const docDomain = new PermDomain('doc');
+const docDomain = new PermNamespace('doc');
 docDomain.registerActions(permEvalTree(BasicModelPermEvalBuilderTree()));
 
 collectionDomain.registerChild(docDomain);
