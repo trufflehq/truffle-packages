@@ -138,6 +138,13 @@ export const buildModelMatcher: (
     const resultIfMatch: PermEvalResult =
       perm.value === 'allow' ? { result: 'granted' } : { result: 'denied' };
 
+    // if we're checking if they have permission to access any object within a parent
+    if (perm.params?.parentId && perm.params?.parentObject)
+      return perm.params?.parentId === context?.[perm.params?.parentObject]?.id
+        ? resultIfMatch
+        : DEFAULT_RESULT;
+
+    // check if they have permission to access this specific object
     return perm.params?.[paramIdName] === context?.[modelName]?.id
       ? resultIfMatch
       : DEFAULT_RESULT;
