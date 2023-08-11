@@ -136,7 +136,17 @@ export const buildModelMatcher: (
   (modelName, paramIdName = 'id') =>
   (perm, context) => {
     const resultIfMatch: PermEvalResult =
-      perm.value === 'allow' ? { result: 'granted' } : { result: 'denied' };
+      perm.value === 'allow'
+        ? {
+            result: 'granted',
+            reason: `Permission granted to ${perm.action} ${modelName} with ${paramIdName} ${perm.params?.[paramIdName]}.`,
+            reasonCode: 'granted',
+          }
+        : {
+            result: 'denied',
+            reason: `Permission denied to ${perm.action} ${modelName} with ${paramIdName} ${perm.params?.[paramIdName]}.`,
+            reasonCode: 'denied',
+          };
 
     // if we're checking if they have permission to access any object within a parent
     if (perm.params?.parentId && perm.params?.parentObject)
