@@ -37,9 +37,10 @@ export class TruffleApp {
         { immediate: false },
       )
         // don't really need to do anything here if this fails
-        .catch(() =>
+        .catch((err) =>
           console.warn(
             "[@trufflehq/sdk] Failed to listen for access token changes",
+            err,
           )
         );
     }
