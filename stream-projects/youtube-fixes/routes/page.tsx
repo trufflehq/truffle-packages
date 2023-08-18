@@ -13,7 +13,38 @@ if (!isSsr) {
         value: {
           id: "theater-mode",
           css: `
-            /* css here */
+          /* Make the masthead transparent unless we are hovering it */
+          body[data-mogul-theater-mode] #masthead-container {
+            opacity: 0.1;
+            transition: opacity 0.2s ease;
+          }
+          
+          body[data-mogul-theater-mode] #masthead-container:hover {
+            opacity: 1;
+          }
+          /* https://discord.com/channels/839188384752599071/1123706607168143400 */
+          @media screen and (min-width: 1014px) {
+            /* Make chat fill screen vertically */
+            body[data-mogul-theater-mode] #chat.ytd-watch-flexy {
+              height: calc(100vh - 56px) !important;
+              width: var(--ytd-watch-flexy-sidebar-width);
+              position: absolute !important;
+              top: 56px;
+              right: 0;
+            }
+          
+            body[data-mogul-theater-mode] #player-full-bleed-container.ytd-watch-flexy {
+              width: calc(100vw - var(--ytd-watch-flexy-sidebar-width) - var(--ytd-watch-flexy-scrollbar-width)) !important;
+              max-width: calc(100vw - var(--ytd-watch-flexy-sidebar-width) - var(--ytd-watch-flexy-scrollbar-width)) !important;
+              height: calc(100vh - 56px) !important;
+              max-height: calc(100vh - 56px) !important;
+            }
+          
+            body[data-mogul-theater-mode] #secondary.ytd-watch-flexy {
+              position: unset;
+            }
+          }
+          
           `,
         },
       },
