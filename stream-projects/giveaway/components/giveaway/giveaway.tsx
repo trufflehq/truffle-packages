@@ -1,8 +1,15 @@
 import React, { useEffect } from "https://npm.tfl.dev/react";
-import { gql, mutation, useQuery } from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
+import {
+  gql,
+  mutation,
+  useQuery,
+} from "https://tfl.dev/@truffle/api@~0.2.0/client.ts";
 import { useStyleSheet } from "https://tfl.dev/@truffle/distribute@^2.0.0/format/wc/react/index.ts"; // DO NOT BUMP;
 import { useGoogleFontLoader } from "https://tfl.dev/@truffle/utils@~0.0.3/google-font-loader/mod.ts";
-import { useSignal, signal } from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
+import {
+  signal,
+  useSignal,
+} from "https://tfl.dev/@truffle/state@~0.0.8/mod.ts";
 import { observer } from "https://npm.tfl.dev/@legendapp/state@~0.19.0/react";
 import jumper from "https://tfl.dev/@truffle/utils@~0.0.3/jumper/jumper.ts";
 
@@ -31,8 +38,7 @@ const HIDDEN_STYLE = {
   display: "none",
 };
 
-type GiveawayProps = {
-};
+type GiveawayProps = {};
 
 const FORM_RESPONSE_CONNECTION_QUERY = gql`
   query FormResponseConnection($input: FormResponseConnectionInput!) {
@@ -52,8 +58,8 @@ const FORM_RESPONSE_UPSERT_MUTATION = gql`
   }
 `;
 
-const FORM_ID = 'c10bbce0-1964-11ee-bf4c-a5444e22d20b';
-const ORG_ID = '3fced6c0-ef0f-11eb-87f7-ab208466080e'; // the-stanz-show
+const FORM_ID = "c10bbce0-1964-11ee-bf4c-a5444e22d20b";
+const ORG_ID = "3fced6c0-ef0f-11eb-87f7-ab208466080e"; // the-stanz-show
 
 const isSubscribed$ = signal(false);
 jumper.call("layout.listenForElements", {
@@ -66,7 +72,7 @@ jumper.call("layout.listenForElements", {
   observerConfig: {
     attributes: true,
     childList: true,
-    subtree: true
+    subtree: true,
   },
   targetQuerySelector: "ytd-subscribe-button-renderer",
 }, (matches) => {
@@ -83,15 +89,16 @@ const Giveaway = observer(
     // const isTosVisible$ = useSignal(false);
 
     const [{ data, fetching }] = useQuery(
-      { 
+      {
         query: FORM_RESPONSE_CONNECTION_QUERY,
-        variables: { input: { formId: FORM_ID, orgId: ORG_ID, isMe: true } }
-      }
-    );    
+        variables: { input: { formId: FORM_ID, orgId: ORG_ID, isMe: true } },
+      },
+    );
 
-    const existingResponseId = false && data?.formResponseConnection?.nodes?.[0]?.id;
+    const existingResponseId = false &&
+      data?.formResponseConnection?.nodes?.[0]?.id;
 
-    const shouldShowSuccess = existingResponseId || hasEntered$.get()
+    const shouldShowSuccess = existingResponseId || hasEntered$.get();
 
     useEffect(() => {
       jumper.call("layout.applyLayoutConfigSteps", {
@@ -103,7 +110,7 @@ const Giveaway = observer(
               ? HIDDEN_STYLE
               : shouldShowSuccess
               ? THANKS_STYLE
-              : FORM_STYLE
+              : FORM_STYLE,
           },
         ],
       });
@@ -119,55 +126,69 @@ const Giveaway = observer(
           formQuestionAnswers: [
             {
               // id: formQuestionAnswerId$.get(),
-              formQuestionId: 'a7266780-1964-11ee-bf4c-a5444e22d20b',
-              value: email$.get()
-            }
-          ]
-        }
+              formQuestionId: "a7266780-1964-11ee-bf4c-a5444e22d20b",
+              value: email$.get(),
+            },
+          ],
+        },
       });
     };
 
     return (
       <div className="c-giveaway">
         <div className="header">
-          <div className="title">Stanz + Truffle $500 giveaway</div>
+          <div className="title">Stanz + Truffle $100 giveaway</div>
         </div>
         <div className="content">
           {
             // isTosVisible$.get() ? <Tos isVisible$={isTosVisible$} />
-            fetching ? <div className="loading">Loading...</div>
-            : (shouldShowSuccess) ?
-              <div className="success">
-                <div className="title">
-                  You’re entered in the Giveaway!
+            fetching
+              ? <div className="loading">Loading...</div>
+              : (shouldShowSuccess)
+              ? (
+                <div className="success">
+                  <div className="title">
+                    You’re entered in the Giveaway!
+                  </div>
+                  <div className="description">
+                    The giveaway will end August 27th @ 11:59 PM PDT and the
+                    winner will receive an email from austin@truffle.vip
+                  </div>
                 </div>
-                <div className="description">
-                The giveaway will end July 20th @ 11:59 PM PDT and the winner will receive an email from austin@truffle.vip
-                </div>
-              </div>
-              : <>
-                <div className="description">
-                  Enter for a chance to win $500!
-                  {' '}
-                  {isSubscribed$.get()
-                    ? "We’ll need an email so we can notify the winner"
-                    : "Subscribe to Stanz to enter"}
-                </div>
-                <form onSubmit={onSubmit} className="form">
-                  <label className="label">
-                    Email
-                    <input
-                      className="input"
-                      placeholder={isSubscribed$.get() ? "Enter your email" : "Subscribe to Stanz first"}
-                      value={email$.get()}
-                      onInput={(e) => email$.set(e.target.value)}
-                      disabled={!isSubscribed$.get()}
-                    />
-                  </label>
-                  <button className="button" disabled={!isSubscribed$.get()}>Enter giveaway</button>
-                </form>
-                <a href="https://stanz.truffle.site/tos" className="terms" target="_blank">Terms & Conditions</a>
-              </>
+              )
+              : (
+                <>
+                  <div className="description">
+                    Enter for a chance to win $100! {isSubscribed$.get()
+                      ? "We’ll need an email so we can notify the winner"
+                      : "Subscribe to Stanz to enter"}
+                  </div>
+                  <form onSubmit={onSubmit} className="form">
+                    <label className="label">
+                      Email
+                      <input
+                        className="input"
+                        placeholder={isSubscribed$.get()
+                          ? "Enter your email"
+                          : "Subscribe to Stanz first"}
+                        value={email$.get()}
+                        onInput={(e) => email$.set(e.target.value)}
+                        disabled={!isSubscribed$.get()}
+                      />
+                    </label>
+                    <button className="button" disabled={!isSubscribed$.get()}>
+                      Enter giveaway
+                    </button>
+                  </form>
+                  <a
+                    href="https://stanz.truffle.site/tos"
+                    className="terms"
+                    target="_blank"
+                  >
+                    Terms & Conditions
+                  </a>
+                </>
+              )
           }
         </div>
       </div>
@@ -180,7 +201,9 @@ export default Giveaway;
 function Tos({ isVisible$ }) {
   return (
     <div className="c-tos">
-      <button className="back" onClick={() => isVisible$.set(false)}>Back</button>
+      <button className="back" onClick={() => isVisible$.set(false)}>
+        Back
+      </button>
       <h1>Terms of Service for Truffle Extension Giveaway</h1>
       <ol>
         <li>
@@ -203,11 +226,11 @@ function Tos({ isVisible$ }) {
         <li>
           <strong>Giveaway Period:</strong>{" "}
           The Giveaway period will begin on the date specified on the Giveaway
-          landing page and will end at 11:59 PM Pacific Time on May 23rd, 2023
-          (the "Giveaway Period").
+          landing page and will end at 11:59 PM Pacific Time on August 27th,
+          2023 (the "Giveaway Period").
         </li>
         <li>
-          <strong>Prize:</strong> The prize for the Giveaway will be $500.
+          <strong>Prize:</strong> The prize for the Giveaway will be $100.
         </li>
         <li>
           <strong>Winner Selection and Notification:</strong>{" "}

@@ -25,19 +25,19 @@ export default function Tos({ isVisible$ }) {
         </li>
         <li>
           <strong>Entry:</strong>{" "}
-          To enter the Giveaway, entrants must install the Truffle extension, be subscribed to Stanz on YouTube, and
-          submit their email address through the extension's registration form
-          during the Giveaway period. No purchase or payment is necessary to
-          enter the Giveaway.
+          To enter the Giveaway, entrants must install the Truffle extension, be
+          subscribed to Stanz on YouTube, and submit their email address through
+          the extension's registration form during the Giveaway period. No
+          purchase or payment is necessary to enter the Giveaway.
         </li>
         <li>
           <strong>Giveaway Period:</strong>{" "}
           The Giveaway period will begin on the date specified on the Giveaway
-          landing page and will end at 11:59 PM Pacific Time on July 20, 2023
+          landing page and will end at 11:59 PM Pacific Time on August 27, 2023
           (the "Giveaway Period").
         </li>
         <li>
-          <strong>Prize:</strong> The prize for the Giveaway will be $500.
+          <strong>Prize:</strong> The prize for the Giveaway will be $100.
         </li>
         <li>
           <strong>Winner Selection and Notification:</strong>{" "}
