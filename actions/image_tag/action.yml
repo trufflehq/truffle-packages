@@ -1,0 +1,25 @@
+name: "Generate Image Tag"
+description: "Create a Docker Image tag for the current commit"
+inputs:
+  branch:
+    description: "The branch name"
+outputs:
+  tag:
+    description: "The generated tag"
+    value: ${{ steps.default.outputs.tag }}
+runs:
+  using: "composite"
+  steps:
+    - name: Generate tag
+      id: default
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.branch }}" ]; then
+          branch="${{ inputs.branch }}"
+        else
+          branch=${GITHUB_REF#refs/heads/}
+        fi
+        sha=${GITHUB_SHA::8}
+        ts=$(date +%s)
+
+        echo "tag=${branch}-${sha}-${ts}" >> $GITHUB_OUTPUT

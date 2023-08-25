@@ -1,5 +1,5 @@
-name: "Truffle "
-description: "Publish to Cloudflare Pages"
+name: "Publish to Cloudflare Pages"
+description: "Publish a Pages project"
 inputs:
   build_script:
     description: "The script to build your site (default: `build`) (joins with `yarn workspace $workspace_name`)"
@@ -40,7 +40,7 @@ runs:
         node-version: 18
 
     - name: Install dependencies
-      uses: ./.github/actions/yarn
+      uses: trufflehq/truffle-packages/actions/yarn
 
     - name: Get project directory
       id: get-project-directory
