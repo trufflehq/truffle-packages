@@ -40,7 +40,7 @@ runs:
         node-version: 18
 
     - name: Install dependencies
-      uses: trufflehq/truffle-packages/actions/yarn
+      uses: trufflehq/truffle-packages/actions/yarn@main
 
     - name: Get project directory
       id: get-project-directory
