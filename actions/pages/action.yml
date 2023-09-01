@@ -54,10 +54,14 @@ runs:
       if: ${{ inputs.prebuild_script }}
       run: ${{ inputs.prebuild_script }}
 
+    - name: Turbo prune
+      shell: bash
+      run: yarn turbo prune --scope=${{ inputs.workspace_name }}
+
     - name: Build script
       shell: bash
       if: ${{ inputs.build_script }}
-      run: yarn workspace ${{ inputs.workspace_name }} ${{ inputs.build_script }}
+      run: yarn turbo run ${{ inputs.build_script }} --filter=${{ inputs.workspace_name }}
 
     - name: Check if Cloudflare Pages Project exists
       shell: bash
