@@ -16,7 +16,7 @@ function App() {
     embed.getPageInfo().then((info) => {
       setPageInfo(info);
     });
-  });
+  }, []);
 
   const setSize = () => {
     if (isSmall) {
@@ -93,7 +93,9 @@ function App() {
       <h2>Page Info</h2>
       <pre
         style={{ textAlign: "left" }}
-      >{JSON.stringify(pageInfo, null, 2)}</pre>
+      >
+        {JSON.stringify(pageInfo, null, 2)}
+      </pre>
     </div>
   );
 }

@@ -1,9 +1,9 @@
-import './App.css';
-import { getSrcByImageObj, getAccessToken } from '@trufflehq/sdk';
-import { observer } from '@legendapp/state/react';
-import { fromSpecObservable } from './from-spec-observable';
-import { useEffect, useState } from 'react';
-import { truffle } from './truffle';
+import "./App.css";
+import { getAccessToken, getSrcByImageObj } from "@trufflehq/sdk";
+import { observer } from "@legendapp/state/react";
+import { fromSpecObservable } from "./from-spec-observable";
+import { useEffect, useState } from "react";
+import { truffle } from "./truffle";
 
 // here we're creating observables using the legend state library
 // https://legendapp.com/open-source/state/
@@ -22,10 +22,10 @@ function App() {
       next: (org) => {
         setOrgId(org?.id);
       },
-    });
+    }, []);
 
     getAccessToken().then((token) => {
-      console.log('access token', token);
+      console.log("access token", token);
     });
 
     return () => subscription.unsubscribe();
@@ -46,7 +46,7 @@ function App() {
           ))}
         </ul>
       </div>
-      <img src={getSrcByImageObj(user.avatarImage.get(), { size: 'small' })} />
+      <img src={getSrcByImageObj(user.avatarImage.get(), { size: "small" })} />
     </div>
   );
 }
