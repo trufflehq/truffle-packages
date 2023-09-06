@@ -58,7 +58,7 @@ runs:
     - name: Build script
       shell: bash
       if: ${{ inputs.build_script }}
-      run: yarn run ${{ inputs.build_script }}
+      run: yarn workspace ${{ inputs.workspace_name }} ${{ inputs.build_script }}
 
     - name: Check if Cloudflare Pages Project exists
       shell: bash
