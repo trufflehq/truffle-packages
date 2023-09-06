@@ -35,7 +35,7 @@ const HomePage = observer(() => {
   // without remounting. not really sure why it doesn't, but remounting (with key) works
   return (
     <UrqlProvider value={truffleApp.gqlClient} key={user$.get()?.id}>
-      <Menu iconImageObj={iconImageObj} creatorName={"Ludwig"} />
+      <Menu iconImageObj={iconImageObj} creatorName={"Streamer"} />
     </UrqlProvider>
   );
 });
