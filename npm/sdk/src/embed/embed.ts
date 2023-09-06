@@ -141,6 +141,6 @@ export class Embed {
   }
 
   public getPageInfo() {
-    return this._embedConsumer.call("getPageInfo") as Promise<PageInfo>;
+    return this._embedConsumer.call("pageInfoGet") as Promise<PageInfo>;
   }
 }
