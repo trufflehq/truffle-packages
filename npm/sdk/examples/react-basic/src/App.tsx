@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
-import { getEmbed } from "@trufflehq/sdk";
+import { getEmbed, PageInfo } from "@trufflehq/sdk";
 
 const embed = getEmbed();
 
@@ -10,6 +10,13 @@ function App() {
 
   const [isSmall, setIsSmall] = useState(true);
   const [hasBorder, setHasBorder] = useState(false);
+
+  const [pageInfo, setPageInfo] = useState<PageInfo | {}>({});
+  useEffect(() => {
+    embed.getPageInfo().then((info) => {
+      setPageInfo(info);
+    });
+  });
 
   const setSize = () => {
     if (isSmall) {
@@ -49,7 +56,7 @@ function App() {
       body: "A message from Truffle",
       onClick: () => {
         embed.openWindow();
-      }
+      },
     });
   };
 
@@ -82,6 +89,11 @@ function App() {
       <button onClick={setContainer}>Set Container</button>
       <button onClick={hideWindow}>Hide Window</button>
       <button onClick={showToast}>Show Toast</button>
+
+      <h2>Page Info</h2>
+      <pre
+        style={{ textAlign: "left" }}
+      >{JSON.stringify(pageInfo, null, 2)}</pre>
     </div>
   );
 }
