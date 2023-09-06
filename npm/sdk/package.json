@@ -1,6 +1,6 @@
 {
   "name": "@trufflehq/sdk",
-  "version": "0.4.0",
+  "version": "0.4.5",
   "description": "The official javascript SDK for Truffle",
   "keywords": [
     "truffle",
@@ -36,7 +36,7 @@
     "@trufflehq/transframe": "^0.1.0",
     "@urql/core": "^3.1.1",
     "@urql/exchange-auth": "^1.0.0",
-    "graphql": "^16.6.0",
+    "graphql": "^16.8.0",
     "graphql-ws": "^5.13.1",
     "wonka": "^6.1.2"
   },

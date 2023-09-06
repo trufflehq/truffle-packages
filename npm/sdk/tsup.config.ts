@@ -13,4 +13,5 @@ export default defineConfig({
   tsconfig: "./tsconfig.json",
   keepNames: false, // keepNames: true can do some weird stuff (search keepNames in our discord)
   treeshake: true,
+  replaceNodeEnv: false,
 });

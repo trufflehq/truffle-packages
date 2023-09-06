@@ -1,5 +1,6 @@
 import { TransframeConsumer } from "@trufflehq/transframe";
 import { EmbedSourceApi, getEmbedConsumer } from "../transframe/embed-consumer";
+import { PageInfo } from "../types/embed";
 
 type Styles = Record<string, unknown>;
 
@@ -137,5 +138,9 @@ export class Embed {
       // transframe callbacks only work if they're passed as top level arguments to a function
       options.onClick,
     );
+  }
+
+  public getPageInfo() {
+    return this._embedConsumer.call("pageInfoGet") as Promise<PageInfo>;
   }
 }
