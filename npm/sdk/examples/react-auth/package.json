@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@legendapp/state": "^0.23.2",
-    "@trufflehq/sdk": "file:../..",
+    "@trufflehq/sdk": "^0.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -19,6 +19,6 @@
     "@types/react-dom": "^18.0.9",
     "@vitejs/plugin-react": "^3.0.0",
     "typescript": "^4.9.3",
-    "vite": "^4.0.0"
+    "vite": "^4.4.9"
   }
 }
