@@ -12,13 +12,6 @@ export {
 export { getClient, query } from "./shared/util/graphql/methods.ts";
 
 export {
-  getAccessToken,
-  getAccessToken$,
-  onAccessTokenChange,
-  setAccessToken,
-} from "./shared/util/truffle/access-token.ts";
-
-export {
   gql,
   Provider as UrqlProvider,
   useMutation,

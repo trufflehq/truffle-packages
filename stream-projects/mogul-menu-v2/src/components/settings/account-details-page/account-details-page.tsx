@@ -1,38 +1,29 @@
 import {
-  React,
-  setAccessToken,
   jumper,
+  React,
   TextField,
   useEffect,
+  useSelector,
+  useSignal,
   useState,
   useStyleSheet,
-  useSignal,
-  useSelector,
 } from "../../../deps.ts";
 import Button from "../../base/button/button.tsx";
-import { useOrgUser$ } from "../../../shared/mod.ts";
-import { useMenu } from "../../menu/mod.ts";
-import { updateTabState, useTabs } from "../../tabs/mod.ts";
-import { Page, usePageStack } from "../../page-stack/mod.ts";
+import { Page } from "../../page-stack/mod.ts";
 import Switch from "../../base/switch/switch.tsx";
 import {
-  invalidateExtensionUser,
   useOrgUserChatSettings,
   useSaveOrgUserSettings,
 } from "../../../shared/mod.ts";
 import { SnackBar, useSnackBar } from "../../snackbar/mod.ts";
 import styleSheet from "./account-details-page.scss.js";
 
-const IS_THEMING_DISABLED_KEY = 'isThemingDisabled'
+const IS_THEMING_DISABLED_KEY = "isThemingDisabled";
 
 export default function AccountDetailsPage() {
   useStyleSheet(styleSheet);
-  const { refetchOrgUser } = useOrgUser$();
 
   const enqueueSnackBar = useSnackBar();
-  const { clearPageStack } = usePageStack();
-  const { setIsClosed } = useMenu();
-  const { dispatch } = useTabs();
 
   const [username, setUsername] = useState<string>();
   const [nameColor, setNameColor] = useState<string>();
@@ -75,23 +66,12 @@ export default function AccountDetailsPage() {
     );
   };
 
-  const logout = async () => {
-    // clear the access token in the browser and ext. local storage
-    setAccessToken("");
-
-    // let the extension know that the user has logged out and needs to invalidate
-    invalidateExtensionUser();
-
-    // reset the menu state
-    dispatch(updateTabState("home", "isActive", true));
-    clearPageStack();
-    await refetchOrgUser({ requestPolicy: "network-only" });
-  };
-
-  const isThemingDisabled$ = useSignal(jumper.call("storage.get", {
-    key: IS_THEMING_DISABLED_KEY,
-  }).then((value) => value === '1'));
-  const isThemingDisabled = useSelector(() => isThemingDisabled$.get())
+  const isThemingDisabled$ = useSignal(
+    jumper.call("storage.get", {
+      key: IS_THEMING_DISABLED_KEY,
+    }).then((value) => value === "1"),
+  );
+  const isThemingDisabled = useSelector(() => isThemingDisabled$.get());
 
   return (
     <Page title="Account details">
@@ -120,13 +100,15 @@ export default function AccountDetailsPage() {
           />
         </div>
         <div className="input">
-          <div className="label mm-text-body-2">Disable themes (refresh page after changing)</div>
+          <div className="label mm-text-body-2">
+            Disable themes (refresh page after changing)
+          </div>
           <Switch
             value={isThemingDisabled}
             onChange={(isEnabled: boolean) => {
               jumper.call("storage.set", {
                 key: IS_THEMING_DISABLED_KEY,
-                value: isEnabled ? '1' : '0',
+                value: isEnabled ? "1" : "0",
               });
               setHasChanged(true);
               isThemingDisabled$.set(isEnabled);
@@ -136,9 +118,6 @@ export default function AccountDetailsPage() {
         <div className="actions">
           <Button style="primary" isDisabled={!hasChanged} onClick={save}>
             Save
-          </Button>
-          <Button style="error" onClick={logout}>
-            Logout
           </Button>
         </div>
       </div>
