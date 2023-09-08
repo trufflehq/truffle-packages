@@ -129,11 +129,28 @@ export function addBuilderTreeChild(
   node.children.push(...toAdd);
 }
 
+// returns true if all keys in subset are in superset
+// eg. { a: 1, b: { c: 2 } } is a deep subset of { a: 1, b: { c: 2, d: 3 }, e: 4 }
+const isSubsetOfSuperset = (
+  subset: Record<string, unknown> = {},
+  superset: Record<string, unknown> = {},
+): boolean => {
+  return Object.keys(subset).every((key) => {
+    if (typeof subset[key] === "object") {
+      return isSubsetOfSuperset(
+        subset[key] as Record<string, unknown>,
+        superset[key] as Record<string, unknown>,
+      );
+    }
+
+    return superset[key] === subset[key];
+  });
+};
+
 export const buildModelMatcher: (
   modelName: string,
-  paramIdName?: string,
-) => PermEvalFunc = (modelName, paramIdName = "id") =>
-  (perm, context) => {
+) => PermEvalFunc = (modelName) =>
+  (perm, context = {}) => {
     // check if they have permission to access any object
     if (perm.params?.all) {
       return perm.value === "allow"
@@ -149,54 +166,33 @@ export const buildModelMatcher: (
         };
     }
 
-    // if we're checking if they have permission to access any object within a parent
-    if (perm.params?.parentId && perm.params?.parentObject) {
-      return perm.params?.parentId === context?.[perm.params?.parentObject]?.id
-        ? perm.value === "allow"
-          ? {
-            result: "granted",
-            reason: `Permission granted to ${perm.action} from parent ${perm
-              .params?.parentObject} with id ${perm.params?.parentId}.`,
-            reasonCode: "granted",
-          }
-          : {
-            result: "denied",
-            reason: `Permission denied to ${perm.action} from parent ${perm
-              .params?.parentObject} with id ${perm.params?.parentId}.`,
-            reasonCode: "denied",
-          }
-        : {
-          result: "undetermined",
-          reason:
-            `Nothing explicitly granted or denied permission to ${perm.action} from parent ${perm
-              .params?.parentObject} with id ${perm.params?.parentId}.`,
-        };
-    }
+    const allParamsMatchInContext = isSubsetOfSuperset(perm.params, context);
 
-    // check if they have permission to access this specific object
-    return perm.params?.[paramIdName] === context?.[modelName]?.id
-      ? perm.value === "allow"
+    if (allParamsMatchInContext) {
+      return perm.value === "allow"
         ? {
           result: "granted",
-          reason:
-            `Permission granted to ${perm.action} ${modelName} with ${paramIdName} ${perm
-              .params?.[paramIdName]}.`,
+          reason: `Permission granted to ${perm.action} with params ${
+            JSON.stringify(perm.params)
+          }`,
           reasonCode: "granted",
         }
         : {
           result: "denied",
-          reason:
-            `Permission denied to ${perm.action} ${modelName} with ${paramIdName} ${perm
-              .params?.[paramIdName]}.`,
+          reason: `Permission denied to ${perm.action} with params ${
+            JSON.stringify(perm.params)
+          }`,
           reasonCode: "denied",
-        }
-      : {
-        result: "undetermined",
-        reason:
-          `Nothing explicitly granted or denied permission to ${perm.action} ${modelName} with ${paramIdName} ${perm
-            .params?.[paramIdName]}.`,
-        reasonCode: "undetermined",
-      };
+        };
+    }
+
+    return {
+      result: "undetermined",
+      reason:
+        `Nothing explicitly granted or denied permission to ${perm.action} with params ${
+          JSON.stringify(perm.params)
+        }`,
+    };
   };
 
 export const BasicModelPermEvalBuilderTree = (domain?: string) => {
