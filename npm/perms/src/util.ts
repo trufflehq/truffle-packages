@@ -147,53 +147,50 @@ const isSubsetOfSuperset = (
   });
 };
 
-export const buildModelMatcher: (
-  modelName: string,
-) => PermEvalFunc = (modelName) =>
-  (perm, context = {}) => {
-    // check if they have permission to access any object
-    if (perm.params?.all) {
-      return perm.value === "allow"
-        ? {
-          result: "granted",
-          reason: `Permission granted to ${perm.action} all ${modelName}s.`,
-          reasonCode: "granted",
-        }
-        : {
-          result: "denied",
-          reason: `Permission denied to ${perm.action} all ${modelName}s.`,
-          reasonCode: "denied",
-        };
-    }
+export const permEvalFunc: PermEvalFunc = (perm, context = {}) => {
+  // check if they have permission to access any object
+  if (perm.params?.all) {
+    return perm.value === "allow"
+      ? {
+        result: "granted",
+        reason: `Permission granted to ${perm.action} all rows.`,
+        reasonCode: "granted",
+      }
+      : {
+        result: "denied",
+        reason: `Permission denied to ${perm.action} all rows.`,
+        reasonCode: "denied",
+      };
+  }
 
-    const allParamsMatchInContext = isSubsetOfSuperset(perm.params, context);
+  const allParamsMatchInContext = isSubsetOfSuperset(perm.params, context);
 
-    if (allParamsMatchInContext) {
-      return perm.value === "allow"
-        ? {
-          result: "granted",
-          reason: `Permission granted to ${perm.action} with params ${
-            JSON.stringify(perm.params)
-          }`,
-          reasonCode: "granted",
-        }
-        : {
-          result: "denied",
-          reason: `Permission denied to ${perm.action} with params ${
-            JSON.stringify(perm.params)
-          }`,
-          reasonCode: "denied",
-        };
-    }
-
-    return {
-      result: "undetermined",
-      reason:
-        `Nothing explicitly granted or denied permission to ${perm.action} with params ${
+  if (allParamsMatchInContext) {
+    return perm.value === "allow"
+      ? {
+        result: "granted",
+        reason: `Permission granted to ${perm.action} with params ${
           JSON.stringify(perm.params)
         }`,
-    };
+        reasonCode: "granted",
+      }
+      : {
+        result: "denied",
+        reason: `Permission denied to ${perm.action} with params ${
+          JSON.stringify(perm.params)
+        }`,
+        reasonCode: "denied",
+      };
+  }
+
+  return {
+    result: "undetermined",
+    reason:
+      `Nothing explicitly granted or denied permission to ${perm.action} with params ${
+        JSON.stringify(perm.params)
+      }`,
   };
+};
 
 export const BasicModelPermEvalBuilderTree = (domain?: string) => {
   const actionName = (action: string) => {
