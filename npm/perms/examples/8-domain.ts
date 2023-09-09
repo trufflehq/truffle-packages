@@ -44,23 +44,31 @@ const user1Perms = [
   perm({
     action: "collection.all",
     value: "allow",
-    params: { collection: { id: "456" } },
+    params: { match: { collection: { id: "456" } } },
   }),
 ];
 
 const user2Perms = [
-  perm({ action: "doc.read", value: "allow", params: { doc: { id: "456" } } }),
+  perm({
+    action: "doc.read",
+    value: "allow",
+    params: { match: { doc: { id: "456" } } },
+  }),
 ];
 
 const user3Perms = [
-  perm({ action: "doc.all", value: "allow", params: { doc: { id: "123" } } }),
+  perm({
+    action: "doc.all",
+    value: "allow",
+    params: { match: { doc: { id: "123" } } },
+  }),
 ];
 
 const user4Perms = [
   perm({
     action: "doc.all",
     value: "allow",
-    params: { collection: { id: "456" }, doc: { id: "123" } },
+    params: { match: { collection: { id: "456" }, doc: { id: "123" } } },
   }),
 ];
 
@@ -68,7 +76,7 @@ const user5Perms = [
   perm({
     action: "doc.all",
     value: "allow",
-    params: { collection: { id: "rando" }, doc: { id: "123" } },
+    params: { match: { collection: { id: "rando" }, doc: { id: "123" } } },
   }),
 ];
 

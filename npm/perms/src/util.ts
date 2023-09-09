@@ -163,7 +163,10 @@ export const permEvalFunc: PermEvalFunc = (perm, context = {}) => {
       };
   }
 
-  const allParamsMatchInContext = isSubsetOfSuperset(perm.params, context);
+  const isValidMatchObject = perm.params?.match &&
+    Object.keys(perm.params.match).length > 0;
+  const allParamsMatchInContext = isValidMatchObject &&
+    isSubsetOfSuperset(perm.params.match, context);
 
   if (allParamsMatchInContext) {
     return perm.value === "allow"
