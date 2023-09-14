@@ -1,31 +1,31 @@
-import { Perm } from './perm';
+import { Perm } from "./perm";
 import {
-  PermEvalFunc,
   PermEval,
+  PermEvalFunc,
   PermEvalResult,
   PermEvalTreeBuilderNode,
-} from './perm-eval';
+} from "./perm-eval";
 
 export const DEFAULT_RESULT: PermEvalResult = {
-  result: 'undetermined',
+  result: "undetermined",
   reason: `Nothing explicitly granted or denied permission.`,
-  reasonCode: 'undetermined',
+  reasonCode: "undetermined",
 };
 
 export function defaultHasPermissionFunc(perm: Perm): PermEvalResult {
   switch (perm.value) {
-    case 'allow':
+    case "allow":
       return {
-        result: 'granted',
+        result: "granted",
         reason: `Permission explicitly granted.`,
-        reasonCode: 'granted',
+        reasonCode: "granted",
       };
 
-    case 'deny':
+    case "deny":
       return {
-        result: 'denied',
+        result: "denied",
         reason: `Permission explicitly denied.`,
-        reasonCode: 'denied',
+        reasonCode: "denied",
       };
 
     default:
@@ -36,10 +36,10 @@ export function defaultHasPermissionFunc(perm: Perm): PermEvalResult {
 export function perm(perm: Perm): Perm;
 export function perm(action: string, params?: any): Perm;
 export function perm(permOrAction: string | Perm, params?: any): Perm {
-  if (typeof permOrAction === 'string') {
+  if (typeof permOrAction === "string") {
     return {
       action: permOrAction,
-      value: 'allow',
+      value: "allow",
       params,
     };
   } else {
@@ -51,12 +51,12 @@ export function permEval(
   permEval:
     | string
     | {
-        action: string;
-        hasPermission?: PermEvalFunc;
-        fallbacks?: PermEval[];
-      },
+      action: string;
+      hasPermission?: PermEvalFunc;
+      fallbacks?: PermEval[];
+    },
 ): PermEval {
-  if (typeof permEval === 'string') {
+  if (typeof permEval === "string") {
     return {
       action: permEval,
     };
@@ -129,64 +129,71 @@ export function addBuilderTreeChild(
   node.children.push(...toAdd);
 }
 
-export const buildModelMatcher: (
-  modelName: string,
-  paramIdName?: string,
-) => PermEvalFunc =
-  (modelName, paramIdName = 'id') =>
-  (perm, context) => {
+// returns true if all keys in subset are in superset
+// eg. { a: 1, b: { c: 2 } } is a deep subset of { a: 1, b: { c: 2, d: 3 }, e: 4 }
+const isSubsetOfSuperset = (
+  subset: Record<string, unknown> = {},
+  superset: Record<string, unknown> = {},
+): boolean => {
+  return Object.keys(subset).every((key) => {
+    if (typeof subset[key] === "object") {
+      return isSubsetOfSuperset(
+        subset[key] as Record<string, unknown>,
+        superset[key] as Record<string, unknown>,
+      );
+    }
 
-    // check if they have permission to access any object
-    if (perm.params?.all)
-      return perm.value === 'allow' ? {
-        result: 'granted',
-        reason: `Permission granted to ${perm.action} all ${modelName}s.`,
-        reasonCode: 'granted',
-      } : {
-        result: 'denied',
-        reason: `Permission denied to ${perm.action} all ${modelName}s.`,
-        reasonCode: 'denied',
-      };
+    return superset[key] === subset[key];
+  });
+};
 
-
-    // if we're checking if they have permission to access any object within a parent
-    if (perm.params?.parentId && perm.params?.parentObject)
-      return perm.params?.parentId === context?.[perm.params?.parentObject]?.id
-        ? perm.value === 'allow'
-          ? {
-              result: 'granted',
-              reason: `Permission granted to ${perm.action} from parent ${perm.params?.parentObject} with id ${perm.params?.parentId}.`,
-              reasonCode: 'granted',
-            }
-          : {
-              result: 'denied',
-              reason: `Permission denied to ${perm.action} from parent ${perm.params?.parentObject} with id ${perm.params?.parentId}.`,
-              reasonCode: 'denied',
-            }
-        : {
-          result: 'undetermined',
-          reason: `Nothing explicitly granted or denied permission to ${perm.action} from parent ${perm.params?.parentObject} with id ${perm.params?.parentId}.`,
-        };
-
-    // check if they have permission to access this specific object
-    return perm.params?.[paramIdName] === context?.[modelName]?.id
-      ? perm.value === 'allow'
-        ? {
-            result: 'granted',
-            reason: `Permission granted to ${perm.action} ${modelName} with ${paramIdName} ${perm.params?.[paramIdName]}.`,
-            reasonCode: 'granted',
-          }
-        : {
-            result: 'denied',
-            reason: `Permission denied to ${perm.action} ${modelName} with ${paramIdName} ${perm.params?.[paramIdName]}.`,
-            reasonCode: 'denied',
-          }
+export const permEvalFunc: PermEvalFunc = (perm, context = {}) => {
+  // check if they have permission to access any object
+  if (perm.params?.all) {
+    return perm.value === "allow"
+      ? {
+        result: "granted",
+        reason: `Permission granted to ${perm.action} all rows.`,
+        reasonCode: "granted",
+      }
       : {
-          result: 'undetermined',
-          reason: `Nothing explicitly granted or denied permission to ${perm.action} ${modelName} with ${paramIdName} ${perm.params?.[paramIdName]}.`,
-          reasonCode: 'undetermined',
+        result: "denied",
+        reason: `Permission denied to ${perm.action} all rows.`,
+        reasonCode: "denied",
       };
+  }
+
+  const isValidMatchObject = perm.params?.match &&
+    Object.keys(perm.params.match).length > 0;
+  const allParamsMatchInContext = isValidMatchObject &&
+    isSubsetOfSuperset(perm.params.match, context);
+
+  if (allParamsMatchInContext) {
+    return perm.value === "allow"
+      ? {
+        result: "granted",
+        reason: `Permission granted to ${perm.action} with params ${
+          JSON.stringify(perm.params)
+        }`,
+        reasonCode: "granted",
+      }
+      : {
+        result: "denied",
+        reason: `Permission denied to ${perm.action} with params ${
+          JSON.stringify(perm.params)
+        }`,
+        reasonCode: "denied",
+      };
+  }
+
+  return {
+    result: "undetermined",
+    reason:
+      `Nothing explicitly granted or denied permission to ${perm.action} with params ${
+        JSON.stringify(perm.params)
+      }`,
   };
+};
 
 export const BasicModelPermEvalBuilderTree = (domain?: string) => {
   const actionName = (action: string) => {
@@ -194,21 +201,21 @@ export const BasicModelPermEvalBuilderTree = (domain?: string) => {
   };
 
   return {
-    self: permEval(actionName('all')),
+    self: permEval(actionName("all")),
     children: [
       {
-        self: permEval(actionName('list')),
-        children: [{ self: permEval(actionName('read')) }],
+        self: permEval(actionName("list")),
+        children: [{ self: permEval(actionName("read")) }],
       },
       {
-        self: permEval(actionName('write')),
+        self: permEval(actionName("write")),
         children: [
-          { self: permEval(actionName('create')) },
-          { self: permEval(actionName('update')) },
-          { self: permEval(actionName('delete')) },
+          { self: permEval(actionName("create")) },
+          { self: permEval(actionName("update")) },
+          { self: permEval(actionName("delete")) },
         ],
       },
-      { self: permEval(actionName('execute')) },
+      { self: permEval(actionName("execute")) },
     ],
   };
 };

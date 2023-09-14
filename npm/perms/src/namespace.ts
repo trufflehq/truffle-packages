@@ -1,31 +1,20 @@
-import { PermEval, PermEvalFunc } from './perm-eval';
-import { buildModelMatcher } from './util';
-
-interface PermDomainOptions {
-  defaultPermEvalFunc?: PermEvalFunc;
-}
+import { PermEval } from "./perm-eval";
+import { permEvalFunc } from "./util";
 
 export class PermNamespace {
   private _actions = new Map<string, PermEval>();
   private _children = new Set<PermNamespace>();
 
-  private _defaultPermEvalFunc: PermEvalFunc;
-
   constructor(
     public name: string,
-    options: PermDomainOptions = {},
-  ) {
-    this._defaultPermEvalFunc =
-      options.defaultPermEvalFunc ?? buildModelMatcher(this.name);
-  }
+  ) {}
 
   public registerAction(permEval: PermEval) {
     // don't register the same action twice
     if (this._actions.has(permEval.action)) return;
 
     const newPermEval: PermEval = {
-      // default to the defaultPermEvalFunc
-      hasPermission: this._defaultPermEvalFunc,
+      hasPermission: permEvalFunc,
 
       // get all the other properties from the permEval
       ...permEval,
@@ -77,7 +66,6 @@ export class PermNamespace {
     // and modify it in place so that
     // we're not creating a bunch of arrays
     stack: PermNamespace[],
-
     // same with the result tree
     resultTree: PermEval[],
   ): PermEval[] {

@@ -1,5 +1,5 @@
 export interface Perm<TParams = unknown> {
   action: string;
-  value: 'allow' | 'deny';
+  value: "allow" | "deny";
   params?: TParams;
 }
