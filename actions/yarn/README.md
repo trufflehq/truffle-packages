@@ -3,7 +3,6 @@
 
 ## Usage
 ```yaml
--
-	name: Install dependencies
-	uses: ./.github/actions/yarn
+- name: Install dependencies
+  uses: trufflehq/truffle-packages/actions/yarn@main
 ```

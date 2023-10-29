@@ -3,18 +3,16 @@
 
 ## Usage
 ```yaml
-- 
-	name: Generate Image Tag
-	id: generate_tag
-	uses: ./.github/actions/image_tag
+- name: Generate Image Tag
+  id: generate_tag
+  uses: trufflehq/truffle-packages/actions/image_tag@main
 
-- 
-	name: Docker meta
-    id: meta
-    uses: docker/metadata-action@v4
-    with:
-		images: ${{ env.slug }}
-		tags: |
-		type=raw,value=latest
-		type=raw,value=${{ steps.generate_tag.outputs.tag }}
+- name: Docker meta
+  id: meta
+  uses: docker/metadata-action@v4
+  with:
+    images: ${{ env.slug }}
+    tags: |
+      type=raw,value=latest
+      type=raw,value=${{ steps.generate_tag.outputs.tag }}
 ```
