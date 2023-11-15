@@ -20,7 +20,12 @@ export class TruffleApp {
       this._org.gqlClient = this._gqlClient;
     };
 
-    if (!clientOptions?.userAccessToken || !clientOptions?.orgId) {
+    // NOTE: we don't want this called on app.truffle.vip, because the sidebar and embed page
+    // are often iframed and shouldn't be transframing into the parent window.
+    // app.truffle.vip provides userAccessToken in the options.
+    // I (Austin H) am not sure why we were doing this if orgId wasn't specified 11/9/23
+    // if (!clientOptions?.userAccessToken || !clientOptions?.orgId) {
+    if (!clientOptions?.userAccessToken) {
       // in this case, we're probably initializing the app
       // as the default app, so we want to listen for changes
       // to the authentication state
