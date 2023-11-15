@@ -1,5 +1,5 @@
 import { Client } from "@urql/core";
-import { createMyceliumClient, MyceliumClientOptions } from "../mycelium";
+import { createApiClient, ApiClientOptions } from "../api";
 import { TruffleUserClient } from "../user";
 import { TruffleOrgClient } from "../org";
 import { TruffleOrgUserClient } from "../org-user";
@@ -12,9 +12,9 @@ export class TruffleApp {
   private _org: TruffleOrgClient;
   private _isAuthenticated = false;
 
-  constructor(clientOptions?: MyceliumClientOptions) {
-    const updateClient = (clientOptions?: MyceliumClientOptions) => {
-      this._gqlClient = createMyceliumClient(clientOptions);
+  constructor(clientOptions?: ApiClientOptions) {
+    const updateClient = (clientOptions?: ApiClientOptions) => {
+      this._gqlClient = createApiClient(clientOptions);
       this._user.gqlClient = this._gqlClient;
       this._orgUser.gqlClient = this._gqlClient;
       this._org.gqlClient = this._gqlClient;
@@ -52,7 +52,7 @@ export class TruffleApp {
     // initialize the client;
     // we can't use updateClient() here because typescript
     // needs to know that these get initialized in the constructor
-    this._gqlClient = createMyceliumClient(clientOptions);
+    this._gqlClient = createApiClient(clientOptions);
     this._user = new TruffleUserClient(this._gqlClient);
     this._orgUser = new TruffleOrgUserClient(this._gqlClient);
     this._org = new TruffleOrgClient(this._gqlClient);

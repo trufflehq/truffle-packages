@@ -1,4 +1,4 @@
-import { MyceliumClientOptions } from '../mycelium';
+import { ApiClientOptions } from '../api';
 import { getEmbedConsumer } from '../transframe/embed-consumer';
 import { TruffleApp } from './app';
 
@@ -8,7 +8,7 @@ const appInstances: Map<string, TruffleApp> = new Map();
 
 type InitTruffleAppOptions = {
   instanceName?: string;
-} & Partial<MyceliumClientOptions>;
+} & Partial<ApiClientOptions>;
 
 export function initTruffleApp(options: InitTruffleAppOptions = {}) {
   // make sure we can initialize the embed consumer;
