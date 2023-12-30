@@ -27,7 +27,8 @@ interface AuthState {
 export function createApiClient(options: ApiClientOptions = {}) {
   // TODO: default to mothertree. atm this sdk still relies on some resolvers that aren't in mothertree yet
   const url = options.url || DEFAULT_MYCELIUM_API_URL;
-
+  let activeSocket: WebSocket
+  let timeoutId: NodeJS.Timeout;
   const wsClient = createWSClient({
     // FIXME: .replace is hacky
     url: url.replace("http", "ws"),
@@ -43,6 +44,20 @@ export function createApiClient(options: ApiClientOptions = {}) {
     },
     // always retry. otherwise it doesn't seem to retry if server is down
     shouldRetry: (/* errOrCloseEvent */) => true,
+    keepAlive: 30000,
+    on: {
+      connected: (socket) => (activeSocket = socket as WebSocket),
+      ping: (received) => {
+        if (!received) // sent
+          timeoutId = setTimeout(() => {
+            if (activeSocket.readyState === WebSocket.OPEN)
+              activeSocket.close(4408, 'Request Timeout');
+          }, 5000); // wait 5 seconds for the pong and then close the connection
+      },
+      pong: (received) => {
+        if (received) clearTimeout(timeoutId); // pong is received, clear connection close timeout
+      },
+    },
   });
 
   return new Client({
