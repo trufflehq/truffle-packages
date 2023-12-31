@@ -40,16 +40,18 @@ export function createApiClient(options: ApiClientOptions = {}) {
     retryWait: async (retries) => {
       // 0.5s, 1s, 1.5, 2s, ..., 5s (repeated)
       const delayMs = Math.min((retries + 1) * 400, 5000);
+      console.log(`Retrying websocket connection in ${delayMs}ms`);      
       await new Promise((resolve) => setTimeout(resolve, delayMs));
     },
     // always retry. otherwise it doesn't seem to retry if server is down
     shouldRetry: (/* errOrCloseEvent */) => true,
-    keepAlive: 30000,
+    keepAlive: 15000,
     on: {
       connected: (socket) => (activeSocket = socket as WebSocket),
       ping: (received) => {
         if (!received) // sent
           timeoutId = setTimeout(() => {
+            console.log('Closing socket due to ping timeout');
             if (activeSocket.readyState === WebSocket.OPEN)
               activeSocket.close(4408, 'Request Timeout');
           }, 5000); // wait 5 seconds for the pong and then close the connection
