@@ -140,7 +140,7 @@ export class Embed {
     );
   }
 
-  public getPageInfo() {
-    return this._embedConsumer.call("pageInfoGet") as Promise<PageInfo>;
+  public getPageInfo(onChange?: (pageInfo: PageInfo) => void) {
+    return this._embedConsumer.call("pageInfoGet", onChange) as Promise<PageInfo>;
   }
 }
