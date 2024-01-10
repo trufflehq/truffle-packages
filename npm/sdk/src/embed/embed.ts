@@ -1,6 +1,6 @@
 import { TransframeConsumer } from "@trufflehq/transframe";
 import { EmbedSourceApi, getEmbedConsumer } from "../transframe/embed-consumer";
-import { PageInfo } from "../types/embed";
+import { EnvironmentInfo, PageInfo } from "../types/embed";
 
 type Styles = Record<string, unknown>;
 
@@ -142,5 +142,9 @@ export class Embed {
 
   public getPageInfo(onChange?: (pageInfo: PageInfo) => void) {
     return this._embedConsumer.call("pageInfoGet", onChange) as Promise<PageInfo>;
+  }
+
+  public getEnvironmentInfo(onChange?: (environmentInfo: EnvironmentInfo) => void) {
+    return this._embedConsumer.call("environmentInfoGet", onChange) as Promise<EnvironmentInfo>;
   }
 }

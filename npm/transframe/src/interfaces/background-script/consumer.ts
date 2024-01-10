@@ -29,6 +29,14 @@ export class BackgroundScriptConsumerInterface
       });
       this._port.onMessage.addListener(this._messageHandlerWrapper);
       this._isConnected = true;
+
+      // if we get unexpectedly disconnected, reconnect
+      this._port.onDisconnect.addListener(() => {
+        // if we intentionally disconnected, this._isConnected will already be false
+        if (!this._isConnected) return;
+        this._isConnected = false;
+        this.connect();
+      });
     };
 
     // If the document is pre-rendering do NOT connect right away;

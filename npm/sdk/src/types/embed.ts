@@ -7,3 +7,10 @@ export interface PageInfo {
   contentPageId: string;
   data: object;
 }
+
+export interface EnvironmentInfo {
+  truffleVersion: string;
+  isExperimental: boolean;
+  isExperimentalSidebar: boolean;
+  deviceType: 'desktop' | 'mobile';
+}

@@ -7,3 +7,7 @@ export interface BackgroundScriptConsumerInterfaceOptions {
 export type BackgroundScriptInterfaceContext = {
   port: Browser.Runtime.Port;
 }
+
+export type ModifiedPort = Browser.Runtime.Port & {
+  _timer?: ReturnType<typeof setTimeout>;
+}
