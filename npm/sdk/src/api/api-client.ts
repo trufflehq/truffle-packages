@@ -9,7 +9,7 @@ import {
 } from "@urql/core";
 import { authExchange } from "@urql/exchange-auth";
 import { createClient as createWSClient } from "graphql-ws";
-import { DEFAULT_MYCELIUM_API_URL } from "../constants";
+import { DEFAULT_MOTHERTREE_API_URL } from "../constants";
 import { getAccessToken } from "../user/access-token";
 
 export interface ApiClientOptions {
@@ -26,7 +26,7 @@ interface AuthState {
 
 export function createApiClient(options: ApiClientOptions = {}) {
   // TODO: default to mothertree. atm this sdk still relies on some resolvers that aren't in mothertree yet
-  const url = options.url || DEFAULT_MYCELIUM_API_URL;
+  const url = options.url || DEFAULT_MOTHERTREE_API_URL;
   let activeSocket: WebSocket
   let timeoutId: NodeJS.Timeout;
   const wsClient = createWSClient({

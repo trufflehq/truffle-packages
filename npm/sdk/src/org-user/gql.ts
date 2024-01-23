@@ -2,9 +2,15 @@ import { gql } from '@urql/core';
 
 export const ORG_USER_QUERY = gql`
   query SDKOrgUserQuery($id: ID, $userId: ID, $orgId: ID) {
-    orgUser(input: { id: $id, userId: $userId, orgId: $orgId }) {
+    orgMember(input: { id: $id, userId: $userId, orgId: $orgId }) {
       id
       name
+
+      roles {
+        id
+        slug
+      }
+
       # TODO: refactor this into a role client object
       roleConnection {
         nodes {
