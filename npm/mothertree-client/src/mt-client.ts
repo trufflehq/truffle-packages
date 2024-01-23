@@ -1,4 +1,4 @@
-import { Client } from 'graphql-ws';
+import { Client, ExecutionResult } from 'graphql-ws';
 import { WSClientOptions, createWSClient } from './ws-client';
 import { verify as jwtVerify } from 'jsonwebtoken';
 import { MOTHERTREE_PUBLIC_ES256_KEY } from './constants';
@@ -7,7 +7,7 @@ type QueryExecutor = (
   query: string,
   variables: any,
   options: any
-) => Promise<unknown>;
+) => Promise<ExecutionResult>;
 
 type MothertreeClientOptions = WSClientOptions & {
   /**
@@ -43,6 +43,21 @@ interface OrgMemberInput {
     orgId: string;
     userId: string;
   };
+}
+
+interface OrgPayload {
+  id: string;
+  name: string;
+}
+
+interface OrgMemberPayload {
+  id: string;
+  name: string;
+}
+
+interface RolePayload {
+  id: string;
+  slug: string;
 }
 
 export class MothertreeClient {
@@ -85,7 +100,7 @@ export class MothertreeClient {
     variables,
     options?: { extensions?: Record<string, unknown>; operationName?: string }
   ) => {
-    return await new Promise((res, rej) => {
+    return await new Promise<ExecutionResult>((res, rej) => {
       if (this.wsClient) {
         const unsubscribe = this.wsClient.subscribe(
           {
@@ -96,7 +111,7 @@ export class MothertreeClient {
           },
           {
             next(val) {
-              res(val);
+              res(val as ExecutionResult);
             },
             error(err) {
               rej(err);
@@ -152,11 +167,14 @@ export class MothertreeClient {
     },
     options?: any
   ) {
-    return await this._queryExecutor(
+    const { data, errors } = await this._queryExecutor(
       'query($input: OrgMemberInput) { orgMember(input: $input) { id name } }',
       { input },
       options
     );
+
+    if (errors) throw errors;
+    return data?.orgMember as OrgMemberPayload;
   }
 
   public async getOrg(
@@ -167,18 +185,24 @@ export class MothertreeClient {
     },
     options?: any
   ) {
-    return await this._queryExecutor(
+    const { data, errors } = await this._queryExecutor(
       'query($input: OrgInput) { org(input: $input) { id name } }',
       { input },
       options
     );
+
+    if (errors) throw errors;
+    return data?.org as OrgPayload;
   }
 
-  public getRoles(input?: OrgMemberInput, options?: any) {
-    return this._queryExecutor(
+  public async getRoles(input?: OrgMemberInput, options?: any) {
+    const { data, errors } = await this._queryExecutor(
       'query($input: OrgMemberInput) { orgMember(input: $input) { roles { id slug } } }',
       { input },
       options
     );
+
+    if (errors) throw errors;
+    return (data as any)?.orgMember?.roles as RolePayload[];
   }
 }

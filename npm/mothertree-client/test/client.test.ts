@@ -57,7 +57,7 @@ describe('mt-client.ts', () => {
 
     test('fetch roles', async () => {
       const roles = (await client.getRoles()) as any;
-      console.log('Roles:', roles?.data?.orgMember?.roles);
+      console.log('Roles:', roles);
     });
   });
 
