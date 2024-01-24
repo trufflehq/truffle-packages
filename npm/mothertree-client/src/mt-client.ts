@@ -1,7 +1,14 @@
 import { Client, ExecutionResult } from 'graphql-ws';
 import { WSClientOptions, createWSClient } from './ws-client';
+import {
+  AccessTokenPayload,
+  OrgMemberInput,
+  OrgMemberPayload,
+  OrgPayload,
+  RolePayload,
+} from './mt-types';
 
-type QueryExecutor = (
+export type QueryExecutor = (
   query: string,
   variables: any,
   options: any
@@ -22,47 +29,6 @@ type MothertreeClientOptions = WSClientOptions & {
    */
   wsClient?: Client | null;
 };
-
-export interface AccessTokenPayload {
-  sub: string;
-  nonce: number;
-  type: string;
-  isAnon: boolean;
-  orgId?: string;
-  orgMemberId?: string;
-  packageId?: string;
-  packageInstallId?: string;
-}
-
-interface OrgMemberInput {
-  id?: string;
-  orgId?: string;
-  orgIdAndUserId?: {
-    orgId: string;
-    userId: string;
-  };
-}
-
-interface OrgPayload {
-  id: string;
-  name: string;
-  slug: string;
-  domain?: string;
-  timezone: string;
-  image?: any; // TODO: make a type for this
-  socials?: any; // TODO: make a type for this
-  creatorUserId: string;
-}
-
-interface OrgMemberPayload {
-  id: string;
-  name: string;
-}
-
-interface RolePayload {
-  id: string;
-  slug: string;
-}
 
 export class MothertreeClient {
   // this is public so that devs can switch out the wsClient;

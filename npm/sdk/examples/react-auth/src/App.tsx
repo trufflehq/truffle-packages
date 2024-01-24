@@ -2,13 +2,18 @@ import './App.css';
 import { getAccessToken, getMtClient } from '@trufflehq/sdk';
 import { observer } from '@legendapp/state/react';
 import { useEffect, useMemo, useState } from 'react';
+import {
+  OrgMemberPayload,
+  OrgPayload,
+  RolePayload,
+} from '@trufflehq/mothertree-client';
 
 function App() {
   const mtClient = useMemo(() => getMtClient(), []);
 
-  const [org, setOrg] = useState<any>();
-  const [orgMember, setOrgMember] = useState<any>();
-  const [roles, setRoles] = useState<any[]>([]);
+  const [org, setOrg] = useState<OrgPayload>();
+  const [orgMember, setOrgMember] = useState<OrgMemberPayload>();
+  const [roles, setRoles] = useState<RolePayload[]>([]);
   useEffect(() => {
     mtClient?.getOrg().then((org) => setOrg(org));
     mtClient?.getOrgMember().then((orgMember) => setOrgMember(orgMember));

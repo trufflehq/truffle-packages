@@ -11,6 +11,8 @@ type InitTruffleAppOptions = {
   instanceName?: string;
 } & Partial<ApiClientOptions>;
 
+type SubscribeToAuthOptions = Omit<InitTruffleAppOptions, 'userAccessToken'>;
+
 export function initTruffleApp(options: InitTruffleAppOptions = {}) {
   const app = new TruffleApp(options);
   const instanceName = options.instanceName || DEFAULT_APP_INSTANCE_NAME;
@@ -20,18 +22,20 @@ export function initTruffleApp(options: InitTruffleAppOptions = {}) {
 
 export function subscribeToAuth(
   callback: (newApp: TruffleApp) => void,
-  instanceName?: string
+  options?: SubscribeToAuthOptions
 ) {
   const refreshTruffleApp = (accessToken: string) => {
     // destroy the previous app instance if it exists
-    appInstances.get(instanceName ?? DEFAULT_APP_INSTANCE_NAME)?.destroy();
+    appInstances
+      .get(options?.instanceName ?? DEFAULT_APP_INSTANCE_NAME)
+      ?.destroy();
 
     // reinitialize the app instance
     // and notify the subscriber
     callback(
       initTruffleApp({
-        instanceName,
         userAccessToken: accessToken,
+        ...options,
       })
     );
   };
