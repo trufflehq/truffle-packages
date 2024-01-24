@@ -47,4 +47,6 @@ const client = getMtClient();
 await client.getOrgMember();
 ```
 
+A full example can be found [here](./examples/react-auth/).
+
 More info about the mothertree client can be found [here](../mothertree-client/).
