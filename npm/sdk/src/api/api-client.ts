@@ -6,11 +6,10 @@ import {
   fetchExchange,
   makeOperation,
   subscriptionExchange,
-} from "@urql/core";
-import { authExchange } from "@urql/exchange-auth";
-import { createClient as createWSClient } from "graphql-ws";
-import { DEFAULT_MOTHERTREE_API_URL } from "../constants";
-import { getAccessToken } from "../user/access-token";
+} from '@urql/core';
+import { authExchange } from '@urql/exchange-auth';
+import { DEFAULT_MOTHERTREE_API_URL } from '../constants';
+import { getAccessToken } from '../transframe/access-token';
 
 export interface ApiClientOptions {
   url?: string;
@@ -25,42 +24,7 @@ interface AuthState {
 }
 
 export function createApiClient(options: ApiClientOptions = {}) {
-  // TODO: default to mothertree. atm this sdk still relies on some resolvers that aren't in mothertree yet
-  const url = options.url || DEFAULT_MOTHERTREE_API_URL;
-  let activeSocket: WebSocket
-  let timeoutId: NodeJS.Timeout;
-  const wsClient = createWSClient({
-    // FIXME: .replace is hacky
-    url: url.replace("http", "ws"),
-    // TODO: pass in websocket lib on node for ssr
-    // need to figure out smart way to import only for node - ideally normal import, not dynamic
-
-    // basically want to retry until we're connected
-    retryAttempts: 99999,
-    retryWait: async (retries) => {
-      // 0.5s, 1s, 1.5, 2s, ..., 5s (repeated)
-      const delayMs = Math.min((retries + 1) * 400, 5000);
-      console.log(`Retrying websocket connection in ${delayMs}ms`);      
-      await new Promise((resolve) => setTimeout(resolve, delayMs));
-    },
-    // always retry. otherwise it doesn't seem to retry if server is down
-    shouldRetry: (/* errOrCloseEvent */) => true,
-    keepAlive: 15000,
-    on: {
-      connected: (socket) => (activeSocket = socket as WebSocket),
-      ping: (received) => {
-        if (!received) // sent
-          timeoutId = setTimeout(() => {
-            console.log('Closing socket due to ping timeout');
-            if (activeSocket.readyState === WebSocket.OPEN)
-              activeSocket.close(4408, 'Request Timeout');
-          }, 5000); // wait 5 seconds for the pong and then close the connection
-      },
-      pong: (received) => {
-        if (received) clearTimeout(timeoutId); // pong is received, clear connection close timeout
-      },
-    },
-  });
+  const url = options.url ?? DEFAULT_MOTHERTREE_API_URL;
 
   return new Client({
     url,
@@ -74,8 +38,8 @@ export function createApiClient(options: ApiClientOptions = {}) {
           const _authState = (authState ?? {}) as AuthState;
 
           if (!_authState.userAccessToken) {
-            _authState.userAccessToken = options.userAccessToken ||
-              (await getAccessToken());
+            _authState.userAccessToken =
+              options.userAccessToken || (await getAccessToken());
           }
 
           // if the orgId is passed in as an option, use that
@@ -84,7 +48,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
           } else {
             // otherwise, extract orgId from userAccessToken
             const tokenPayload = JSON.parse(
-              atob(_authState.userAccessToken.split(".")[1]),
+              atob(_authState.userAccessToken.split('.')[1])
             );
             _authState.orgId = tokenPayload.orgId;
           }
@@ -95,7 +59,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
           const _authState = authState as AuthState;
 
           const fetchOptions =
-            typeof operation.context.fetchOptions === "function"
+            typeof operation.context.fetchOptions === 'function'
               ? operation.context.fetchOptions()
               : operation.context.fetchOptions || {};
 
@@ -108,11 +72,11 @@ export function createApiClient(options: ApiClientOptions = {}) {
           // but if the headers are present with invalid values,
           // it will throw errors
           if (_authState.userAccessToken) {
-            authHeaders["x-access-token"] = _authState.userAccessToken;
+            authHeaders['x-access-token'] = _authState.userAccessToken;
           }
 
           if (_authState.orgId) {
-            authHeaders["x-org-id"] = _authState.orgId;
+            authHeaders['x-org-id'] = _authState.orgId;
           }
 
           return makeOperation(operation.kind, operation, {
@@ -129,7 +93,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
         didAuthError({ error }) {
           // check if the error was an auth error
           const hasAuthError = error?.graphQLErrors?.some(
-            (e) => e.extensions?.code === 401,
+            (e) => e.extensions?.code === 401
           );
           return hasAuthError;
         },
@@ -138,18 +102,18 @@ export function createApiClient(options: ApiClientOptions = {}) {
         },
       }),
       fetchExchange,
-      subscriptionExchange({
-        forwardSubscription(operation) {
-          return {
-            subscribe: (sink) => {
-              const dispose = wsClient!.subscribe(operation, sink);
-              return {
-                unsubscribe: dispose,
-              };
-            },
-          };
-        },
-      }),
+      // subscriptionExchange({
+      //   forwardSubscription(operation) {
+      //     return {
+      //       subscribe: (sink) => {
+      //         const dispose = wsClient!.subscribe(operation, sink);
+      //         return {
+      //           unsubscribe: dispose,
+      //         };
+      //       },
+      //     };
+      //   },
+      // }),
     ],
     ...options.urqlOptions,
   });

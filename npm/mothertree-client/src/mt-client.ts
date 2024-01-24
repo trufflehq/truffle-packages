@@ -1,7 +1,5 @@
 import { Client, ExecutionResult } from 'graphql-ws';
 import { WSClientOptions, createWSClient } from './ws-client';
-import { verify as jwtVerify } from 'jsonwebtoken';
-import { MOTHERTREE_PUBLIC_ES256_KEY } from './constants';
 
 type QueryExecutor = (
   query: string,
@@ -25,7 +23,7 @@ type MothertreeClientOptions = WSClientOptions & {
   wsClient?: Client | null;
 };
 
-interface AccessTokenPayload {
+export interface AccessTokenPayload {
   sub: string;
   nonce: number;
   type: string;
@@ -83,12 +81,10 @@ export class MothertreeClient {
 
     // parse/set the access token
     if (options?.accessToken) {
-      this._accessTokenPayload = jwtVerify(
-        options.accessToken,
-        MOTHERTREE_PUBLIC_ES256_KEY,
-        {
-          algorithms: ['ES256'],
-        }
+      const parts = options.accessToken.split('.');
+      if (parts.length !== 3) throw new Error('Invalid access token');
+      this._accessTokenPayload = JSON.parse(
+        atob(parts[1])
       ) as AccessTokenPayload;
     }
   }
@@ -150,6 +146,15 @@ export class MothertreeClient {
   get appInstallId() {
     if (!this._accessTokenPayload) throw this._noAccessTokenError;
     return this._accessTokenPayload.packageInstallId;
+  }
+
+  get isAnon() {
+    if (!this._accessTokenPayload) throw this._noAccessTokenError;
+    return this._accessTokenPayload.isAnon;
+  }
+
+  get isAuthenticated() {
+    return !!this._accessTokenPayload;
   }
 
   public close() {

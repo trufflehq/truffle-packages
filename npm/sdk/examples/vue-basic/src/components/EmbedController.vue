@@ -1,44 +1,43 @@
 <script setup lang="ts">
-import { embed } from '@trufflehq/sdk'
-import { reactive } from 'vue'
+import { getEmbed } from '@trufflehq/sdk';
+import { reactive } from 'vue';
+
+const embed = getEmbed();
 
 const state = reactive({
   hasBorder: false,
-  isSmall: true
-})
+  isSmall: true,
+});
 
 const toggleBorder = () => {
   if (state.hasBorder) {
     embed.setStyles({
-      border: "none"
-    })
-    state.hasBorder = false
-
+      border: 'none',
+    });
+    state.hasBorder = false;
   } else {
     embed.setStyles({
-      border: "5px solid red"
-    })
-    state.hasBorder = true
+      border: '5px solid red',
+    });
+    state.hasBorder = true;
   }
-}
+};
 
 const toggleSize = () => {
   if (state.isSmall) {
     embed.setStyles({
-      width: "800px",
-      height: "800px"
-    })
-    state.isSmall = false
-
+      width: '800px',
+      height: '800px',
+    });
+    state.isSmall = false;
   } else {
     embed.setStyles({
-      width: "600px",
-      height: "600px"
-    })
-    state.isSmall = true
+      width: '600px',
+      height: '600px',
+    });
+    state.isSmall = true;
   }
-}
-
+};
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 {
   "name": "mothertree-client",
   "version": "0.1.0",
-  "description": "The official client library for mothertree.",
+  "description": "The official client library for Truffle's Mothertree API.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "graphql-ws": "^5.14.3",
-    "jsonwebtoken": "^9.0.2",
     "ws": "^8.16.0"
   }
 }

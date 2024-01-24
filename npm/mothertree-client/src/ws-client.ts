@@ -8,7 +8,8 @@ export interface WSClientOptions {
 }
 
 export function createWSClient(options?: WSClientOptions) {
-  const WebSocketImpl = typeof WebSocket !== 'undefined' ? WebSocket : ws;
+  const WebSocketImpl =
+    typeof globalThis.WebSocket !== 'undefined' ? WebSocket : ws;
   class CustomWebSocketImpl extends WebSocketImpl {
     constructor(url: string, protocols: string | string[] | undefined) {
       const wsOptions: any = {};
