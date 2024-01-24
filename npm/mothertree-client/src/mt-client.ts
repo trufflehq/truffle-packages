@@ -46,6 +46,12 @@ interface OrgMemberInput {
 interface OrgPayload {
   id: string;
   name: string;
+  slug: string;
+  domain?: string;
+  timezone: string;
+  image?: any; // TODO: make a type for this
+  socials?: any; // TODO: make a type for this
+  creatorUserId: string;
 }
 
 interface OrgMemberPayload {
@@ -173,7 +179,7 @@ export class MothertreeClient {
     options?: any
   ) {
     const { data, errors } = await this._queryExecutor(
-      'query($input: OrgMemberInput) { orgMember(input: $input) { id name } }',
+      'query($input: OrgMemberInput) { orgMember(input: $input) { id name slug creatorUserId domain timezone image socials } }',
       { input },
       options
     );

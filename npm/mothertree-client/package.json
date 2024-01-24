@@ -1,6 +1,6 @@
 {
-  "name": "mothertree-client",
-  "version": "0.1.0",
+  "name": "@trufflehq/mothertree-client",
+  "version": "0.1.0-alpha.1",
   "description": "The official client library for Truffle's Mothertree API.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -19,8 +19,11 @@
     "test": "vitest"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Spore Labs, Inc.",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.5",
     "@types/ws": "^8.5.10",

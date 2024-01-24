@@ -9,11 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@trufflehq/sdk": "file:../..",
+    "@trufflehq/sdk": "^0.5.0-alpha.3",
     "vue": "^3.2.45"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-vue": "^5.0.3",
     "typescript": "^4.9.3",
     "vite": "^5.0.12",
     "vue-tsc": "^1.0.11"
