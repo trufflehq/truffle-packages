@@ -1,60 +1,60 @@
-import { PermEval } from "./perm-eval";
-import { permEvalFunc } from "./util";
+import { PermissionEvaluate } from "./permission-evaluate";
+import { permissionEvaluateFunc } from "./util";
 
-export class PermNamespace {
-  private _actions = new Map<string, PermEval>();
-  private _children = new Set<PermNamespace>();
+export class PermissionNamespace {
+  private _actions = new Map<string, PermissionEvaluate>();
+  private _children = new Set<PermissionNamespace>();
 
   constructor(
     public name: string,
   ) {}
 
-  public registerAction(permEval: PermEval) {
+  public registerAction(permissionEvaluate: PermissionEvaluate) {
     // don't register the same action twice
-    if (this._actions.has(permEval.action)) return;
+    if (this._actions.has(permissionEvaluate.action)) return;
 
-    const newPermEval: PermEval = {
-      hasPermission: permEvalFunc,
+    const newPermissionEvaluate: PermissionEvaluate = {
+      hasPermission: permissionEvaluateFunc,
 
-      // get all the other properties from the permEval
-      ...permEval,
+      // get all the other properties from the permissionEvaluate
+      ...permissionEvaluate,
 
       // add the domain name to the action
-      action: `${this.name}.${permEval.action}`,
+      action: `${this.name}.${permissionEvaluate.action}`,
     };
 
-    this._actions.set(permEval.action, newPermEval);
+    this._actions.set(permissionEvaluate.action, newPermissionEvaluate);
   }
 
-  public registerActions(permEvals: PermEval[]) {
-    permEvals.forEach((permEval) => this.registerAction(permEval));
+  public registerActions(permissionEvaluates: PermissionEvaluate[]) {
+    permissionEvaluates.forEach((permissionEvaluate) => this.registerAction(permissionEvaluate));
 
-    // replace fallbacks with the new permEvals we created in registerAction
-    permEvals.forEach((permEval) => {
-      if (Array.isArray(permEval.fallbacks)) {
-        const newPermEval = this._actions.get(permEval.action)!;
-        newPermEval.fallbacks = permEval.fallbacks.map((fallback) => {
+    // replace fallbacks with the new permissionEvaluates we created in registerAction
+    permissionEvaluates.forEach((permissionEvaluate) => {
+      if (Array.isArray(permissionEvaluate.fallbacks)) {
+        const newPermissionEvaluate = this._actions.get(permissionEvaluate.action)!;
+        newPermissionEvaluate.fallbacks = permissionEvaluate.fallbacks.map((fallback) => {
           return this._actions.get(fallback.action)!;
         });
       }
     });
   }
 
-  public registerChild(child: PermNamespace) {
+  public registerChild(child: PermissionNamespace) {
     this._children.add(child);
   }
 
-  public registerChildren(children: PermNamespace[]) {
+  public registerChildren(children: PermissionNamespace[]) {
     children.forEach((child) => this.registerChild(child));
   }
 
-  private _linkActions(stack: PermNamespace[]) {
-    for (const [action, permEval] of this._actions.entries()) {
+  private _linkActions(stack: PermissionNamespace[]) {
+    for (const [action, permissionEvaluate] of this._actions.entries()) {
       // go up the stack and link this action to the first domain that has a matching action
       for (const domain of stack) {
         if (domain._actions.has(action)) {
-          permEval.fallbacks ??= [];
-          permEval.fallbacks.push(domain._actions.get(action)!);
+          permissionEvaluate.fallbacks ??= [];
+          permissionEvaluate.fallbacks.push(domain._actions.get(action)!);
           break;
         }
       }
@@ -65,10 +65,10 @@ export class PermNamespace {
     // we'll pass down the stack
     // and modify it in place so that
     // we're not creating a bunch of arrays
-    stack: PermNamespace[],
+    stack: PermissionNamespace[],
     // same with the result tree
-    resultTree: PermEval[],
-  ): PermEval[] {
+    resultTree: PermissionEvaluate[],
+  ): PermissionEvaluate[] {
     // link all the actions in this domain to actions in the parent domains
     this._linkActions(stack);
 
@@ -87,7 +87,7 @@ export class PermNamespace {
     return resultTree;
   }
 
-  public generatePermGraph(): PermEval[] {
+  public generatePermissionGraph(): PermissionEvaluate[] {
     return this._recurseDomain([], []);
   }
 }

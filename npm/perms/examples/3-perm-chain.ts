@@ -1,24 +1,24 @@
-import { PermsProcessor, permEval, perm, permEvalChain } from '../src';
+import { PermissionsProcessor, permissionEvaluate, permission, permissionEvaluateChain } from '../src';
 
-const processor = new PermsProcessor();
+const processor = new PermissionsProcessor();
 
 processor.register(
-  permEvalChain([
-    permEval('video.view'),
-    permEval('video.rename'),
-    permEval('video.delete'),
+  permissionEvaluateChain([
+    permissionEvaluate('video.view'),
+    permissionEvaluate('video.rename'),
+    permissionEvaluate('video.delete'),
   ]),
 );
 
-const userPerms = [perm('video.rename')];
+const userPermissions = [permission('video.rename')];
 
-const testPerm = (perm: string) => {
-  console.log(perm, processor.evaluate(perm, userPerms));
+const testPermission = (permission: string) => {
+  console.log(permission, processor.evaluate(permission, userPermissions));
 };
 
-testPerm('video.view');
-testPerm('video.rename');
-testPerm('video.delete');
+testPermission('video.view');
+testPermission('video.rename');
+testPermission('video.delete');
 
 // output:
 // video.view true

@@ -1,20 +1,20 @@
-import { Perm } from './perm';
-import { PermEval, PermEvalResult } from './perm-eval';
-import { defaultHasPermissionFunc, DEFAULT_RESULT, permEval } from './util';
+import { Permission } from './permission';
+import { PermissionEvaluate, PermissionEvaluateResult } from './permission-evaluate';
+import { defaultHasPermissionFunc, DEFAULT_RESULT, permissionEvaluate } from './util';
 
-type PermRankStrategy = 'eval-order' | 'fallback-depth';
+type PermissionRankStrategy = 'evaluate-order' | 'fallback-depth';
 
-interface PermsProcessorOptions {
+interface PermissionsProcessorOptions {
   /**
-   * Default permEval to use if the processor reaches the end of the fallback chain.
+   * Default permissionEvaluate to use if the processor reaches the end of the fallback chain.
    */
-  globalFallback?: PermEval;
+  globalFallback?: PermissionEvaluate;
 
   /**
    * How prioritize which permission to return the result for
    * when evaluating multiple permissions.
    *
-   * - `eval-order`: return the result for the first permission that returns an
+   * - `evaluate-order`: return the result for the first permission that returns an
    * explicit grant or denial of permission.
    *
    * - `fallback-depth`: return the result for the permission that interated
@@ -23,59 +23,59 @@ interface PermsProcessorOptions {
    *
    * The default strategy is `fallback-depth`.
    */
-  permRankStrategy?: PermRankStrategy;
+  permRankStrategy?: PermissionRankStrategy;
 }
 
 const DEFAULT_MAX_FALLBACKS = 100;
 
-export class PermsProcessor {
-  private _permEvalMap = new Map<string, PermEval>();
+export class PermissionsProcessor {
+  private _permissionEvaluateMap = new Map<string, PermissionEvaluate>();
 
   // this gets used as the fallback if
-  // the `evaluate` method reaches a permEval
+  // the `evaluate` method reaches a permissionEvaluate
   // that doesn't have a fallback
-  public globalFallback?: PermEval;
+  public globalFallback?: PermissionEvaluate;
 
-  private _permRankStrategy: PermRankStrategy;
+  private _permRankStrategy: PermissionRankStrategy;
 
-  constructor(options: PermsProcessorOptions = {}) {
+  constructor(options: PermissionsProcessorOptions = {}) {
     this.globalFallback = options.globalFallback;
     this._permRankStrategy = options.permRankStrategy || 'fallback-depth';
   }
 
-  public register(permEvals: PermEval | PermEval[]) {
-    const registerOne = (permEval: PermEval) => {
-      // check to make sure we're not accidentally overwriting a permEval
+  public register(permissionEvaluates: PermissionEvaluate | PermissionEvaluate[]) {
+    const registerOne = (permissionEvaluate: PermissionEvaluate) => {
+      // check to make sure we're not accidentally overwriting a permissionEvaluate
       if (
-        this._permEvalMap.has(permEval.action) &&
-        this._permEvalMap.get(permEval.action) !== permEval
+        this._permissionEvaluateMap.has(permissionEvaluate.action) &&
+        this._permissionEvaluateMap.get(permissionEvaluate.action) !== permissionEvaluate
       ) {
         throw new Error(
-          `Attempted to overwrite an existing permEval ${permEval.action}.`,
+          `Attempted to overwrite an existing permissionEvaluate ${permissionEvaluate.action}.`,
         );
       }
 
-      this._permEvalMap.set(permEval.action, permEval);
+      this._permissionEvaluateMap.set(permissionEvaluate.action, permissionEvaluate);
 
-      // if the perm eval has fallbacks, register that one too
-      if (Array.isArray(permEval.fallbacks))
-        permEval.fallbacks.forEach(registerOne);
+      // if the permission eval has fallbacks, register that one too
+      if (Array.isArray(permissionEvaluate.fallbacks))
+        permissionEvaluate.fallbacks.forEach(registerOne);
     };
 
-    if (Array.isArray(permEvals)) permEvals.forEach(registerOne);
-    else registerOne(permEvals);
+    if (Array.isArray(permissionEvaluates)) permissionEvaluates.forEach(registerOne);
+    else registerOne(permissionEvaluates);
   }
 
   public evaluate(
     action: string,
-    perms: Perm | Perm[],
+    perms: Permission | Permission[],
     context?: unknown,
     maxFallbacks = DEFAULT_MAX_FALLBACKS,
-  ): PermEvalResult {
-    // evaluate a single perm
-    const evalPerm: (
-      perm: Perm,
-      nextPermEval?: PermEval,
+  ): PermissionEvaluateResult {
+    // evaluate a single permission
+    const evaluatePermission: (
+      permission: Permission,
+      nextPermissionEvaluate?: PermissionEvaluate,
       ttl?: number,
 
       // we return the final ttl in the tuple so that we can
@@ -84,41 +84,41 @@ export class PermsProcessor {
       // and use that info to determine which
       // result to return when evaluating multiple perms
       // if the user has specified the `fallback-depth` strategy
-    ) => [PermEvalResult, number] = (
-      perm,
-      nextPermEval,
+    ) => [PermissionEvaluateResult, number] = (
+      permission,
+      nextPermissionEvaluate,
       ttl = DEFAULT_MAX_FALLBACKS,
     ) => {
-      const currentPermEval: PermEval | undefined =
-        // if we're recursing, use the permEval we were given
-        nextPermEval ||
-        // if the user registered a permEval for this action, we'll use it
-        this._permEvalMap.get(action) ||
-        // if the user didn't register a permEval for this action, we'll use a default one
-        // that simply checks if the action matches the perm eval's action
-        permEval(action);
+      const currentPermissionEvaluate: PermissionEvaluate | undefined =
+        // if we're recursing, use the permissionEvaluate we were given
+        nextPermissionEvaluate ||
+        // if the user registered a permissionEvaluate for this action, we'll use it
+        this._permissionEvaluateMap.get(action) ||
+        // if the user didn't register a permissionEvaluate for this action, we'll use a default one
+        // that simply checks if the action matches the permission eval's action
+        permissionEvaluate(action);
 
       // base case: if we've reached the end of the fallback chain,
       // return the default result.
       // also, if we've reached the max number of fallbacks, return the default result
-      if (!currentPermEval || ttl === 0) return [DEFAULT_RESULT, ttl];
+      if (!currentPermissionEvaluate || ttl === 0) return [DEFAULT_RESULT, ttl];
 
-      // match up the perm's action with the current permEval's action
-      if (perm.action === currentPermEval.action) {
-        // and check if the perm triggers an explicit grant or denial of permission
-        const result = currentPermEval.hasPermission
-          ? currentPermEval.hasPermission(perm, context)
-          : defaultHasPermissionFunc(perm);
+      // match up the permission's action with the current permissionEvaluate's action
+      if (permission.action === currentPermissionEvaluate.action) {
+        // and check if the permission triggers an explicit grant or denial of permission
+        const result = currentPermissionEvaluate.hasPermission
+          ? currentPermissionEvaluate.hasPermission(permission, context)
+          : defaultHasPermissionFunc(permission);
 
         if (result.result !== 'undetermined') {
           return [result, ttl];
         }
       }
 
-      // if the perm doesn't satisfy the current permEval, check the fallbacks
-      if (Array.isArray(currentPermEval.fallbacks))
-        for (const fallback of currentPermEval.fallbacks) {
-          const [result, finalTtl] = evalPerm(perm, fallback, ttl - 1);
+      // if the permission doesn't satisfy the current permissionEvaluate, check the fallbacks
+      if (Array.isArray(currentPermissionEvaluate.fallbacks))
+        for (const fallback of currentPermissionEvaluate.fallbacks) {
+          const [result, finalTtl] = evaluatePermission(permission, fallback, ttl - 1);
           if (result.result !== 'undetermined') {
             return [result, finalTtl];
           }
@@ -129,9 +129,9 @@ export class PermsProcessor {
 
     // if we're given a list of perms, only one has to grant/deny permission;
     if (Array.isArray(perms)) {
-      if (this._permRankStrategy === 'eval-order') {
-        for (const perm of perms) {
-          const [result] = evalPerm(perm, undefined, maxFallbacks);
+      if (this._permRankStrategy === 'evaluate-order') {
+        for (const permission of perms) {
+          const [result] = evaluatePermission(permission, undefined, maxFallbacks);
           if (result.result !== 'undetermined') {
             return result;
           }
@@ -139,8 +139,8 @@ export class PermsProcessor {
         return DEFAULT_RESULT;
       } else if (this._permRankStrategy === 'fallback-depth') {
         const [result] = perms
-          // evaluate each perm
-          .map((perm) => evalPerm(perm, undefined, maxFallbacks))
+          // evaluate each permission
+          .map((permission) => evaluatePermission(permission, undefined, maxFallbacks))
           // filter out the results that didn't return an explicit grant/deny
           .filter(([result]) => result.result !== 'undetermined')
           // find the result with the fewest number of fallbacks
@@ -157,7 +157,7 @@ export class PermsProcessor {
         return DEFAULT_RESULT;
       }
     } else {
-      const [result] = evalPerm(perms, undefined, maxFallbacks);
+      const [result] = evaluatePermission(perms, undefined, maxFallbacks);
       return result;
     }
   }

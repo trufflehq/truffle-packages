@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  globalName: "TrufflePerms",
+  globalName: "TrufflePermissions",
   clean: true,
   dts: true,
   entry: ["src/index.ts"],

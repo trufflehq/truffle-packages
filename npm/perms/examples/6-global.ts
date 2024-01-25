@@ -1,19 +1,19 @@
-import { Perm, PermsProcessor, perm, permEval } from '../src';
+import { Permission, PermissionsProcessor, permission, permissionEvaluate } from '../src';
 
-const processor = new PermsProcessor();
-processor.globalFallback = permEval('superAdmin');
+const processor = new PermissionsProcessor();
+processor.globalFallback = permissionEvaluate('superAdmin');
 
 // these are perms that a theoretical user has
-const userPerms: Perm[] = [perm('superAdmin')];
+const userPermissions: Permission[] = [permission('superAdmin')];
 
 // helper function to reduce boilerplate
-const testPerm = (perm: string) => {
-  console.log(perm, processor.evaluate(perm, userPerms));
+const testPermission = (permission: string) => {
+  console.log(permission, processor.evaluate(permission, userPermissions));
 };
 
-testPerm('obj.read');
-testPerm('obj.write');
-testPerm('obj.delete');
+testPermission('obj.read');
+testPermission('obj.write');
+testPermission('obj.delete');
 
 // output:
 // obj.read true

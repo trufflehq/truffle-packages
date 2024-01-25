@@ -1,25 +1,25 @@
-import { perm, PermsProcessor } from '../src';
+import { permission, PermissionsProcessor } from '../src';
 
-const processor = new PermsProcessor();
+const processor = new PermissionsProcessor();
 
 // these are perms that a theoretical user has
-const userPerms = [
-  perm('obj.read'),
-  perm('obj.write'),
-  perm({
+const userPermissions = [
+  permission('obj.read'),
+  permission('obj.write'),
+  permission({
     action: 'obj.delete',
     value: 'deny',
   }),
 ];
 
 // helper function to reduce boilerplate
-const testPerm = (perm: string) => {
-  console.log(perm, processor.evaluate(perm, userPerms));
+const testPermission = (permission: string) => {
+  console.log(permission, processor.evaluate(permission, userPermissions));
 };
 
-testPerm('obj.read');
-testPerm('obj.write');
-testPerm('obj.delete');
+testPermission('obj.read');
+testPermission('obj.write');
+testPermission('obj.delete');
 
 // output:
 // obj.read true
