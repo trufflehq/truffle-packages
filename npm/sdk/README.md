@@ -6,14 +6,14 @@ The official javascript SDK for Truffle. This SDK is primarily designed to be us
 ## Installation
 
 ```bash
-npm install @truffle/sdk@alpha
+npm install @trufflehq/sdk@alpha
 ```
 
 ## Basic usage
 
 ```ts
 // main script file
-import { subscribeToAuth } from "@truffle/sdk";
+import { subscribeToAuth } from "@trufflehq/sdk";
 
 // subscribe to auth events;
 // whenever the user logs in or out,
@@ -39,7 +39,7 @@ subscribeToAuth((truffleApp) => {
 Elsewhere in your app, you can use the Mothertree Client to get info about the current user and org:
 
 ```ts
-import { getMtClient } from "@truffle/sdk";
+import { getMtClient } from "@trufflehq/sdk";
 
 const client = getMtClient();
 
