@@ -22,7 +22,7 @@ function App() {
       next: (org) => {
         setOrgId(org?.id);
       },
-    }, []);
+    });
 
     getAccessToken().then((token) => {
       console.log("access token", token);
