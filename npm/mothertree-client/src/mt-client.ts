@@ -145,7 +145,7 @@ export class MothertreeClient {
     options?: any
   ) {
     const { data, errors } = await this._queryExecutor(
-      'query($input: OrgMemberInput) { orgMember(input: $input) { id name slug creatorUserId domain timezone image socials } }',
+      'query($input: OrgMemberInput) { orgMember(input: $input) { id name } }',
       { input },
       options
     );
@@ -163,7 +163,7 @@ export class MothertreeClient {
     options?: any
   ) {
     const { data, errors } = await this._queryExecutor(
-      'query($input: OrgInput) { org(input: $input) { id name } }',
+      'query($input: OrgInput) { org(input: $input) { id name slug creatorUserId domain timezone image socials } }',
       { input },
       options
     );
