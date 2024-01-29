@@ -41,10 +41,9 @@ export function subscribeToAuth(
   };
 
   // subscribe to the access token changes
-  getEmbedConsumer().call('userOnAccessTokenChanged', refreshTruffleApp);
-
-  // get the initial value of the access token
-  getAccessToken().then(refreshTruffleApp);
+  getEmbedConsumer().call('userOnAccessTokenChanged', refreshTruffleApp, {
+    immediate: true,
+  });
 }
 
 export function getTruffleApp(instanceName?: string) {

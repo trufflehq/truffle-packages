@@ -121,8 +121,7 @@ export class MothertreeClient {
   }
 
   get isAnon() {
-    if (!this._accessTokenPayload) throw this._noAccessTokenError;
-    return this._accessTokenPayload.isAnon;
+    return this._accessTokenPayload?.isAnon ?? true;
   }
 
   get isAuthenticated() {

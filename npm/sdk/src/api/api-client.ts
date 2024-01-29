@@ -45,7 +45,7 @@ export function createApiClient(options: ApiClientOptions = {}) {
           // if the orgId is passed in as an option, use that
           if (options.orgId) {
             _authState.orgId = options.orgId;
-          } else {
+          } else if (_authState.userAccessToken) {
             // otherwise, extract orgId from userAccessToken
             const tokenPayload = JSON.parse(
               atob(_authState.userAccessToken.split('.')[1])

@@ -1,6 +1,6 @@
 {
   "name": "@trufflehq/mothertree-client",
-  "version": "0.1.0-alpha.4",
+  "version": "0.1.0-alpha.5",
   "description": "The official client library for Truffle's Mothertree API.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
