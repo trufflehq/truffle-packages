@@ -59,6 +59,18 @@ describe('mt-client.ts', () => {
       const roles = (await client.getRoles()) as any;
       console.log('Roles:', roles);
     });
+
+    test('get spark balance', async () => {
+      const sparkBalance = await client.getSparkBalance();
+      console.log('Spark balance:', sparkBalance);
+    });
+
+    test('purchase product variant', async () => {
+      const productVariantPurchase = await client.purchaseProductVariant(
+        '@truffle/tips/_ProductVariant/peepo-rage-theme'
+      );
+      console.log('Product variant purchase:', productVariantPurchase);
+    });
   });
 
   describe('client operations without connecting to mothertree', () => {

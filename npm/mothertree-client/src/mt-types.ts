@@ -38,3 +38,16 @@ export interface RolePayload {
   id: string;
   slug: string;
 }
+
+export interface SparkBalancePayload {
+  id: string;
+  name: string;
+  slug: string;
+  count: number;
+}
+
+export interface ProductVariantPurchasePayload {
+  id: string;
+  name: string;
+  slug: string;
+}

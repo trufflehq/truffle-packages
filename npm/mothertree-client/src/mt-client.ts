@@ -5,6 +5,7 @@ import {
   OrgMemberInput,
   OrgMemberPayload,
   OrgPayload,
+  ProductVariantPurchasePayload,
   RolePayload,
 } from './mt-types';
 
@@ -171,7 +172,7 @@ export class MothertreeClient {
     return data?.org as OrgPayload;
   }
 
-  public async getRoles(input?: OrgMemberInput, options?: any) {
+  public async getRoles(input?: OrgMemberInput, options?: unknown) {
     const { data, errors } = await this._queryExecutor(
       'query($input: OrgMemberInput) { orgMember(input: $input) { roles { id slug } } }',
       { input },
@@ -180,5 +181,56 @@ export class MothertreeClient {
 
     if (errors) throw errors;
     return (data as any)?.orgMember?.roles as RolePayload[];
+  }
+
+  public async getSparkBalance(options?: unknown) {
+    const { data, errors } = await this._queryExecutor(
+      `
+        query {
+          countable(input: {
+            path: "@truffle/tips/_Countable/sparks"
+          }) {
+            id
+            counter(input: {
+              entityType: "user"
+            }) {
+              id
+              count
+            }
+          }
+        }
+      `,
+      {},
+      options
+    );
+
+    if (errors) throw errors;
+    return ((data as any)?.countable?.counter?.count ?? 0) as number;
+  }
+
+  public async purchaseProductVariant(
+    path: string,
+    actionInputs?: unknown,
+    options?: unknown
+  ) {
+    const { data, errors } = await this._queryExecutor(
+      `
+        mutation($input: ProductVariantPurchaseInput!) {
+          productVariantPurchase(input: $input) {
+            productVariant {
+              id
+              name
+              slug
+            }
+          }
+        }
+      `,
+      { input: { path, actionInputs } },
+      options
+    );
+
+    if (errors) throw errors;
+    return (data as any)?.productVariantPurchase
+      ?.productVariant as ProductVariantPurchasePayload;
   }
 }
