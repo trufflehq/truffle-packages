@@ -1,4 +1,4 @@
-import { getEmbedConsumer } from '../transframe/embed-consumer';
+import { getEmbedConsumer } from './embed-consumer';
 
 export async function getAccessToken(): Promise<string> {
   // TODO: support auth without extension

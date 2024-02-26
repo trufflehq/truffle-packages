@@ -1,4 +1,5 @@
 import { ApiClientOptions } from '../api';
+import { getAccessToken } from '../transframe/access-token';
 import { getEmbedConsumer } from '../transframe/embed-consumer';
 import { TruffleApp } from './app';
 
@@ -10,15 +11,39 @@ type InitTruffleAppOptions = {
   instanceName?: string;
 } & Partial<ApiClientOptions>;
 
-export function initTruffleApp(options: InitTruffleAppOptions = {}) {
-  // make sure we can initialize the embed consumer;
-  // this will throw if we're not in an embed
-  getEmbedConsumer();
+type SubscribeToAuthOptions = Omit<InitTruffleAppOptions, 'userAccessToken'>;
 
+export function initTruffleApp(options: InitTruffleAppOptions = {}) {
   const app = new TruffleApp(options);
   const instanceName = options.instanceName || DEFAULT_APP_INSTANCE_NAME;
   appInstances.set(instanceName, app);
   return app;
+}
+
+export function subscribeToAuth(
+  callback: (newApp: TruffleApp) => void,
+  options?: SubscribeToAuthOptions
+) {
+  const refreshTruffleApp = (accessToken: string) => {
+    // destroy the previous app instance if it exists
+    appInstances
+      .get(options?.instanceName ?? DEFAULT_APP_INSTANCE_NAME)
+      ?.destroy();
+
+    // reinitialize the app instance
+    // and notify the subscriber
+    callback(
+      initTruffleApp({
+        userAccessToken: accessToken,
+        ...options,
+      })
+    );
+  };
+
+  // subscribe to the access token changes
+  getEmbedConsumer().call('userOnAccessTokenChanged', refreshTruffleApp, {
+    immediate: true,
+  });
 }
 
 export function getTruffleApp(instanceName?: string) {
@@ -30,4 +55,8 @@ export function getTruffleApp(instanceName?: string) {
   }
 
   return app;
+}
+
+export function getMtClient(instanceName?: string) {
+  return getTruffleApp(instanceName).mtClient;
 }

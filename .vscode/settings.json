@@ -1,6 +1,6 @@
 {
   "eslint.enable": false,
-  "deno.enable": true,
+  "deno.enable": false,
   "deno.suggest.imports.hosts": {
     "https://deno.land": true,
     "https://tfl.dev": true,
@@ -10,9 +10,9 @@
   "editor.defaultFormatter": "denoland.vscode-deno",
   "editor.formatOnSave": true,
   "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

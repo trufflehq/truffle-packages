@@ -1,1 +1,1 @@
-export const DEFAULT_MYCELIUM_API_URL = 'https://mycelium.staging.bio/graphql';
+export const DEFAULT_MOTHERTREE_API_URL = 'https://mothertree.staging.bio/graphql';
