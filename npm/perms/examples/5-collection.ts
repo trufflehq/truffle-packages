@@ -1,11 +1,11 @@
 import {
-  PermsProcessor,
-  permEval,
-  perm,
-  permEvalTree,
-  PermEvalFunc,
+  PermissionsProcessor,
+  permissionEvaluate,
+  permission,
+  permissionEvaluateTree,
+  PermissionEvaluateFunc,
   DEFAULT_RESULT,
-  PermEvalResult,
+  PermissionEvaluateResult,
 } from '../src';
 
 interface Doc {
@@ -37,47 +37,47 @@ interface CollectionContext {
 }
 
 // function to check if a user can access a doc
-const canAccessDoc: PermEvalFunc<DocParams, DocContext> = (perm, context) => {
-  const resultIfMatch: PermEvalResult =
-    perm.value === 'allow' ? { result: 'granted' } : { result: 'denied' };
+const canAccessDoc: PermissionEvaluateFunc<DocParams, DocContext> = (permission, context) => {
+  const resultIfMatch: PermissionEvaluateResult =
+    permission.value === 'allow' ? { result: 'granted' } : { result: 'denied' };
 
-  return perm.params?.docId === context.doc.id ? resultIfMatch : DEFAULT_RESULT;
+  return permission.params?.docId === context.doc.id ? resultIfMatch : DEFAULT_RESULT;
 };
 
 // function to check if a user can access a collection
-const canAccessCollection: PermEvalFunc<CollectionParams, CollectionContext> = (
-  perm,
+const canAccessCollection: PermissionEvaluateFunc<CollectionParams, CollectionContext> = (
+  permission,
   context
 ) => {
-  const resultIfMatch: PermEvalResult =
-    perm.value === 'allow' ? { result: 'granted' } : { result: 'denied' };
+  const resultIfMatch: PermissionEvaluateResult =
+    permission.value === 'allow' ? { result: 'granted' } : { result: 'denied' };
 
-  return perm.params?.collectionId === context.collection.id
+  return permission.params?.collectionId === context.collection.id
     ? resultIfMatch
     : DEFAULT_RESULT;
 };
 
-const processor = new PermsProcessor();
+const processor = new PermissionsProcessor();
 
 // register our permissions tree
 processor.register(
-  permEvalTree({
-    self: permEval({
+  permissionEvaluateTree({
+    self: permissionEvaluate({
       action: 'collection.all',
       hasPermission: canAccessCollection,
     }),
     children: [
       {
-        self: permEval({ action: 'doc.all', hasPermission: canAccessDoc }),
+        self: permissionEvaluate({ action: 'doc.all', hasPermission: canAccessDoc }),
         children: [
           {
-            self: permEval({
+            self: permissionEvaluate({
               action: 'collection.read',
               hasPermission: canAccessCollection,
             }),
             children: [
               {
-                self: permEval({
+                self: permissionEvaluate({
                   action: 'doc.read',
                   hasPermission: canAccessDoc,
                 }),
@@ -85,25 +85,25 @@ processor.register(
             ],
           },
           {
-            self: permEval({
+            self: permissionEvaluate({
               action: 'collection.write',
               hasPermission: canAccessCollection,
             }),
             children: [
               {
-                self: permEval({
+                self: permissionEvaluate({
                   action: 'doc.write',
                   hasPermission: canAccessDoc,
                 }),
                 children: [
                   {
-                    self: permEval({
+                    self: permissionEvaluate({
                       action: 'collection.create',
                       hasPermission: canAccessCollection,
                     }),
                     children: [
                       {
-                        self: permEval({
+                        self: permissionEvaluate({
                           action: 'doc.create',
                           hasPermission: canAccessDoc,
                         }),
@@ -111,13 +111,13 @@ processor.register(
                     ],
                   },
                   {
-                    self: permEval({
+                    self: permissionEvaluate({
                       action: 'collection.update',
                       hasPermission: canAccessCollection,
                     }),
                     children: [
                       {
-                        self: permEval({
+                        self: permissionEvaluate({
                           action: 'doc.update',
                           hasPermission: canAccessDoc,
                         }),
@@ -125,13 +125,13 @@ processor.register(
                     ],
                   },
                   {
-                    self: permEval({
+                    self: permissionEvaluate({
                       action: 'collection.delete',
                       hasPermission: canAccessCollection,
                     }),
                     children: [
                       {
-                        self: permEval({
+                        self: permissionEvaluate({
                           action: 'doc.delete',
                           hasPermission: canAccessDoc,
                         }),
@@ -165,35 +165,35 @@ const collection: Collection = {
 const context = { doc, collection };
 
 // these are the permissions for three theoretical users
-const user1Perms = [
-  perm({
+const user1Permissions = [
+  permission({
     action: 'collection.all',
     value: 'allow',
     params: { collectionId: '456' },
   }),
 ];
 
-const user2Perms = [
-  perm({ action: 'doc.read', value: 'allow', params: { docId: '456' } }),
+const user2Permissions = [
+  permission({ action: 'doc.read', value: 'allow', params: { docId: '456' } }),
 ];
 
-const user3Perms = [
-  perm({ action: 'doc.all', value: 'allow', params: { docId: '123' } }),
+const user3Permissions = [
+  permission({ action: 'doc.all', value: 'allow', params: { docId: '123' } }),
 ];
 
 console.log(
   'can user1 read doc "123" in collection "456"',
-  processor.evaluate('doc.read', user1Perms, context)
+  processor.evaluate('doc.read', user1Permissions, context)
 );
 
 console.log(
   'can user2 read doc "123" in collection "456"',
-  processor.evaluate('doc.read', user2Perms, context)
+  processor.evaluate('doc.read', user2Permissions, context)
 );
 
 console.log(
   'can user3 read doc "123" in collection "456"',
-  processor.evaluate('doc.read', user3Perms, context)
+  processor.evaluate('doc.read', user3Permissions, context)
 );
 
 // output:

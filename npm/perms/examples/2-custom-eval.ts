@@ -1,9 +1,9 @@
 import {
-  PermEvalFunc,
-  PermsProcessor,
+  PermissionEvaluateFunc,
+  PermissionsProcessor,
   DEFAULT_RESULT,
-  perm,
-  permEval,
+  permission,
+  permissionEvaluate,
 } from '../src';
 
 interface Doc {
@@ -21,18 +21,18 @@ interface DocContext {
 }
 
 // this is a custom permission evaluation function.
-// custom functions take a perm and a context and return a boolean.
-const canAccessDoc: PermEvalFunc<DocParams, DocContext> = (perm, context) => {
-  return perm.params?.docId === context.doc.id
+// custom functions take a permission and a context and return a boolean.
+const canAccessDoc: PermissionEvaluateFunc<DocParams, DocContext> = (permission, context) => {
+  return permission.params?.docId === context.doc.id
     ? { result: 'granted' }
     : DEFAULT_RESULT;
 };
 
-const processor = new PermsProcessor();
+const processor = new PermissionsProcessor();
 
 // register the custom function
 processor.register(
-  permEval({ action: 'doc.read', hasPermission: canAccessDoc })
+  permissionEvaluate({ action: 'doc.read', hasPermission: canAccessDoc })
 );
 
 // this is a doc that we want to check permissions on
@@ -43,21 +43,21 @@ const doc: Doc = {
 };
 
 // these are the permissions for two theoretical users
-const user1Perms = [
-  perm({ action: 'doc.read', value: 'allow', params: { docId: '123' } }),
+const user1Permissions = [
+  permission({ action: 'doc.read', value: 'allow', params: { docId: '123' } }),
 ];
-const user2Perms = [
-  perm({ action: 'doc.read', value: 'allow', params: { docId: '321' } }),
+const user2Permissions = [
+  permission({ action: 'doc.read', value: 'allow', params: { docId: '321' } }),
 ];
 
 console.log(
   'user1 doc.read doc 123',
-  processor.evaluate('doc.read', user1Perms, { doc })
+  processor.evaluate('doc.read', user1Permissions, { doc })
 );
 
 console.log(
   'user2 doc.read doc 123',
-  processor.evaluate('doc.read', user2Perms, { doc })
+  processor.evaluate('doc.read', user2Permissions, { doc })
 );
 
 // output:

@@ -1,45 +1,45 @@
 import {
-  PermsProcessor,
-  permEval,
-  perm,
-  permEvalTree,
+  PermissionsProcessor,
+  permissionEvaluate,
+  permission,
+  permissionEvaluateTree,
 } from "../src";
 
-const processor = new PermsProcessor();
+const processor = new PermissionsProcessor();
 
 processor.register(
-  permEvalTree({
-    self: permEval("doc.all"),
+  permissionEvaluateTree({
+    self: permissionEvaluate("doc.all"),
     children: [
-      { self: permEval("doc.read") },
+      { self: permissionEvaluate("doc.read") },
       {
-        self: permEval("doc.write"),
+        self: permissionEvaluate("doc.write"),
         children: [
-          { self: permEval("doc.create") },
-          { self: permEval("doc.update") },
-          { self: permEval("doc.delete") },
+          { self: permissionEvaluate("doc.create") },
+          { self: permissionEvaluate("doc.update") },
+          { self: permissionEvaluate("doc.delete") },
         ],
       },
     ],
   })
 );
 
-const userPerms = [
-  // perm("doc.all"),
-  perm("doc.write"),
-  // perm("doc.create"),
-  // perm("doc.delete"),
+const userPermissions = [
+  // permission("doc.all"),
+  permission("doc.write"),
+  // permission("doc.create"),
+  // permission("doc.delete"),
 ];
 
-const testPerm = (perm: string) => {
-  console.log(perm, processor.evaluate(perm, userPerms));
+const testPermission = (permission: string) => {
+  console.log(permission, processor.evaluate(permission, userPermissions));
 };
 
-testPerm("doc.read");
-testPerm("doc.write");
-testPerm("doc.create");
-testPerm("doc.update");
-testPerm("doc.delete");
+testPermission("doc.read");
+testPermission("doc.write");
+testPermission("doc.create");
+testPermission("doc.update");
+testPermission("doc.delete");
 
 // output:
 // doc.read false

@@ -1,5 +1,5 @@
-export * from './perm-eval'
-export * from './perm'
+export * from './permission-evaluate'
+export * from './permission'
 export * from './util'
 export * from './processor'
 export * from './namespace'

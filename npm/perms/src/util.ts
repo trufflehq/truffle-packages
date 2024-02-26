@@ -1,19 +1,19 @@
-import { Perm } from "./perm";
+import { Permission } from "./permission";
 import {
-  PermEval,
-  PermEvalFunc,
-  PermEvalResult,
-  PermEvalTreeBuilderNode,
-} from "./perm-eval";
+  PermissionEvaluate,
+  PermissionEvaluateFunc,
+  PermissionEvaluateResult,
+  PermissionEvaluateTreeBuilderNode,
+} from "./permission-evaluate";
 
-export const DEFAULT_RESULT: PermEvalResult = {
+export const DEFAULT_RESULT: PermissionEvaluateResult = {
   result: "undetermined",
   reason: `Nothing explicitly granted or denied permission.`,
   reasonCode: "undetermined",
 };
 
-export function defaultHasPermissionFunc(perm: Perm): PermEvalResult {
-  switch (perm.value) {
+export function defaultHasPermissionFunc(permission: Permission): PermissionEvaluateResult {
+  switch (permission.value) {
     case "allow":
       return {
         result: "granted",
@@ -33,9 +33,9 @@ export function defaultHasPermissionFunc(perm: Perm): PermEvalResult {
   }
 }
 
-export function perm(perm: Perm): Perm;
-export function perm(action: string, params?: any): Perm;
-export function perm(permOrAction: string | Perm, params?: any): Perm {
+export function permission(permission: Permission): Permission;
+export function permission(action: string, params?: any): Permission;
+export function permission(permOrAction: string | Permission, params?: any): Permission {
   if (typeof permOrAction === "string") {
     return {
       action: permOrAction,
@@ -47,32 +47,32 @@ export function perm(permOrAction: string | Perm, params?: any): Perm {
   }
 }
 
-export function permEval(
-  permEval:
+export function permissionEvaluate(
+  permissionEvaluate:
     | string
     | {
       action: string;
-      hasPermission?: PermEvalFunc;
-      fallbacks?: PermEval[];
+      hasPermission?: PermissionEvaluateFunc;
+      fallbacks?: PermissionEvaluate[];
     },
-): PermEval {
-  if (typeof permEval === "string") {
+): PermissionEvaluate {
+  if (typeof permissionEvaluate === "string") {
     return {
-      action: permEval,
+      action: permissionEvaluate,
     };
   }
 
-  return permEval;
+  return permissionEvaluate;
 }
 
-export function permEvalChain(permEvalChain: PermEval[]) {
-  return permEvalChain.reduceRight((prev, curr) => ({
+export function permissionEvaluateChain(permissionEvaluateChain: PermissionEvaluate[]) {
+  return permissionEvaluateChain.reduceRight((prev, curr) => ({
     ...curr,
     fallbacks: [prev],
   }));
 }
 
-export function permEvalTree(node: PermEvalTreeBuilderNode): PermEval[] {
+export function permissionEvaluateTree(node: PermissionEvaluateTreeBuilderNode): PermissionEvaluate[] {
   const { self, children } = node;
 
   // if this is a leaf node, just return array with itself
@@ -81,20 +81,20 @@ export function permEvalTree(node: PermEvalTreeBuilderNode): PermEval[] {
   }
 
   return children
-    .reduce<PermEval[]>((acc, child) => {
+    .reduce<PermissionEvaluate[]>((acc, child) => {
       // link the child to its parent
       child.self.fallbacks = [self];
 
       // add the leaf nodes from this child to our final array
-      return acc.concat(permEvalTree(child));
+      return acc.concat(permissionEvaluateTree(child));
     }, [])
     .concat(self);
 }
 
 export function getBuilderTreeNode(
   action: string,
-  root: PermEvalTreeBuilderNode,
-): PermEvalTreeBuilderNode | null {
+  root: PermissionEvaluateTreeBuilderNode,
+): PermissionEvaluateTreeBuilderNode | null {
   if (root.self.action === action) {
     return root;
   }
@@ -116,8 +116,8 @@ export function getBuilderTreeNode(
 
 export function addBuilderTreeChild(
   action: string,
-  root: PermEvalTreeBuilderNode,
-  ...toAdd: PermEvalTreeBuilderNode[]
+  root: PermissionEvaluateTreeBuilderNode,
+  ...toAdd: PermissionEvaluateTreeBuilderNode[]
 ) {
   const node = getBuilderTreeNode(action, root);
   if (!node) return;
@@ -147,40 +147,40 @@ const isSubsetOfSuperset = (
   });
 };
 
-export const permEvalFunc: PermEvalFunc = (perm, context = {}) => {
+export const permissionEvaluateFunc: PermissionEvaluateFunc = (permission, context = {}) => {
   // check if they have permission to access any object
-  if (perm.params?.all) {
-    return perm.value === "allow"
+  if (permission.params?.all) {
+    return permission.value === "allow"
       ? {
         result: "granted",
-        reason: `Permission granted to ${perm.action} all rows.`,
+        reason: `Permission granted to ${permission.action} all rows.`,
         reasonCode: "granted",
       }
       : {
         result: "denied",
-        reason: `Permission denied to ${perm.action} all rows.`,
+        reason: `Permission denied to ${permission.action} all rows.`,
         reasonCode: "denied",
       };
   }
 
-  const isValidMatchObject = perm.params?.match &&
-    Object.keys(perm.params.match).length > 0;
+  const isValidMatchObject = permission.params?.match &&
+    Object.keys(permission.params.match).length > 0;
   const allParamsMatchInContext = isValidMatchObject &&
-    isSubsetOfSuperset(perm.params.match, context);
+    isSubsetOfSuperset(permission.params.match, context);
 
   if (allParamsMatchInContext) {
-    return perm.value === "allow"
+    return permission.value === "allow"
       ? {
         result: "granted",
-        reason: `Permission granted to ${perm.action} with params ${
-          JSON.stringify(perm.params)
+        reason: `Permission granted to ${permission.action} with params ${
+          JSON.stringify(permission.params)
         }`,
         reasonCode: "granted",
       }
       : {
         result: "denied",
-        reason: `Permission denied to ${perm.action} with params ${
-          JSON.stringify(perm.params)
+        reason: `Permission denied to ${permission.action} with params ${
+          JSON.stringify(permission.params)
         }`,
         reasonCode: "denied",
       };
@@ -189,33 +189,33 @@ export const permEvalFunc: PermEvalFunc = (perm, context = {}) => {
   return {
     result: "undetermined",
     reason:
-      `Nothing explicitly granted or denied permission to ${perm.action} with params ${
-        JSON.stringify(perm.params)
+      `Nothing explicitly granted or denied permission to ${permission.action} with params ${
+        JSON.stringify(permission.params)
       }`,
   };
 };
 
-export const BasicModelPermEvalBuilderTree = (domain?: string) => {
+export const BasicModelPermissionEvaluateBuilderTree = (domain?: string) => {
   const actionName = (action: string) => {
     return domain ? `${domain}.${action}` : action;
   };
 
   return {
-    self: permEval(actionName("all")),
+    self: permissionEvaluate(actionName("all")),
     children: [
       {
-        self: permEval(actionName("list")),
-        children: [{ self: permEval(actionName("read")) }],
+        self: permissionEvaluate(actionName("list")),
+        children: [{ self: permissionEvaluate(actionName("read")) }],
       },
       {
-        self: permEval(actionName("write")),
+        self: permissionEvaluate(actionName("write")),
         children: [
-          { self: permEval(actionName("create")) },
-          { self: permEval(actionName("update")) },
-          { self: permEval(actionName("delete")) },
+          { self: permissionEvaluate(actionName("create")) },
+          { self: permissionEvaluate(actionName("update")) },
+          { self: permissionEvaluate(actionName("delete")) },
         ],
       },
-      { self: permEval(actionName("execute")) },
+      { self: permissionEvaluate(actionName("execute")) },
     ],
   };
 };
