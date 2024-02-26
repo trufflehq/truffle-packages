@@ -46,6 +46,23 @@ export interface SparkBalancePayload {
   count: number;
 }
 
+export interface ProductVariantPayload {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  currency: string;
+  description: string;
+}
+
+export interface ProductPayload {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  variants: ProductVariantPayload[];
+}
+
 export interface ProductVariantPurchasePayload {
   id: string;
   name: string;

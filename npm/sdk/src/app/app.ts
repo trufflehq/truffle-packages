@@ -21,6 +21,14 @@ export class TruffleApp {
           .query(query, variables, options)
           .toPromise();
       },
+
+      // instead of using the default mutation executor,
+      // we're going to use urql as our mutation executor
+      mutationExecutor: async (query, variables, options) => {
+        return await this._gqlClient
+          .mutation(query, variables, options)
+          .toPromise();
+      },
     });
   }
 

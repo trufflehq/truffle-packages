@@ -5,6 +5,7 @@ import {
   OrgMemberInput,
   OrgMemberPayload,
   OrgPayload,
+  ProductPayload,
   ProductVariantPurchasePayload,
   RolePayload,
 } from './mt-types';
@@ -22,6 +23,13 @@ type MothertreeClientOptions = WSClientOptions & {
    * This is mainly used so that we can use urql in the browser.
    */
   queryExecutor?: QueryExecutor;
+
+  /**
+   * Set a custom mutation executor. Given a query string, variables,
+   * and an optional set of options, this will execute a graphql query.
+   * This is mainly used so that we can use urql in the browser.
+   */
+  mutationExecutor?: QueryExecutor;
 
   /**
    * Set a custom graphql-ws client.
@@ -50,7 +58,11 @@ export class MothertreeClient {
     }
 
     // set the query executor
-    if (options?.queryExecutor) this._queryExecutor = options?.queryExecutor;
+    if (options?.queryExecutor) this._queryExecutor = options.queryExecutor;
+
+    // set the mutation executor
+    if (options?.mutationExecutor)
+      this._mutationExecutor = options.mutationExecutor;
 
     // parse/set the access token
     if (options?.accessToken) {
@@ -93,6 +105,8 @@ export class MothertreeClient {
       }
     });
   };
+
+  private _mutationExecutor: QueryExecutor = this._queryExecutor;
 
   private _noAccessTokenError = new Error('No access token');
 
@@ -208,12 +222,90 @@ export class MothertreeClient {
     return ((data as any)?.countable?.counter?.count ?? 0) as number;
   }
 
+  public async getProducts(
+    params?: { category?: string; orgId?: string },
+    options?: unknown
+  ) {
+    let input: Record<string, any>;
+
+    if (params?.category && params?.orgId) input = { orgIdAndCategory: params };
+    else input = params || {};
+
+    const { data, errors } = await this._queryExecutor(
+      `
+        query($input: ProductConnectionInput!) {
+          productConnection(input: $input) {
+            nodes {
+              id
+              name
+              slug
+              category
+              productVariantConnection {
+                nodes {
+                  id
+                  name
+                  slug
+                  assetTemplates {
+                    entityType
+                    entityId
+                    count
+                    senders {
+                      entityType
+                      entityId
+                      share
+                    }
+                    receivers {
+                      entityType
+                      entityId
+                      share
+                    }
+                    metadata
+                  }
+                }
+              }
+            }
+          }
+        }
+      `,
+      { input },
+      options
+    );
+
+    if (errors) throw errors;
+
+    const products = (data as any)?.productConnection?.nodes.map(
+      (product: any) => ({
+        ...product,
+        variants: product.productVariantConnection.nodes.map((variant: any) => {
+          const sendAsset = variant?.assetTemplates?.find(
+            (assetTemplate: any) =>
+              assetTemplate.entityType === 'countable' &&
+              assetTemplate.senders.find((sender: any) =>
+                ['user', 'org-member'].includes(sender.entityType)
+              )
+          );
+
+          const price = sendAsset?.count;
+
+          return {
+            ...variant,
+            price,
+            // TODO: get the currency from the assetTemplate
+            currency: 'Sparks',
+          };
+        }),
+      })
+    ) as ProductPayload[];
+
+    return products;
+  }
+
   public async purchaseProductVariant(
-    path: string,
+    params: { path?: string; id?: string },
     actionInputs?: unknown,
     options?: unknown
   ) {
-    const { data, errors } = await this._queryExecutor(
+    const { data, errors } = await this._mutationExecutor(
       `
         mutation($input: ProductVariantPurchaseInput!) {
           productVariantPurchase(input: $input) {
@@ -225,7 +317,7 @@ export class MothertreeClient {
           }
         }
       `,
-      { input: { path, actionInputs } },
+      { input: { ...params, actionInputs } },
       options
     );
 

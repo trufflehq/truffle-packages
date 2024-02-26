@@ -11,11 +11,14 @@ const Main = () => {
 
   // subscribe to auth changes
   useEffect(() => {
-    subscribeToAuth((app) => {
-      const mtClient = app.mtClient;
-      setIsAuthenticated(mtClient.isAuthenticated);
-      setIsAnon(mtClient.isAnon);
-    });
+    subscribeToAuth(
+      (app) => {
+        const mtClient = app.mtClient;
+        setIsAuthenticated(mtClient.isAuthenticated);
+        setIsAnon(mtClient.isAnon);
+      },
+      { url: 'https://mothertree.truffle.vip/graphql' }
+    );
   }, []);
 
   return (
